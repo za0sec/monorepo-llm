@@ -37,7 +37,7 @@ Implicancia: `cart` es una señal fuertemente correlacionada con `bought` pero *
 
 Desbalance moderado (no extremo). Implicancias a tener en cuenta más adelante:
 - El PR-AUC es más informativo que el ROC-AUC en este contexto, porque el ROC-AUC puede verse artificialmente alto por la cantidad de negativos (no-compras) fáciles de acertar.
-- Pendiente: pensar cómo particionar train/valid/test dado este desbalance (no vimos en clase ninguna técnica específica para esto — no asumir nada, decidirlo entre nosotras cuando lleguemos a ese punto).
+- Cómo particionar train/valid/test dado este desbalance: discutido en [`../ejercicio2/Notas.md`](../ejercicio2/Notas.md) (pertenece formalmente al Ejercicio 2).
 
 ## Estructura de las queries
 
@@ -155,7 +155,7 @@ Distribución de cada candidata:
 
 **Riesgo del desbalance en one-hot**: no es el mismo problema que el desbalance del target (`bought` 13/87%, que afecta qué tan bien el modelo detecta la clase minoritaria). Acá el riesgo es que una categoría con pocos ejemplos (ej. `country_of_origin = Peru`, 245 filas) le da al modelo poca evidencia para aprender un peso confiable para esa columna one-hot — puede terminar ajustando ese peso a ruido específico de esos casos en vez de señal real y generalizable. Con `country_of_origin`, además, la columna de "United States" (75%) domina el gradiente frente a las otras 9, mucho más débiles. En este dataset no es un caso extremo (la categoría más chica tiene ~210-245 filas, no un puñado), pero vale la pena, más adelante, chequear si `country_of_origin` realmente aporta señal prediciendo `bought` o si conviene simplificarla (ej. "United States" vs "Resto").
 
-## Lista de features (borrador, a confirmar)
+## Lista de features (cerrada, salvo lo marcado como dudoso)
 
 Repasando todo lo visto hasta ahora, columna por columna:
 
@@ -169,7 +169,6 @@ Repasando todo lo visto hasta ahora, columna por columna:
 
 **A usar directo (numéricas):**
 - `net_weight_oz`
-- `nutrition_score` (todavía no lo miramos en detalle — pendiente)
 
 **A usar como derivadas (no la columna cruda):**
 - `price` + `filter_price_min` + `filter_price_max` → **posición relativa del precio dentro del rango filtrado** (la "campana" que vimos). Evaluar si además conviene dejar `price` absoluto.
@@ -186,32 +185,16 @@ Repasando todo lo visto hasta ahora, columna por columna:
 
 **Dudosa / a definir en la experimentación:**
 - `country_of_origin`: no mostró señal clara sobre `bought` (rango angosto, diferencias compatibles con ruido). Probar con y sin ella (o simplificada a "US" vs "Resto") en el estudio de ablación.
+- `nutrition_score`: correlación con `bought` prácticamente nula (-0,019). Tasa de `bought` por bins de 20 puntos se mantiene entre 12,1% y 14,1% (promedio general 13,01%), sin tendencia — ni "más nutritivo vende más" ni lo contrario. Igual que `country_of_origin`, queda como candidata a incluir/excluir en el estudio de ablación en vez de descartarla de entrada: no hay señal en el cruce simple univariado, pero podría aportar en combinación con otras features (interacción con `category`, por ejemplo).
 
 **Para el modelo Transformer (texto):**
-- `title`, `description`: texto libre, van a necesitar tokenización/embeddings (Clase 2) — es la parte más relacionada con la arquitectura Transformer en sí, hay que pensar bien cómo se integra con el resto de las features tabulares.
+- `title`, `description`: texto libre, tokenización por palabra decidida (ver sección de tokenización más abajo). Cómo se integra la salida del Transformer con el resto de las features tabulares es una decisión de arquitectura que pertenece al Ejercicio 2 (ver [`../ejercicio2/Notas.md`](../ejercicio2/Notas.md)).
 
 **Descartada (por ahora) — sin señal encontrada:**
 - `timestamp`: se probó la hipótesis de que la hora del día prediga `bought` (ej. alcohol/`Beverages` a la noche, desayuno/`Bakery` a la mañana). Resultado: tasa de `bought` por hora, tanto en general como dentro de `Beverages` y `Bakery`, salta de forma errática entre horas consecutivas (ej. `Beverages` 21h=21,3% pero 20h=10,5%; `Bakery` 6h=25% pero 8h=7,7%), sin un patrón consistente. Con 30-58 filas por hora dentro de cada categoría, es ruido estadístico, no señal real. No se probaron otras granularidades (día de la semana, fin de semana vs. semana) — se podría revisar si hace falta, pero por ahora no hay evidencia de que `timestamp` aporte al target.
 
 **Descartada — sin señal, pero útil como clave de agrupación:**
 - `query_id`: el ID en sí no debe usarse como feature (es un identificador arbitrario, no generaliza — el modelo podría "memorizar" IDs de train en vez de aprender algo real). Se probó la feature derivada "cantidad de productos mostrados en esa búsqueda" (`n_resultados`, entre 2 y 8): tasa de `bought` se mantiene entre 12-15% sin importar el tamaño de la búsqueda, sin señal clara. Conclusión: no se encontró ninguna feature útil derivada de `query_id` — pero sigue siendo necesario como **clave para agrupar filas y calcular el BTR agregado por búsqueda** (no como input del modelo).
-
-## Split train / valid / test
-
-> **Nota: esto pertenece al Ejercicio 2** ("Desarrollo del sistema"), no al Ejercicio 1 — el PDF lo pide explícitamente ahí ("¿Cómo particiono mi conjunto de datos? Sugerencia: recordar train/valid/test split", primer aspecto de diseño del Ejercicio 2). Se dejó discutido y anotado acá porque surgió naturalmente charlando el EDA, pero cuando se arme la carpeta `ejercicio2/` esta sección se debería mover/reubicar ahí, y no debería figurar en el informe final del Ejercicio 1.
-
-**Por qué agrupar por `query_id`:** las filas están agrupadas por búsqueda — cada `query_id` trae varios productos que comparten contexto (misma categoría, mismo rango de precio filtrado). Si se particiona fila por fila al azar, filas de una misma búsqueda podrían terminar repartidas entre train y test: el modelo ya habría visto ese contexto exacto (categoría, rango de precio) durante el entrenamiento, lo cual no refleja el caso real de uso (predecir sobre búsquedas *nuevas* que nunca se vieron). Por eso: **la partición se hace por `query_id` completo** — todas las filas de una búsqueda van juntas al mismo split, nunca mezcladas.
-
-**Por qué 3 particiones y no 2:** el PDF de la consigna lo pide explícitamente ("recordar train/valid/test split"). Además tiene sentido con el Ejercicio 2 (experimentar con configuraciones del modelo):
-- **train**: ajusta los pesos del modelo.
-- **valid**: compara entre configuraciones/experimentos (arquitectura, `d_model`, etc.) durante la iteración.
-- **test**: se toca una sola vez, al final, para el número que se reporta — si se usara valid para elegir la mejor configuración y también para reportar el resultado final, el número quedaría inflado (overfit a valid).
-
-**Precedente en TPs anteriores (SIA-TP5, autoencoders):** usaron **K-fold estratificado** como estrategia principal (entrenar con varios folds y promediar resultados, `mean`/`std` en el output), con un `val_fraction=0.2` (80/20) como caso simple para cuando no se hacían folds (`mlp/data.py::train_val_split`). Esto conecta con algo que también dice el audio de `consigna.VTT` de esta materia: la profesora recomienda "promediar varias corridas (o cross-validation) en vez de una sola ejecución" — o sea, el mismo criterio de TP5 tiene aval acá también.
-
-**Decisión para este TP:** se eligió la opción más simple — **un solo split fijo train/valid/test**, agrupado por `query_id` — en vez de K-fold, para no complicar de entrada dado el tiempo disponible. Queda como posibilidad futura correr el split final con 2-3 semillas distintas si da el tiempo, como forma liviana de aplicar la recomendación de "promediar corridas" sin ir a K-fold completo.
-
-**Pendiente:** definir las proporciones exactas (ej. 70/15/15) y si además de agrupar por `query_id`, conviene estratificar por `bought` a nivel de query (por ejemplo, usando la tasa de compra de cada búsqueda) para que el desbalance de clases quede parejo entre splits — no se decidió todavía.
 
 ## Preprocesamiento — numéricas: normalización
 
@@ -257,11 +240,38 @@ Se notó que muchos `title` terminan con un tag entre paréntesis (ej. "... (Wel
 
 **Decisión de diseño**: aunque el patrón es muy regular (siempre entre paréntesis al final del título, fácil de parsear con regex y convertir en categórica), **se decidió NO parsearlo aparte** — dejar `title` como texto crudo para que el modelo lo aprenda vía tokenización + embeddings + atención. Parsearlo manualmente le sacaría al Transformer justo la parte de "entender el texto" que la consigna pide mostrar que se comprende (foco del TP: comprensión de la arquitectura, no solo el mejor resultado numérico). Esto también da una justificación concreta y verificable de *por qué* tiene sentido meter un Transformer sobre el texto en este problema — no es solo un requisito formal de la consigna, hay señal real ahí escondida.
 
+## Tokenización de `title`/`description`: por palabra vs. BPE chico
+
+Metodología: se concatenó `title` + `description` por fila (10.000 filas) y se tokenizó por palabra de forma simple — minúsculas, separando por cualquier caracter no alfanumérico, con números (incluidos decimales tipo "1.5") como token propio.
+
+Resultado:
+
+| métrica | valor |
+|---|---|
+| tokens totales | 357.419 |
+| tokens promedio por fila | 35,74 |
+| **vocabulario único (palabras distintas)** | **410** |
+| frecuencia mínima de una palabra | 24 |
+| palabras con frecuencia = 1 (hapax) | 0 |
+| palabras con frecuencia ≤ 5 | 0 |
+
+El vocabulario es **extremadamente chico** para un corpus de 357 mil tokens, y no hay cola larga de palabras raras: la palabra menos frecuente de las 410 igual aparece 24 veces (ver [`vocab_freq_rank.png`](vocab_freq_rank.png), frecuencia por palabra ordenada de mayor a menor en escala log — cae rápido y se aplana, sin tail infinita de hapax legomena).
+
+Esto es consistente con que `title`/`description` no son lenguaje natural libre sino texto **generado por plantilla**: frases fijas ("in a X package for online grocery orders. Listed under Y and intended for Z storage...") con sustituciones acotadas de producto/categoría/marca/tag de reputación (ver sección de arriba sobre el tag entre paréntesis). El vocabulario es cerrado, no abierto.
+
+**Decisión: tokenización por palabra, no BPE.** Justificación:
+
+- BPE (subword) resuelve dos problemas que acá no aparecen: (a) un vocabulario abierto/enorme que haría gigante la tabla de embeddings, y (b) palabras fuera de vocabulario (OOV) en texto nuevo con morfología no vista en entrenamiento. Con solo 410 palabras y ninguna con frecuencia menor a 24, ninguno de los dos problemas existe en este dataset — no hay nada que "comprimir" ni piezas de subpalabras que aprender a recombinar.
+- Con vocabulario tan chico, una tabla de embeddings por palabra (410 × `d_model`) es trivial en tamaño; no se gana nada en cómputo ni en generalización agregando la complejidad de entrenar/ajustar un tokenizador BPE.
+- Alineado con la aclaración del audio de `consigna.VTT`: no enroscarse con el tokenizador, el foco del TP es la arquitectura del Transformer, no el tokenizador en sí.
+- **Riesgo a mitigar igual**: si en test/producción apareciera una palabra fuera de las 410 (poco probable dado que el corpus es claramente de plantilla cerrada, pero no imposible), un tokenizador por palabra no tiene forma de representarla. Se deja un token `<UNK>` reservado en el vocabulario para ese caso, más `<PAD>` para igualar longitud de secuencia entre filas (35,7 tokens en promedio, pero con varianza entre `title`+`description`).
+
 ## Para la presentación
 
 - [ ] Gráfico de la "campana" de `bought` según posición relativa del precio dentro del rango filtrado (ver tabla en sección `price` vs `filter_price_min/max`) — mostrar visualmente el efecto de no comprar ni lo más barato ni lo más caro del rango buscado.
 - [ ] Gráfico de boxplots (o rangos) de las features numéricas antes/después de normalizar, para mostrar visualmente por qué hacía falta (escalas muy distintas: `price` vs `net_weight_oz` vs `nutrition_score`).
 - [ ] **Gráfico de barras de % bought por tag de reputación en `title`** — el hallazgo más fuerte de todo el EDA, buena pieza para justificar por qué usar el Transformer sobre texto.
+- [ ] Gráfico de frecuencia por palabra (rango vs. frecuencia, escala log) del corpus `title`+`description`
 
 ## `country_of_origin` vs `bought`
 
@@ -283,5 +293,17 @@ Tasa de `bought` por país (promedio general: 13,01%):
 Rango angosto (10,7% - 16,6%), sin ningún país que se dispare claramente. Para los 9 países que no son EEUU, cada uno tiene solo 245-331 filas — con muestras tan chicas, una diferencia de 2-3 puntos porcentuales es compatible con ruido estadístico (con n≈245 y tasa base 13%, el margen esperado "por azar" ronda ±4 puntos).
 
 Conclusión: `country_of_origin` **no muestra señal clara** sobre `bought`. Candidata a simplificar (ej. "United States" vs "Resto") o directamente evaluar en el estudio de ablación si aporta algo al predecir.
-- [ ] Definir lista final de features candidatas y descartar las que generan leakage (`cart` entre ellas).
-- [ ] Pensar cómo particionar train/valid/test dado el desbalance de clases (no vimos en clase ninguna técnica específica para esto — no asumir nada, decidirlo entre nosotras cuando lleguemos a ese punto).
+
+## Cierre del Ejercicio 1
+
+Pendientes que quedaban abiertos, ya resueltos en secciones anteriores de este documento:
+
+- ~~Definir lista final de features candidatas y descartar las que generan leakage.~~ → ver "Lista de features (cerrada, salvo lo marcado como dudoso)" — lista cerrada por columna, con `cart` excluida por leakage y `filter_category`/`filter_storage_type`/`package_size`/`unit_of_measure` excluidas por redundancia.
+- ~~Pensar cómo particionar train/valid/test dado el desbalance de clases.~~ → **movido a** [`../ejercicio2/Notas.md`](../ejercicio2/Notas.md) — decisión tomada (split único agrupado por `query_id`, sin K-fold por tiempo); pertenece formalmente al Ejercicio 2, no a este.
+- ~~Mirar cuántas palabras únicas tiene `title`+`description` para decidir tokenización.~~ → ver "Tokenización de `title`/`description`: por palabra vs. BPE chico" — 410 palabras únicas, decisión: tokenización por palabra.
+- ~~Decidir el tratamiento final de `nutrition_score`.~~ → ver "Lista de features", bucket "Dudosa / a definir en la experimentación": correlación con `bought` prácticamente nula (-0,019), tasa de `bought` estable (12,1%-14,1%) en todos los bins de score. Tratamiento final: no se descarta la columna, pero tampoco se incluye "a ciegas" — queda como candidata a probar con/sin ella en el estudio de ablación del Ejercicio 2, igual que `country_of_origin`.
+- ~~`title`/`description`: cómo se integra el Transformer con las features tabulares en una misma arquitectura.~~ → **movido a** [`../ejercicio2/Notas.md`](../ejercicio2/Notas.md) — revisado y confirmado que **no es Ejercicio 1**: el enunciado (`DeepLearningTP0.pdf`) pide en el Ejercicio 1 el preprocesamiento *por feature* (ya resuelto: tokenización por palabra), y deja la integración/arquitectura conjunta explícitamente para el Ejercicio 2. Quedan anotadas ahí dos alternativas de sentido común para discutir (fusión tardía vs. todo-como-secuencia) — sin decidir todavía, a propósito, para no adelantar arquitectura sin revisar bien el material de cátedra ni sin el resto del grupo.
+
+Con esto, el EDA del Ejercicio 1 queda cerrado: variable objetivo definida (`bought` a nivel fila), features candidatas listadas y justificadas (incluida la exclusión de leakage), hallazgos de señal documentados (precio relativo, tag de reputación en `title`, `country_of_origin`/`nutrition_score`/`timestamp` sin señal clara), y preprocesamiento decidido feature por feature (one-hot para categóricas nominales, z-score para numéricas, tokenización por palabra para texto). Los dos temas que correspondían a diseño de arquitectura y no a EDA (split train/valid/test e integración texto+tabular) se trasladaron a [`../ejercicio2/Notas.md`](../ejercicio2/Notas.md), junto con una lista de pendientes para retomar el Ejercicio 2.
+
+**Para el informe final**, falta convertir estas notas de trabajo en el documento/README entregable (con los 3 gráficos pendientes de la sección anterior) — a definir con el grupo el formato exacto antes de redactarlo.

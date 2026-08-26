@@ -31,6 +31,23 @@ En `docs/` — revisar antes de tomar decisiones de arquitectura:
 
 Si el enunciado sugiere algo (ej. "investigar one-hot encoding") es una sugerencia, no una obligación de exclusividad — pero no reemplazar por técnicas no vistas sin avisar.
 
+**No es necesario fine-tuning/transfer learning.** Ni el PDF ni `consigna.VTT` lo exigen — el único requisito es incluir al menos un modelo Transformer. La Clase 3 (`Copia de Clase 3 - Transfer Learning & Finetuning.pdf`, `finetuning.VTT`) es contenido teórico general del curso, sin conexión explícita con el TP1; solo sería relevante si decidimos usarlo como técnica puntual (ej. embeddings pre-entrenados para `title`/`description`), y en ese caso avisar antes.
+
+### Aclaraciones que solo están en el audio de `consigna.VTT` (no en el PDF)
+
+- No enroscarse con el tokenizador — el foco es la arquitectura del Transformer.
+- Achicar también el dataset al principio (no solo `d_model`), para no quedar limitados por cómputo.
+- **Nada de "vibe coding"**: toda decisión debe estar justificada y entendida por el grupo — no alcanza con "esto lo sugirió Claude y no lo entiendo, pero está implementado". Usar asistentes de código está permitido, pero cada elección tiene que poder explicarse.
+- Si no hay GPU propia, usar Google Colab (T4/TPU).
+- Promediar varias corridas (o cross-validation) en vez de reportar una sola ejecución.
+- No hace falta que el BTR prediga "perfecto" — se evalúa el abordaje y la iteración, no el resultado final.
+- Ejercicio 3 (personalización) debe ser una respuesta propia del grupo, no "hecha por Claude".
+- No hay una única solución correcta — se fomenta discutir alternativas entre el equipo.
+
+## Separación cómputo / gráficos
+
+Todo resultado de EDA, entrenamiento o evaluación (ablación, métricas por configuración, embeddings, etc.) se guarda primero como **CSV** con los datos crudos. Los gráficos se generan en un script separado que lee esos CSV. Nunca mezclar en un mismo script el procesamiento pesado (cargar el dataset, entrenar, evaluar) con el ploteo: así se puede rehacer o ajustar un gráfico sin reprocesar ni reentrenar nada.
+
 ## Idioma y estilo
 
 - No definir un threshold para la predicción de BTR — la consigna dice explícitamente que no es necesario.

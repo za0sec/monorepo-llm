@@ -1,0 +1,2 @@
+n_filas,n_tokens_totales,tokens_promedio_por_fila,vocab_size_palabra,freq_minima,n_hapax_freq_1,n_freq_menor_igual_2,n_freq_menor_igual_5
+10000,357419,35.7419,410,24,0,0,0

@@ -10,9 +10,10 @@ Punto de partida que deja cerrado el Ejercicio 1:
 Lo que falta acá es **cómo se junta todo eso en una arquitectura concreta** — eso es el contenido de este documento.
 
 **Estructura de la carpeta:**
-- `split_data.py`, `encode_features.py`, `plot_split.py`: scripts (cómputo separado de gráficos, igual que en `ejercicio1/`).
+- `split_data.py`, `encode_features.py`, `model.py`, `train.py`, `run_experiments.py`: cómputo (split, encoding, arquitectura, entrenamiento). `plot_split.py`, `plot_experiments.py`: gráficos, separados del cómputo igual que en `ejercicio1/` — leen CSVs, nunca recalculan ni reentrenan.
 - `data/`: datasets ya encodeados y listos para el modelo (`train.csv`, `valid.csv`, `test.csv`, `vocab.csv`, `preprocessing_stats.csv`).
-- `output/`: resultados/diagnóstico del split (`query_splits.csv`, `split_summary.csv`, `split_balance.png`) — no son input del modelo, son para verificar que el split quedó bien.
+- `output/`: resultados — diagnóstico del split (`query_splits.csv`, `split_summary.csv`, `split_balance.png`) y de los experimentos (`experiment_results.csv`, `runs/*.csv` con el historial por época, `experiment_comparison.png`, `training_curves.png`).
+- `Experimentos.md`: registro de cada experimento corrido — configuración, resultados, gráficos y análisis (para armar la presentación). Este documento (`Notas.md`) se queda con las decisiones de diseño; los números van en `Experimentos.md`.
 
 ## Split train / valid / test
 
@@ -79,14 +80,14 @@ Dos alternativas de sentido común consideradas:
 1. **Fusión tardía**: el Transformer procesa solo la secuencia de tokens de `title`+`description` y su salida se resume en un solo vector (ej. promediando los embeddings de salida de cada token, o usando un token especial tipo `[CLS]`); ese vector se concatena con el vector de features tabulares ya encodeadas (one-hot + numéricas normalizadas) y sigue por una o más capas densas hasta la salida. Ventaja: simple, separa claramente "la parte Transformer" de "la parte tabular" para el estudio de ablación (se puede sacar una u otra).
 2. **Todo como secuencia de tokens**: proyectar también cada feature tabular a la dimensión `d_model` (como si fuera "un token más") y dejar que la atención combine todo dentro del Transformer. Más ambicioso y menos evidente que esté cubierto por el material de cátedra.
 
-**Decisión inicial (a confirmar con resultados, ver plan de experimentos abajo): fusión tardía.** Razones (teóricas, de diseño — todavía no respaldadas con números):
+**Decisión: fusión tardía — confirmada, y ya validada con resultados (no solo argumento teórico).** Ver [`Experimentos.md`](Experimentos.md): PR-AUC de valid pasa de 0,178 (baseline solo-tabular) a 0,741 (fusión con Encoder-only), +0,56. Razones originales (teóricas, de diseño):
 - Ablación limpia: "sacar el Transformer" es desconectar una rama entera y queda el modelo funcionando solo con lo tabular. Con la opción 2, sacar el texto implica rediseñar la arquitectura, no apagar un módulo.
 - Arrancar chico (`d_model < 100`): con fusión tardía el Transformer queda acotado a donde realmente hace falta atención (el texto — recordar el hallazgo del tag de reputación en `title`, un patrón contextual/posicional dentro de la secuencia de palabras), y lo tabular se combina con algo más liviano (denso), sin forzarlo a la dimensión de los embeddings de texto.
 - Justificación de "dónde y por qué" el Transformer (que pide la consigna): con fusión tardía es directa — el Transformer resuelve la parte de lenguaje natural, que tiene dependencias de orden/contexto; lo tabular no tiene esa estructura secuencial, no hay razón para forzarlo por atención.
 
 **Importante**: esto es un punto de partida razonado, no una decisión cerrada solo por argumento teórico — se valida (o se descarta) con el plan de experimentos de la siguiente sección.
 
-## Arquitectura del bloque Transformer: Encoder-only (propuesta, a confirmar)
+## Arquitectura del bloque Transformer: Encoder-only (confirmado con el grupo)
 
 Repasando `transformers.VTT` (Clase 1, Eugenia): un **Encoder** tiene 2 capas — Multi-Head Self-Attention (+ conexión residual/skip + Layer Norm) y MLP feed-forward (+ conexión residual + Layer Norm). Un **Decoder** agrega Cross-Attention hacia la salida del Encoder, y su self-attention lleva máscara (no puede ver tokens futuros; el Encoder sí puede mirar en ambas direcciones). Se apilan N encoders/decoders iguales (paper original: 6; prueban 2/4/8 también).
 
@@ -95,7 +96,7 @@ Variantes mencionadas en la clase:
 - **Decoder-only** (autoregresivo, con máscara — como GPT): es lo que se armó en la demo (`demo_transformers.VTT`), porque esa demo era generación de texto (predecir el próximo carácter). No es nuestro caso: no queremos generar texto.
 - **Encoder-only** (sin máscara, da un embedding/representación — ejemplo BERT, citado en `transformers.VTT` línea 2617-2621): pensado para tareas de representación/clasificación, no generación.
 
-**Propuesta**: usar **Encoder-only** para procesar `title`+`description` — no hace falta generar texto, hace falta resumir/entender el texto completo (que ya está disponible enteramente al momento de predecir, no hay nada "futuro" que enmascarar). La salida se resume en un vector (fusión tardía, ver arriba) y sigue por el resto de la arquitectura. **Pendiente confirmar con el grupo.**
+**Confirmado**: usar **Encoder-only** para procesar `title`+`description` — no hace falta generar texto, hace falta resumir/entender el texto completo (que ya está disponible enteramente al momento de predecir, no hay nada "futuro" que enmascarar). La salida se resume en un vector (fusión tardía, ver arriba) y sigue por el resto de la arquitectura. Implementado en [`model.py`](model.py) con `nn.TransformerEncoderLayer` de PyTorch (Multi-Head Self-Attention + residual + LayerNorm, MLP feed-forward + residual + LayerNorm — los módulos estándar, no algo hecho a mano ni distinto de lo que vimos en clase) + positional encoding senoidal. Resultados en [`Experimentos.md`](Experimentos.md).
 
 ## "Diales" del estudio de ablación (según lo que la profesora nombra explícitamente en clase)
 
@@ -122,10 +123,10 @@ Prioridad: (1) y (2) son el corazón del estudio de ablación (las más baratas,
 
 - [x] ~~Decidir si estratificar por tasa de `bought` a nivel de query~~ → decidido que sí, implementado en `split_data.py` (ver "Split train / valid / test").
 - [x] ~~Escribir el pipeline de datos (split + encoding de features)~~ → implementado en `split_data.py` + `encode_features.py`. Quedan `data/train.csv`/`data/valid.csv`/`data/test.csv` listos para alimentar un modelo (falta escribir el modelo en sí).
-- [ ] Confirmar con el grupo la propuesta de arquitectura Encoder-only para el bloque de texto (vs. Decoder-only o Encoder-Decoder completo).
-- [ ] Escribir el modelo (baseline tabular y fusión tardía con Transformer) que lea `data/train.csv`/`data/valid.csv`/`data/test.csv` y corra el plan de experimentos de arriba (1 y 2 como mínimo) para respaldar con resultados la elección de fusión tardía.
-- [ ] Validar empíricamente 70/15/15 vs. 80/10/10: correr con varias semillas y comparar variabilidad del PR-AUC/ROC-AUC de valid entre corridas (una vez que haya un baseline funcionando).
-- [ ] Arrancar con arquitectura chica (`d_model < 100`) como sugiere la consigna, antes de escalar.
-- [ ] Diseñar el estudio de ablación en paralelo con la arquitectura: qué módulos se van a poder prender/apagar (el bloque Transformer de texto, `country_of_origin`, `nutrition_score`, distintas cantidades de heads/capas, etc.) — no dejarlo para el final.
-- [ ] Definir métricas de evaluación (PR-AUC/ROC-AUC, sin threshold) y cómo promediar varias corridas (semillas) para reportar resultados, según la aclaración de `consigna.VTT`.
+- [x] ~~Confirmar con el grupo la propuesta de arquitectura Encoder-only~~ → confirmado, ver "Arquitectura del bloque Transformer" arriba.
+- [x] ~~Escribir el modelo (baseline tabular y fusión tardía) y correr el plan de experimentos~~ → implementado en `model.py`/`train.py`/`run_experiments.py`. Resultados, curvas y análisis en [`Experimentos.md`](Experimentos.md) — fusión tardía gana por lejos (PR-AUC 0,741 vs. 0,178 del baseline).
+- [ ] Interpretabilidad: confirmar que el modelo realmente está usando el tag de reputación de `title` y no otra correlación (ver "Pendientes" de `Experimentos.md`).
+- [ ] Ablación de los "diales" restantes: heads, encoders apilados, `d_model`, `country_of_origin`/`nutrition_score` con/sin (ver `Experimentos.md`).
+- [ ] Validar empíricamente 70/15/15 vs. 80/10/10: correr con varias semillas y comparar variabilidad del PR-AUC/ROC-AUC de valid entre corridas.
+- [ ] Evaluar en test una sola vez, cuando se termine de elegir la configuración final (no todavía).
 - [ ] Revisar si conviene resumir `dimensions_in` a volumen (1 feature) en vez de 3, y si `ingredients` multi-hot es mejor que la categórica de 12 combos (decisión abierta, se tomó una opción por default en `encode_features.py` para poder avanzar).

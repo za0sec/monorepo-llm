@@ -1,7 +1,9 @@
 """
 Gráficos del experimento 1 vs. 2 (baseline tabular vs. fusión tardía con
-Encoder-only). Lee output/experiment_results.csv y output/runs/*.csv
-(generados por run_experiments.py) — no entrena ni recalcula nada.
+Encoder-only) y del chequeo de interpretabilidad de la señal de reputación.
+Lee output/experiment_results.csv, output/runs/*.csv (de run_experiments.py)
+y output/reputation_tag_check.csv (de check_reputation_tag.py) — no entrena
+ni recalcula nada.
 """
 import glob
 
@@ -48,3 +50,25 @@ ax.set_title("Curvas de entrenamiento por semilla")
 fig.tight_layout()
 fig.savefig(f"{OUTPUT_DIR}/training_curves.png", dpi=150)
 print(f"Guardado {OUTPUT_DIR}/training_curves.png")
+
+# --- Gráfico 3: chequeo de interpretabilidad (con/sin señal de reputación en el texto) ---
+tag_check = pd.read_csv(f"{OUTPUT_DIR}/reputation_tag_check.csv").set_index("variante")
+variant_order = ["original", "sin_tag_title", "sin_reputacion"]
+variant_labels = {
+    "original": "Original",
+    "sin_tag_title": "Sin tag en title",
+    "sin_reputacion": "Sin tag\n+ sin frase en description",
+}
+
+fig, axes = plt.subplots(1, 2, figsize=(9, 4))
+for ax, metric, title in zip(axes, ["pr_auc", "roc_auc"], ["PR-AUC (valid)", "ROC-AUC (valid)"]):
+    values = tag_check.loc[variant_order, metric]
+    ax.bar([variant_labels[v] for v in variant_order], values, color="#4C72B0")
+    ax.set_title(title)
+    ax.set_ylim(0, 1)
+    ax.tick_params(axis="x", rotation=15)
+
+fig.suptitle("Interpretabilidad: ¿de dónde viene la señal del texto?")
+fig.tight_layout()
+fig.savefig(f"{OUTPUT_DIR}/reputation_tag_check.png", dpi=150)
+print(f"Guardado {OUTPUT_DIR}/reputation_tag_check.png")

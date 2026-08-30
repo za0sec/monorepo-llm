@@ -52,11 +52,39 @@ Salto enorme sobre el baseline: **+0,56 en PR-AUC, +0,39 en ROC-AUC**. Confirma 
 
 1. **El Transformer aporta muchísimo** sobre el baseline tabular — no es un requisito formal de la consigna sin sustancia real, hay señal genuina en el texto y el modelo la encuentra.
 2. **Fusión tardía queda validada empíricamente**, no solo por el argumento teórico de `Notas.md` — con esta diferencia tan grande no hace falta correr la alternativa "todo como secuencia" para decidir cuál conviene (aunque se puede correr más adelante si se quiere comparar arquitecturas, no para decidir si vale la pena el texto).
-3. El resultado es coherente con el `title` (test manual: revisar si el modelo realmente está mirando el tag entre paréntesis y no otra cosa — pendiente, ver abajo).
+3. El resultado es coherente con el `title` (test manual: revisar si el modelo realmente está mirando el tag entre paréntesis y no otra cosa — confirmado abajo, con un hallazgo extra no esperado).
+
+## Interpretabilidad: ¿de dónde viene la señal? (`check_reputation_tag.py`)
+
+Pregunta: ¿el modelo realmente está usando el tag de reputación de `title` (ej. `"(Best Seller)"`), o es otra correlación? Se entrenó el modelo de fusión una sola vez (semilla 0, misma config) y se evaluó **el mismo modelo, sin reentrenar**, sobre 3 versiones del texto de valid:
+
+| variante | qué se le saca al texto | PR-AUC (valid) | ROC-AUC (valid) |
+|---|---|---|---|
+| `original` | nada | 0,743 | 0,965 |
+| `sin_tag_title` | el tag entre paréntesis de `title` | 0,721 | 0,956 |
+| `sin_reputacion` | el tag de `title` **+** la frase de reputación de `description` (ver abajo) | 0,136 | 0,518 |
+
+**Primer resultado, inesperado**: sacar *solo* el tag de `title` casi no cambia nada (0,743 → 0,721). Si la hipótesis original hubiera sido correcta tal cual, el PR-AUC tendría que haber caído mucho más. Esto obligó a investigar por qué el modelo seguía funcionando casi igual sin el tag.
+
+**Hallazgo (nuevo, no estaba en `ejercicio1/Notas.md`)**: `description` **repite la misma señal de reputación con otra frase**, al final del texto. La plantilla de `description` tiene 2 oraciones fijas ("`<producto>` in a `<envase>` for online grocery orders." + "Listed under `<category>` and intended for `<storage_type>` storage.") y, en el 95,4% de las filas (9541/10000), una **tercera oración opcional** que es la versión en `description` del mismo tag de `title`. Ejemplos de correspondencia (tag de `title` → frase de `description`, tasa de `bought`):
+
+| tag en `title` | frase equivalente en `description` | % bought |
+|---|---|---|
+| Customer Favorite / Best Seller / Top Rated / #1 Pick | "Frequently reordered by returning customers" / "Rated highly by shoppers for consistent quality" / "Consistently praised in customer feedback" / "One of the most repurchased items in its aisle" | ~60-67% (las 4 frases) |
+| Well Reviewed / Shopper Favorite / Highly Rated / Popular Choice | "Generally receives positive feedback" / "Often recommended by repeat customers" / "A dependable pick according to reviews" / "Well liked by regular shoppers" | ~2-3% (las 4 frases) |
+| el resto de los tags (11 valores, "sin tag" incluido) | frases variadas ("Recently added to the online catalog", "Rarely reordered by past customers", etc.) o directamente ninguna tercera oración | 0% |
+
+Es decir: no son 2 señales independientes, es **la misma variable latente de "categoría de reputación"** (~9-10 niveles: 4 con ~65% bought, 4 con ~2-3%, el resto con 0%) **renderizada dos veces en el texto**, con una frase corta en `title` y una más larga en `description`, con algo de variación (cada tag se empareja con 2-3 frases de `description` distintas de forma no determinística, pero siempre dentro del mismo nivel de reputación). Por eso sacar solo `title` no alcanza: el modelo tiene el mismo dato disponible en `description`.
+
+**Segundo resultado, confirmatorio**: sacando el tag de `title` **y** la frase de reputación de `description` (dejando solo las 2 oraciones fijas de la plantilla), el PR-AUC se derrumba a **0,136** y el ROC-AUC a **0,518** — por debajo incluso del baseline tabular (0,178 / 0,580). Con la señal de reputación completamente ausente de ambos lados, el modelo queda sin nada útil que mirar en el texto (y, al parecer, un poco peor que ni siquiera tener el bloque Transformer, aunque la diferencia con el baseline tabular es chica y podría no ser significativa con una sola semilla).
+
+![Chequeo de interpretabilidad](output/reputation_tag_check.png)
+
+**Conclusión**: queda confirmado, con causalidad y no solo correlación, que **todo (o casi todo) el aporte del Transformer sobre texto viene de la señal de reputación**, presente de forma redundante en `title` y `description`. Esto es información valiosa para `ejercicio1/Notas.md` (que solo documentó el hallazgo en `title`) — vale la pena agregar ahí una referencia a esta redundancia en `description` cuando se cierre el informe final. Para la presentación, esto es un resultado sólido: no solo mostramos que el Transformer ayuda, sino que identificamos *exactamente* de dónde sale esa ayuda, con un experimento causal simple y barato (sin reentrenar).
 
 ## Pendientes / próximos experimentos
 
-- [ ] **Interpretabilidad**: confirmar que el modelo efectivamente está usando el tag de reputación y no otra correlación espuria — ej. mirar pesos de atención sobre una muestra de filas, o probar con el tag removido del texto y ver si el PR-AUC cae a niveles cercanos al baseline tabular.
+- [x] ~~Agregar a `ejercicio1/Notas.md` una referencia cruzada a este hallazgo~~ → agregado en la sección del tag de reputación.
 - [ ] Entrenar más épocas (30-50) para confirmar si la fusión eventualmente empieza a overfittear (todavía no se ve en 20 épocas).
 - [ ] Ablación de los "diales" restantes (ver `Notas.md`): variar heads (2/4/8), encoders apilados (1/2/4), `d_model`, y presencia/ausencia de `country_of_origin`/`nutrition_score`.
 - [ ] Evaluar en test **una sola vez**, cuando se termine de elegir la configuración final (no todavía).

@@ -82,7 +82,8 @@ def evaluate(model, loader, model_type):
     }
 
 
-def run(model_type: str, seed: int, epochs: int = 30, batch_size: int = 128, lr: float = 1e-3) -> dict:
+def train_model(model_type: str, seed: int, epochs: int = 30, batch_size: int = 128, lr: float = 1e-3):
+    """Entrena una corrida y devuelve (modelo entrenado, historial por época)."""
     torch.manual_seed(seed)
     np.random.seed(seed)
 
@@ -122,7 +123,12 @@ def run(model_type: str, seed: int, epochs: int = 30, batch_size: int = 128, lr:
             f"valid_roc_auc={valid_metrics['roc_auc']:.4f}"
         )
 
-    history_df = pd.DataFrame(history)
+    return model, pd.DataFrame(history)
+
+
+def run(model_type: str, seed: int, epochs: int = 30, batch_size: int = 128, lr: float = 1e-3) -> dict:
+    model, history_df = train_model(model_type, seed, epochs, batch_size, lr)
+
     os.makedirs(f"{OUTPUT_DIR}/runs", exist_ok=True)
     history_df.to_csv(f"{OUTPUT_DIR}/runs/{model_type}_seed{seed}.csv", index=False)
 

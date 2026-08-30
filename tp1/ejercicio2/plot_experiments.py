@@ -1,9 +1,11 @@
 """
 Gráficos del experimento 1 vs. 2 (baseline tabular vs. fusión tardía con
-Encoder-only) y del chequeo de interpretabilidad de la señal de reputación.
-Lee output/experiment_results.csv, output/runs/*.csv (de run_experiments.py)
-y output/reputation_tag_check.csv (de check_reputation_tag.py) — no entrena
-ni recalcula nada.
+Encoder-only), del chequeo de interpretabilidad de la señal de reputación, y
+del estudio de ablación de arquitectura/features. Lee
+output/experiment_results.csv, output/runs/*.csv (de run_experiments.py),
+output/reputation_tag_check.csv (de check_reputation_tag.py) y
+output/ablation_results.csv (de run_ablation.py) — no entrena ni recalcula
+nada.
 """
 import glob
 
@@ -72,3 +74,41 @@ fig.suptitle("Interpretabilidad: ¿de dónde viene la señal del texto?")
 fig.tight_layout()
 fig.savefig(f"{OUTPUT_DIR}/reputation_tag_check.png", dpi=150)
 print(f"Guardado {OUTPUT_DIR}/reputation_tag_check.png")
+
+# --- Gráfico 4: estudio de ablación (arquitectura + features tabulares) ---
+ablation = pd.read_csv(f"{OUTPUT_DIR}/ablation_results.csv").set_index("variant")
+
+ARCH_ORDER = ["heads_2", "base", "heads_8", "layers_1", "layers_4", "d_model_32", "d_model_96", "ff_64", "ff_256"]
+TABULAR_ORDER = ["base", "sin_country_of_origin", "sin_nutrition_score", "sin_ambas"]
+ARCH_LABELS = {
+    "heads_2": "heads=2", "base": "base\n(64/4/2/128)", "heads_8": "heads=8",
+    "layers_1": "layers=1", "layers_4": "layers=4",
+    "d_model_32": "d_model=32", "d_model_96": "d_model=96",
+    "ff_64": "ff=64", "ff_256": "ff=256",
+}
+TABULAR_LABELS = {
+    "base": "base (todas)", "sin_country_of_origin": "sin\ncountry_of_origin",
+    "sin_nutrition_score": "sin\nnutrition_score", "sin_ambas": "sin ambas",
+}
+
+fig, axes = plt.subplots(2, 1, figsize=(10, 8))
+
+ax = axes[0]
+values = ablation.loc[ARCH_ORDER, "best_valid_pr_auc"]
+colors = ["#4C72B0" if v == "base" else "#8C8C8C" for v in ARCH_ORDER]
+ax.bar([ARCH_LABELS[v] for v in ARCH_ORDER], values, color=colors)
+ax.axhline(ablation.loc["base", "best_valid_pr_auc"], color="black", linestyle="--", linewidth=1)
+ax.set_ylabel("PR-AUC (valid)")
+ax.set_title("Ablación de arquitectura (1 semilla, 20 épocas c/u)")
+
+ax = axes[1]
+values = ablation.loc[TABULAR_ORDER, "best_valid_pr_auc"]
+colors = ["#4C72B0" if v == "base" else "#8C8C8C" for v in TABULAR_ORDER]
+ax.bar([TABULAR_LABELS[v] for v in TABULAR_ORDER], values, color=colors)
+ax.axhline(ablation.loc["base", "best_valid_pr_auc"], color="black", linestyle="--", linewidth=1)
+ax.set_ylabel("PR-AUC (valid)")
+ax.set_title("Ablación de features tabulares dudosas")
+
+fig.tight_layout()
+fig.savefig(f"{OUTPUT_DIR}/ablation.png", dpi=150)
+print(f"Guardado {OUTPUT_DIR}/ablation.png")

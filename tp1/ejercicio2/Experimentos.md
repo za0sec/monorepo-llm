@@ -82,11 +82,41 @@ Es decir: no son 2 señales independientes, es **la misma variable latente de "c
 
 **Conclusión**: queda confirmado, con causalidad y no solo correlación, que **todo (o casi todo) el aporte del Transformer sobre texto viene de la señal de reputación**, presente de forma redundante en `title` y `description`. Esto es información valiosa para `ejercicio1/Notas.md` (que solo documentó el hallazgo en `title`) — vale la pena agregar ahí una referencia a esta redundancia en `description` cuando se cierre el informe final. Para la presentación, esto es un resultado sólido: no solo mostramos que el Transformer ayuda, sino que identificamos *exactamente* de dónde sale esa ayuda, con un experimento causal simple y barato (sin reentrenar).
 
+## Estudio de ablación: arquitectura y features tabulares dudosas (`run_ablation.py`)
+
+Pedido explícito de la consigna ("comparación de alternativas de los distintos módulos que podría tener la arquitectura y la realización del estudio de ablación correspondiente"). Se varió **un dial por vez** desde la config base (`d_model=64`, 4 heads, 2 encoders, MLP interno 128, todas las tabulares) — **1 sola semilla por variante** (no 3, para no disparar el tiempo de cómputo; esto es exploratorio, el número que se reporta como resultado central sí usó 3 semillas más arriba).
+
+| variante | PR-AUC (valid) | ROC-AUC (valid) | parámetros | mejor época |
+|---|---|---|---|---|
+| **base** (64/4 heads/2 layers/128) | 0,743 | 0,965 | 102.337 | 20 |
+| heads=2 | 0,768 | 0,965 | 102.337 | 15 |
+| heads=8 | 0,709 | 0,960 | 102.337 | 15 |
+| layers=1 | 0,763 | 0,964 | 68.865 | 20 |
+| layers=4 | 0,727 | 0,958 | 169.281 | 20 |
+| **d_model=32** | **0,789** | **0,968** | **45.569** | 20 |
+| d_model=96 | 0,710 | 0,956 | 175.489 | 3 (!) |
+| MLP interno=64 | 0,747 | 0,970 | 85.825 | 13 |
+| MLP interno=256 | 0,740 | 0,968 | 135.361 | 16 |
+| sin `country_of_origin` | 0,737 | 0,963 | 101.697 | 20 |
+| sin `nutrition_score` | 0,744 | 0,965 | 102.273 | 16 |
+| sin ambas | 0,730 | 0,967 | 101.633 | 14 |
+
+![Ablación de arquitectura y features tabulares](output/ablation.png)
+
+**Lectura por dial:**
+- **`d_model`**: el resultado más claro de todo el barrido. `d_model=32` (menos de la mitad de parámetros que la base) dio el **mejor PR-AUC de todo el estudio** (0,789). `d_model=96` fue el peor de todos (0,710) y además pareció inestable: el mejor valid quedó en la época 3, sugiriendo que un modelo más grande empieza a sobreajustar rápido en un dataset de 7000 filas de train. Conclusión: para este problema, **más chico es mejor**, consistente con la sugerencia de la consigna de arrancar con `d_model<100` — acá ni conviene acercarse al límite.
+- **heads y encoders apilados**: mismo patrón — 2 heads (0,768) y 1 encoder (0,763) empataron o superaron a la base (4 heads/2 encoders, 0,743), mientras que 8 heads (0,709) y 4 encoders (0,727) fueron peor. Con una señal tan simple y posicional (una frase fija, siempre al final del texto) no hace falta mucha capacidad de atención — agregar heads/capas de más solo agrega parámetros para sobreajustar sin necesidad real.
+- **MLP interno del encoder**: el dial que menos importó — 64, 128 y 256 dieron resultados prácticamente iguales (0,74-0,75). No es un cuello de botella para este problema.
+- **`country_of_origin` / `nutrition_score`**: sacarlas (solas o juntas) no cambió el PR-AUC de forma relevante (0,737 / 0,744 / 0,730 vs. 0,743 de la base) — **confirma con el modelo real** lo que ya habíamos visto en el EDA univariado de `ejercicio1/Notas.md`: ninguna de las dos aporta señal para predecir `bought`.
+
+**Cuidado al interpretar**: todo esto es con **1 semilla por variante** — en la comparación de 3 semillas del experimento 1 vs. 2, el desvío entre semillas fue de hasta 0,02 en PR-AUC, así que diferencias chicas acá (ej. `ff=64` vs. `ff=256`) están dentro del ruido esperable. La señal más fuerte y consistente (más chico gana en `d_model`/heads/layers, `d_model=96` inestable) es lo bastante grande como para no ser solo ruido, pero antes de fijarla como configuración final convendría confirmar `d_model=32` con 2-3 semillas.
+
+**Conclusión**: si hubiera que elegir una configuración final hoy, sería algo más chico que la base original (`d_model=32`, 1-2 encoders, 2 heads) — no la arquitectura más grande que se probó. Buen resultado para la presentación: muestra que se hizo el ejercicio de "empezar chico e ir escalando" que pide la consigna, y que escalar *no* ayudó en este problema (justifica quedarse chico, no es solo pereza de cómputo).
+
 ## Pendientes / próximos experimentos
 
 - [x] ~~Agregar a `ejercicio1/Notas.md` una referencia cruzada a este hallazgo~~ → agregado en la sección del tag de reputación.
-- [ ] Entrenar más épocas (30-50) para confirmar si la fusión eventualmente empieza a overfittear (todavía no se ve en 20 épocas).
-- [ ] Ablación de los "diales" restantes (ver `Notas.md`): variar heads (2/4/8), encoders apilados (1/2/4), `d_model`, y presencia/ausencia de `country_of_origin`/`nutrition_score`.
+- [x] ~~Ablación de los "diales" (heads, encoders, `d_model`, `country_of_origin`/`nutrition_score`)~~ → ver sección de arriba.
+- [ ] Confirmar `d_model=32` con 2-3 semillas antes de fijarlo como configuración final (la ablación de arquitectura corrió con 1 sola semilla).
 - [ ] Evaluar en test **una sola vez**, cuando se termine de elegir la configuración final (no todavía).
-- [ ] Validar 70/15/15 vs. 80/10/10 corriendo con más semillas (pendiente de `Notas.md`).
-- [ ] *(Opcional, baja prioridad dado el resultado)* Comparar contra la alternativa "todo como secuencia" descartada en `Notas.md`, si da el tiempo.
+- [ ] *(Opcional, si da el tiempo)* Entrenar más épocas la variante `d_model=32` para confirmar que no empieza a sobreajustar más adelante.

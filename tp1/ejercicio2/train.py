@@ -31,9 +31,13 @@ MAX_LEN = 45
 VOCAB_SIZE = 412  # 410 palabras + <PAD> + <UNK>, ver data/vocab.csv
 
 
-def load_split(name: str):
+def load_split(name: str, exclude_prefixes: tuple = ()):
     df = pd.read_csv(f"{DATA_DIR}/{name}.csv")
-    tabular_cols = [c for c in df.columns if c not in NON_TABULAR_COLUMNS]
+    tabular_cols = [
+        c
+        for c in df.columns
+        if c not in NON_TABULAR_COLUMNS and not any(c.startswith(p) for p in exclude_prefixes)
+    ]
     tabular = df[tabular_cols].to_numpy(dtype="float32")
     tokens = np.stack(df["title_desc_tokens"].apply(lambda s: np.array(s.split(), dtype="int64")))
     lengths = df["title_desc_len"].to_numpy(dtype="int64")
@@ -51,11 +55,11 @@ def make_loader(tokens, lengths, tabular, bought, batch_size, shuffle):
     return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
 
 
-def build_model(model_type: str, n_tabular_features: int) -> nn.Module:
+def build_model(model_type: str, n_tabular_features: int, **model_kwargs) -> nn.Module:
     if model_type == "tabular":
         return TabularMLPBaseline(n_tabular_features)
     if model_type == "fusion":
-        return EncoderFusionModel(VOCAB_SIZE, n_tabular_features, max_len=MAX_LEN)
+        return EncoderFusionModel(VOCAB_SIZE, n_tabular_features, max_len=MAX_LEN, **model_kwargs)
     raise ValueError(f"model_type desconocido: {model_type}")
 
 
@@ -82,18 +86,34 @@ def evaluate(model, loader, model_type):
     }
 
 
-def train_model(model_type: str, seed: int, epochs: int = 30, batch_size: int = 128, lr: float = 1e-3):
-    """Entrena una corrida y devuelve (modelo entrenado, historial por época)."""
+def train_model(
+    model_type: str,
+    seed: int,
+    epochs: int = 30,
+    batch_size: int = 128,
+    lr: float = 1e-3,
+    exclude_prefixes: tuple = (),
+    **model_kwargs,
+):
+    """Entrena una corrida y devuelve (modelo entrenado, historial por época).
+
+    `exclude_prefixes` saca columnas tabulares por prefijo (ej.
+    "country_of_origin_" para el módulo de ablación de esa feature).
+    `model_kwargs` se pasan al constructor del modelo (d_model, n_heads,
+    n_layers, dim_feedforward -- ver model.py::EncoderFusionModel).
+    """
     torch.manual_seed(seed)
     np.random.seed(seed)
 
-    train_tokens, train_lengths, train_tabular, train_bought, tabular_cols = load_split("train")
-    valid_tokens, valid_lengths, valid_tabular, valid_bought, _ = load_split("valid")
+    train_tokens, train_lengths, train_tabular, train_bought, tabular_cols = load_split(
+        "train", exclude_prefixes
+    )
+    valid_tokens, valid_lengths, valid_tabular, valid_bought, _ = load_split("valid", exclude_prefixes)
 
     train_loader = make_loader(train_tokens, train_lengths, train_tabular, train_bought, batch_size, shuffle=True)
     valid_loader = make_loader(valid_tokens, valid_lengths, valid_tabular, valid_bought, batch_size, shuffle=False)
 
-    model = build_model(model_type, len(tabular_cols))
+    model = build_model(model_type, len(tabular_cols), **model_kwargs)
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     loss_fn = nn.BCEWithLogitsLoss()
 

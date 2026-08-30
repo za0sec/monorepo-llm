@@ -182,6 +182,30 @@ Configuración final (`d_model=32`, semilla 0), sobre las 302 queries de valid:
 - **Ordena bien las búsquedas**: correlación de rangos 0,742. Para el caso de uso del enunciado (identificar qué productos/búsquedas rinden más para promocionar), ordenar bien importa más que acertar el valor exacto — que es la misma razón por la que la consigna dice que no hace falta definir un threshold.
 - **El error por query no es chico**: MAE de 0,067 sobre un BTR medio de 0,132, o sea ~50% en términos relativos. Tiene una explicación estructural: cada query tiene entre 2 y 8 productos, así que el BTR real solo puede tomar valores discretos (0, 1/5, 2/5...) mientras que el predicho es continuo. Con tan pocos productos por búsqueda, el BTR real de una query es de por sí una estimación ruidosa.
 
+## Evaluación final en test (`evaluate_test.py`)
+
+Última medición del TP. Test no participó de ninguna decisión: ni del encoding, ni de la arquitectura, ni de la ablación, ni de la elección de `d_model`. Se corre **una sola vez**, con la configuración ya congelada (`d_model=32`, 4 heads, 2 encoders, MLP 128), sobre las 3 semillas.
+
+**Detalle metodológico**: se evalúa el modelo **de la época 20** (la última, fijada de antemano), no el de la mejor época según valid. Usar la mejor época de valid para reportar test volvería a meter a valid en la decisión; con un número de épocas fijo, test queda completamente limpio. Por eso los valores de valid de esta tabla son un poco más bajos que los de la sección anterior (0,756 vs. 0,766), que sí usaban la mejor época.
+
+| semilla | split | PR-AUC | ROC-AUC | MAE del BTR | correlación de rangos |
+|---|---|---|---|---|---|
+| 0 | valid | 0,779 | 0,965 | 0,067 | 0,742 |
+| 0 | **test** | **0,782** | **0,959** | **0,067** | **0,738** |
+| 1 | valid | 0,749 | 0,968 | 0,071 | 0,725 |
+| 1 | **test** | **0,771** | **0,962** | **0,072** | **0,721** |
+| 2 | valid | 0,742 | 0,970 | 0,074 | 0,729 |
+| 2 | **test** | **0,733** | **0,962** | **0,072** | **0,743** |
+| **media ± std** | valid | 0,756 ± 0,020 | 0,968 ± 0,003 | 0,071 ± 0,004 | 0,732 |
+| **media ± std** | **test** | **0,762 ± 0,026** | **0,961 ± 0,002** | **0,070 ± 0,003** | **0,734** |
+
+**Lectura:**
+- **No hay degradación de valid a test.** El PR-AUC de test (0,762 ± 0,026) es incluso levemente superior al de valid (0,756 ± 0,020), y el ROC-AUC baja apenas 0,007. Las diferencias están dentro del desvío entre semillas.
+- **Esto valida el procedimiento, no solo el modelo.** El riesgo que motivó tener 3 particiones y no 2 (ver `Notas.md`) era elegir la configuración mirando valid tantas veces que el número final quedara inflado. Con ~15 configuraciones comparadas contra valid, ese riesgo era real — y test muestra que no ocurrió. También respalda la decisión de 70/15/15: un valid del 15% resultó lo bastante grande como para no llevarnos a una elección por casualidad.
+- **El BTR agregado se sostiene igual**: MAE 0,070 y correlación de rangos 0,734 en test, prácticamente idénticos a valid.
+
+**Resultado final del sistema**: PR-AUC **0,762 ± 0,026** y ROC-AUC **0,961 ± 0,002** sobre test para `bought` a nivel producto, y un BTR por búsqueda con MAE de **0,070** y correlación de rangos de **0,73**, contra un baseline sin Transformer de 0,178 de PR-AUC.
+
 ## Nota de reproducibilidad (y un desafío encontrado)
 
 Al agregar la medición sobre train aparecieron dos cosas que vale la pena contar en la presentación, porque son exactamente del tipo "desafíos encontrados" que pide la consigna.
@@ -204,5 +228,5 @@ Las tablas de esta nota están actualizadas a los valores de PyTorch 2.13. **Nin
 - [x] ~~Métricas de train para diagnosticar overfitting/underfitting~~ → ver la sección "Overfitting y underfitting": baseline tabular con underfitting claro, fusión con brecha de ~0,19 pero sin degradación de valid.
 - [x] ~~Confirmar `d_model=32` con 2-3 semillas antes de fijarlo como configuración final~~ → confirmado, 0,766 ± 0,020 vs. 0,732 ± 0,017 de la base (ver "Configuración final").
 - [ ] Fijar las versiones de las librerías (`requirements.txt`) — ver "Nota de reproducibilidad": la semilla sola no alcanza.
-- [ ] Evaluar en test **una sola vez**, cuando se termine de elegir la configuración final (no todavía).
+- [x] ~~Evaluar en test una sola vez, cuando se termine de elegir la configuración final~~ → hecho, ver "Evaluación final en test": 0,762 ± 0,026 de PR-AUC, sin degradación respecto de valid.
 - [ ] *(Opcional, si da el tiempo)* Entrenar más épocas la variante `d_model=32` para confirmar que no empieza a sobreajustar más adelante.

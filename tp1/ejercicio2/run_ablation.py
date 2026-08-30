@@ -58,6 +58,11 @@ def run_variant(name: str, model_overrides: dict = None, exclude_prefixes: tuple
         "best_epoch": int(best["epoch"]),
         "best_valid_pr_auc": best["valid_pr_auc"],
         "best_valid_roc_auc": best["valid_roc_auc"],
+        "best_epoch_train_pr_auc": best["train_pr_auc"],
+        "best_epoch_pr_auc_gap": best["train_pr_auc"] - best["valid_pr_auc"],
+        "final_train_pr_auc": history.iloc[-1]["train_pr_auc"],
+        "final_valid_pr_auc": history.iloc[-1]["valid_pr_auc"],
+        "final_pr_auc_gap": history.iloc[-1]["train_pr_auc"] - history.iloc[-1]["valid_pr_auc"],
         "excluded_features": ",".join(exclude_prefixes) if exclude_prefixes else "-",
         **config,
     }

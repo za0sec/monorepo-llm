@@ -6,8 +6,19 @@ No es para correr manualmente uno por uno: run_experiments.py llama a
 (ver Experimentos.md). Métricas evaluadas solo sobre valid (test se toca
 una sola vez al final, ver Notas.md).
 
-Guarda output/runs/<model>_seed<seed>.csv con el historial por época
-(train_loss, valid_loss, valid_pr_auc, valid_roc_auc).
+Guarda output/runs/<model>_seed<seed>.csv con el historial por época, con las
+mismas 3 métricas (loss, PR-AUC, ROC-AUC) medidas sobre train y sobre valid.
+Tener las dos permite diagnosticar overfitting/underfitting comparando ambas
+curvas, que es lo que pide el punto 3 del Ejercicio 2 de la consigna
+("métricas propias de modelos teniendo en cuenta overfitting y underfitting").
+
+Ojo con `train_loss_running`: es el promedio de las losses de los minibatches
+tal como se fueron calculando durante la época, con dropout activo y con los
+pesos cambiando en cada paso. NO es comparable contra `valid_loss`, que se
+mide en modo eval, sin dropout y con los pesos ya fijos al final de la época.
+Por eso se agrega una pasada de evaluación extra sobre train en modo eval:
+`train_loss`/`train_pr_auc`/`train_roc_auc` sí son comparables punto a punto
+contra sus equivalentes de valid.
 """
 import os
 import warnings
@@ -111,6 +122,9 @@ def train_model(
     valid_tokens, valid_lengths, valid_tabular, valid_bought, _ = load_split("valid", exclude_prefixes)
 
     train_loader = make_loader(train_tokens, train_lengths, train_tabular, train_bought, batch_size, shuffle=True)
+    train_eval_loader = make_loader(
+        train_tokens, train_lengths, train_tabular, train_bought, batch_size, shuffle=False
+    )
     valid_loader = make_loader(valid_tokens, valid_lengths, valid_tabular, valid_bought, batch_size, shuffle=False)
 
     model = build_model(model_type, len(tabular_cols), **model_kwargs)
@@ -132,14 +146,26 @@ def train_model(
             optimizer.step()
             train_losses.append(loss.item() * len(bought))
 
-        train_loss = sum(train_losses) / len(train_bought)
+        train_loss_running = sum(train_losses) / len(train_bought)
+        # Iterar un DataLoader consume el RNG global, así que se guarda y
+        # restaura el estado alrededor de esta evaluación extra: sin esto, las
+        # corridas dejarían de ser bit a bit iguales a las de antes de agregarla.
+        rng_state = torch.get_rng_state()
+        train_metrics = evaluate(model, train_eval_loader, model_type)
+        torch.set_rng_state(rng_state)
         valid_metrics = evaluate(model, valid_loader, model_type)
         history.append(
-            {"epoch": epoch, "train_loss": train_loss, **{f"valid_{k}": v for k, v in valid_metrics.items()}}
+            {
+                "epoch": epoch,
+                "train_loss_running": train_loss_running,
+                **{f"train_{k}": v for k, v in train_metrics.items()},
+                **{f"valid_{k}": v for k, v in valid_metrics.items()},
+            }
         )
         print(
             f"[{model_type} seed={seed}] epoch {epoch:02d} "
-            f"train_loss={train_loss:.4f} valid_pr_auc={valid_metrics['pr_auc']:.4f} "
+            f"train_pr_auc={train_metrics['pr_auc']:.4f} valid_pr_auc={valid_metrics['pr_auc']:.4f} "
+            f"(gap={train_metrics['pr_auc'] - valid_metrics['pr_auc']:+.4f}) "
             f"valid_roc_auc={valid_metrics['roc_auc']:.4f}"
         )
 
@@ -161,8 +187,13 @@ def run(model_type: str, seed: int, epochs: int = 30, batch_size: int = 128, lr:
         "best_epoch": int(best["epoch"]),
         "best_valid_pr_auc": best["valid_pr_auc"],
         "best_valid_roc_auc": best["valid_roc_auc"],
+        "best_epoch_train_pr_auc": best["train_pr_auc"],
+        "best_epoch_train_roc_auc": best["train_roc_auc"],
+        "best_epoch_pr_auc_gap": best["train_pr_auc"] - best["valid_pr_auc"],
         "final_valid_pr_auc": history_df.iloc[-1]["valid_pr_auc"],
         "final_valid_roc_auc": history_df.iloc[-1]["valid_roc_auc"],
+        "final_train_pr_auc": history_df.iloc[-1]["train_pr_auc"],
+        "final_pr_auc_gap": history_df.iloc[-1]["train_pr_auc"] - history_df.iloc[-1]["valid_pr_auc"],
     }
 
 

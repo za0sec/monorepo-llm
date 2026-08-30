@@ -160,6 +160,28 @@ Comparado contra la base (`d_model=64`, 0,732 ± 0,017 / 0,965 ± 0,003):
 
 **Configuración final elegida**: `d_model=32`, 4 heads, 2 encoders, MLP interno 128, fusión tardía con el bloque tabular completo. Es la que se usa de acá en adelante para la evaluación en test.
 
+## Del `bought` por fila al BTR por búsqueda (`evaluate_btr.py`)
+
+Todo lo anterior mide `bought` **a nivel fila**, que es como se planteó el problema en `ejercicio1/Notas.md`. Pero lo que pide la consigna es el **BTR** (comprados / impresos), que es una métrica **a nivel búsqueda**. Faltaba cerrar ese paso: el BTR predicho de una query es el promedio de las probabilidades predichas sobre los productos que se le mostraron, y se compara contra el BTR real (promedio de `bought` de esas mismas filas).
+
+Configuración final (`d_model=32`, semilla 0), sobre las 302 queries de valid:
+
+| métrica | valor |
+|---|---|
+| BTR real medio | 0,132 |
+| BTR predicho medio | 0,135 |
+| error absoluto medio (MAE) | 0,067 |
+| sesgo (predicho − real) | +0,003 |
+| correlación (Pearson) | 0,764 |
+| correlación de rangos (Spearman) | 0,742 |
+
+![BTR por búsqueda](output/btr_valid.png)
+
+**Lectura:**
+- **Está bien calibrado en promedio**: el BTR medio predicho (0,135) prácticamente coincide con el real (0,132), sesgo de +0,003. No sobreestima ni subestima sistemáticamente la tasa de compra global.
+- **Ordena bien las búsquedas**: correlación de rangos 0,742. Para el caso de uso del enunciado (identificar qué productos/búsquedas rinden más para promocionar), ordenar bien importa más que acertar el valor exacto — que es la misma razón por la que la consigna dice que no hace falta definir un threshold.
+- **El error por query no es chico**: MAE de 0,067 sobre un BTR medio de 0,132, o sea ~50% en términos relativos. Tiene una explicación estructural: cada query tiene entre 2 y 8 productos, así que el BTR real solo puede tomar valores discretos (0, 1/5, 2/5...) mientras que el predicho es continuo. Con tan pocos productos por búsqueda, el BTR real de una query es de por sí una estimación ruidosa.
+
 ## Nota de reproducibilidad (y un desafío encontrado)
 
 Al agregar la medición sobre train aparecieron dos cosas que vale la pena contar en la presentación, porque son exactamente del tipo "desafíos encontrados" que pide la consigna.

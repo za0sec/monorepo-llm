@@ -147,3 +147,16 @@ ax.set_title("Ablación de features tabulares dudosas")
 fig.tight_layout()
 fig.savefig(f"{OUTPUT_DIR}/ablation.png", dpi=150)
 print(f"Guardado {OUTPUT_DIR}/ablation.png")
+
+# --- Gráfico 5: BTR por query, predicho vs. real ---
+btr = pd.read_csv(f"{OUTPUT_DIR}/btr_valid.csv")
+
+fig, ax = plt.subplots(figsize=(5.5, 5.5))
+ax.scatter(btr["btr_real"], btr["btr_pred"], alpha=0.4, color="#4C72B0")
+ax.plot([0, 1], [0, 1], color="black", linestyle="--", linewidth=1)
+ax.set_xlabel("BTR real de la búsqueda")
+ax.set_ylabel("BTR predicho")
+ax.set_title(f"BTR por búsqueda (valid, {len(btr)} queries)")
+fig.tight_layout()
+fig.savefig(f"{OUTPUT_DIR}/btr_valid.png", dpi=150)
+print(f"Guardado {OUTPUT_DIR}/btr_valid.png")

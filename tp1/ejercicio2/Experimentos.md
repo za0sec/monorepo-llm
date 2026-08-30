@@ -141,6 +141,25 @@ Se agrega además la **brecha train − valid** de PR-AUC en la época 20, que e
 
 **Conclusión**: si hubiera que elegir una configuración final hoy, sería **más chica** que la base original — `d_model=32` como cambio principal. Buen resultado para la presentación: muestra que se hizo el ejercicio de "empezar chico e ir escalando" que pide la consigna, que escalar *no* ayudó, y que ahora se puede explicar el mecanismo (sobreajuste medido) y no solo constatar el número.
 
+## Configuración final: `d_model=32` con 3 semillas (`run_final_config.py`)
+
+La ablación había corrido con **1 sola semilla**, y ahí se advertía que diferencias del orden de ±0,02 no se distinguen del ruido. Antes de fijar `d_model=32` como configuración final se lo volvió a correr con 3 semillas, igual que el experimento principal.
+
+| semilla | mejor época | PR-AUC (valid) | ROC-AUC (valid) | brecha train−valid |
+|---|---|---|---|---|
+| 0 | 20 | 0,779 | 0,965 | +0,128 |
+| 1 | 19 | 0,776 | 0,970 | +0,117 |
+| 2 | 16 | 0,743 | 0,970 | +0,136 |
+| **media ± std** | | **0,766 ± 0,020** | **0,968 ± 0,003** | **+0,127** |
+
+Comparado contra la base (`d_model=64`, 0,732 ± 0,017 / 0,965 ± 0,003):
+
+- **Mejor en media** (+0,034 de PR-AUC) y con **menos de la mitad de parámetros** (45.569 vs. 102.337).
+- **Menor brecha train-valid** (+0,127 vs. +0,156): además de rendir mejor, sobreajusta menos.
+- **Honestidad sobre el margen**: las distribuciones se solapan parcialmente (la peor semilla de `d_model=32` es 0,743, la mejor de la base es 0,750). Con 3 semillas la ventaja es consistente pero no abrumadora. Lo que sí queda firme es la conclusión de dirección: **achicar el modelo no empeora, y probablemente mejora** — que es lo relevante para justificar la elección.
+
+**Configuración final elegida**: `d_model=32`, 4 heads, 2 encoders, MLP interno 128, fusión tardía con el bloque tabular completo. Es la que se usa de acá en adelante para la evaluación en test.
+
 ## Nota de reproducibilidad (y un desafío encontrado)
 
 Al agregar la medición sobre train aparecieron dos cosas que vale la pena contar en la presentación, porque son exactamente del tipo "desafíos encontrados" que pide la consigna.
@@ -161,7 +180,7 @@ Las tablas de esta nota están actualizadas a los valores de PyTorch 2.13. **Nin
 - [x] ~~Agregar a `ejercicio1/Notas.md` una referencia cruzada a este hallazgo~~ → agregado en la sección del tag de reputación.
 - [x] ~~Ablación de los "diales" (heads, encoders, `d_model`, `country_of_origin`/`nutrition_score`)~~ → ver sección de arriba.
 - [x] ~~Métricas de train para diagnosticar overfitting/underfitting~~ → ver la sección "Overfitting y underfitting": baseline tabular con underfitting claro, fusión con brecha de ~0,19 pero sin degradación de valid.
-- [ ] Confirmar `d_model=32` con 2-3 semillas antes de fijarlo como configuración final (la ablación de arquitectura corrió con 1 sola semilla).
+- [x] ~~Confirmar `d_model=32` con 2-3 semillas antes de fijarlo como configuración final~~ → confirmado, 0,766 ± 0,020 vs. 0,732 ± 0,017 de la base (ver "Configuración final").
 - [ ] Fijar las versiones de las librerías (`requirements.txt`) — ver "Nota de reproducibilidad": la semilla sola no alcanza.
 - [ ] Evaluar en test **una sola vez**, cuando se termine de elegir la configuración final (no todavía).
 - [ ] *(Opcional, si da el tiempo)* Entrenar más épocas la variante `d_model=32` para confirmar que no empieza a sobreajustar más adelante.

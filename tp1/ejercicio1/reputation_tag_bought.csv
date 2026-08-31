@@ -1,0 +1,21 @@
+tag,pct_bought,n
+Customer Favorite,0.6774847870182555,493
+Best Seller,0.6574468085106383,470
+Top Rated,0.6271186440677966,472
+#1 Pick,0.625,496
+Well Reviewed,0.03773584905660377,477
+Shopper Favorite,0.027613412228796843,507
+Highly Rated,0.021153846153846155,520
+Popular Choice,0.019189765458422176,469
+Current Stock,0.0,515
+Discontinuing Soon,0.0,550
+Limited Feedback,0.0,524
+Low Feedback,0.0,466
+(sin tag),0.0,511
+Rarely Reordered,0.0,500
+Recently Added,0.0,481
+Regular Listing,0.0,494
+Standard Listing,0.0,506
+Clearance Listing,0.0,510
+Unrated Listing,0.0,517
+New Listing,0.0,522

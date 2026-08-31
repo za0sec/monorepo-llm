@@ -10,10 +10,13 @@ Punto de partida que deja cerrado el Ejercicio 1:
 Lo que falta acá es **cómo se junta todo eso en una arquitectura concreta** — eso es el contenido de este documento.
 
 **Estructura de la carpeta:**
-- `split_data.py`, `encode_features.py`, `model.py`, `train.py`, `run_experiments.py`: cómputo (split, encoding, arquitectura, entrenamiento). `plot_split.py`, `plot_experiments.py`: gráficos, separados del cómputo igual que en `ejercicio1/` — leen CSVs, nunca recalculan ni reentrenan.
+- `split_data.py`, `encode_features.py`: cómputo de split y encoding (ver secciones de abajo).
+- `model.py`, `train.py`, `run_experiment<n>.py`: arquitectura y entrenamiento de cada experimento (empezando por el Experimento 1, texto puro — ver `Experimentos.md`). `plot_split.py`, `plot_experiment<n>.py`: gráficos, separados del cómputo igual que en `ejercicio1/` — leen CSVs, nunca recalculan ni reentrenan.
 - `data/`: datasets ya encodeados y listos para el modelo (`train.csv`, `valid.csv`, `test.csv`, `vocab.csv`, `preprocessing_stats.csv`).
-- `output/`: resultados — diagnóstico del split (`query_splits.csv`, `split_summary.csv`, `split_balance.png`) y de los experimentos (`experiment_results.csv`, `runs/*.csv` con el historial por época, `experiment_comparison.png`, `training_curves.png`).
-- `Experimentos.md`: registro de cada experimento corrido — configuración, resultados, gráficos y análisis (para armar la presentación). Este documento (`Notas.md`) se queda con las decisiones de diseño; los números van en `Experimentos.md`.
+- `output/`: resultados — diagnóstico del split (`query_splits.csv`, `split_summary.csv`, `split_balance.png`) y de cada experimento (`experiment<n>_results.csv`, `runs/*.csv` con el historial por época, `experiment<n>_curves.png`).
+- `Experimentos.md`: registro de cada experimento corrido — arquitectura, justificación, resultados, análisis de métricas y qué cambia en el siguiente (para armar la presentación). Este documento (`Notas.md`) se queda con las decisiones de diseño más generales (split, encoding, elección Encoder-only/fusión tardía); los números de cada corrida van en `Experimentos.md`.
+
+**Nota (2026-08-31): se reinició el modelado desde cero** para poder iterar experimento por experimento de forma más controlada — se borraron las corridas/resultados previos (`model.py`, `train.py`, `output/` de esa etapa). El Experimento 1 arrancó como Transformer de texto puro (sin fusión tabular todavía), no como baseline tabular vs. fusión — ver `Experimentos.md` para el detalle y el porqué de ese alcance.
 
 ## Split train / valid / test
 
@@ -80,7 +83,7 @@ Dos alternativas de sentido común consideradas:
 1. **Fusión tardía**: el Transformer procesa solo la secuencia de tokens de `title`+`description` y su salida se resume en un solo vector (ej. promediando los embeddings de salida de cada token, o usando un token especial tipo `[CLS]`); ese vector se concatena con el vector de features tabulares ya encodeadas (one-hot + numéricas normalizadas) y sigue por una o más capas densas hasta la salida. Ventaja: simple, separa claramente "la parte Transformer" de "la parte tabular" para el estudio de ablación (se puede sacar una u otra).
 2. **Todo como secuencia de tokens**: proyectar también cada feature tabular a la dimensión `d_model` (como si fuera "un token más") y dejar que la atención combine todo dentro del Transformer. Más ambicioso y menos evidente que esté cubierto por el material de cátedra.
 
-**Decisión: fusión tardía — confirmada, y ya validada con resultados (no solo argumento teórico).** Ver [`Experimentos.md`](Experimentos.md): PR-AUC de valid pasa de 0,178 (baseline solo-tabular) a 0,741 (fusión con Encoder-only), +0,56. Razones originales (teóricas, de diseño):
+**Decisión: fusión tardía.** Por ahora es un argumento teórico (no validado empíricamente todavía — la validación anterior se perdió al reiniciar el modelado desde cero, ver nota arriba). El Experimento 1 en [`Experimentos.md`](Experimentos.md) arranca con el Transformer de texto solo, sin fusión, para aislar su comportamiento primero; la comparación empírica contra la fusión queda para un experimento posterior. Razones teóricas, de diseño:
 - Ablación limpia: "sacar el Transformer" es desconectar una rama entera y queda el modelo funcionando solo con lo tabular. Con la opción 2, sacar el texto implica rediseñar la arquitectura, no apagar un módulo.
 - Arrancar chico (`d_model < 100`): con fusión tardía el Transformer queda acotado a donde realmente hace falta atención (el texto — recordar el hallazgo del tag de reputación en `title`, un patrón contextual/posicional dentro de la secuencia de palabras), y lo tabular se combina con algo más liviano (denso), sin forzarlo a la dimensión de los embeddings de texto.
 - Justificación de "dónde y por qué" el Transformer (que pide la consigna): con fusión tardía es directa — el Transformer resuelve la parte de lenguaje natural, que tiene dependencias de orden/contexto; lo tabular no tiene esa estructura secuencial, no hay razón para forzarlo por atención.
@@ -109,24 +112,3 @@ Variantes mencionadas en la clase:
 
 Sumado a los módulos ya identificados antes en este documento: presencia/ausencia del bloque Transformer de texto (baseline tabular vs. fusión tardía), `country_of_origin`, `nutrition_score` (con/sin, ver `ejercicio1/Notas.md`).
 
-## Plan de experimentos / estudio de ablación (borrador)
-
-Pregunta que motivó esto: la elección de fusión tardía por sobre "todo como secuencia" fue por argumento teórico — ¿se puede respaldar con resultados en vez de quedar solo en teoría? Sí, es exactamente lo que pide la consigna al evaluar "comparación de alternativas de los distintos módulos". Plan (de menor a mayor esfuerzo):
-
-1. **Baseline solo tabular** — sin Transformer, sin texto: capas densas sobre las features tabulares únicamente. Sirve como piso de comparación.
-2. **Fusión tardía** (la decisión actual) — Transformer sobre texto + tabular combinados al final. Comparar contra (1) con PR-AUC/ROC-AUC: si no mejora sobre el baseline tabular, es evidencia de que el texto no está aportando (raro dado el hallazgo del tag de reputación, pero hay que confirmarlo).
-3. *(Opcional, si da el tiempo/cómputo)* **Todo-como-secuencia** — implementar la alternativa descartada y comparar contra (2) con las mismas métricas, para respaldar (o refutar) con números la elección de fusión tardía, no solo con la intuición de "más fácil de aislar".
-
-Prioridad: (1) y (2) son el corazón del estudio de ablación (las más baratas, y las que más responden "¿aporta el Transformer/texto?"). (3) queda como estiramiento si sobra tiempo — la consigna aclara que no hace falta que el BTR prediga perfecto, el foco es el abordaje.
-
-## Pendientes para retomar
-
-- [x] ~~Decidir si estratificar por tasa de `bought` a nivel de query~~ → decidido que sí, implementado en `split_data.py` (ver "Split train / valid / test").
-- [x] ~~Escribir el pipeline de datos (split + encoding de features)~~ → implementado en `split_data.py` + `encode_features.py`. Quedan `data/train.csv`/`data/valid.csv`/`data/test.csv` listos para alimentar un modelo (falta escribir el modelo en sí).
-- [x] ~~Confirmar con el grupo la propuesta de arquitectura Encoder-only~~ → confirmado, ver "Arquitectura del bloque Transformer" arriba.
-- [x] ~~Escribir el modelo (baseline tabular y fusión tardía) y correr el plan de experimentos~~ → implementado en `model.py`/`train.py`/`run_experiments.py`. Resultados, curvas y análisis en [`Experimentos.md`](Experimentos.md) — fusión tardía gana por lejos (PR-AUC 0,741 vs. 0,178 del baseline).
-- [x] ~~Interpretabilidad: confirmar que el modelo realmente está usando el tag de reputación~~ → confirmado (con un hallazgo extra: `description` repite la misma señal, ver `Experimentos.md`).
-- [x] ~~Ablación de los "diales": heads, encoders apilados, `d_model`, `country_of_origin`/`nutrition_score`~~ → corrida, ver `Experimentos.md`. Resultado: arquitecturas más chicas (`d_model=32`, menos heads/capas) igualan o superan a la base; `country_of_origin`/`nutrition_score` confirmadas sin aporte.
-- [x] ~~Confirmar `d_model=32` con 2-3 semillas antes de fijarlo como configuración final~~ → confirmado (0,766 ± 0,020 vs. 0,732 ± 0,017 de la base), ver `Experimentos.md`.
-- [x] ~~Evaluar en test una sola vez, cuando se termine de elegir la configuración final~~ → hecho: PR-AUC 0,762 ± 0,026, sin degradación respecto de valid. Incluye el BTR agregado por `query_id`, que cierra el paso de `bought` por fila al BTR que pide la consigna.
-- [ ] Revisar si conviene resumir `dimensions_in` a volumen (1 feature) en vez de 3, y si `ingredients` multi-hot es mejor que la categórica de 12 combos (decisión abierta, se tomó una opción por default en `encode_features.py` para poder avanzar).

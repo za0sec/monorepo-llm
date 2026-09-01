@@ -211,8 +211,94 @@ Media ± std sobre 3 semillas (`output/experiment6_results.csv`):
 - **Conclusión: gana la hipótesis 2.** La proporción 4x que fue determinante en el Experimento 5 (a `d_model=16` fijo) **no se sostiene** al escalar `d_model` — ahí lo que pesa es la capacidad absoluta de `d_model`, y `dim_feedforward=64` ya alcanza como ancho de MLP en todo el rango probado (16 a 64). Escalarlo junto con `d_model` no ayuda y en el punto más grande directamente perjudica la generalización.
 - **Este dial queda cerrado**: `d_model=64`, `dim_feedforward=64` es la configuración ganadora (PR-AUC valid 0,724 ± 0,021, el mejor resultado de todos los experimentos corridos hasta ahora). La arquitectura base para seguir es `n_heads=1`, `n_layers=2`, `d_model=64`, `dim_feedforward=64`.
 
+### Qué cambió respecto al Experimento 6
+
+Con `n_heads`, `n_layers`, `d_model` y `dim_feedforward` ya cerrados sobre el Transformer de texto puro, se pasó al sistema completo: texto + features tabulares combinadas (`CombinedModel` en `model.py`), usando la rama de texto ganadora tal cual (`n_heads=1`, `n_layers=2`, `d_model=64`, `dim_feedforward=64`). Los dials de `positional encoding` y `pooling` quedan pendientes -- se decidió priorizar tener el sistema completo funcionando antes de seguir afinando detalles del Transformer solo (ver discusión previa a este experimento).
+
+## Experimento 7 — sistema completo: texto + tabular
+
+### Arquitectura ([`model.py`](model.py))
+
+`CombinedModel`: el `TextEncoder` (idéntico al usado en los Experimentos 1-6, ahora extraído como pieza compartida) resume `title`+`description` en un vector de 64 dimensiones; ese vector se concatena con el vector de features tabulares ya encodeadas (75 columnas: numéricas z-scoreadas, one-hot de categóricas, multi-hot de ingredientes -- ver `Notas.md`/`encode_features.py`) y el vector combinado (139 dimensiones) entra directo a una salida `Linear(139 → 1)`, sin capa oculta intermedia -- mismo criterio minimalista del Experimento 1 ("el vector va directo a la predicción, la versión más mínima posible"), aplicado ahora al vector combinado en vez de solo al de texto. El texto nunca ve lo tabular (no pasa por el Transformer) y lo tabular nunca pasa por atención -- se juntan recién en esa última capa.
+
+### Configuración de entrenamiento
+
+Misma que los experimentos anteriores: Adam (`lr=1e-3`), `batch_size=128`, 20 épocas, 3 semillas (0, 1, 2).
+
+### Resultados
+
+Mejor época de cada semilla (`output/experiment7_results.csv`):
+
+| seed | best_epoch | valid PR-AUC | valid ROC-AUC | train PR-AUC | gap PR-AUC |
+|---|---|---|---|---|---|
+| 0 | 13 | 0,710 | 0,966 | 0,782 | 0,072 |
+| 1 | 10 | 0,699 | 0,966 | 0,737 | 0,038 |
+| 2 | 10 | 0,744 | 0,969 | 0,771 | 0,027 |
+| **media ± std** | — | **0,718 ± 0,023** | **0,967 ± 0,002** | — | **0,045 ± 0,024** |
+
+Comparación directa contra la rama de texto sola con la misma arquitectura interna (`d_model=64` del Experimento 4/6, sin tabular):
+
+| | Solo texto (Exp. 4/6) | Texto + tabular (Exp. 7) |
+|---|---|---|
+| n_params | 76.865 | 76.940 |
+| valid PR-AUC (media ± std) | **0,724 ± 0,021** | 0,718 ± 0,023 |
+| valid ROC-AUC (media ± std) | 0,962 ± 0,004 | **0,967 ± 0,002** |
+| gap PR-AUC (media ± std) | **0,012 ± 0,014** | 0,045 ± 0,024 |
+| mejor época (típica) | ~15-20 | ~10-13 |
+
+Curvas de entrenamiento, `output/experiment7_curves.png`:
+
+![Experimento 7 — curvas de entrenamiento](output/experiment7_curves.png)
+
+### Análisis
+
+- **Resultado contraintuitivo: agregar lo tabular no mejoró PR-AUC.** 0,718 contra 0,724 del texto solo -- la diferencia está totalmente dentro del solapamiento de los desvíos estándar, así que no hay evidencia de que empeore, pero tampoco de que ayude. Con solo 75 features tabulares más y una sola capa lineal para combinarlas con el texto, el modelo no encontró en ellas señal adicional que el texto no tuviera ya -- consistente con el hallazgo de `ejercicio1` de que el tag de reputación embebido en `title` ya captura buena parte de la señal, y con que varias tabulares (`country_of_origin`, `nutrition_score`) habían quedado marcadas como "dudosas" en el EDA por señal univariada débil.
+- **ROC-AUC sí mejoró** (0,962 → 0,967) -- las tabulares ayudan a ordenar mejor los casos en general, aunque no a nivel de precisión sobre los candidatos más probables (que es lo que mide PR-AUC).
+- **El overfitting empeoró bastante, y aparece mucho antes.** El gap casi se cuadruplica (0,012 → 0,045) y la mejor época baja de ~15-20 a ~10-13 -- se ve clarísimo en el gráfico: valid PR-AUC se estanca alrededor de la época 3-5 mientras train sigue subiendo derecho hasta 0,85. Con 139 dimensiones de entrada a una sola capa lineal (contra 64 del texto solo) y el mismo dataset chico, el modelo tiene más con qué memorizar sin que haya más señal real proporcional para justificarlo.
+- **Hipótesis para explicar por qué no ayudó**: la capa de salida es un solo `Linear` -- puede aprender a pesar cada feature tabular por separado, pero no puede aprender una interacción entre "lo que dice el texto" y "lo que dicen las tabulares" (por ejemplo, que el tag de reputación importe más o menos según la categoría del producto). Eso requeriría una capa oculta no-lineal después de la concatenación, que se descartó en el diseño por el mismo criterio minimalista que venimos aplicando desde el Experimento 1 -- ahora es candidato a revisar.
+
+### Qué cambió respecto al Experimento 7
+
+Se agregó una capa oculta de 64 unidades a la cabeza de salida del sistema completo (`hidden=64` en `CombinedModel`), manteniendo el resto igual, para probar si el estancamiento del Experimento 7 se debía a la falta de una no-linealidad que cruce texto y tabular.
+
+## Experimento 8 — capa oculta en la cabeza de salida
+
+### Arquitectura ([`model.py`](model.py))
+
+Igual que el Experimento 7 salvo la cabeza: `Linear(139 → 64) → ReLU → Dropout(0,1) → Linear(64 → 1)` en vez de `Linear(139 → 1)` directo. `hidden=64` iguala el ancho de la rama de texto (`d_model=64`) -- ni más angosto (perdería capacidad) ni mucho más ancho (más riesgo de overfitting sin motivo), consistente con "arrancar chico".
+
+### Resultados
+
+Corrida inicial con `EPOCHS=20`: valid PR-AUC seguía subiendo en las 3 semillas sin señales de meseta (0,791 ± 0,006 en la mejor época, que caía siempre en 19 o 20) -- así que se repitió la misma config con `EPOCHS=40` para confirmar si convenía entrenar más tiempo antes de cerrar el resultado. Los números de acá son de esa corrida de 40 épocas (`output/experiment8_results.csv`):
+
+| seed | best_epoch | valid PR-AUC | valid ROC-AUC | train PR-AUC | gap PR-AUC |
+|---|---|---|---|---|---|
+| 0 | 34 | 0,807 | 0,965 | 0,939 | 0,132 |
+| 1 | 24 | 0,794 | 0,968 | 0,941 | 0,147 |
+| 2 | 21 | 0,792 | 0,971 | 0,897 | 0,105 |
+| **media ± std** | — | **0,798 ± 0,008** | 0,968 ± 0,003 | — | 0,128 ± 0,021 |
+
+Comparación contra el Experimento 7 (misma arquitectura, sin capa oculta) y contra el mejor resultado de solo texto (Exp. 4/6):
+
+| | Solo texto (Exp. 4/6) | Texto + tabular, sin capa oculta (Exp. 7) | Texto + tabular, con capa oculta (Exp. 8, 40 épocas) |
+|---|---|---|---|
+| n_params | 76.865 | 76.940 | 85.825 |
+| valid PR-AUC (media ± std) | 0,724 ± 0,021 | 0,718 ± 0,023 | **0,798 ± 0,008** |
+| valid ROC-AUC (media ± std) | 0,962 ± 0,004 | 0,967 ± 0,002 | **0,968 ± 0,003** |
+| gap PR-AUC (media ± std) | 0,012 ± 0,014 | 0,045 ± 0,024 | 0,128 ± 0,021 |
+
+Curvas de entrenamiento (ahora hasta la época 40), `output/experiment8_curves.png`:
+
+![Experimento 8 — curvas de entrenamiento](output/experiment8_curves.png)
+
+### Análisis
+
+- **Confirma la hipótesis del Experimento 7 de forma contundente.** Agregar la no-linealidad a la cabeza sigue siendo la mejor marca de todos los experimentos corridos hasta ahora (0,798, contra 0,724 del texto solo y 0,718 sin capa oculta) -- el problema del Experimento 7 no era que las tabulares no aportaran señal, era que la cabeza lineal no podía aprovecharla.
+- **Con 40 épocas ya se ve el techo que con 20 no se veía**: en el gráfico, valid PR-AUC sube fuerte hasta ~época 20-25 (llega a ~0,78-0,79) y ahí se aplana -- de hecho baja un poco hacia la época 40 (~0,76-0,77 en la media), mientras train sigue subiendo derecho hasta ~0,97. La ganancia de 0,791 (20 épocas) a 0,798 (40 épocas, tomando la mejor época de cada semilla) es chica y viene de picos puntuales de alguna semilla (época 34 en la seed 0) más que de una mejora sostenida de las tres -- **20 épocas ya daban un resultado representativo**, entrenar más no cambia la conclusión, solo agrega ruido y más overfitting (el gap casi se triplica, 0,045 → 0,128).
+- **Conclusión**: la arquitectura queda cerrada en `n_heads=1, n_layers=2, d_model=64, dim_feedforward=64, hidden=64`, con **~20-25 épocas** como rango razonable de entrenamiento (no hace falta ir a 40). Este es el mejor sistema completo encontrado hasta ahora, PR-AUC valid ≈ 0,79.
+
 ### Qué cambiar en el próximo experimento (propuesta a confirmar)
 
-Con `n_heads`, `n_layers`, `d_model` y `dim_feedforward` ya explorados sobre el Transformer de texto puro, los dials que quedan de la lista de `Notas.md` son de otro tipo: el **positional encoding** (senoidal vs. otra variante, o sacarlo) y el **pooling** (mean-pooling vs. otras opciones) -- ambos dials que quedaron pendientes desde el Experimento 1. Alternativamente, ya se agotó lo razonable del Transformer solo con texto y correspondería pasar a la **fusión tardía con las features tabulares** (la arquitectura completa que se va a entregar, ver `Notas.md`), usando esta config ganadora como la rama de texto.
+Con la arquitectura del sistema completo ya cerrada, los pasos que quedan abiertos de `Notas.md`/discusiones anteriores son: (1) ablacionar `country_of_origin` y `nutrition_score` (features marcadas como "dudosas" desde el EDA de `ejercicio1`, todavía no probadas con/sin en el sistema completo), (2) los dials pendientes del Transformer de texto (positional encoding, pooling), y (3) evaluar en test una sola vez con esta configuración final, como cierre del estudio.
 
 Como siempre, esto es una propuesta — lo confirmamos antes de seguir.

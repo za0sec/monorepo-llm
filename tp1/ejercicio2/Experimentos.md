@@ -414,4 +414,34 @@ Media ± std sobre 3 semillas (`output/experiment11_results.csv`; `con_positiona
 
 Con esto, los dos frentes pendientes del Transformer de texto quedan resueltos (positional encoding confirmado con datos, pooling documentado como default razonado sin necesidad de experimento). El paso que queda es **evaluar en test una sola vez** con la configuración final completa (`n_heads=1, n_layers=2, d_model=64, dim_feedforward=64, hidden=256`, con `nutrition_score` y sin `country_of_origin` según el Experimento 9), como cierre del estudio de ablación -- test no se toca hasta este punto, según lo acordado en `Notas.md`.
 
-Como siempre, esto es una propuesta — lo confirmamos antes de seguir.
+## Evaluación final en test
+
+### Configuración
+
+La ganadora de todo el estudio de ablación (Experimentos 1 a 11), evaluada **una sola vez** en `data/test.csv` -- hasta acá test no se había tocado, solo train/valid ([`evaluate_test.py`](evaluate_test.py)):
+- `CombinedModel`: `n_heads=1, n_layers=2, d_model=64, dim_feedforward=64, hidden=256`, positional encoding senoidal.
+- Features tabulares: todas menos `country_of_origin` (Experimento 9); `nutrition_score` incluida.
+- 20 épocas, seleccionando por semilla el checkpoint de la época con mejor PR-AUC de valid (mismo criterio de "mejor época" del resto del estudio, guardando acá los pesos de esa época concreta para poder evaluarlos en test).
+- 3 semillas (0, 1, 2), promediadas.
+
+### Resultados
+
+`output/test_results.csv`:
+
+| seed | mejor época (por valid) | test PR-AUC | test ROC-AUC |
+|---|---|---|---|
+| 0 | 16 | 0,806 | 0,962 |
+| 1 | 13 | 0,813 | 0,966 |
+| 2 | 15 | 0,809 | 0,967 |
+| **media ± std** | — | **0,809 ± 0,003** | **0,965 ± 0,003** |
+
+Curvas de entrenamiento con el resultado de test superpuesto (`output/final_curves.png`):
+
+![Evaluación final -- train/valid + test](output/final_curves.png)
+
+### Análisis
+
+- **Test confirma lo que decía valid, sin sorpresas.** 0,809 de PR-AUC en test es prácticamente el mismo número que veníamos viendo en valid en las épocas 13-16 (0,80-0,82 en el Experimento 10) -- y con la varianza más baja de todo el estudio (std 0,003 entre semillas). Esto es la mejor señal posible de que las decisiones de arquitectura tomadas en base a valid a lo largo de 11 experimentos no terminaron sobreajustadas a ese split en particular.
+- **Resultado final: PR-AUC de test 0,809 (vs. 0,130 de prevalencia) y ROC-AUC 0,965 (vs. 0,5 de azar)** -- una mejora sustancial sobre no tener modelo, y sobre el punto de partida del Experimento 1 (Transformer de texto solo, mínimo: 0,688 de PR-AUC en valid). El camino completo del estudio de ablación (heads → layers → d_model → dim_feedforward → fusión con tabular → capa oculta de la cabeza → ancho de esa capa → features dudosas → positional encoding) explica de punta a punta cómo se llegó de un punto a otro, con cada paso justificado y medido.
+
+Con esto se cierra el Ejercicio 2. Queda pendiente el Ejercicio 3 (personalización, teórico) y armar la presentación final con este recorrido.

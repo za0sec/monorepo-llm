@@ -25,7 +25,7 @@ Lo que falta acá es **cómo se junta todo eso en una arquitectura concreta** �
 **Por qué 3 particiones y no 2:** el PDF de la consigna lo pide explícitamente ("recordar train/valid/test split"). Además tiene sentido con el Ejercicio 2 (experimentar con configuraciones del modelo):
 - **train**: ajusta los pesos del modelo.
 - **valid**: compara entre configuraciones/experimentos (arquitectura, `d_model`, etc.) durante la iteración.
-- **test**: se toca una sola vez, al final, para el número que se reporta — si se usara valid para elegir la mejor configuración y también para reportar el resultado final, el número quedaría inflado (overfit a valid).
+- **test**: se toca una sola vez, al final, para el número que se reporta — si se usara valid para elegir la mejor configuración y también para reportar el resultado final, el número quedaría inflado (overfit a valid). **Hecho** (ver [`Experimentos.md`](Experimentos.md), sección "Evaluación final en test"): PR-AUC de test 0,809 ± 0,003, prácticamente igual a lo que daba valid con la config ganadora — sin señales de haber sobreajustado las decisiones de arquitectura a valid a lo largo del estudio.
 
 **Precedente en TPs anteriores (SIA-TP5, autoencoders):** usaron **K-fold estratificado** como estrategia principal (entrenar con varios folds y promediar resultados, `mean`/`std` en el output), con un `val_fraction=0.2` (80/20) como caso simple para cuando no se hacían folds (`mlp/data.py::train_val_split`). Esto conecta con algo que también dice el audio de `consigna.VTT` de esta materia: la profesora recomienda "promediar varias corridas (o cross-validation) en vez de una sola ejecución" — o sea, el mismo criterio de TP5 tiene aval acá también.
 

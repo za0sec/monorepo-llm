@@ -380,6 +380,38 @@ El barrido se extendió a 512 en una segunda tanda dentro de este mismo experime
 
 Con la arquitectura del sistema completo ya cerrada de punta a punta (`n_heads=1, n_layers=2, d_model=64, dim_feedforward=64, hidden=256`, ~20 épocas, PR-AUC valid ≈ 0,82), quedan dos frentes: los dials pendientes del Transformer de texto solo (positional encoding, pooling), o evaluar en test una sola vez con esta configuración final, como cierre del estudio de ablación.
 
-Como siempre, esto es una propuesta — lo confirmamos antes de seguir.
+**Sobre esos dos dials pendientes**: se decidió priorizar `positional encoding`, que sí está desarrollado en clase (`transformers.VTT`: "lo hacés para darle un orden a tus tokens", más la motivación de por qué un índice simple no generaliza y la fórmula senoidal), y dejar `pooling` como default bien justificado sin experimento propio -- no tiene una versión "de cátedra" con la que compararlo (ver discusión completa más abajo), y estructuralmente no se puede sacar del todo (alguna forma de reducir la secuencia a un vector es inevitable para clasificar).
+
+## Experimento 11 — con/sin positional encoding
+
+### Alcance
+
+Se corre sobre el **Transformer de texto solo** (arquitectura ganadora de los Experimentos 4/6: `n_heads=1, n_layers=2, d_model=64, dim_feedforward=64`), no sobre el sistema completo -- para aislar el efecto sin que las features tabulares puedan compensar la pérdida de información de orden.
+
+### Arquitectura ([`model.py`](model.py))
+
+`TextEncoder` ahora acepta `use_positional_encoding: bool`. Sin él, se salta la suma del vector senoidal y el embedding entra directo al encoder -- sin parámetros nuevos (el positional encoding es un buffer fijo, no aprendido), así que el conteo de parámetros no cambia entre variantes.
+
+### Resultados
+
+Media ± std sobre 3 semillas (`output/experiment11_results.csv`; `con_positional_encoding` reusa la fila `d_model=64` del Experimento 4, sin reentrenar):
+
+| variante | n_params | valid PR-AUC | valid ROC-AUC | train PR-AUC | gap PR-AUC |
+|---|---|---|---|---|---|
+| con_positional_encoding | 76.865 | 0,724 ± 0,021 | 0,962 ± 0,004 | 0,736 | **0,012 ± 0,014** |
+| sin_positional_encoding | 76.865 | 0,720 ± 0,001 | 0,962 ± 0,001 | 0,893 | 0,174 ± 0,022 |
+
+![Experimento 11 — con/sin positional encoding](output/experiment11_sweep.png)
+
+### Análisis
+
+- **PR-AUC de valid casi no cambia** (0,724 → 0,720, diferencia mínima) -- sacar el positional encoding no le hace perder al modelo casi nada de capacidad de *alcanzar* un buen resultado en valid. Esto en principio sorprende dado el hallazgo de `ejercicio1` sobre el tag de reputación como patrón "posicional" en `title` -- pero puede explicarse porque ese patrón quizás sea más una cuestión de *qué* palabras aparecen juntas (que la atención puede captar igual sin orden, como "bag of words" con contexto) que de *en qué posición exacta* aparecen.
+- **Donde sí hay un efecto enorme es en el overfitting.** El gap se dispara de 0,012 a **0,174** -- train PR-AUC llega a 0,89-0,92 sin positional encoding (contra 0,70-0,76 con él) mientras valid se queda clavado en ~0,72 con una consistencia llamativa entre semillas (std 0,0007, la más baja de todo el estudio). Se ve clarísimo en el gráfico: la curva de train se dispara mientras la de valid queda prácticamente plana.
+- **Hipótesis (no confirmada, para dejar anotada)**: sin información de orden, la atención solo puede agrupar tokens por similitud de contenido -- sin la "grilla" que da el positional encoding, tiene menos restricción estructural para ajustarse a combinaciones específicas de palabras por fila de train en vez de aprender un patrón que generalice. O sea, el positional encoding no está ahí por la performance pico en sí, sino que actúa como una forma de regularización implícita.
+- **Conclusión**: el positional encoding se queda en la arquitectura -- no tanto por el PR-AUC pico (que casi no cambia), sino porque sin él el modelo overfittea muchísimo más rápido y más fuerte, lo cual sería un problema real en un dataset todavía más chico o entrenando más épocas.
+
+### Qué cambiar en el próximo experimento (propuesta a confirmar)
+
+Con esto, los dos frentes pendientes del Transformer de texto quedan resueltos (positional encoding confirmado con datos, pooling documentado como default razonado sin necesidad de experimento). El paso que queda es **evaluar en test una sola vez** con la configuración final completa (`n_heads=1, n_layers=2, d_model=64, dim_feedforward=64, hidden=256`, con `nutrition_score` y sin `country_of_origin` según el Experimento 9), como cierre del estudio de ablación -- test no se toca hasta este punto, según lo acordado en `Notas.md`.
 
 Como siempre, esto es una propuesta — lo confirmamos antes de seguir.

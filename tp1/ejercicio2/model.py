@@ -54,10 +54,11 @@ class TextEncoder(nn.Module):
         dim_feedforward: int,
         max_len: int,
         dropout: float,
+        use_positional_encoding: bool = True,
     ):
         super().__init__()
         self.embedding = nn.Embedding(vocab_size, d_model, padding_idx=0)
-        self.pos_encoding = SinusoidalPositionalEncoding(d_model, max_len)
+        self.pos_encoding = SinusoidalPositionalEncoding(d_model, max_len) if use_positional_encoding else None
         encoder_layer = nn.TransformerEncoderLayer(
             d_model=d_model,
             nhead=n_heads,
@@ -73,7 +74,8 @@ class TextEncoder(nn.Module):
         padding_mask = positions[None, :] >= lengths[:, None]  # True = posición de padding
 
         x = self.embedding(token_ids)
-        x = self.pos_encoding(x)
+        if self.pos_encoding is not None:
+            x = self.pos_encoding(x)
         x = self.encoder(x, src_key_padding_mask=padding_mask)
 
         valid = (~padding_mask).unsqueeze(-1).float()
@@ -92,9 +94,12 @@ class TextTransformerClassifier(nn.Module):
         dim_feedforward: int = 64,
         max_len: int = 45,
         dropout: float = 0.1,
+        use_positional_encoding: bool = True,
     ):
         super().__init__()
-        self.text_encoder = TextEncoder(vocab_size, d_model, n_heads, n_layers, dim_feedforward, max_len, dropout)
+        self.text_encoder = TextEncoder(
+            vocab_size, d_model, n_heads, n_layers, dim_feedforward, max_len, dropout, use_positional_encoding
+        )
         self.output = nn.Linear(d_model, 1)
 
     def forward(self, token_ids: torch.Tensor, lengths: torch.Tensor) -> torch.Tensor:
@@ -127,9 +132,12 @@ class CombinedModel(nn.Module):
         max_len: int = 45,
         dropout: float = 0.1,
         hidden: int = None,
+        use_positional_encoding: bool = True,
     ):
         super().__init__()
-        self.text_encoder = TextEncoder(vocab_size, d_model, n_heads, n_layers, dim_feedforward, max_len, dropout)
+        self.text_encoder = TextEncoder(
+            vocab_size, d_model, n_heads, n_layers, dim_feedforward, max_len, dropout, use_positional_encoding
+        )
         combined_dim = d_model + n_tabular_features
         if hidden is None:
             self.output = nn.Linear(combined_dim, 1)

@@ -110,5 +110,7 @@ Variantes mencionadas en la clase:
 - **Dimensión del MLP** interno de cada encoder (cantidad de neuronas).
 - `d_model` (dimensión interna del modelo — arrancar `< 100` según la consigna).
 
-Sumado a los módulos ya identificados antes en este documento: presencia/ausencia del bloque Transformer de texto (baseline tabular vs. fusión tardía), `country_of_origin`, `nutrition_score` (con/sin, ver `ejercicio1/Notas.md`).
+Sumado a los módulos ya identificados antes en este documento: presencia/ausencia del bloque Transformer de texto (baseline tabular vs. sistema completo), `country_of_origin`, `nutrition_score` (con/sin, ver `ejercicio1/Notas.md`).
+
+**`country_of_origin`/`nutrition_score` corrido (Experimento 9, ver [`Experimentos.md`](Experimentos.md)):** `nutrition_score` aporta señal real (sacarla baja PR-AUC de forma consistente en las 3 semillas, -0,031 en promedio); `country_of_origin` no muestra evidencia clara de aportar (efecto mixto por semilla, -0,005 en promedio, dentro del ruido) -- candidata a sacar del modelo final.
 

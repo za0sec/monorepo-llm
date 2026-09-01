@@ -297,8 +297,50 @@ Curvas de entrenamiento (ahora hasta la época 40), `output/experiment8_curves.p
 - **Con 40 épocas ya se ve el techo que con 20 no se veía**: en el gráfico, valid PR-AUC sube fuerte hasta ~época 20-25 (llega a ~0,78-0,79) y ahí se aplana -- de hecho baja un poco hacia la época 40 (~0,76-0,77 en la media), mientras train sigue subiendo derecho hasta ~0,97. La ganancia de 0,791 (20 épocas) a 0,798 (40 épocas, tomando la mejor época de cada semilla) es chica y viene de picos puntuales de alguna semilla (época 34 en la seed 0) más que de una mejora sostenida de las tres -- **20 épocas ya daban un resultado representativo**, entrenar más no cambia la conclusión, solo agrega ruido y más overfitting (el gap casi se triplica, 0,045 → 0,128).
 - **Conclusión**: la arquitectura queda cerrada en `n_heads=1, n_layers=2, d_model=64, dim_feedforward=64, hidden=64`, con **~20-25 épocas** como rango razonable de entrenamiento (no hace falta ir a 40). Este es el mejor sistema completo encontrado hasta ahora, PR-AUC valid ≈ 0,79.
 
+### Qué cambió respecto al Experimento 8
+
+Con la arquitectura ya cerrada (`n_heads=1, n_layers=2, d_model=64, dim_feedforward=64, hidden=64`, 20 épocas), se pasó a ablacionar dos features tabulares puntuales que quedaron marcadas como "dudosas" desde el EDA de `ejercicio1` por señal univariada débil: `country_of_origin` y `nutrition_score`.
+
+## Experimento 9 — ablation de `country_of_origin` y `nutrition_score`
+
+### Variantes
+
+4 configuraciones, misma arquitectura y semillas que el Experimento 8, sacando columnas por prefijo (`exclude_prefixes` en `train.py`, ver `run_experiment9.py`):
+- `full`: todas las features (= Experimento 8, reentrenado acá para que las 4 variantes salgan de la misma corrida).
+- `sin_country_of_origin`: sin las 10 columnas one-hot de `country_of_origin`.
+- `sin_nutrition_score`: sin `nutrition_score_z`.
+- `sin_ambas`: sin las dos.
+
+### Resultados
+
+Media ± std sobre 3 semillas (`output/experiment9_results.csv`):
+
+| variante | n_params | valid PR-AUC | valid ROC-AUC | gap PR-AUC |
+|---|---|---|---|---|
+| **full** | 85.825 | **0,791 ± 0,006** | 0,970 ± 0,002 | 0,094 ± 0,030 |
+| sin_country_of_origin | 85.185 | 0,786 ± 0,012 | **0,971 ± 0,001** | 0,090 ± 0,023 |
+| sin_ambas | 85.121 | 0,785 ± 0,012 | 0,969 ± 0,002 | **0,076 ± 0,014** |
+| sin_nutrition_score | 85.761 | 0,760 ± 0,019 | 0,968 ± 0,004 | 0,118 ± 0,032 |
+
+Por semilla (para ver si el efecto es consistente o un promedio engañoso):
+
+| variante | seed 0 | seed 1 | seed 2 |
+|---|---|---|---|
+| full | 0,799 | 0,788 | 0,787 |
+| sin_country_of_origin | 0,793 | 0,772 | 0,793 |
+| sin_nutrition_score | 0,741 | 0,760 | 0,778 |
+| sin_ambas | 0,796 | 0,772 | 0,786 |
+
+![Experimento 9 — ablation country_of_origin / nutrition_score](output/experiment9_sweep.png)
+
+### Análisis
+
+- **`nutrition_score` sí aporta señal real -- `country_of_origin` no tanto.** Sacar `nutrition_score` baja PR-AUC en las 3 semillas de forma consistente (0,799→0,741, 0,788→0,760, 0,787→0,778), una caída de 0,031 en promedio que es grande comparada con el desvío de cada punto (~0,006-0,019) -- no parece ruido. Sacar `country_of_origin` en cambio da un resultado mixto por semilla (0,793 vs 0,799 en seed 0, casi igual; 0,772 vs 0,788 en seed 1, baja; 0,793 vs 0,787 en seed 2, sube) y la caída promedio (0,005) es chica frente al desvío -- no hay evidencia clara de que aporte.
+- **Resultado raro que hay que dejar anotado, no esconder**: `sin_ambas` (0,785) queda mejor que `sin_nutrition_score` sola (0,760), cuando lo esperable sería que sacar las dos fuera igual o peor que sacar solo la que más pesa. Mirando semilla por semilla, `sin_ambas` se parece más a `sin_country_of_origin` que a `sin_nutrition_score` en las 3 semillas -- posible interacción entre ambas features (o simplemente ruido de tener solo 3 semillas por variante, que es la explicación más simple). No hay forma de distinguir estas dos lecturas con lo corrido -- si esto importara para la decisión final, habría que correr más semillas para esta comparación puntual, pero no cambia la conclusión principal de abajo.
+- **`country_of_origin` es candidata a sacar del modelo final**: no hay evidencia de que sume, y sacarla achica el modelo (85.825 → 85.185 parámetros) sin costo aparente en PR-AUC. `nutrition_score` en cambio se queda -- hay evidencia consistente de que aporta.
+
 ### Qué cambiar en el próximo experimento (propuesta a confirmar)
 
-Con la arquitectura del sistema completo ya cerrada, los pasos que quedan abiertos de `Notas.md`/discusiones anteriores son: (1) ablacionar `country_of_origin` y `nutrition_score` (features marcadas como "dudosas" desde el EDA de `ejercicio1`, todavía no probadas con/sin en el sistema completo), (2) los dials pendientes del Transformer de texto (positional encoding, pooling), y (3) evaluar en test una sola vez con esta configuración final, como cierre del estudio.
+Con esto, los frentes que quedan abiertos son: (1) los dials pendientes del Transformer de texto (positional encoding, pooling) y (2) evaluar en test una sola vez con la configuración final, como cierre del estudio de ablación. Dado el resultado de este experimento, la config final candidata para ir a test sería `full` sin `country_of_origin` (manteniendo `nutrition_score`) -- a confirmar si la corremos como paso previo a test o si se va directo a test con `full` y se deja esta simplificación como una observación más en la presentación.
 
 Como siempre, esto es una propuesta — lo confirmamos antes de seguir.

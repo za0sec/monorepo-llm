@@ -45,7 +45,9 @@ def plot_dial(ax, summary, dial: str, train_col, valid_col, ylabel: str):
     ax.set_xlabel(dial)
     ax.set_ylabel(ylabel)
     ax.set_xticks(list(positions))
-    ax.set_xticklabels(labels)
+    # rotación para que las etiquetas largas (ej. nombres de variantes de
+    # ablación) no se superpongan entre sí
+    ax.set_xticklabels(labels, rotation=20, ha="right")
     ax.set_xlim(-0.4, len(summary) - 0.6)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)

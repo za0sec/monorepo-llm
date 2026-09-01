@@ -106,11 +106,11 @@ def train_model(seed: int, epochs: int = 20, batch_size: int = 128, lr: float = 
     return model, pd.DataFrame(history)
 
 
-def run(seed: int, epochs: int = 20, **model_kwargs) -> dict:
+def run(seed: int, tag: str, epochs: int = 20, **model_kwargs) -> dict:
     model, history_df = train_model(seed, epochs, **model_kwargs)
 
     os.makedirs(f"{OUTPUT_DIR}/runs", exist_ok=True)
-    history_df.to_csv(f"{OUTPUT_DIR}/runs/exp1_seed{seed}.csv", index=False)
+    history_df.to_csv(f"{OUTPUT_DIR}/runs/{tag}_seed{seed}.csv", index=False)
 
     best = history_df.loc[history_df["valid_pr_auc"].idxmax()]
     n_params = sum(p.numel() for p in model.parameters())
@@ -126,4 +126,4 @@ def run(seed: int, epochs: int = 20, **model_kwargs) -> dict:
 
 
 if __name__ == "__main__":
-    print(run(seed=0, epochs=20))
+    print(run(seed=0, tag="exp1", epochs=20))

@@ -1,12 +1,13 @@
 """
-Gráficos del Experimento 1 -- lee los CSV que genera run_experiment1.py,
+Gráficos de un experimento -- lee los CSV que genera run_experiment<n>.py,
 no recalcula ni reentrena nada (separación cómputo/gráficos, ver
-CLAUDE.md).
+CLAUDE.md). Genérico para cualquier experimento: mismo código de ploteo,
+solo cambia qué runs lee y dónde guarda el resultado.
 
-Genera output/experiment1_curves.png: PR-AUC y ROC-AUC por época,
-promediadas sobre las 3 semillas (± desvío estándar), train vs. valid --
-para diagnosticar over/underfitting comparando ambas curvas.
+Uso: python3 plot_experiment.py <n>   (ej. `python3 plot_experiment.py 2`
+lee output/runs/exp2_seed*.csv y guarda output/experiment2_curves.png)
 """
+import argparse
 import glob
 from typing import Optional
 
@@ -15,19 +16,20 @@ import pandas as pd
 
 OUTPUT_DIR = "output"
 
-# Paleta categórica (ver dataviz skill): slot 1 = train, slot 2 = valid.
 COLOR_TRAIN = "#2a78d6"
 COLOR_VALID = "#eb6834"
 PREVALENCE = 0.1301  # tasa global de `bought`, ver ejercicio2/Notas.md -- referencia de un clasificador sin señal
 
 
-def load_runs() -> pd.DataFrame:
+def load_runs(tag: str) -> pd.DataFrame:
     frames = []
-    for path in sorted(glob.glob(f"{OUTPUT_DIR}/runs/exp1_seed*.csv")):
+    for path in sorted(glob.glob(f"{OUTPUT_DIR}/runs/{tag}_seed*.csv")):
         seed = int(path.split("seed")[1].split(".")[0])
         df = pd.read_csv(path)
         df["seed"] = seed
         frames.append(df)
+    if not frames:
+        raise FileNotFoundError(f"No se encontraron runs para '{tag}' en {OUTPUT_DIR}/runs/")
     return pd.concat(frames, ignore_index=True)
 
 
@@ -51,17 +53,24 @@ def plot_metric(ax, epochs_df, metric: str, ylabel: str, hline: Optional[float] 
 
 
 def main() -> None:
-    history = load_runs()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("experiment", type=int, help="número de experimento (ej. 1, 2)")
+    args = parser.parse_args()
+
+    tag = f"exp{args.experiment}"
+    history = load_runs(tag)
 
     fig, axes = plt.subplots(1, 2, figsize=(11, 4.2))
     plot_metric(axes[0], history, "pr_auc", "PR-AUC", hline=PREVALENCE)
     plot_metric(axes[1], history, "roc_auc", "ROC-AUC", hline=0.5)
     axes[0].legend(frameon=False, loc="lower right")
     axes[1].legend(frameon=False, loc="lower right")
-    fig.suptitle("Experimento 1 -- Transformer de texto puro (media ± desvío sobre 3 semillas)")
+    fig.suptitle(f"Experimento {args.experiment} (media ± desvío sobre {history['seed'].nunique()} semillas)")
     fig.tight_layout()
-    fig.savefig(f"{OUTPUT_DIR}/experiment1_curves.png", dpi=150)
-    print(f"Guardado en {OUTPUT_DIR}/experiment1_curves.png")
+
+    out_path = f"{OUTPUT_DIR}/experiment{args.experiment}_curves.png"
+    fig.savefig(out_path, dpi=150)
+    print(f"Guardado en {out_path}")
 
 
 if __name__ == "__main__":

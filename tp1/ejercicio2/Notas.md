@@ -11,7 +11,7 @@ Lo que falta acá es **cómo se junta todo eso en una arquitectura concreta** �
 
 **Estructura de la carpeta:**
 - `split_data.py`, `encode_features.py`: cómputo de split y encoding (ver secciones de abajo).
-- `model.py`, `train.py`, `run_experiment<n>.py`: arquitectura y entrenamiento de cada experimento (empezando por el Experimento 1, texto puro — ver `Experimentos.md`). `plot_split.py`, `plot_experiment<n>.py`: gráficos, separados del cómputo igual que en `ejercicio1/` — leen CSVs, nunca recalculan ni reentrenan.
+- `model.py`, `train.py`, `run_experiment<n>.py`: arquitectura y entrenamiento de cada experimento (empezando por el Experimento 1, texto puro — ver `Experimentos.md`). `plot_split.py`, `plot_experiment.py`: gráficos, separados del cómputo igual que en `ejercicio1/` — leen CSVs, nunca recalculan ni reentrenan. `plot_experiment.py` es genérico para cualquier experimento (`python3 plot_experiment.py <n>`), no un script por experimento.
 - `data/`: datasets ya encodeados y listos para el modelo (`train.csv`, `valid.csv`, `test.csv`, `vocab.csv`, `preprocessing_stats.csv`).
 - `output/`: resultados — diagnóstico del split (`query_splits.csv`, `split_summary.csv`, `split_balance.png`) y de cada experimento (`experiment<n>_results.csv`, `runs/*.csv` con el historial por época, `experiment<n>_curves.png`).
 - `Experimentos.md`: registro de cada experimento corrido — arquitectura, justificación, resultados, análisis de métricas y qué cambia en el siguiente (para armar la presentación). Este documento (`Notas.md`) se queda con las decisiones de diseño más generales (split, encoding, elección Encoder-only/fusión tardía); los números de cada corrida van en `Experimentos.md`.

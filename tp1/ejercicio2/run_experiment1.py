@@ -18,7 +18,7 @@ EPOCHS = 20
 
 
 def main() -> None:
-    results = [run(seed=seed, epochs=EPOCHS) for seed in SEEDS]
+    results = [run(seed=seed, tag="exp1", epochs=EPOCHS) for seed in SEEDS]
 
     results_df = pd.DataFrame(results)
     results_df.to_csv("output/experiment1_results.csv", index=False)

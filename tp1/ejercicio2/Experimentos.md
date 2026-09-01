@@ -50,10 +50,56 @@ Curvas de entrenamiento (media ± desvío sobre las 3 semillas), `output/experim
 - **No hay una época de corte clara.** La mejor época de valid varía por semilla (19, 15, 18) sin un plateau limpio — con este dataset chico (7012 filas de train) y un modelo de ~10K parámetros, 20 épocas ya alcanzan para empezar a sobreajustar en al menos una semilla.
 - El modelo es chico a propósito (9.889 parámetros) — cumple con "arrancar chico" antes de escalar `d_model`/heads/layers.
 
+### Qué cambió respecto al Experimento 1
+
+Se subió **`n_heads` de 1 a 2**, manteniendo todo lo demás igual (`d_model=16`, `n_layers=1`, `dim_feedforward=64`, mismo pooling/positional encoding/cabeza de salida) — para aislar el efecto de multi-head attention de forma controlada, sin mezclarlo con un cambio de capacidad (`d_model`) o de profundidad (`n_layers`).
+
+## Experimento 2 — `n_heads`: 1 → 2
+
+### Arquitectura ([`model.py`](model.py))
+
+Idéntica a la del Experimento 1 (ver tabla arriba) salvo `n_heads=2`. Con `d_model=16`, esto reparte la atención en 2 subespacios de 8 dimensiones cada uno en vez de uno solo de 16 — la pregunta que responde este experimento es si separar distintos "tipos" de relación entre palabras (ej. el patrón del tag de reputación vs. el resto del texto) ayuda a capturar mejor la señal, o si con un texto tan corto (`MAX_LEN=45`, vocabulario de 410 palabras) un único head ya alcanza.
+
+**Dato relevante para la ablación**: el conteo de parámetros no cambió (9.889, igual que el Experimento 1). Esto es esperable, no un error: las proyecciones Q/K/V/salida de la atención tienen tamaño `d_model × d_model` sin importar en cuántos heads se reparta esa dimensión — heads no es un dial que agregue parámetros, es un dial que **reparte** la misma capacidad ya existente. Es una distinción importante para poder explicar la arquitectura en la presentación.
+
+### Configuración de entrenamiento
+
+Misma que el Experimento 1: Adam (`lr=1e-3`), `batch_size=128`, 20 épocas, 3 semillas (0, 1, 2).
+
+### Resultados
+
+Mejor época de cada semilla (`output/experiment2_results.csv`):
+
+| seed | best_epoch | valid PR-AUC | valid ROC-AUC | train PR-AUC | gap PR-AUC (train-valid) |
+|---|---|---|---|---|---|
+| 0 | 20 | 0,695 | 0,952 | 0,793 | 0,098 |
+| 1 | 20 | 0,689 | 0,959 | 0,769 | 0,080 |
+| 2 | 19 | 0,680 | 0,960 | 0,749 | 0,069 |
+| **media ± std** | — | **0,688 ± 0,007** | **0,957 ± 0,004** | — | **0,082 ± 0,015** |
+
+Comparación directa contra el Experimento 1:
+
+| | Exp. 1 (`n_heads=1`) | Exp. 2 (`n_heads=2`) |
+|---|---|---|
+| valid PR-AUC (media ± std) | 0,688 ± 0,024 | 0,688 ± 0,007 |
+| valid ROC-AUC (media ± std) | 0,954 ± 0,012 | 0,957 ± 0,004 |
+| gap PR-AUC (media ± std) | 0,058 ± 0,049 | 0,082 ± 0,015 |
+
+Curvas de entrenamiento, `output/experiment2_curves.png`:
+
+![Experimento 2 — curvas de entrenamiento](output/experiment2_curves.png)
+
+### Análisis
+
+- **La performance pico no cambió.** PR-AUC de valid queda prácticamente idéntico (0,688 en ambos experimentos) y ROC-AUC sube apenas 0,003 (dentro del ruido). Con `d_model=16` en un texto corto, repartir la atención en 2 heads de 8 dimensiones en vez de 1 de 16 no le agregó capacidad predictiva al modelo — coherente con que heads no suma parámetros, solo reparte los que ya había.
+- **Lo que sí cambió es la estabilidad entre semillas.** El desvío estándar de PR-AUC bajó de 0,024 a 0,007, y el de ROC-AUC de 0,012 a 0,004 — con 2 heads, las 3 corridas convergen a resultados mucho más parecidos entre sí. En el Experimento 1 una sola semilla (seed 0) se alejaba bastante del resto (gap de 0,114 vs. 0,02-0,04 en las otras dos); acá las 3 semillas quedan agrupadas en gaps de 0,07-0,10. Una hipótesis razonable: con un solo head, la inicialización aleatoria de esos mismos 16×16 parámetros puede caer en soluciones más o menos afortunadas de cómo repartir la atención; con 2 heads, forzar de entrada una partición en subespacios más chicos reduce esa variabilidad entre semillas (aunque esto queda como hipótesis a confirmar, no una conclusión cerrada con solo 3 semillas).
+- **El overfitting es levemente peor en promedio (0,058 → 0,082), pero mucho más consistente.** Ya no hay una semilla que se dispare sola (std del gap bajó de 0,049 a 0,015) — las 3 corridas ahora sobreajustan de forma pareja. Esto sugiere que el gap de overfitting depende más de la inicialización/semilla que de si hay 1 o 2 heads en este rango tan chico de `d_model`.
+- **Conclusión de este dial**: en esta configuración (`d_model=16`, texto corto), `n_heads` no es el cuello de botella de performance — es más un dial de estabilidad de entrenamiento que de capacidad. Los próximos dials a probar (`n_layers`, `d_model`) son candidatos más prometedores para mover el PR-AUC pico.
+
 ### Qué cambiar en el próximo experimento (propuesta a confirmar)
 
-Siguiendo el plan acordado (arrancar con esta config mínima y tocar los "diales" de la arquitectura de a uno, según lo que la profesora nombra explícitamente en `consigna.VTT`: heads, encoders apilados, dimensión del MLP, `d_model`), la propuesta para el Experimento 2 es:
+Para mantener el estudio de ablación limpio (poder atribuir cada cambio de métrica a un solo factor), la propuesta es seguir variando **un dial a la vez desde la misma base del Experimento 1** (`n_heads=1`, `d_model=16`, `n_layers=1`, `dim_feedforward=64`) en vez de encadenar cambios sobre el Experimento 2 — así el Experimento 3 sigue siendo comparable directamente contra el Experimento 1, no contra una combinación de heads+otro cambio.
 
-**Subir `n_heads` de 1 a 2** (manteniendo `d_model=16`, `n_layers=1`, `dim_feedforward=64` sin cambios), para aislar el efecto de multi-head attention de forma controlada — es el cambio estructural más chico posible desde acá (no toca la capacidad de representación `d_model` ni la profundidad), y responde una pregunta concreta: ¿ayuda a separar distintos "tipos" de relación entre palabras (ej. el patrón del tag de reputación vs. el resto del texto) tener más de una cabeza de atención, o el gap de overfitting ya observado se agrava con más parámetros?
+**Propuesta: `n_layers` de 1 a 2** (volviendo a `n_heads=1`, manteniendo `d_model=16`, `dim_feedforward=64`), para probar si apilar un segundo bloque Encoder (permitiendo una segunda ronda de atención + feed-forward sobre la salida ya contextualizada del primero) mueve el PR-AUC pico más que lo que movió `n_heads` — a diferencia de heads, apilar capas sí agrega parámetros nuevos (un segundo set completo de Q/K/V/feed-forward), así que también hay que vigilar si el overfitting empeora más rápido.
 
-Esto es una propuesta, no una decisión cerrada — si prefieren arrancar por otro dial (`n_layers`, `dim_feedforward`, `d_model`, o atacar directamente el overfitting con más dropout) lo cambiamos antes de correr el Experimento 2.
+Como siempre, esto es una propuesta — si prefieren probar `d_model` o `dim_feedforward` primero, o combinar heads=2 con otro cambio en vez de volver a la base, lo charlamos antes de correr el Experimento 3.

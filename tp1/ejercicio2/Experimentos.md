@@ -96,10 +96,123 @@ Curvas de entrenamiento, `output/experiment2_curves.png`:
 - **El overfitting es levemente peor en promedio (0,058 → 0,082), pero mucho más consistente.** Ya no hay una semilla que se dispare sola (std del gap bajó de 0,049 a 0,015) — las 3 corridas ahora sobreajustan de forma pareja. Esto sugiere que el gap de overfitting depende más de la inicialización/semilla que de si hay 1 o 2 heads en este rango tan chico de `d_model`.
 - **Conclusión de este dial**: en esta configuración (`d_model=16`, texto corto), `n_heads` no es el cuello de botella de performance — es más un dial de estabilidad de entrenamiento que de capacidad. Los próximos dials a probar (`n_layers`, `d_model`) son candidatos más prometedores para mover el PR-AUC pico.
 
+### Qué cambió respecto al Experimento 1
+
+Se barrieron varios valores de **`n_layers`** (encoders apilados) en una sola tanda, en vez de probar un valor por experimento, para acelerar la iteración: **2, 4 y 8** (valores que la profesora menciona explícitamente en `transformers.VTT` — "apilan N encoders... paper original 6; prueban 2/4/8 también"), más el valor **1** reusado sin reentrenar del Experimento 1 como referencia. El resto de la arquitectura queda fijo en la base del Experimento 1 (`n_heads=1`, `d_model=16`, `dim_feedforward=64`).
+
+**Cambio de metodología a partir de acá**: pedido explícito de correr varios valores y quedarse con el mejor, en vez de aislar cada dial contra la base fija del Experimento 1 uno por uno. A partir del Experimento 4, cada nuevo dial se prueba sobre **la mejor configuración encontrada hasta el momento** (búsqueda greedy / coordinate-ascent: se fija lo ya decidido y se optimiza el siguiente dial), no contra la base original en paralelo. Esto es más rápido y da directamente una arquitectura final, a costa de que los dials ya no quedan perfectamente aislados entre sí (ej. si el mejor `d_model` resultara distinto partiendo de `n_layers=1` en vez de `n_layers=2`, no lo vamos a ver) — trade-off consciente entre rigurosidad del estudio de ablación y tiempo disponible, a explicar así en la presentación.
+
+## Experimento 3 — barrido de `n_layers`: 1 (Exp. 1) / 2 / 4 / 8
+
+### Arquitectura ([`model.py`](model.py))
+
+Igual que el Experimento 1 salvo `n_layers` variable. Apilar encoders es distinto de agregar heads: cada capa nueva agrega un set completo de proyecciones Q/K/V/salida + feed-forward propio (no reparte parámetros existentes, los suma) — por eso acá sí se espera que cambie tanto la capacidad como el riesgo de overfitting, a diferencia de lo que se vio con `n_heads` en el Experimento 2.
+
+### Configuración de entrenamiento
+
+Misma que los experimentos anteriores: Adam (`lr=1e-3`), `batch_size=128`, 20 épocas, 3 semillas (0, 1, 2) por valor de `n_layers`.
+
+### Resultados
+
+Media ± std sobre 3 semillas, por valor de `n_layers` (`output/experiment3_results.csv`):
+
+| `n_layers` | n_params | valid PR-AUC | valid ROC-AUC | gap PR-AUC |
+|---|---|---|---|---|
+| 1 (Exp. 1) | 9.889 | 0,688 ± 0,024 | 0,954 ± 0,012 | 0,058 ± 0,049 |
+| **2** | 13.169 | **0,696 ± 0,018** | 0,953 ± 0,012 | **0,028 ± 0,042** |
+| 4 | 19.729 | 0,651 ± 0,025 | 0,950 ± 0,006 | 0,065 ± 0,032 |
+| 8 | 32.849 | 0,650 ± 0,053 | 0,947 ± 0,009 | 0,055 ± 0,035 |
+
+Barrido completo, `output/experiment3_sweep.png` (círculo = mejor valor por PR-AUC de valid):
+
+![Experimento 3 — barrido de n_layers](output/experiment3_sweep.png)
+
+### Análisis
+
+- **`n_layers=2` gana en PR-AUC de valid** (0,696, contra 0,688 de la base) **y además generaliza mejor**: tiene el gap de overfitting más chico de los 4 valores probados (0,028, la mitad que la base). No es solo "el mejor número" — es una mejora consistente en dos frentes a la vez, lo cual la hace una elección sólida.
+- **Matiz**: en ROC-AUC, `n_layers=1` queda apenas arriba (0,954 vs. 0,953) — diferencia mínima, dentro del solapamiento de los desvíos estándar. No contradice la elección de `n_layers=2` (PR-AUC sigue siendo la métrica de diagnóstico principal por el desbalance de clases, ver discusión de `Notas.md`), pero vale aclararlo: no es que `n_layers=2` gane en todo, gana en la métrica que más importa acá.
+- **Más profundidad no ayudó — de hecho, empeoró.** Con `n_layers=4` y `8` tanto PR-AUC como ROC-AUC bajan de forma monótona, y la variabilidad entre semillas crece fuerte en `n_layers=8` (std de PR-AUC 0,053, más del doble que en `n_layers=2`). Con un dataset chico (7.012 filas de train) y secuencias cortas (`MAX_LEN=45`), apilar más encoders agrega parámetros (hasta 32.849 en `n_layers=8`, 3,3x la base) sin que haya más señal para aprovecharlos — el resultado es un modelo más difícil de optimizar de forma estable en pocas épocas, no uno con más capacidad útil.
+- **Conclusión de este dial**: `n_layers=2` queda como la configuración ganadora. A partir de acá, la arquitectura base para seguir ablacionando es `n_heads=1`, `n_layers=2`, `d_model=16`, `dim_feedforward=64`.
+
+### Qué cambió respecto al Experimento 3
+
+Con `n_heads` (Exp. 2, sin efecto en el pico) y `n_layers` (Exp. 3, ganador `n_layers=2`) ya explorados, quedan los dos dials de capacidad: **`d_model`** (ancho del stream que atraviesa todo el bloque -- embeddings, Q/K/V, entrada/salida de cada sub-capa) y **`dim_feedforward`** (ancho interno del MLP posicional de cada encoder, ver discusión de por qué están relacionados más abajo). Se corrieron **por separado** (Experimento 4: solo `d_model`; Experimento 5: solo `dim_feedforward`) para no mezclar sus efectos, con el plan de recién combinarlos en un tercer experimento si la evidencia lo pide -- ver el análisis conjunto al final.
+
+Base fija para ambos (la ganadora del Experimento 3): `n_heads=1`, `n_layers=2`.
+
+## Experimento 4 — barrido de `d_model`: 8 / 16 (Exp. 3) / 32 / 64
+
+`dim_feedforward=64` fijo (el valor de la base). Valores probados dentro del límite `<100` que sugiere la consigna, subiendo de a poco desde el mínimo (8) explorado hasta ahora.
+
+Media ± std sobre 3 semillas (`output/experiment4_results.csv`):
+
+| `d_model` | n_params | valid PR-AUC | valid ROC-AUC | gap PR-AUC |
+|---|---|---|---|---|
+| 8 | 6.137 | 0,665 ± 0,016 | 0,947 ± 0,003 | 0,004 ± 0,039 |
+| 16 (Exp. 3) | 13.169 | 0,696 ± 0,018 | 0,953 ± 0,011 | 0,028 ± 0,042 |
+| 32 | 30.305 | 0,710 ± 0,022 | **0,964 ± 0,001** | 0,044 ± 0,047 |
+| **64** | 76.865 | **0,724 ± 0,021** | 0,962 ± 0,004 | 0,012 ± 0,014 |
+
+![Experimento 4 — barrido de d_model](output/experiment4_sweep.png)
+
+**PR-AUC sube de forma monótona en todo el rango probado** -- todavía no se ve una meseta ni una caída, `d_model=64` es el mejor de los 4 y el gap de overfitting ahí es chico (0,012, comparable al de `d_model=8`). Esto sugiere que el modelo venía short de capacidad de representación en `d_model=16` y que **el techo de este dial probablemente esté más allá de 64** -- diferente de lo que pasó con `n_layers`, donde más no ayudaba. En ROC-AUC el pico está en `d_model=32` (0,964) y baja levemente en 64 (0,962), aunque la diferencia es chica.
+
+## Experimento 5 — barrido de `dim_feedforward`: 16 / 32 / 64 (Exp. 3) / 128
+
+`d_model=16` fijo (la base, no la ganadora de d_model del Experimento 4 -- ver nota metodológica abajo).
+
+Media ± std sobre 3 semillas (`output/experiment5_results.csv`):
+
+| `dim_feedforward` | n_params | valid PR-AUC | valid ROC-AUC | gap PR-AUC |
+|---|---|---|---|---|
+| 16 | 10.001 | 0,680 ± 0,051 | **0,954 ± 0,007** | 0,064 ± 0,044 |
+| 32 | 11.057 | 0,674 ± 0,035 | 0,954 ± 0,007 | 0,063 ± 0,027 |
+| **64 (Exp. 3)** | 13.169 | **0,696 ± 0,018** | 0,953 ± 0,011 | 0,028 ± 0,042 |
+| 128 | 17.393 | 0,688 ± 0,017 | 0,953 ± 0,006 | 0,049 ± 0,058 |
+
+![Experimento 5 — barrido de dim_feedforward](output/experiment5_sweep.png)
+
+**Acá sí hay un pico interior**, no una tendencia monótona: `dim_feedforward=64` (la proporción 4x sobre `d_model=16` del paper original) gana, y tanto 32 (2x, por debajo) como 128 (8x, por encima) quedan peor. ROC-AUC prácticamente no se mueve en todo el rango (0,953-0,954, dentro del ruido). Esto confirma la intuición de la sección anterior de `Notas.md`: `dim_feedforward` no es "cuanto más mejor" de forma libre, tiene un punto óptimo relacionado con `d_model` -- consistente con la idea de que un feed-forward angosto es un cuello de botella y uno demasiado ancho agrega parámetros sin beneficio claro (y algo de riesgo de overfitting: el gap sube a 0,049 en `dim_feedforward=128`).
+
+### Análisis conjunto -- ¿hace falta un Experimento 6 combinando ambos?
+
+Este era justamente el punto que se planteó antes de correr el 4 y el 5: si los dos muestran que sus valores óptimos dependen uno del otro, hay que combinarlos.
+
+La evidencia apunta a que sí, por lo siguiente: en el Experimento 5 (con `d_model=16` fijo) el óptimo de `dim_feedforward` fue 64 -- exactamente la proporción 4x. Pero el Experimento 4 mantuvo `dim_feedforward=64` fijo mientras subía `d_model`, así que en el punto ganador (`d_model=64`) la proporción real terminó siendo **1x**, no 4x -- y aun así fue el mejor resultado de todo lo corrido hasta ahora (PR-AUC 0,724). Dos lecturas posibles, y no podemos distinguirlas con lo que corrimos:
+
+1. La proporción 4x importa, y `d_model=64` con `dim_feedforward=256` (manteniendo el 4x) daría un resultado todavía mejor que 0,724.
+2. La proporción no es tan determinante como sugería el Experimento 5 a `d_model=16` -- lo que importa es la capacidad absoluta de `d_model`, y `dim_feedforward=64` ya alcanza como "suficiente" ancho de MLP en el rango que probamos.
+
+No hay forma de saber cuál es cierta sin probar directamente `d_model=64` con `dim_feedforward` escalado. **Conclusión: sí hace falta el Experimento 6.**
+
+### Qué cambió respecto a los Experimentos 4 y 5
+
+Se probó puntualmente si escalar `dim_feedforward` junto con `d_model` (manteniendo la proporción 4x) mejora los mejores puntos del Experimento 4, en vez de un grid completo (4x4 combinaciones x 3 semillas = 48 corridas habría sido demasiado para lo que responde esta pregunta puntual).
+
+## Experimento 6 — ¿escalar `dim_feedforward` junto con `d_model`?
+
+Dos combinaciones nuevas, manteniendo `n_heads=1`, `n_layers=2`: `d_model=32` con `dim_feedforward=128` (4x), y `d_model=64` con `dim_feedforward=256` (4x). Comparadas contra las mismas filas de `d_model=32` y `64` del Experimento 4 (`dim_feedforward=64` fijo ahí, o sea 2x y 1x respectivamente).
+
+Media ± std sobre 3 semillas (`output/experiment6_results.csv`):
+
+| `d_model` | `dim_feedforward` | proporción | n_params | valid PR-AUC | valid ROC-AUC | gap PR-AUC |
+|---|---|---|---|---|---|---|
+| 32 | 64 (Exp. 4) | 2x | 30.305 | 0,710 ± 0,022 | 0,964 ± 0,001 | 0,044 ± 0,047 |
+| 32 | 128 | 4x | 38.625 | 0,713 ± 0,025 | 0,962 ± 0,004 | 0,049 ± 0,004 |
+| 64 | 64 (Exp. 4) | 1x | 76.865 | **0,724 ± 0,021** | 0,962 ± 0,004 | **0,012 ± 0,014** |
+| 64 | 256 | 4x | 126.401 | 0,721 ± 0,025 | 0,963 ± 0,003 | 0,099 ± 0,070 |
+
+![Experimento 6 — comparación](output/experiment6_comparison.png)
+
+### Análisis
+
+- **PR-AUC casi no cambia al escalar `dim_feedforward`** en ninguno de los dos `d_model` (32: 0,710→0,713; 64: 0,724→0,721) — las diferencias están completamente dentro del desvío estándar de cada punto (~0,02). El panel izquierdo del gráfico lo muestra claro: las barras son prácticamente idénticas en altura.
+- **Donde sí hay un efecto real y grande es en el overfitting**, y va en la dirección contraria a lo esperado: en `d_model=64`, pasar de `dim_feedforward=64` a `256` casi **octuplica** el gap de generalización (0,012 → 0,099), con además mucha más varianza entre semillas (std 0,070). Son 126.401 parámetros contra 76.865 filas efectivas de entrenamiento un orden de magnitud menor — el feed-forward más ancho agrega capacidad que el modelo termina memorizando en vez de generalizar, sin que la performance de valid lo compense.
+- **Conclusión: gana la hipótesis 2.** La proporción 4x que fue determinante en el Experimento 5 (a `d_model=16` fijo) **no se sostiene** al escalar `d_model` — ahí lo que pesa es la capacidad absoluta de `d_model`, y `dim_feedforward=64` ya alcanza como ancho de MLP en todo el rango probado (16 a 64). Escalarlo junto con `d_model` no ayuda y en el punto más grande directamente perjudica la generalización.
+- **Este dial queda cerrado**: `d_model=64`, `dim_feedforward=64` es la configuración ganadora (PR-AUC valid 0,724 ± 0,021, el mejor resultado de todos los experimentos corridos hasta ahora). La arquitectura base para seguir es `n_heads=1`, `n_layers=2`, `d_model=64`, `dim_feedforward=64`.
+
 ### Qué cambiar en el próximo experimento (propuesta a confirmar)
 
-Para mantener el estudio de ablación limpio (poder atribuir cada cambio de métrica a un solo factor), la propuesta es seguir variando **un dial a la vez desde la misma base del Experimento 1** (`n_heads=1`, `d_model=16`, `n_layers=1`, `dim_feedforward=64`) en vez de encadenar cambios sobre el Experimento 2 — así el Experimento 3 sigue siendo comparable directamente contra el Experimento 1, no contra una combinación de heads+otro cambio.
+Con `n_heads`, `n_layers`, `d_model` y `dim_feedforward` ya explorados sobre el Transformer de texto puro, los dials que quedan de la lista de `Notas.md` son de otro tipo: el **positional encoding** (senoidal vs. otra variante, o sacarlo) y el **pooling** (mean-pooling vs. otras opciones) -- ambos dials que quedaron pendientes desde el Experimento 1. Alternativamente, ya se agotó lo razonable del Transformer solo con texto y correspondería pasar a la **fusión tardía con las features tabulares** (la arquitectura completa que se va a entregar, ver `Notas.md`), usando esta config ganadora como la rama de texto.
 
-**Propuesta: `n_layers` de 1 a 2** (volviendo a `n_heads=1`, manteniendo `d_model=16`, `dim_feedforward=64`), para probar si apilar un segundo bloque Encoder (permitiendo una segunda ronda de atención + feed-forward sobre la salida ya contextualizada del primero) mueve el PR-AUC pico más que lo que movió `n_heads` — a diferencia de heads, apilar capas sí agrega parámetros nuevos (un segundo set completo de Q/K/V/feed-forward), así que también hay que vigilar si el overfitting empeora más rápido.
-
-Como siempre, esto es una propuesta — si prefieren probar `d_model` o `dim_feedforward` primero, o combinar heads=2 con otro cambio en vez de volver a la base, lo charlamos antes de correr el Experimento 3.
+Como siempre, esto es una propuesta — lo confirmamos antes de seguir.

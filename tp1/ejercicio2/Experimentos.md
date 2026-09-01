@@ -343,4 +343,43 @@ Por semilla (para ver si el efecto es consistente o un promedio engañoso):
 
 Con esto, los frentes que quedan abiertos son: (1) los dials pendientes del Transformer de texto (positional encoding, pooling) y (2) evaluar en test una sola vez con la configuración final, como cierre del estudio de ablación. Dado el resultado de este experimento, la config final candidata para ir a test sería `full` sin `country_of_origin` (manteniendo `nutrition_score`) -- a confirmar si la corremos como paso previo a test o si se va directo a test con `full` y se deja esta simplificación como una observación más en la presentación.
 
+### Qué cambió respecto al Experimento 9
+
+Antes de dar por cerrada la arquitectura, se volvió sobre un cabo suelto: la cabeza de salida (`hidden=64` en el Experimento 8) se había fijado probando un solo valor, no con un barrido como los demás dials de capacidad (`d_model`, `dim_feedforward`, `n_layers`) -- inconsistente con el resto del estudio. Se chequeó además si el material de cátedra prescribe alguna arquitectura de cabeza de clasificación sobre un Encoder-only y no aparece (`transformers.VTT` solo menciona de pasada que un Transformer "puede ser clasificación también"; en `consigna.VTT` un compañero preguntó exactamente esto y la respuesta fue "tienen que pensar dónde iría" -- se lo devolvieron al grupo a propósito). O sea que ni `Linear` directo ni `Linear+ReLU+Linear` son "la versión de la cátedra"; corresponde tratarlo como un dial más y barrerlo.
+
+## Experimento 10 — barrido de `hidden` (ancho de la capa oculta de la cabeza)
+
+### Arquitectura
+
+Igual que el Experimento 9 (`full`, con `country_of_origin` y `nutrition_score`), variando solo `hidden`. `hidden=0` representa "sin capa oculta" (`Linear` directo, Experimento 7); los demás valores agregan `Linear(139→hidden) → ReLU → Dropout → Linear(hidden→1)`.
+
+### Resultados
+
+Media ± std sobre 3 semillas (`output/experiment10_results.csv`; `hidden=0` reusa el Experimento 7, `hidden=64` reusa la fila `full` del Experimento 9 -- ambos a 20 épocas, misma arquitectura de base, sin reentrenar):
+
+| `hidden` | n_params | valid PR-AUC | valid ROC-AUC | gap PR-AUC |
+|---|---|---|---|---|
+| 0 (Exp. 7) | 76.940 | 0,718 ± 0,023 | 0,967 ± 0,002 | 0,045 ± 0,024 |
+| 32 | 81.313 | 0,729 ± 0,005 | 0,968 ± 0,000 | 0,084 ± 0,010 |
+| 64 (Exp. 9 `full`) | 85.825 | 0,791 ± 0,006 | 0,970 ± 0,002 | 0,094 ± 0,030 |
+| 128 | 94.849 | 0,798 ± 0,007 | 0,971 ± 0,002 | 0,110 ± 0,007 |
+| 256 | 112.897 | 0,816 ± 0,013 | 0,973 ± 0,002 | 0,111 ± 0,020 |
+| **512** | 148.993 | **0,820 ± 0,007** | **0,975 ± 0,001** | 0,104 ± 0,003 |
+
+El barrido se extendió a 512 en una segunda tanda dentro de este mismo experimento, porque en 256 todavía no se veía meseta -- ver análisis.
+
+![Experimento 10 — barrido de hidden](output/experiment10_sweep.png)
+
+### Análisis
+
+- **Con 512 recién aparece la meseta que en 256 no se veía.** El incremento 128→256 había sido +0,018; el de 256→512 es +0,004 -- un orden de magnitud más chico, y dentro del solapamiento de los desvíos estándar de ambos puntos. En el gráfico se ve clarísimo: tanto train como valid se aplanan entre 256 y 512, después de subir sostenido en todo el resto del barrido.
+- **`hidden=512` es la mejor marca de todo el estudio** (PR-AUC valid 0,820 ± 0,007), pero por un margen chico sobre `hidden=256` (0,816) a cambio de 36.096 parámetros más (112.897 → 148.993, ya 21x las 7.012 filas de train). El gap de overfitting incluso baja un poco (0,111 → 0,104) y con la varianza más baja de todo el barrido (std 0,003) -- un resultado más estable, no más overfitteado, pero la ganancia de PR-AUC ya no justifica claramente seguir agrandando.
+- **Conclusión: este dial queda cerrado en la meseta, no en el extremo probado.** A diferencia de `d_model` (que se cerró en el límite superior probado sin encontrar techo), acá sí se encontró un techo real: seguir subiendo `hidden` más allá de 512 previsiblemente sigue dando mejoras cada vez más chicas, sin justificar el costo. `hidden=256` o `512` son ambas defendibles como elección final (diferencia de 0,004 en PR-AUC); se prioriza **`hidden=256`** por el mismo criterio de "arrancar chico" que guio el resto del estudio, dejando `512` documentado como el punto de referencia que confirma la meseta.
+
+### Qué cambiar en el próximo experimento (propuesta a confirmar)
+
+Con la arquitectura del sistema completo ya cerrada de punta a punta (`n_heads=1, n_layers=2, d_model=64, dim_feedforward=64, hidden=256`, ~20 épocas, PR-AUC valid ≈ 0,82), quedan dos frentes: los dials pendientes del Transformer de texto solo (positional encoding, pooling), o evaluar en test una sola vez con esta configuración final, como cierre del estudio de ablación.
+
+Como siempre, esto es una propuesta — lo confirmamos antes de seguir.
+
 Como siempre, esto es una propuesta — lo confirmamos antes de seguir.

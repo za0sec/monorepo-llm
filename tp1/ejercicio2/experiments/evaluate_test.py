@@ -14,8 +14,20 @@ Config final (ver Experimentos.md para el detalle de cada experimento):
   métrica) para poder evaluar ese modelo concreto en test.
 - 3 semillas, promediadas (consigna.VTT: no reportar una sola corrida).
 
+`bought` a nivel fila es la variable con la que se entrena y se mide
+PR-AUC/ROC-AUC (ver Notas.md), pero lo que pide la consigna es el BTR de
+una búsqueda -- el promedio de `bought` (o de la probabilidad predicha)
+agrupando por query_id. Ese agregado no se calculaba en ningún lado del
+estudio (Experimentos 1 a 11 solo miran la métrica a nivel fila), así que
+acá, sobre las mismas 3 corridas ya entrenadas, se agrupan las
+predicciones de test por query_id y se compara BTR real vs. predicho por
+búsqueda -- sin reentrenar ni tocar test una segunda vez.
+
 Guarda:
-- output/test_results.csv: PR-AUC/ROC-AUC de test por semilla.
+- output/test_results.csv: PR-AUC/ROC-AUC de test por semilla (fila) más
+  MAE y correlación de Pearson del BTR agregado por query_id.
+- output/btr_test.csv: una fila por (semilla, query_id) con el BTR real y
+  el predicho de esa búsqueda, para el scatter de plots/plot_btr_test.py.
 - output/runs/final_seed<semilla>.csv: historial por época (train/valid),
   mismo formato que el resto de los experimentos.
 """
@@ -96,9 +108,33 @@ def train_and_select_best(seed: int):
     return model, pd.DataFrame(history), best_epoch, len(tabular_cols)
 
 
+@torch.no_grad()
+def predict_test(model, loader) -> np.ndarray:
+    """Probabilidad predicha (sigmoid del logit) fila por fila, en el mismo
+    orden que test.csv (el loader no mezcla, shuffle=False)."""
+    model.eval()
+    preds = []
+    for tokens, lengths, tabular, _bought in loader:
+        logits = forward(model, "combined", tokens, lengths, tabular)
+        preds.append(torch.sigmoid(logits).numpy())
+    return np.concatenate(preds)
+
+
+def btr_by_query(query_ids: np.ndarray, bought: np.ndarray, pred: np.ndarray) -> pd.DataFrame:
+    """Agrupa fila->búsqueda: BTR real (promedio de bought) vs. predicho
+    (promedio de la probabilidad predicha), una fila por query_id."""
+    df = pd.DataFrame({"query_id": query_ids, "bought": bought, "pred": pred})
+    return df.groupby("query_id").agg(
+        n_rows=("bought", "size"), btr_real=("bought", "mean"), btr_predicted=("pred", "mean")
+    ).reset_index()
+
+
 def main() -> None:
     results = []
+    btr_frames = []
     os.makedirs(f"{OUTPUT_DIR}/runs", exist_ok=True)
+
+    test_query_ids = pd.read_csv(f"{DATA_DIR}/test.csv")["query_id"].to_numpy()
 
     for seed in SEEDS:
         model, history_df, best_epoch, n_tabular = train_and_select_best(seed)
@@ -107,6 +143,13 @@ def main() -> None:
         test_tokens, test_lengths, test_tabular, test_bought, _ = load_split("test", EXCLUDE_PREFIXES)
         test_loader = make_loader(test_tokens, test_lengths, test_tabular, test_bought, BATCH_SIZE, shuffle=False)
         test_metrics = evaluate(model, test_loader, "combined")
+
+        test_pred = predict_test(model, test_loader)
+        btr = btr_by_query(test_query_ids, test_bought, test_pred)
+        btr_mae = (btr["btr_real"] - btr["btr_predicted"]).abs().mean()
+        btr_corr = btr["btr_real"].corr(btr["btr_predicted"])
+        btr["seed"] = seed
+        btr_frames.append(btr)
 
         n_params = sum(p.numel() for p in model.parameters())
         results.append(
@@ -117,17 +160,24 @@ def main() -> None:
                 "best_epoch": best_epoch,
                 "test_pr_auc": test_metrics["pr_auc"],
                 "test_roc_auc": test_metrics["roc_auc"],
+                "test_btr_mae": btr_mae,
+                "test_btr_pearson_r": btr_corr,
             }
         )
         print(
             f"[final seed={seed}] TEST pr_auc={test_metrics['pr_auc']:.4f} roc_auc={test_metrics['roc_auc']:.4f} "
-            f"(mejor época: {best_epoch})"
+            f"btr_mae={btr_mae:.4f} btr_r={btr_corr:.4f} (mejor época: {best_epoch})"
         )
 
     results_df = pd.DataFrame(results)
     results_df.to_csv(f"{OUTPUT_DIR}/test_results.csv", index=False)
 
-    summary = results_df[["test_pr_auc", "test_roc_auc"]].agg(["mean", "std"])
+    btr_df = pd.concat(btr_frames, ignore_index=True)
+    btr_df.to_csv(f"{OUTPUT_DIR}/btr_test.csv", index=False)
+
+    summary = results_df[["test_pr_auc", "test_roc_auc", "test_btr_mae", "test_btr_pearson_r"]].agg(
+        ["mean", "std"]
+    )
     print(summary)
 
 

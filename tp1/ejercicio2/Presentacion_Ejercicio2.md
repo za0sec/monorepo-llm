@@ -470,7 +470,7 @@ Evolución del PR-AUC de valid en los hitos principales del estudio (config gana
 
 **Configuración**: la ganadora de todo el estudio de ablación (Experimentos 1 a 11), evaluada **una sola vez** sobre `data/test.csv` — hasta este punto test no se había tocado, solo train/valid. Mismo criterio de selección de mejor época por semilla que en el resto del estudio; 3 semillas promediadas.
 
-**Resultados:**
+**Resultados a nivel fila (`bought`):**
 
 | seed | mejor época (por valid) | test PR-AUC | test ROC-AUC |
 |---|---|---|---|
@@ -483,6 +483,19 @@ Evolución del PR-AUC de valid en los hitos principales del estudio (config gana
 - **Test confirma lo que decía valid, sin sorpresas.** 0,809 es prácticamente el mismo número que se venía viendo en valid en las épocas 13-16 (0,80-0,82 en el Experimento 10), y con la varianza más baja de todo el estudio (std 0,003). Es la mejor señal posible de que las decisiones de arquitectura tomadas en base a valid a lo largo de 11 experimentos no terminaron sobreajustadas a ese split en particular — si lo hubieran estado, test habría dado un número notablemente más bajo.
 - **Resultado final: PR-AUC de test 0,809** (vs. 0,130 de prevalencia — el nivel de un modelo sin ninguna señal) **y ROC-AUC 0,965** (vs. 0,5 de azar).
 - Mejora sustancial sobre el punto de partida del Experimento 1 (0,688 de PR-AUC en valid, con texto solo y config mínima) — el camino completo (heads → layers → `d_model` → `dim_feedforward` → fusión con tabular → capa oculta de la cabeza → ancho de esa capa → features dudosas → positional encoding) explica de punta a punta cómo se llegó de un punto a otro, con cada paso medido y justificado.
+
+**BTR agregado por búsqueda — lo que realmente pide la consigna.** `bought` a nivel fila es la variable con la que se entrena y se mide PR-AUC/ROC-AUC (ver sección 3), pero el Ejercicio 2 pide predecir el BTR de una búsqueda, que es el promedio de `bought` (o de la probabilidad predicha) agrupando por `query_id` — un agregado que no se había calculado en ningún experimento anterior (1 a 11 miran solo la métrica a nivel fila). Se calculó sobre las mismas 3 corridas ya entrenadas (mismos pesos de la mejor época por semilla, sin reentrenar ni tocar test una segunda vez): se agrupan las predicciones de test por `query_id` y se compara el BTR real de cada búsqueda contra el promedio de las probabilidades predichas de sus filas.
+
+| métrica (BTR por búsqueda, 302 queries de test) | media ± std (3 semillas) |
+|---|---|
+| MAE (error absoluto medio) | 0,067 ± 0,002 |
+| Correlación de Pearson | 0,762 ± 0,014 |
+
+![BTR por búsqueda en test — real vs. predicho, 3 semillas](output/btr_test_scatter.png)
+
+**Interpretación:**
+- El modelo agarra bien la tendencia general (r=0,76, se nota la nube de puntos subiendo de izquierda a derecha) y el error típico por búsqueda es chico en términos absolutos (MAE de 0,067, es decir ~7 puntos porcentuales).
+- **Tiende a sobreestimar el BTR de las búsquedas con `bought` real muy bajo o cero** — se ve la columna de puntos en `btr_real=0` con predicciones dispersas hasta 0,3-0,45. Tiene sentido: el modelo se entrena a nivel fila (clasificar cada producto individual), no optimiza directamente para acertar el promedio agregado de una búsqueda — y varias queries de test tienen pocas filas, donde el promedio real es más sensible a un solo caso.
 - La consigna aclara explícitamente que no hace falta que el BTR se prediga "perfecto" — se evalúa el abordaje y la iteración, no el resultado final en sí.
 
 ---

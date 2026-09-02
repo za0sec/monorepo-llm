@@ -4,11 +4,16 @@ Corre el Experimento 6 (ver Experimentos.md): prueba si escalar
 paper original) mejora el resultado de los mejores `d_model` del
 Experimento 4, en vez de dejar `dim_feedforward=64` fijo como se hizo ahí.
 
-Combinaciones nuevas probadas:
+Combinaciones probadas:
 - d_model=32, dim_feedforward=128 (4x -- en el Exp. 4 este d_model tenía
   dim_feedforward=64, o sea 2x)
 - d_model=64, dim_feedforward=256 (4x -- en el Exp. 4 este d_model tenía
   dim_feedforward=64, o sea 1x, y fue el mejor resultado hasta ahora)
+- d_model=128, dim_feedforward=128 (1x -- misma proporción que ganó en
+  d_model=64) y dim_feedforward=512 (4x) -- extensión sobre el nuevo
+  d_model que agregó el Experimento 4, para chequear si la conclusión de
+  "la proporción no importa, gana la capacidad absoluta" se sostiene
+  también en este punto más grande.
 
 Se comparan contra las filas ya corridas de esos mismos d_model con
 dim_feedforward=64 (Experimento 4), reusadas sin reentrenar.
@@ -21,7 +26,7 @@ import pandas as pd
 
 from train import run
 
-CONFIGS = [(32, 128), (64, 256)]
+CONFIGS = [(32, 128), (64, 256), (128, 128), (128, 512)]
 SEEDS = [0, 1, 2]
 EPOCHS = 20
 
@@ -30,7 +35,7 @@ def main() -> None:
     results = []
 
     baseline = pd.read_csv("output/experiment4_results.csv")
-    baseline = baseline[baseline["d_model"].isin([32, 64])].copy()
+    baseline = baseline[baseline["d_model"].isin([32, 64, 128])].copy()
     baseline["dim_feedforward"] = 64
     results.append(baseline)
 

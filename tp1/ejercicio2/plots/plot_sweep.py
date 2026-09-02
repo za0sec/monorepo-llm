@@ -6,8 +6,8 @@ CLAUDE.md). Genérico: cualquier experimento que barra un solo dial y guarde
 sus resultados con las columnas estándar de train.py::run() puede
 reusarlo.
 
-Uso: python3 plot_sweep.py <csv> <columna_del_dial>
-  (ej. `python3 plot_sweep.py output/experiment3_results.csv n_layers`)
+Uso (desde ejercicio2/): python3 plots/plot_sweep.py <csv> <columna_del_dial>
+  (ej. `python3 plots/plot_sweep.py output/experiment3_results.csv n_layers`)
 """
 import argparse
 import os

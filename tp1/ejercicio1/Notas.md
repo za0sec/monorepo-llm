@@ -2,6 +2,13 @@
 
 Notas de trabajo, en construcción. Objetivo: dejar registrado el *por qué* de cada decisión para el informe final, no solo el resultado.
 
+**Estructura de la carpeta** (misma convención que `ejercicio2/`, ver separación cómputo/gráficos del `CLAUDE.md`):
+- `experiments/`: cómputo — `vocab_eda.py` (tamaño de vocabulario para la decisión de tokenización), `presentation_extra_eda.py` (datos crudos para los 3 gráficos de la presentación). Ninguno de los dos grafica, solo escriben CSV a `output/`.
+- `plots/`: gráficos — `plot_vocab.py`, `plot_presentation_extra.py`. Leen los CSV de `output/`, nunca recalculan.
+- `output/`: CSVs y PNGs generados por ambos.
+
+Todos los scripts asumen que se corren desde `ejercicio1/` (no desde adentro de `experiments/`/`plots/`): ej. `python3 experiments/vocab_eda.py`, `python3 plots/plot_vocab.py`.
+
 ## Unidad de análisis y variable objetivo
 
 Cada fila del CSV **no es una búsqueda (`query_id`) completa** — es **un producto puntual mostrado como resultado dentro de una búsqueda**. Cada búsqueda (`query_id`) tiene entre 1 y 8 productos impresos (~5 en promedio, 2012 queries en total).
@@ -257,7 +264,7 @@ Resultado:
 | palabras con frecuencia = 1 (hapax) | 0 |
 | palabras con frecuencia ≤ 5 | 0 |
 
-El vocabulario es **extremadamente chico** para un corpus de 357 mil tokens, y no hay cola larga de palabras raras: la palabra menos frecuente de las 410 igual aparece 24 veces (ver [`vocab_freq_rank.png`](vocab_freq_rank.png), frecuencia por palabra ordenada de mayor a menor en escala log — cae rápido y se aplana, sin tail infinita de hapax legomena).
+El vocabulario es **extremadamente chico** para un corpus de 357 mil tokens, y no hay cola larga de palabras raras: la palabra menos frecuente de las 410 igual aparece 24 veces (ver [`vocab_freq_rank.png`](output/vocab_freq_rank.png), frecuencia por palabra ordenada de mayor a menor en escala log — cae rápido y se aplana, sin tail infinita de hapax legomena).
 
 Esto es consistente con que `title`/`description` no son lenguaje natural libre sino texto **generado por plantilla**: frases fijas ("in a X package for online grocery orders. Listed under Y and intended for Z storage...") con sustituciones acotadas de producto/categoría/marca/tag de reputación (ver sección de arriba sobre el tag entre paréntesis). El vocabulario es cerrado, no abierto.
 

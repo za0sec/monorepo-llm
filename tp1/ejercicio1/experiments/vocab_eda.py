@@ -6,8 +6,8 @@ Solo cómputo — no genera gráficos (ver plot_vocab.py para eso), siguiendo la
 separación cómputo/gráficos acordada para el TP (CLAUDE.md).
 
 Guarda:
-- vocab_stats.csv: resumen (una fila) con los números clave de la decisión.
-- vocab_freqs.csv: tabla completa palabra -> frecuencia, ordenada descendente.
+- output/vocab_stats.csv: resumen (una fila) con los números clave de la decisión.
+- output/vocab_freqs.csv: tabla completa palabra -> frecuencia, ordenada descendente.
 """
 import re
 from collections import Counter
@@ -59,14 +59,14 @@ def main() -> None:
             }
         ]
     )
-    stats.to_csv("vocab_stats.csv", index=False)
+    stats.to_csv("output/vocab_stats.csv", index=False)
 
     freq_table = (
         pd.DataFrame(freqs.items(), columns=["palabra", "frecuencia"])
         .sort_values("frecuencia", ascending=False)
         .reset_index(drop=True)
     )
-    freq_table.to_csv("vocab_freqs.csv", index=False)
+    freq_table.to_csv("output/vocab_freqs.csv", index=False)
 
     print(stats.to_string(index=False))
 

@@ -4,8 +4,9 @@ no recalcula ni reentrena nada (separación cómputo/gráficos, ver
 CLAUDE.md). Genérico para cualquier experimento: mismo código de ploteo,
 solo cambia qué runs lee y dónde guarda el resultado.
 
-Uso: python3 plot_experiment.py <n>   (ej. `python3 plot_experiment.py 2`
-lee output/runs/exp2_seed*.csv y guarda output/experiment2_curves.png)
+Uso (desde ejercicio2/): python3 plots/plot_experiment.py <n>   (ej.
+`python3 plots/plot_experiment.py 2` lee output/runs/exp2_seed*.csv y
+guarda output/experiment2_curves.png)
 """
 import argparse
 import glob

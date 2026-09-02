@@ -2,7 +2,7 @@
 
 Registro de cada experimento: arquitectura, justificación, resultados y qué se decide cambiar para el siguiente. Las decisiones de diseño más generales (split, encoding de features, por qué Encoder-only, por qué fusión tardía) están en [`Notas.md`](Notas.md) — acá solo se repite lo que hace falta para justificar la config concreta de cada corrida.
 
-Convención: cómputo en `train.py`/`model.py`/`run_experiment<n>.py` (guardan CSV crudo en `output/`), gráficos en `plot_experiment<n>.py` (leen esos CSV, nunca reentrenan) — ver regla de separación cómputo/gráficos en el `CLAUDE.md` del TP.
+Convención: cómputo en `experiments/train.py`/`experiments/model.py`/`experiments/run_experiment<n>.py` (guardan CSV crudo en `output/`), gráficos en `plots/plot_experiment.py` (lee esos CSV, nunca reentrena) — ver regla de separación cómputo/gráficos en el `CLAUDE.md` del TP.
 
 ## Experimento 1 — Transformer de texto puro, config mínima
 
@@ -10,7 +10,7 @@ Convención: cómputo en `train.py`/`model.py`/`run_experiment<n>.py` (guardan C
 
 Predecir `bought` usando **únicamente** `title`+`description` (tokenizados, ver `ejercicio1/Notas.md`) a través de un Transformer Encoder-only. Sin features tabulares todavía — decisión explícita del equipo para aislar el comportamiento del Transformer antes de complicar la arquitectura con la fusión (eso queda para un experimento posterior, no es este).
 
-### Arquitectura ([`model.py`](model.py))
+### Arquitectura ([`model.py`](experiments/model.py))
 
 | Pieza | Valor | Por qué |
 |---|---|---|
@@ -24,7 +24,7 @@ Predecir `bought` usando **únicamente** `title`+`description` (tokenizados, ver
 | Dropout | 0.1 | Regularización liviana estándar, no es un dial que interese variar por ahora. |
 | Parámetros totales | 9.889 | Confirma que el modelo es efectivamente chico. |
 
-### Configuración de entrenamiento ([`train.py`](train.py), [`run_experiment1.py`](run_experiment1.py))
+### Configuración de entrenamiento ([`train.py`](experiments/train.py), [`run_experiment1.py`](experiments/run_experiment1.py))
 
 Adam (`lr=1e-3`), `batch_size=128`, 20 épocas, **3 semillas (0, 1, 2)** promediadas — según la aclaración de `consigna.VTT` de no reportar una sola corrida. Métricas evaluadas sobre train (en modo eval, sin dropout) y valid en cada época, para poder comparar ambas curvas y diagnosticar over/underfitting (test no se toca, ver `Notas.md`). Sin threshold (PR-AUC/ROC-AUC), según lo indicado en la consigna.
 
@@ -56,7 +56,7 @@ Se subió **`n_heads` de 1 a 2**, manteniendo todo lo demás igual (`d_model=16`
 
 ## Experimento 2 — `n_heads`: 1 → 2
 
-### Arquitectura ([`model.py`](model.py))
+### Arquitectura ([`model.py`](experiments/model.py))
 
 Idéntica a la del Experimento 1 (ver tabla arriba) salvo `n_heads=2`. Con `d_model=16`, esto reparte la atención en 2 subespacios de 8 dimensiones cada uno en vez de uno solo de 16 — la pregunta que responde este experimento es si separar distintos "tipos" de relación entre palabras (ej. el patrón del tag de reputación vs. el resto del texto) ayuda a capturar mejor la señal, o si con un texto tan corto (`MAX_LEN=45`, vocabulario de 410 palabras) un único head ya alcanza.
 
@@ -104,7 +104,7 @@ Se barrieron varios valores de **`n_layers`** (encoders apilados) en una sola ta
 
 ## Experimento 3 — barrido de `n_layers`: 1 (Exp. 1) / 2 / 4 / 8
 
-### Arquitectura ([`model.py`](model.py))
+### Arquitectura ([`model.py`](experiments/model.py))
 
 Igual que el Experimento 1 salvo `n_layers` variable. Apilar encoders es distinto de agregar heads: cada capa nueva agrega un set completo de proyecciones Q/K/V/salida + feed-forward propio (no reparte parámetros existentes, los suma) — por eso acá sí se espera que cambie tanto la capacidad como el riesgo de overfitting, a diferencia de lo que se vio con `n_heads` en el Experimento 2.
 
@@ -140,9 +140,9 @@ Con `n_heads` (Exp. 2, sin efecto en el pico) y `n_layers` (Exp. 3, ganador `n_l
 
 Base fija para ambos (la ganadora del Experimento 3): `n_heads=1`, `n_layers=2`.
 
-## Experimento 4 — barrido de `d_model`: 8 / 16 (Exp. 3) / 32 / 64
+## Experimento 4 — barrido de `d_model`: 8 / 16 (Exp. 3) / 32 / 64 / 128 / 256
 
-`dim_feedforward=64` fijo (el valor de la base). Valores probados dentro del límite `<100` que sugiere la consigna, subiendo de a poco desde el mínimo (8) explorado hasta ahora.
+`dim_feedforward=64` fijo (el valor de la base). Primera tanda: 8, 32, 64, dentro del límite `<100` que sugiere la consigna. **Segunda tanda (128, 256)**: se extendió el barrido más allá de 100 porque la primera tanda no mostraba meseta -- "arranquen con `d_model<100`" es una sugerencia de punto de partida, no un techo (la clase lo aclara explícitamente: "de última después van aumentando", `consigna.VTT`), así que correspondía seguir el barrido para encontrar dónde está realmente el techo de este dial en vez de frenar en el límite sugerido para arrancar.
 
 Media ± std sobre 3 semillas (`output/experiment4_results.csv`):
 
@@ -152,14 +152,16 @@ Media ± std sobre 3 semillas (`output/experiment4_results.csv`):
 | 16 (Exp. 3) | 13.169 | 0,696 ± 0,018 | 0,953 ± 0,011 | 0,028 ± 0,042 |
 | 32 | 30.305 | 0,710 ± 0,022 | **0,964 ± 0,001** | 0,044 ± 0,047 |
 | **64** | 76.865 | **0,724 ± 0,021** | 0,962 ± 0,004 | 0,012 ± 0,014 |
+| 128 | 219.137 | 0,718 ± 0,031 | 0,962 ± 0,004 | 0,081 ± 0,063 |
+| 256 | 700.289 | 0,708 ± 0,014 | 0,962 ± 0,002 | -0,014 ± 0,008 |
 
 ![Experimento 4 — barrido de d_model](output/experiment4_sweep.png)
 
-**PR-AUC sube de forma monótona en todo el rango probado** -- todavía no se ve una meseta ni una caída, `d_model=64` es el mejor de los 4 y el gap de overfitting ahí es chico (0,012, comparable al de `d_model=8`). Esto sugiere que el modelo venía short de capacidad de representación en `d_model=16` y que **el techo de este dial probablemente esté más allá de 64** -- diferente de lo que pasó con `n_layers`, donde más no ayudaba. En ROC-AUC el pico está en `d_model=32` (0,964) y baja levemente en 64 (0,962), aunque la diferencia es chica.
+**Con el barrido completo, `d_model=64` queda confirmado como el techo real de este dial -- no era un límite artificial de la consigna.** La primera tanda (8 a 64) mostraba PR-AUC subiendo de forma monótona sin meseta, lo que hacía pensar que el techo estaba más allá de 64. Con 128 y 256, aparece un **pico interior**: PR-AUC baja en ambos (0,718 y 0,708, contra 0,724 en 64) -- más capacidad no solo no ayuda, empeora. En `d_model=128` además el gap de overfitting se dispara (0,081, el más alto de todo el barrido, con mucha variabilidad entre semillas, std 0,063) -- coherente con más parámetros (219.137, ya 31x las 7.012 filas de train) sin más señal real que aprovechar. En `d_model=256` el gap da negativo (-0,014, valid ligeramente por encima de train en la mejor época) -- con 700.289 parámetros (100x las filas de train) el modelo ya no logra ajustar bien ni siquiera train en 20 épocas, un indicio de que necesitaría muchas más épocas para converger a ese tamaño, no de que generalice mejor. ROC-AUC se mantiene prácticamente plano en 0,962 en los 3 valores más altos (64/128/256), sin la caída ni la señal clara que sí muestra PR-AUC.
 
-## Experimento 5 — barrido de `dim_feedforward`: 16 / 32 / 64 (Exp. 3) / 128
+## Experimento 5 — barrido de `dim_feedforward`: 16 / 32 / 64 (Exp. 3) / 128 / 256 / 512
 
-`d_model=16` fijo (la base, no la ganadora de d_model del Experimento 4 -- ver nota metodológica abajo).
+`d_model=16` fijo (la base, no la ganadora de d_model del Experimento 4 -- ver nota metodológica abajo). Primera tanda: 16, 32, 128. **Segunda tanda (256, 512)**: mismo criterio que la extensión del Experimento 4 -- la tanda original ya mostraba un pico interior en 64 con un solo punto de caída confirmándolo (128), así que se agregaron más puntos por encima para confirmar la tendencia con más de una observación, no quedarse con la caída de un solo punto.
 
 Media ± std sobre 3 semillas (`output/experiment5_results.csv`):
 
@@ -169,10 +171,12 @@ Media ± std sobre 3 semillas (`output/experiment5_results.csv`):
 | 32 | 11.057 | 0,674 ± 0,035 | 0,954 ± 0,007 | 0,063 ± 0,027 |
 | **64 (Exp. 3)** | 13.169 | **0,696 ± 0,018** | 0,953 ± 0,011 | 0,028 ± 0,042 |
 | 128 | 17.393 | 0,688 ± 0,017 | 0,953 ± 0,006 | 0,049 ± 0,058 |
+| 256 | 25.841 | 0,680 ± 0,005 | 0,951 ± 0,011 | 0,055 ± 0,023 |
+| 512 | 42.737 | 0,675 ± 0,030 | 0,953 ± 0,008 | 0,060 ± 0,045 |
 
 ![Experimento 5 — barrido de dim_feedforward](output/experiment5_sweep.png)
 
-**Acá sí hay un pico interior**, no una tendencia monótona: `dim_feedforward=64` (la proporción 4x sobre `d_model=16` del paper original) gana, y tanto 32 (2x, por debajo) como 128 (8x, por encima) quedan peor. ROC-AUC prácticamente no se mueve en todo el rango (0,953-0,954, dentro del ruido). Esto confirma la intuición de la sección anterior de `Notas.md`: `dim_feedforward` no es "cuanto más mejor" de forma libre, tiene un punto óptimo relacionado con `d_model` -- consistente con la idea de que un feed-forward angosto es un cuello de botella y uno demasiado ancho agrega parámetros sin beneficio claro (y algo de riesgo de overfitting: el gap sube a 0,049 en `dim_feedforward=128`).
+**Con el barrido completo, el pico interior en `dim_feedforward=64` queda confirmado, no es un efecto de un solo punto.** `dim_feedforward=64` (la proporción 4x sobre `d_model=16` del paper original) sigue siendo el mejor, y **todos** los valores por encima (128, 256, 512) quedan peor, estabilizándose alrededor de 0,675-0,688 sin volver a mejorar ni empeorar mucho más -- a diferencia del `d_model=256` del Experimento 4, acá no aparecen gaps raros ni señales de no-convergencia, los valores de overfitting se mantienen en un rango razonable (0,049-0,064) en todo el rango extendido. ROC-AUC prácticamente no se mueve en todo el rango (0,951-0,954, dentro del ruido). Esto confirma la intuición de la sección anterior de `Notas.md`: `dim_feedforward` no es "cuanto más mejor" de forma libre, tiene un punto óptimo relacionado con `d_model` -- consistente con la idea de que un feed-forward angosto es un cuello de botella y uno demasiado ancho agrega parámetros sin beneficio claro.
 
 ### Análisis conjunto -- ¿hace falta un Experimento 6 combinando ambos?
 
@@ -217,7 +221,7 @@ Con `n_heads`, `n_layers`, `d_model` y `dim_feedforward` ya cerrados sobre el Tr
 
 ## Experimento 7 — sistema completo: texto + tabular
 
-### Arquitectura ([`model.py`](model.py))
+### Arquitectura ([`model.py`](experiments/model.py))
 
 `CombinedModel`: el `TextEncoder` (idéntico al usado en los Experimentos 1-6, ahora extraído como pieza compartida) resume `title`+`description` en un vector de 64 dimensiones; ese vector se concatena con el vector de features tabulares ya encodeadas (75 columnas: numéricas z-scoreadas, one-hot de categóricas, multi-hot de ingredientes -- ver `Notas.md`/`encode_features.py`) y el vector combinado (139 dimensiones) entra directo a una salida `Linear(139 → 1)`, sin capa oculta intermedia -- mismo criterio minimalista del Experimento 1 ("el vector va directo a la predicción, la versión más mínima posible"), aplicado ahora al vector combinado en vez de solo al de texto. El texto nunca ve lo tabular (no pasa por el Transformer) y lo tabular nunca pasa por atención -- se juntan recién en esa última capa.
 
@@ -263,7 +267,7 @@ Se agregó una capa oculta de 64 unidades a la cabeza de salida del sistema comp
 
 ## Experimento 8 — capa oculta en la cabeza de salida
 
-### Arquitectura ([`model.py`](model.py))
+### Arquitectura ([`model.py`](experiments/model.py))
 
 Igual que el Experimento 7 salvo la cabeza: `Linear(139 → 64) → ReLU → Dropout(0,1) → Linear(64 → 1)` en vez de `Linear(139 → 1)` directo. `hidden=64` iguala el ancho de la rama de texto (`d_model=64`) -- ni más angosto (perdería capacidad) ni mucho más ancho (más riesgo de overfitting sin motivo), consistente con "arrancar chico".
 
@@ -290,6 +294,12 @@ Comparación contra el Experimento 7 (misma arquitectura, sin capa oculta) y con
 Curvas de entrenamiento (ahora hasta la época 40), `output/experiment8_curves.png`:
 
 ![Experimento 8 — curvas de entrenamiento](output/experiment8_curves.png)
+
+Comparación directa de 20 vs. 40 épocas (`output/experiment8_epochs.png`, generado por `plot_experiment8_epochs.py` -- recorta las mismas corridas de 40 épocas hasta la época 20, sin reentrenar, ya que el entrenamiento es determinístico dada la semilla):
+
+![Experimento 8 — 20 vs. 40 épocas](output/experiment8_epochs.png)
+
+Mejor PR-AUC de valid alcanzable con presupuesto de 20 épocas: 0,791 ± 0,006. Con 40 épocas: 0,798 ± 0,008. Diferencia: 0,006 -- la curva ya está prácticamente aplanada en la época 20.
 
 ### Análisis
 
@@ -388,7 +398,7 @@ Con la arquitectura del sistema completo ya cerrada de punta a punta (`n_heads=1
 
 Se corre sobre el **Transformer de texto solo** (arquitectura ganadora de los Experimentos 4/6: `n_heads=1, n_layers=2, d_model=64, dim_feedforward=64`), no sobre el sistema completo -- para aislar el efecto sin que las features tabulares puedan compensar la pérdida de información de orden.
 
-### Arquitectura ([`model.py`](model.py))
+### Arquitectura ([`model.py`](experiments/model.py))
 
 `TextEncoder` ahora acepta `use_positional_encoding: bool`. Sin él, se salta la suma del vector senoidal y el embedding entra directo al encoder -- sin parámetros nuevos (el positional encoding es un buffer fijo, no aprendido), así que el conteo de parámetros no cambia entre variantes.
 
@@ -418,7 +428,7 @@ Con esto, los dos frentes pendientes del Transformer de texto quedan resueltos (
 
 ### Configuración
 
-La ganadora de todo el estudio de ablación (Experimentos 1 a 11), evaluada **una sola vez** en `data/test.csv` -- hasta acá test no se había tocado, solo train/valid ([`evaluate_test.py`](evaluate_test.py)):
+La ganadora de todo el estudio de ablación (Experimentos 1 a 11), evaluada **una sola vez** en `data/test.csv` -- hasta acá test no se había tocado, solo train/valid ([`evaluate_test.py`](experiments/evaluate_test.py)):
 - `CombinedModel`: `n_heads=1, n_layers=2, d_model=64, dim_feedforward=64, hidden=256`, positional encoding senoidal.
 - Features tabulares: todas menos `country_of_origin` (Experimento 9); `nutrition_score` incluida.
 - 20 épocas, seleccionando por semilla el checkpoint de la época con mejor PR-AUC de valid (mismo criterio de "mejor época" del resto del estudio, guardando acá los pesos de esa época concreta para poder evaluarlos en test).

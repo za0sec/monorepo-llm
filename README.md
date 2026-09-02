@@ -4,4 +4,4 @@ Monorepo de todos los TPs de la materia LLM.
 
 ## Estructura
 
-- [`tp1/`](./tp1) — Trabajo Práctico 1
+- [`tp1/`](./tp1) — Trabajo Práctico 1 - hash de entrega:

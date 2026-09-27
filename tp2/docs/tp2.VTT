@@ -1,0 +1,138 @@
+WEBVTT
+
+1
+00:00:03.260 --> 00:00:14.549
+Marina Fuster: Bien, el Tp 2 es un poquito distinto de lo que eran otros cuatris es U es bastante corto en realidad. Por eso tienen un par de semanas para hacerlo.
+
+2
+00:00:14.600 --> 00:00:34.779
+Marina Fuster: Y es más teórico. ¿cuál es el objetivo? Acá Es un poco más del área de investigación que a nosotros nos parece importante para lo que es inteligencia artificial, no solamente para la parte de sexting, sino también, en general, el tema de ideas y todo es un área que va cambiando un montonazo. Así que aprender a estar actualizado es importante.
+
+3
+00:00:34.780 --> 00:00:57.510
+Marina Fuster: y el objetivo es entender en profundidad algún artículo de investigación relacionado con el estado del arte en el área de seguridad, en inteligencia artificial, y ahí puede ser seguridad más conectado a lo que vimos al principio, que son más las cuestiones de robustez de los modelos o hay safety que ya están más conectados a este área que vimos al final.
+
+4
+00:00:58.580 --> 00:01:13.040
+Marina Fuster: ¿qué es lo que van a tener que hacer esta vuelta, el artículo se les va a ser asignado aleatoriamente a los grupos. Todos van a tener más o menos la misma longitud tratando de que sea también la misma complejidad
+
+5
+00:01:13.040 --> 00:01:23.609
+Marina Fuster: y lo van a tener que laburar como grupo, entender el paper como grupo y como se conecta con las áreas de lo que estuvimos viendo a lo largo de todas estas clases
+
+6
+00:01:23.630 --> 00:01:41.280
+Marina Fuster: y van a tener que participar de una defensa oral no tienen que hacer presentación. Y ahí la defensa oral va a ser nosotras haciéndoles preguntas sobre el paper y ver cómo encaran las respuestas que entendieron, donde identifican limitaciones, etcétera.
+
+7
+00:01:42.190 --> 00:01:58.889
+Marina Fuster: Acá Está detallado un poco esto, cuáles son los objetivos que demuestran que entienden el Paper. Más que nada que entienden. Creo que Acá había como unos lineamientos que entienden cuál es el problema concreto que están tratando.
+
+8
+00:01:58.890 --> 00:02:12.699
+Marina Fuster: Cuál es la contribución del paper, qué cosas quizás había antes y con qué cosas había antes. No nos referimos a que tienen que ustedes investigar. En general, en los papers hay una sección donde se escribe che
+
+9
+00:02:12.950 --> 00:02:30.160
+Marina Fuster: hasta este punto. Esto era lo relacionado. Nosotros contribuimos tal cosa. La idea es que entiendan todas esas cosas y la parte técnica necesaria para entender la metodología del paper y los resultados, así como las conclusiones.
+
+10
+00:02:30.670 --> 00:02:44.110
+Marina Fuster: Mi recomendación es que lo charlen en grupo. Creo que eso va a fomentar que que lo entiendan mejor, que se chalenceen por ahí. Las partes que no entendieron muy bien. No vamos a hacer como hincapié Full
+
+11
+00:02:44.110 --> 00:02:56.340
+Marina Fuster: en la parte matemática, o sea, si hay fórmulas o lo que fuera que más o menos entiendan los componentes, pero no el comportamiento de la función o esas cosas.
+
+12
+00:02:56.730 --> 00:02:59.869
+Marina Fuster: Pero Bueno, ahí auge. No sé si querés agregar algo más.
+
+13
+00:03:00.040 --> 00:03:02.230
+Marina Fuster: Creo que me fui y vine.
+
+14
+00:03:03.030 --> 00:03:05.140
+Eugenia Sol Piñeiro: Sí un poco eso que la idea es que
+
+15
+00:03:05.710 --> 00:03:10.369
+Eugenia Sol Piñeiro: se forme quizás un debate que también puedan pro proponer alguna opinión
+
+16
+00:03:10.460 --> 00:03:22.880
+Eugenia Sol Piñeiro: suya, digamos, no, y incluso puedan tener esa capacidad de hasta contradecir o o no. Quizás están de acuerdo con lo que proponen los autores del paper, pero sí que reflexionen. En cuanto a eso, no hacer tanto de
+
+17
+00:03:22.880 --> 00:03:35.800
+Eugenia Sol Piñeiro: en la página 9 está la fórmula 7 que significa este símbolo. ¿y qué pasa si lo leo al cuadrado? No van por ese lado de las preguntas, sino de que lo entiendan generalmente y que sepan explicarlo
+
+18
+00:03:35.830 --> 00:03:36.560
+Eugenia Sol Piñeiro: y
+
+19
+00:03:37.150 --> 00:03:52.109
+Eugenia Sol Piñeiro: y armar como ese tipo de de debate. Pregunta respuesta que hablen entre ustedes, también hablen con nosotras que propongan sus opiniones, quizás alguna limitación o mejora algún desafío que encontraron en el paper. ¿cuál es el aporte, o sea, la idea es que entiendan
+
+20
+00:03:52.370 --> 00:04:01.239
+Eugenia Sol Piñeiro: en general de qué trata, pero que también tengan esa capacidad crítica de intentar decidir, bueno, cómo se podría mejorar o qué más.
+
+21
+00:04:02.650 --> 00:04:08.269
+Eugenia Sol Piñeiro: De hecho, no tienen ni perder tiempo en hacer una presentación. O sea, solo tienen que leerlo y hablar entre ustedes.
+
+22
+00:04:09.630 --> 00:04:17.490
+Marina Fuster: Bien, ahí lo dejo y de paso queda grabado. Asegúrense que entienden los resultados y
+
+23
+00:04:17.850 --> 00:04:31.020
+Marina Fuster: algo que por ahí les es útil o no. No sé, en general, en en los papers, tanto al principio o al final. Es como que se resumen, cuáles son las las Klein, no lo que el paper logra demostrar.
+
+24
+00:04:31.020 --> 00:04:37.899
+Marina Fuster: Hagan el ejercicio de Ok. Me anoto. Estas son las cosas que supuestamente demuestran. Voy a los resultados
+
+25
+00:04:37.970 --> 00:04:47.809
+Marina Fuster: que esto es suficiente para lo que me dijeron al principio, que me estaban demostrando que opino, la metodología estuvo buena
+
+26
+00:04:47.810 --> 00:05:10.639
+Marina Fuster: o no. Es medio oscura y cosas sin definir como traten de hacer ese ejercicio de conectar lo que supuestamente dice el Paper, que hicieron con los resultados concretos. ¿qué es lo que ven? Por ahí viene el resultado. Dicen Che. La verdad, que lo que dijeron que hicieron es re poco significativo, o la ganancia es muy chiquita, o ese tipo de ejercicio También por ahí es útil.
+
+27
+00:05:10.640 --> 00:05:19.570
+Marina Fuster: como el ir y venir entre el principio y la parte más cómoda de resumen y los resultados específicos.
+
+28
+00:05:19.890 --> 00:05:35.260
+Marina Fuster: Y si bien las fórmulas no es que los vamos a indagar ni mucho menos sí. Traten de entender la metodología general, o sea, si la metodología tiene 3 pasos. Grandes No me pueden decir que no saben qué fue lo que se hizo para conseguir los resultados? Ok.
+
+29
+00:05:35.440 --> 00:05:41.190
+Marina Fuster: Bueno, es un poco. ¿tienen alguna pregunta o dibujar alguna aclaración más.
+
+30
+00:05:42.030 --> 00:05:56.590
+Eugenia Sol Piñeiro: Léanla. Bien, después, punto por punto de última, nos preguntan también la próxima clase y demás tienen tiempo para hacerlo, pero está bastante detallado del de qué es lo que vamos a evaluar. No es un poco eso que comprendan en general el paper y
+
+31
+00:05:57.000 --> 00:06:03.810
+Eugenia Sol Piñeiro: y cómo debatirlo, pero léanlo a eso me refiero. Lean bien. La consigna punto por punto.
+
+32
+00:06:07.420 --> 00:06:08.340
+Marina Fuster: Bien.
+
+33
+00:06:10.770 --> 00:06:14.030
+Eugenia Sol Piñeiro: Mañana vamos a subir los papers. Vamos a subir un anuncio.
+
+34
+00:06:14.730 --> 00:06:20.179
+Eugenia Sol Piñeiro: Algunos van a estar repetidos. Algunos grupos van a tener el mismo, pero va cerrando la asignación.
+

@@ -1,0 +1,3018 @@
+WEBVTT
+
+1
+00:00:03.840 --> 00:00:06.859
+Eugenia Sol Piñeiro: Bueno, primera clase, vamos a ver un poco de transformers
+
+2
+00:00:07.120 --> 00:00:16.890
+Eugenia Sol Piñeiro: para los que ya cursaron Cia este tema. Ya lo vimos, aunque lo vimos un poco por arriba. La idea de la clase hoy es hacer un repaso de eso. Y además profundizar, porque lo oímos
+
+3
+00:00:17.070 --> 00:00:32.219
+Eugenia Sol Piñeiro: muy básico, aunque no parecía, sigue siendo la introducción. Pero a lo largo de toda la materia vamos a ir complementando sobre esta clase. Esto sería como lo base de del modelo y después vamos a ir profundizando en toda la materia.
+
+4
+00:00:33.950 --> 00:00:39.829
+Eugenia Sol Piñeiro: Bien, antes vamos a hacer un pequeño repaso. Así que en esta sección van a hablar ustedes.
+
+5
+00:00:40.570 --> 00:00:45.869
+Eugenia Sol Piñeiro: Y lo que les voy a decir acá es que en la materia.
+
+6
+00:00:46.390 --> 00:00:49.019
+Eugenia Sol Piñeiro: espérame que me quedo esto de otra filmina Ahora.
+
+7
+00:00:49.130 --> 00:00:54.680
+Eugenia Sol Piñeiro: en la materia, vamos a ver esta partecita de acá en cuanto a área
+
+8
+00:00:55.550 --> 00:01:00.499
+Eugenia Sol Piñeiro: como una mezcla entre The Learning poquito y Computer Vision. Y en L. P.
+
+9
+00:01:01.880 --> 00:01:03.170
+Eugenia Sol Piñeiro: La pregunta es.
+
+10
+00:01:04.640 --> 00:01:11.579
+Eugenia Sol Piñeiro: ¿estamos Ok, con el tema de la división de áreas saben que es En Lp: Lo estoy dando por sentado.
+
+11
+00:01:13.680 --> 00:01:15.929
+Eugenia Sol Piñeiro: Estamos bien la diferencia entre todo esto, o sea, es.
+
+12
+00:01:15.930 --> 00:01:19.320
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Natural Language processing en L. P.
+
+13
+00:01:19.900 --> 00:01:26.089
+Eugenia Sol Piñeiro: Sí, perfecto, Bien, o sea, básicamente, comprender e interpretar el lenguaje.
+
+14
+00:01:26.320 --> 00:01:37.960
+Eugenia Sol Piñeiro: Vamos a estar en esa área En esta materia. Quizás más encía, estábamos un poco en muy poquito de todo o vas por esta parte. Ahora ya estamos en el nicho de esta partecita.
+
+15
+00:01:39.590 --> 00:01:42.920
+Eugenia Sol Piñeiro: Bien, ahora quiero ver qué se acuerdan, decía
+
+16
+00:01:44.000 --> 00:01:47.899
+Eugenia Sol Piñeiro: qué es lo primero que veíamos en cuanto a redes neuronales.
+
+17
+00:01:59.860 --> 00:02:02.660
+Eugenia Sol Piñeiro: T. P, 3, para ser más exactos.
+
+18
+00:02:06.920 --> 00:02:12.490
+Eugenia Sol Piñeiro: Bueno, ojalá 1 aprendizaje supervisado bien
+
+19
+00:02:12.830 --> 00:02:16.980
+Eugenia Sol Piñeiro: ¿Y qué qué red usaban, ¿Qué tipos de problemas resolvían esas redes.
+
+20
+00:02:18.640 --> 00:02:20.949
+Eugenia Sol Piñeiro: ¿cuál es la red más básica de todas
+
+21
+00:02:23.570 --> 00:02:28.880
+Eugenia Sol Piñeiro: diariamente separables. Bien, ese era el percepción simple, bien perfecto.
+
+22
+00:02:30.960 --> 00:02:46.389
+Eugenia Sol Piñeiro: Teníamos el perceptrón simple que se acuerdan, que originamos en el modelo de Maculoki Pitz, donde teníamos una sola capa de neuronas con alguna función de activación. Ahí mencionaron linealmente separables. Entonces, la función de activación era lineal
+
+23
+00:02:46.490 --> 00:02:47.900
+Eugenia Sol Piñeiro: y
+
+24
+00:02:48.480 --> 00:03:08.470
+Eugenia Sol Piñeiro: o escalón. Teníamos no lineal también. Y la regla estaba basada en reducir el error. No tenían una función de error definían un costo. ¿cómo podía reducir eso, que era, ¿Se acuerdan que era la salida esperada, menos la salida que había obtenido de la red por lo general usaban el M. C, E,
+
+25
+00:03:09.230 --> 00:03:14.010
+Eugenia Sol Piñeiro: Entonces ahí lo básico. Después pasábamos a el M. L. P.
+
+26
+00:03:14.960 --> 00:03:24.759
+Eugenia Sol Piñeiro: Que esto va a ser. Yo lo llamo como el el V I, T, en informática, es el M. L. P. En inteligencia artificial. Va a estar en todo. Va a ser la base de todo. Va a ser la base de nuestro transformer.
+
+27
+00:03:24.950 --> 00:03:28.880
+Eugenia Sol Piñeiro: Así que vamos a tener el M. L. P, que era simplemente agregar más capas.
+
+28
+00:03:29.950 --> 00:03:38.239
+Eugenia Sol Piñeiro: ¿y qué más se acuerdan después de eso? ¿cómo se podía complejizar? Por ejemplo, ahí mencionaron Hoja, por ejemplo.
+
+29
+00:03:38.620 --> 00:03:44.050
+Eugenia Sol Piñeiro: para un caso más específico, encoder decoder. Bien, ¿cómo se llamaba?
+
+30
+00:03:44.180 --> 00:03:45.839
+Eugenia Sol Piñeiro: Sí que tenían code coder
+
+31
+00:03:48.740 --> 00:03:55.149
+Eugenia Sol Piñeiro: auto encoder. Bien, Bueno, ahí salió convolucional. También. Perfecto. La C, N, N También las vimos.
+
+32
+00:03:56.440 --> 00:03:59.209
+Eugenia Sol Piñeiro: Teníamos, por ejemplo, el el B A, I,
+
+33
+00:03:59.490 --> 00:04:02.850
+Eugenia Sol Piñeiro: tu amigo del T, P. Cinco que habrán luchado un poco con él.
+
+34
+00:04:06.370 --> 00:04:07.790
+Eugenia Sol Piñeiro: y
+
+35
+00:04:08.260 --> 00:04:20.659
+Eugenia Sol Piñeiro: la C. N. N. Estaba más orientadas a imágenes. También se acuerdan que aplicábamos los filtros de convolución y demás. Acá El Oton Cover, por ejemplo, que hacían, se ampliaban del espacio latente acá ya entraba este concepto de
+
+36
+00:04:20.940 --> 00:04:32.870
+Eugenia Sol Piñeiro: capacidad generativa que tiene la red, no de generar algo de forma artificial. En este caso, ustedes, por ejemplo, no se generaban detrás, generaban emojis o generaban alguna imagen
+
+37
+00:04:33.000 --> 00:04:42.400
+Eugenia Sol Piñeiro: en general. Y después de hacer todo ese camino, llegábamos a por fin transformer. Entonces de ahí que se acuerdan
+
+38
+00:04:43.140 --> 00:04:47.030
+Eugenia Sol Piñeiro: de que es un transformer a grandes rasgos si tienen que definirlo en una oración.
+
+39
+00:05:01.300 --> 00:05:03.859
+Eugenia Sol Piñeiro: un Bay con capa de auto atención.
+
+40
+00:05:06.300 --> 00:05:12.709
+Eugenia Sol Piñeiro: No ojo ahí que el el concepto de auto encoder, por más que hayan Coders y Decoders en el transformer.
+
+41
+00:05:12.850 --> 00:05:18.760
+Eugenia Sol Piñeiro: no está el espacio latente, por ejemplo, o sea, simplemente se llaman igual. Pero no es el mismo concepto.
+
+42
+00:05:21.770 --> 00:05:28.320
+Eugenia Sol Piñeiro: Sí, había atención, No, Eso sí, lo voy a mencionar 1 000 veces durante toda la materia.
+
+43
+00:05:29.840 --> 00:05:37.940
+Eugenia Sol Piñeiro: Era un stack de Encoders, un stack de decoders y una capa de selph atention Okay bien perfecto.
+
+44
+00:05:38.100 --> 00:05:44.790
+Eugenia Sol Piñeiro: ¿cuál era el objetivo, para qué quería todo eso? Por ejemplo, ¿se acuerdan algún caso de uso
+
+45
+00:05:49.270 --> 00:05:58.410
+Eugenia Sol Piñeiro: traducción? Okay? Bien, no sé como el caso de uso que vamos a repasar hoy también general.
+
+46
+00:06:00.670 --> 00:06:06.969
+Eugenia Sol Piñeiro: Bueno, Pero hay un montón no puede ser predecir la siguiente palabra bueno mismo
+
+47
+00:06:07.620 --> 00:06:14.979
+Eugenia Sol Piñeiro: el que usan absolutamente todos los días de su vida seguro como Chachibit o amigos.
+
+48
+00:06:15.360 --> 00:06:18.709
+Eugenia Sol Piñeiro: Ahí sí sería tiempo. Sí, se podría usar para serie de tiempo.
+
+49
+00:06:20.150 --> 00:06:23.690
+Eugenia Sol Piñeiro: Bien, bueno.
+
+50
+00:06:25.040 --> 00:06:39.339
+Eugenia Sol Piñeiro: vamos a ver un par de conceptos que también la idea es repasarlos. Prometo que ya terminó con el repaso. Pero, ¿cómo me pueden definir yen? Ai o inteligencia artificial generativa?
+
+51
+00:06:39.450 --> 00:06:49.849
+Eugenia Sol Piñeiro: ¿qué es esto de que hoy está que se habla por todos lados entras a cualquier red social, vas a cualquier cena familiar y hablan de inteligencia artificial degenerativa. Pero ¿qué es
+
+52
+00:06:53.740 --> 00:06:57.249
+Eugenia Sol Piñeiro: marketing? Sí, también es marketing. Pero
+
+53
+00:06:58.540 --> 00:07:06.380
+Eugenia Sol Piñeiro: en general, ¿cómo lo podrían definir? Después de todo lo que vieron, no, o sea, ustedes ya generaron cosas artificialmente, ya lo hicieron. Saben. ¿cómo funciona
+
+54
+00:07:17.210 --> 00:07:19.449
+Eugenia Sol Piñeiro: Una red nueva Sand Transformers
+
+55
+00:07:20.890 --> 00:07:27.819
+Eugenia Sol Piñeiro: Okay puede ser una parte no no solamente transformers, no, o sea, por ejemplo, con el B A E también generaban cosas
+
+56
+00:07:28.280 --> 00:07:35.120
+Eugenia Sol Piñeiro: bien, o sea, generar nuevas cosas, modelo capaz de generar datos Bien, no podes distinguir si son generados o provenientes de una tarjeta
+
+57
+00:07:35.430 --> 00:07:41.660
+Eugenia Sol Piñeiro: Okay. O sea, idealmente no podría saber si fue generada artificialmente.
+
+58
+00:07:42.050 --> 00:07:43.570
+Eugenia Sol Piñeiro: va a hacer un paréntesis ahí
+
+59
+00:07:44.310 --> 00:07:47.900
+Eugenia Sol Piñeiro: que hoy en día la idea es dar transparencia en eso y
+
+60
+00:07:48.210 --> 00:07:50.849
+Eugenia Sol Piñeiro: efectivamente, saber que fue generada artificialmente.
+
+61
+00:07:51.030 --> 00:07:54.089
+Eugenia Sol Piñeiro: Pero eso después lo vamos a ver en la parte ética, seguridad, etcétera.
+
+62
+00:07:54.260 --> 00:07:59.810
+Eugenia Sol Piñeiro: Bien, entonces que es básicamente usar modelos de inteligencia artificial para crear contenido nuevo.
+
+63
+00:08:00.370 --> 00:08:07.869
+Eugenia Sol Piñeiro: ya sea texto, imágenes, video que no es mas que una secuencia de imágenes generar audio. Y esto, por lo general
+
+64
+00:08:08.000 --> 00:08:11.590
+Eugenia Sol Piñeiro: ahora está siendo más en respuesta a un prompt.
+
+65
+00:08:11.980 --> 00:08:22.129
+Eugenia Sol Piñeiro: por ejemplo, escribir prompt a chapite de generame una imagen de X, cosa genera metaldiagrama genera metal, código, o lo que sea
+
+66
+00:08:23.980 --> 00:08:31.539
+Eugenia Sol Piñeiro: bien. Y a partir de este concepto de prompt surgió el concepto de prompt ingeniering que, ¿qué es
+
+67
+00:08:31.850 --> 00:08:36.100
+Eugenia Sol Piñeiro: básicamente es guiar al modelo generativo.
+
+68
+00:08:36.230 --> 00:08:46.519
+Eugenia Sol Piñeiro: justamente para que puedas generar el resultado deseado. No son esas instrucciones que yo le doy el input básicamente que le doy como indicación para que haga tal tarea.
+
+69
+00:08:46.630 --> 00:08:49.999
+Eugenia Sol Piñeiro: Entonces vamos a hablar bastante de esto, de tener un prompt, de cómo
+
+70
+00:08:50.190 --> 00:08:57.740
+Eugenia Sol Piñeiro: optimizar ese prompt. ¿cómo hacerlo bien. Básicamente para justamente que siga, ¿
+
+71
+00:08:58.910 --> 00:09:01.640
+Eugenia Sol Piñeiro: Una guerrilla de gritar. Bueno, igual.
+
+72
+00:09:02.070 --> 00:09:14.310
+Eugenia Sol Piñeiro: Bueno, me río en realidad, pero ustedes se ríen, pero hay hay roles de pronto ingeniero, o sea, hoy las empresas también están buscando así como buscan el Machinearmy, ingenier de los Science, ingenier y pronto ingenieros.
+
+73
+00:09:14.420 --> 00:09:19.319
+Eugenia Sol Piñeiro: Esto es una carrera grande también, o por lo menos un rol de la industria específico.
+
+74
+00:09:19.530 --> 00:09:20.550
+Eugenia Sol Piñeiro: Bueno.
+
+75
+00:09:21.090 --> 00:09:26.739
+Eugenia Sol Piñeiro: y tiene su tiene sus vueltas. Digamos, ya vamos a ver como sus los trucos como para optimizar el el prompt.
+
+76
+00:09:27.000 --> 00:09:29.139
+Eugenia Sol Piñeiro: y que es lo que hay que tener en cuenta?
+
+77
+00:09:30.190 --> 00:09:32.300
+Eugenia Sol Piñeiro: Bueno, después tenemos N. L, P:
+
+78
+00:09:32.920 --> 00:09:42.429
+Eugenia Sol Piñeiro: Ya un poco. Lo hablamos. Historia natural. Language processing, que significa, básicamente queremos comprender, interpretar y generar texto.
+
+79
+00:09:43.060 --> 00:09:50.850
+Eugenia Sol Piñeiro: o habla en el sentido que puede ser un audio también. Y a estas aplicaciones. Estas tareas las llaman las translaction task.
+
+80
+00:09:51.490 --> 00:09:59.789
+Eugenia Sol Piñeiro: por ejemplo, traducir, resumir, transcribir un audio, es decir, pasar de audio a texto.
+
+81
+00:09:59.930 --> 00:10:09.399
+Eugenia Sol Piñeiro: También se lo usa mucho para análisis de sentimientos generación de texto, comprensión del lenguaje hablado y demás, pero justamente está orientado a comprender el lenguaje
+
+82
+00:10:09.680 --> 00:10:12.620
+Eugenia Sol Piñeiro: y se resumen en este tipo de tareas.
+
+83
+00:10:13.850 --> 00:10:19.550
+Eugenia Sol Piñeiro: Y ahora quiero que lo definan ustedes: ¿cómo podrían definir qué es un Lm
+
+84
+00:10:36.030 --> 00:10:38.650
+Eugenia Sol Piñeiro: Okay. Me gusta que usaste todos los
+
+85
+00:10:38.820 --> 00:10:44.010
+Eugenia Sol Piñeiro: los conceptos previos. Bien, pues el sistema de G. N. I. Hay que usar el L P para generar contenido
+
+86
+00:10:44.830 --> 00:10:51.730
+Eugenia Sol Piñeiro: en respuesta a un prompt modelo entrenado con corpus grande, Claro, ahí también está con
+
+87
+00:10:52.040 --> 00:10:58.969
+Eugenia Sol Piñeiro: muchísima cantidad de data entrenado. Por eso la parte de Dash, No, Pero bien perfecto.
+
+88
+00:10:59.610 --> 00:11:07.529
+Eugenia Sol Piñeiro: Entonces son modelos de lenguaje que están entrenados con gran cantidad de datos. A este conjunto se lo llama Corpus, que ahí lo mencionaron en el chat.
+
+89
+00:11:08.030 --> 00:11:24.620
+Eugenia Sol Piñeiro: Y la idea es justamente comprender y generar el texto. Ejemplos de estos son Shipi Beard. Esto lo vamos a ver un poquito hoy, habrán usado lama, que es el de meta Cloud, el de a Tropic Gaming, el Debul. Bueno, y así hay cada empresa empezó a sacar algún modelo
+
+90
+00:11:25.800 --> 00:11:32.620
+Eugenia Sol Piñeiro: y chao Último collingation Quiero saber
+
+91
+00:11:32.760 --> 00:11:44.399
+Eugenia Sol Piñeiro: cuál usan básicamente combination ¿No es este agente ahora capaz de interpretar código ejecutar alguna acción. Por lo general se usa por línea de comandos
+
+92
+00:11:45.110 --> 00:11:57.600
+Eugenia Sol Piñeiro: según un contexto. ¿no? Y entra todo este concepto de bueno que son las tools, los esquís, Los M. C, Ps, un montón de conceptos nuevos. Esto vamos a entrar en detalle de una clase en particular, vamos a ver cómo funciona
+
+93
+00:11:57.790 --> 00:12:03.969
+Eugenia Sol Piñeiro: y tiene la característica de que tienen mayor autonomía sobre el entorno, No, o sea, 1 le da más acceso.
+
+94
+00:12:04.150 --> 00:12:08.610
+Eugenia Sol Piñeiro: Hay que tener cuidado ahí con el tema de seguridad y
+
+95
+00:12:08.760 --> 00:12:11.120
+Eugenia Sol Piñeiro: porque justamente tiene más autonomía la gente.
+
+96
+00:12:11.370 --> 00:12:16.540
+Eugenia Sol Piñeiro: ¿Qué dicen ahí depende del día. Un antigraviting depende de para qué
+
+97
+00:12:16.660 --> 00:12:18.730
+Eugenia Sol Piñeiro: interesa saber para qué usás cada 1.
+
+98
+00:12:18.880 --> 00:12:20.569
+Eugenia Sol Piñeiro: No sé si queréis contar ahí.
+
+99
+00:12:20.680 --> 00:12:28.060
+Eugenia Sol Piñeiro: Cloud, te consideran moverme a Claudio. Gaizgen tiene sus fuertes, o sea.
+
+100
+00:12:28.060 --> 00:12:46.429
+PATRICK LUCA TORLASCHI: Para código. Por ejemplo, hoy en día estoy usando más Clod en el euro. También nos dijeron, básicamente que somos Cloud, en su momento había probado jemina, pero en cuanto a código, no me resultó tan bien, pero para procesar mucho texto, por ejemplo, sí, para eso se ando bastante bien para generación de imágenes con Chatgp T, E.
+
+101
+00:12:46.600 --> 00:12:52.040
+PATRICK LUCA TORLASCHI: Te tira mejores imágenes y animaciones que claude y gemina en mi experiencia
+
+102
+00:12:52.540 --> 00:13:01.160
+PATRICK LUCA TORLASCHI: y después Tipsi, que en su momento también lo había probado, que estaba bueno porque era bueno, barato, pero.
+
+103
+00:13:01.160 --> 00:13:02.330
+Eugenia Sol Piñeiro: Y bueno, es. Valió.
+
+104
+00:13:02.330 --> 00:13:03.230
+PATRICK LUCA TORLASCHI: Probé, No.
+
+105
+00:13:03.340 --> 00:13:09.039
+PATRICK LUCA TORLASCHI: sí. Y después curso también para código. Está bueno, o si te para algún review rápido, está sirve.
+
+106
+00:13:10.650 --> 00:13:11.880
+Eugenia Sol Piñeiro: Voy a hacer un pol
+
+107
+00:13:13.380 --> 00:13:16.469
+Eugenia Sol Piñeiro: bien buenísimo Igual Estás usando todos.
+
+108
+00:13:17.090 --> 00:13:24.300
+Eugenia Sol Piñeiro: pero algunos los hacen el laburo, otros deminal pro con la cuenta de estudiantes, O sea, me preocupa también la economía.
+
+109
+00:13:24.300 --> 00:13:25.610
+PATRICK LUCA TORLASCHI: No, no, no.
+
+110
+00:13:25.610 --> 00:13:26.340
+Eugenia Sol Piñeiro: Y.
+
+111
+00:13:26.860 --> 00:13:40.170
+PATRICK LUCA TORLASCHI: No, no obvio los usos en distintos momentos que eso Jemira también tenía gratis para el Laburo en su momento. Claudio. Ahora también tengo gratis para el laburo, entonces no, no es que realmente lo estoy pagando activamente ni nada. Muchos filtrarse dando vueltas.
+
+112
+00:13:42.570 --> 00:13:49.520
+Eugenia Sol Piñeiro: Okay es, tengo contacto como iden manejo con ambos. Para el laburo. Okey.
+
+113
+00:13:52.270 --> 00:13:55.400
+Eugenia Sol Piñeiro: Me interesa saber otro descompusieron otro
+
+114
+00:13:57.740 --> 00:14:00.199
+Eugenia Sol Piñeiro: que usan. Y me interesa el que puso no uso.
+
+115
+00:14:01.040 --> 00:14:06.680
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Yo. Pues yo uso el el que viene con Google en tirar el que tiende a ser Cloud opus.
+
+116
+00:14:07.040 --> 00:14:11.409
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Pero anti gravity, y tengo que ir cambiando de cuenta todo el.
+
+117
+00:14:11.410 --> 00:14:12.310
+Eugenia Sol Piñeiro: Vas cambiando el modelo.
+
+118
+00:14:12.310 --> 00:14:13.720
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Créditos instantáneamente.
+
+119
+00:14:15.680 --> 00:14:18.820
+Eugenia Sol Piñeiro: Bueno, es tonto. En temas de los créditos, sí se gastan los token rápido
+
+120
+00:14:19.100 --> 00:14:23.690
+Eugenia Sol Piñeiro: cursos. Me gusta para revisar lo que hace. Si no me avisó a los cambios
+
+121
+00:14:24.560 --> 00:14:26.560
+Eugenia Sol Piñeiro: Okay más para Ibai, Lo Usas
+
+122
+00:14:30.520 --> 00:14:31.510
+Eugenia Sol Piñeiro: Okay.
+
+123
+00:14:35.490 --> 00:14:38.549
+Eugenia Sol Piñeiro: igual. Sí, Facebook y consume un montón.
+
+124
+00:14:38.760 --> 00:14:45.230
+Eugenia Sol Piñeiro: Es Bien, Bueno, veo que la mayoría usa Cloud Code igual.
+
+125
+00:14:47.570 --> 00:14:48.549
+Eugenia Sol Piñeiro: Está muy bien.
+
+126
+00:14:50.480 --> 00:14:54.489
+Eugenia Sol Piñeiro: Bueno, voy a hacer un display, Mer ya que estamos
+
+127
+00:14:55.180 --> 00:15:01.979
+Eugenia Sol Piñeiro: así como seguramente lo usaron encía. Es muy probable que también lo usen. Acá El discremer es usenlo
+
+128
+00:15:02.570 --> 00:15:07.410
+Eugenia Sol Piñeiro: bien, acorde y entiendan qué es lo que está haciendo. No lo usen como caja negra. Por favor.
+
+129
+00:15:07.750 --> 00:15:13.110
+Eugenia Sol Piñeiro: Ustedes, ¿cuál usan su uso? Cloud Code Codex,
+
+130
+00:15:15.180 --> 00:15:19.669
+Eugenia Sol Piñeiro: Depende también, pero por lo general, Clock Code lo uso un poquito más.
+
+131
+00:15:24.260 --> 00:15:30.849
+Eugenia Sol Piñeiro: Y en bueno, y otro paréntesis para el que no lo usa.
+
+132
+00:15:31.210 --> 00:15:39.720
+Eugenia Sol Piñeiro: empiezo a usarlo. Están buenos no acelerar el proceso con este distraermer de entender realmente qué es lo que pasa y no no usarlo como caja negra.
+
+133
+00:15:40.400 --> 00:15:41.280
+Eugenia Sol Piñeiro: Bien.
+
+134
+00:15:41.960 --> 00:15:49.489
+Marina Fuster: Allí para Euge. Quiero hacer una aclaración. Esto de El que no lo usa, que arranque. Usarlo no es
+
+135
+00:15:49.760 --> 00:16:01.620
+Marina Fuster: no es la idea como que sea un chelo, tienen que usar y nada más. Si hay un chip bastante fuerte de la carrera hacia ser capaces de mínimo entender
+
+136
+00:16:01.620 --> 00:16:09.829
+Marina Fuster: cuándo deberían usarse cuando es beneficioso usarlo 1 por ahí, puede decir, Che, no, Yo no lo quiero usar, no tengo ganas, pero la realidad es que
+
+137
+00:16:09.860 --> 00:16:13.070
+Marina Fuster: no sé en qué situación laboral estén o no.
+
+138
+00:16:13.100 --> 00:16:31.860
+Marina Fuster: Es probable, como que dañe un poco sus sus chances o sus movimientos, porque es algo que hoy se pide. Eso es como una recomendación de que pueden no usarlo si les parece que no van perfecto, pero métanse por lo menos entender bien en qué contexto
+
+139
+00:16:32.180 --> 00:16:34.290
+Marina Fuster: se usan hoy y por qué?
+
+140
+00:16:34.500 --> 00:16:42.480
+Marina Fuster: Y bueno, nuestra opinión es que vale la pena, pero cada cual es libre de de experimentarlo y después tomar sus decisiones.
+
+141
+00:16:44.920 --> 00:16:51.880
+Eugenia Sol Piñeiro: Bien, Se me acumula. No quiero programar una mano, Sí, eso para eso ya.
+
+142
+00:16:52.020 --> 00:16:53.710
+Marina Fuster: Y.
+
+143
+00:16:53.710 --> 00:16:54.800
+Eugenia Sol Piñeiro: Lo mejor No.
+
+144
+00:16:55.010 --> 00:17:08.909
+Eugenia Sol Piñeiro: A veces sí. A veces la verdad que se va por las ramas también. Y te te agrega 87 archivos que no son necesarios. Pero por eso, de nuevo, no usarlo como caja negra, sino entenderlo. Después pasa que está el
+
+145
+00:17:09.710 --> 00:17:21.959
+Eugenia Sol Piñeiro: el P. R el que revisa el perro. Lo revisa con Cloud Code, el que hizo el perro. Lo hizo con Claudio code después. Clow Core revisa después de una caja negra enorme. Pero, bueno.
+
+146
+00:17:22.480 --> 00:17:25.280
+Eugenia Sol Piñeiro: la idea es que un poco se lleven también de la materia.
+
+147
+00:17:25.560 --> 00:17:32.570
+Eugenia Sol Piñeiro: Esto no. ¿qué consecuencias puede traer ¿Cómo usarlo y demás? Bueno, un poquito eso.
+
+148
+00:17:33.080 --> 00:17:36.830
+Marina Fuster: Hay. Perdón. Una última mira
+
+149
+00:17:37.860 --> 00:17:55.170
+Marina Fuster: en la materia. Van a ver que la idea nuestra es presentarle, lo que es transformers desde distintos ángulos. Hoy hay un montón de foco en lo que esa gente es como que primero eran los el el el Ems. Después eran los Reason y Moroth y ahora son los agentes. Entonces, nuestra idea, un poco es
+
+150
+00:17:55.170 --> 00:18:00.560
+Marina Fuster: que se lleven las distintas perspectivas. No es que el foco va a ser agentes
+
+151
+00:18:00.730 --> 00:18:06.719
+Marina Fuster: para eso También hay al alguna otra materia, pero sí que vean el transformer desde distintas perspectivas.
+
+152
+00:18:06.880 --> 00:18:12.849
+Marina Fuster: Agente es una de las perspectivas desde las cuales se aplica Transformer.
+
+153
+00:18:14.060 --> 00:18:17.399
+Marina Fuster: A mí a veces se me ha ido diciendo.
+
+154
+00:18:26.210 --> 00:18:32.590
+Eugenia Sol Piñeiro: Sí, planeándose hacer algo después de consumir 10 000 tokens que es así. También
+
+155
+00:18:32.930 --> 00:18:35.199
+Eugenia Sol Piñeiro: consume la context Windows, pues ya está.
+
+156
+00:18:36.940 --> 00:18:42.929
+Eugenia Sol Piñeiro: Y en bueno, ahí van pasando kits.
+
+157
+00:18:43.360 --> 00:18:45.189
+Eugenia Sol Piñeiro: Bueno, vamos con la intro.
+
+158
+00:18:45.480 --> 00:18:53.220
+Eugenia Sol Piñeiro: Voy a ir un poquito más rápido en esta parte porque ya lo vimos en sí, A. Me voy a detener en la parte nueva más que nada
+
+159
+00:18:53.890 --> 00:18:55.060
+Eugenia Sol Piñeiro: igual.
+
+160
+00:18:55.300 --> 00:19:02.219
+Eugenia Sol Piñeiro: Quizás algunos la cursaron por ahí, no el cuatri pasado, sino el anterior. Entonces también viene bien el repaso, porque va a ser la base de toda la materia.
+
+161
+00:19:03.570 --> 00:19:07.030
+Eugenia Sol Piñeiro: Sí que cualquier cosa me frenan Bien.
+
+162
+00:19:07.480 --> 00:19:22.060
+Eugenia Sol Piñeiro: Vamos a tener este paper, que es de donde surge esa tension y sol. Y unid justamente habla este concepto ya de atención directamente en el título. No es la primera vez igual en la que ya se hablaba de atención, sino que antes
+
+163
+00:19:22.180 --> 00:19:32.650
+Eugenia Sol Piñeiro: también existía. No es que es un concepto nuevo, sino que se usa otra forma. Y esto surge en el año 2 017. Así que aunque no parezca, ya pasó casi una década.
+
+164
+00:19:32.800 --> 00:19:36.900
+Eugenia Sol Piñeiro: parece muy nuevo, pero a la vez no es tan nuevo ya
+
+165
+00:19:37.090 --> 00:19:44.109
+Eugenia Sol Piñeiro: Y acá. Lo que hacen es justamente introducir esta arquitectura de coverdecoders que vamos a ver basada en este mecanismo de atención.
+
+166
+00:19:45.070 --> 00:19:53.729
+Eugenia Sol Piñeiro: Recomiendo que lo lean el Paper. Si todavía no lo leyeron. Lo recomendé también en Cya, sobre todo después de tener esta clase, pues va a quedar mucho más claro.
+
+167
+00:19:54.380 --> 00:20:02.409
+Eugenia Sol Piñeiro: Lo que tiene que, en mi opinión, es quizás un poco escaso en cuanto a la justificación de por qué
+
+168
+00:20:02.800 --> 00:20:14.810
+Eugenia Sol Piñeiro: hicieron eso, o como se les ocurrió, de dónde salió o qué decisión tomaron. Pero un poco, también la idea de clase fue como esta recopilación de intentar justificar o intentar explicar
+
+169
+00:20:15.150 --> 00:20:16.940
+Eugenia Sol Piñeiro: por qué se tomaron esas decisiones.
+
+170
+00:20:17.650 --> 00:20:21.970
+Eugenia Sol Piñeiro: Así que lo van a entender Un poquito mejor después de la clase también.
+
+171
+00:20:22.640 --> 00:20:29.469
+Eugenia Sol Piñeiro: Bien, ¿qué es un transformer un poco? Ya lo hablamos. Está re neuronal que justamente se utiliza para transformar una secuencia en otra
+
+172
+00:20:29.660 --> 00:20:42.919
+Eugenia Sol Piñeiro: basada en un mecanismo de atención. Vamos a ver cómo funciona este mecanismo y lo vamos a ver en particular para un ejemplo de traducción, pero justamente no es el único ejemplo. Tiene 1 000 000 de aplicaciones, un poco. Ya las hablamos.
+
+173
+00:20:43.010 --> 00:20:50.400
+Eugenia Sol Piñeiro: Esto, bueno de traducción puede ser clasificación también no se queda solo en no supervisado.
+
+174
+00:20:50.440 --> 00:21:03.759
+Eugenia Sol Piñeiro: puede ser de reconocimiento del habla. Un Q Banei, generación de textos, generación de imágenes resumen forcasting. Muchos ya aparecieron en el chat, pero tienen distintos campos de aplicación. La idea también
+
+175
+00:21:04.190 --> 00:21:20.389
+Eugenia Sol Piñeiro: es que a lo largo de la materia salgan un poco, que es un poco lo que sea amaru recién de que esto solo se aplica un chatbot, no, O sea, no va a ser solamente eso, sino que hay un montón de campos. Y la idea es que lo puedan aplicar en distintos lugares de distintas perspectivas.
+
+176
+00:21:21.190 --> 00:21:25.469
+Eugenia Sol Piñeiro: Así que salgamos un poco de de que esto es solo chachapity y amigos.
+
+177
+00:21:26.420 --> 00:21:27.940
+Eugenia Sol Piñeiro: Entonces, la arquitectura.
+
+178
+00:21:28.950 --> 00:21:38.289
+Eugenia Sol Piñeiro: esto lo mencionaron que se acordaban un poco. Es un stack de Encoders y decoders donde voy a tener múltiples incoders y Decoders apilados
+
+179
+00:21:40.020 --> 00:21:59.230
+Eugenia Sol Piñeiro: en particular en el Paper usaban este ene Creo que era 4 o 6 en covers apilados. Y es un parámetro que va variando. Uno lo puede así como ajustar la cantidad de capas y neuronas. Bueno, acá se ajusta la cantidad de encoders y covers estaqueados. La idea es que sea la misma cantidad
+
+180
+00:21:59.440 --> 00:22:05.329
+Eugenia Sol Piñeiro: y tienen la misma estructura, cada 1 de los encoders y cada 1 de los decoders.
+
+181
+00:22:06.460 --> 00:22:18.829
+Eugenia Sol Piñeiro: ¿qué estructura tienen? Van a tener una capa de self atention, que esta es la que me permitía prestar la atención alguna parte de mi sentencia y después voy a tener un M. L. P: Esta red. Fit Foward
+
+182
+00:22:19.370 --> 00:22:22.039
+Eugenia Sol Piñeiro: aparece de nuevo nuestro amigo el M. L. P.
+
+183
+00:22:22.240 --> 00:22:29.589
+Eugenia Sol Piñeiro: Donde va a estar conectado después con la siguiente self atention layer del siguiente encoder y así sucesivamente, se va propagando.
+
+184
+00:22:30.450 --> 00:22:43.849
+Eugenia Sol Piñeiro: Y lo que agrega el decoder es, además de las mismas 2 capas que teníamos antes de Self atention y el M. L. P. Vamos a tener un encoder decode atention. Esta también la pueden encontrar en otros lados, como Cross
+
+185
+00:22:44.210 --> 00:22:51.110
+Eugenia Sol Piñeiro: Atention. No es cliente como cruz atention que justamente lo que le permite, es.
+
+186
+00:22:52.140 --> 00:22:56.779
+Eugenia Sol Piñeiro: digamos, conectarse con toda la parte del encoder.
+
+187
+00:22:57.380 --> 00:23:05.199
+Eugenia Sol Piñeiro: Entonces los inputs del encoder primero pasan por toda esta capa que se llama Zervattenson, llega hasta el último encover se propaga y
+
+188
+00:23:06.160 --> 00:23:15.190
+Eugenia Sol Piñeiro: le va a permitir considerar los tokens pasados al decoder, o sea, va a unir estos 2 módulos.
+
+189
+00:23:15.440 --> 00:23:22.079
+Eugenia Sol Piñeiro: Entonces hasta acá fue un repaso en general de esto. Ya lo habíamos visto un poco en cía. Ahora
+
+190
+00:23:22.200 --> 00:23:27.950
+Eugenia Sol Piñeiro: habíamos llegado hasta acá a la arquitectura. Pero la realidad es que la arquitectura sigue y
+
+191
+00:23:28.620 --> 00:23:30.479
+Eugenia Sol Piñeiro: tiene un par de consideraciones más.
+
+192
+00:23:30.700 --> 00:23:36.010
+Eugenia Sol Piñeiro: ¿qué es esta, por ejemplo, ¿Qué es lo que pasa? Acá Vamos a tener
+
+193
+00:23:37.580 --> 00:23:40.640
+Eugenia Sol Piñeiro: una ley extra después de cada una de las leyes.
+
+194
+00:23:41.470 --> 00:23:48.660
+Eugenia Sol Piñeiro: y vamos a tener este concepto de espéreme que que ya escribí.
+
+195
+00:23:49.220 --> 00:23:52.509
+Eugenia Sol Piñeiro: Vamos a tener este concepto de multihead
+
+196
+00:23:53.080 --> 00:24:11.159
+Eugenia Sol Piñeiro: que esto lo que va a hacer es permitirnos enfocarnos en múltiples partes de la secuencia. Al mismo tiempo. Después la vamos a ver más en detalle, pero en realidad esa self atention layer es una multa y head attention layer. Lo voy a tener múltiples heads enfocándose en mi
+
+197
+00:24:11.320 --> 00:24:12.470
+Eugenia Sol Piñeiro: en mi oración.
+
+198
+00:24:13.730 --> 00:24:20.620
+Eugenia Sol Piñeiro: Oración. Porque es un ejemplo de texto puede ser píxeles en una imagen o demás, pero por lo pronto vamos a
+
+199
+00:24:20.960 --> 00:24:22.980
+Eugenia Sol Piñeiro: restringirnos al ejemplo de texto
+
+200
+00:24:23.420 --> 00:24:30.720
+Eugenia Sol Piñeiro: y así como está la Multa de Heath en el Encoder tenemos también en el decoder, pero se le suma una máscara. No
+
+201
+00:24:32.310 --> 00:24:33.860
+Eugenia Sol Piñeiro: se acuerdan. Por qué?
+
+202
+00:24:39.790 --> 00:24:45.180
+Eugenia Sol Piñeiro: Que cuál era, qué era lo que podía hacer el encoder que no podía ser el decoder. Por ejemplo.
+
+203
+00:24:45.580 --> 00:24:50.320
+Eugenia Sol Piñeiro: Os estoy haciendo una pregunta muy compleja. Igual me parece, Y
+
+204
+00:24:52.630 --> 00:24:58.659
+Eugenia Sol Piñeiro: acá la idea era que el encoder podía haber tantos palabras hacia atrás.
+
+205
+00:24:59.020 --> 00:25:08.329
+Eugenia Sol Piñeiro: Palabras tokens hacia atrás como hacia adelante. En cambio, el decoder no puede ver el futuro. Entonces lo que se hace es enmascarar
+
+206
+00:25:08.440 --> 00:25:20.970
+Eugenia Sol Piñeiro: justamente todas las siguientes: los siguientes tokens que podrían venir después. ¿por qué? Porque el momento de diferencia no tiene información sobre qué es lo que viene justamente es lo que quiere inferir.
+
+207
+00:25:21.220 --> 00:25:30.539
+Eugenia Sol Piñeiro: Entonces lo que se hace es agregar una máscara en la parte del decoder. Vamos a ver ahora qué es esa máscara. ¿cómo se genera, por qué?
+
+208
+00:25:31.770 --> 00:25:37.280
+Eugenia Sol Piñeiro: Pero aguárdenme unas firminas más. Y otra cosa que se agrega es esta capa
+
+209
+00:25:38.290 --> 00:25:49.809
+Eugenia Sol Piñeiro: de Adam Norn sobre cada una de las capas, o sea, esto es enorme. Ya teníamos un montón de capas porque encima acá imagínense, hay un M. L, P: no. O sea, esto tiene más capas todavía.
+
+210
+00:25:50.710 --> 00:25:58.540
+Eugenia Sol Piñeiro: Y lo que se hace es agregar esta conexión que está acá que es una conexión residual.
+
+211
+00:25:58.750 --> 00:26:06.550
+Eugenia Sol Piñeiro: Esto también lo pueden ver como Skip Uy Skip Connection.
+
+212
+00:26:07.720 --> 00:26:14.159
+Eugenia Sol Piñeiro: Lo escribí horrible. Bueno, como script connections que son las conexiones residuales Ok. ¿qué significa esto?
+
+213
+00:26:14.500 --> 00:26:18.150
+Eugenia Sol Piñeiro: Que va a tomar el output
+
+214
+00:26:18.770 --> 00:26:23.530
+Eugenia Sol Piñeiro: de la capa anterior? Y lo va a sumar al output de la capa actual.
+
+215
+00:26:24.050 --> 00:26:32.030
+Eugenia Sol Piñeiro: Entonces ejemplo, si el output destaca para X, va a ser X más sublayer
+
+216
+00:26:32.570 --> 00:26:35.139
+Eugenia Sol Piñeiro: la capa anterior, la sub capa
+
+217
+00:26:35.620 --> 00:26:40.339
+Eugenia Sol Piñeiro: de X, o sea la salida de la capa X, Y además, eso lo va a normalizar.
+
+218
+00:26:40.450 --> 00:26:43.209
+Eugenia Sol Piñeiro: Entonces, al final les va a quedar algo como
+
+219
+00:26:44.100 --> 00:26:51.610
+Eugenia Sol Piñeiro: en el Paper lo van a ver como Layer Norm se lo llama Layer Norm de X Más
+
+220
+00:26:53.080 --> 00:26:54.699
+Eugenia Sol Piñeiro: Sublayer de X.
+
+221
+00:26:55.620 --> 00:27:03.290
+Eugenia Sol Piñeiro: ¿para qué se hace esto ¿Se acuerdan del problema del Banishing Gradient, que era ahí. Lo puede definir.
+
+222
+00:27:15.030 --> 00:27:17.469
+Eugenia Sol Piñeiro: Dijeron que sí, pero que es.
+
+223
+00:27:17.470 --> 00:27:19.300
+Marina Fuster: Le faltó la definición.
+
+224
+00:27:19.300 --> 00:27:20.380
+Eugenia Sol Piñeiro: Claro.
+
+225
+00:27:20.560 --> 00:27:21.230
+Marina Fuster: Claro.
+
+226
+00:27:26.470 --> 00:27:35.739
+Eugenia Sol Piñeiro: Los delta pesan muy chicos y te explota desde 0, Bien, o sea, en este caso, es la parte en la que se hace muy, muy cercano a 0. Tan chico
+
+227
+00:27:35.740 --> 00:27:47.260
+Eugenia Sol Piñeiro: que se llama el bunishing gradient problem que es cuando los gradientes de las capas anteriores se vuelven tan pequeños durante el training que después, cuando actualizo los pesos de esas capas, no se ve el cambio que estoy agregando.
+
+228
+00:27:47.280 --> 00:27:55.939
+Eugenia Sol Piñeiro: Entonces ese delta pasa a ser tan chico, incluso inexistente, pues hace muy cercano a 0, que dificulta que el modelo pueda converger.
+
+229
+00:27:56.690 --> 00:28:12.980
+Eugenia Sol Piñeiro: Entonces lo que se hace es justamente agregar esta conexión residual para mitigar ese problema, porque estás haciendo una suma, estás en una suma después lo estandarizadas, No, Este Layer Norm no es más que estandarizar para que todo quede en la misma escala, pero al agregar la suma.
+
+230
+00:28:13.120 --> 00:28:16.269
+Eugenia Sol Piñeiro: Mitigo. Ese problema de amarillo incluye un problema. ¿qué
+
+231
+00:28:16.880 --> 00:28:21.170
+Eugenia Sol Piñeiro: es una de las grandes ventajas que tienen los elementos los transformers.
+
+232
+00:28:22.330 --> 00:28:30.150
+Eugenia Sol Piñeiro: Si el modelo es muy grande, los gradientes se pueden perder al hacer la grupación. Bien, Perfecto. Entonces
+
+233
+00:28:31.320 --> 00:28:36.340
+Eugenia Sol Piñeiro: vamos a tener Skip Connections, que son estas conexiones residuales.
+
+234
+00:28:36.790 --> 00:28:39.480
+Eugenia Sol Piñeiro: la Tention Lager, que además es Multa y Head.
+
+235
+00:28:40.000 --> 00:28:49.310
+Eugenia Sol Piñeiro: Vamos a normalizar después las Skip Connections lo paso por el M. L. P: De nuevo, voy mitigando el problema del banishing gradient, y así sucesivamente por cada encoder.
+
+236
+00:28:49.470 --> 00:28:55.219
+Eugenia Sol Piñeiro: Además, le agrego el multa y Head Atention en la parte de Cross atention para comunicarse con el encoder.
+
+237
+00:28:55.550 --> 00:29:03.030
+Eugenia Sol Piñeiro: Sigo con el M. L. P. Bueno, y así, y encima esto lo tengo que enmascarar. O sea, hay que tener en cuenta un montón de cosas. No.
+
+238
+00:29:03.360 --> 00:29:10.290
+Eugenia Sol Piñeiro: Lo importante que se lleven de acá es esta ventaja que dan las Skip Connections y la capa de atención
+
+239
+00:29:10.970 --> 00:29:11.870
+Eugenia Sol Piñeiro: después.
+
+240
+00:29:12.010 --> 00:29:19.389
+Eugenia Sol Piñeiro: Son conexiones entre neuronas. Es un m L. P. Lo pueden ver como un M. L. P. Gigante donde se va haciendo este cálculo de atención.
+
+241
+00:29:23.360 --> 00:29:25.109
+Eugenia Sol Piñeiro: Entonces vamos a.
+
+242
+00:29:26.600 --> 00:29:31.449
+Eugenia Sol Piñeiro: No me queda claro que son las Skip Connection Ok. Bien la Skip Connection es.
+
+243
+00:29:32.880 --> 00:29:36.330
+Eugenia Sol Piñeiro: no te queda claro para qué sirve o cómo se calcula o las 2.
+
+244
+00:29:37.010 --> 00:29:39.390
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No me queda claro qué es y para qué sirve.
+
+245
+00:29:40.230 --> 00:29:41.160
+Eugenia Sol Piñeiro: Okay. Bien.
+
+246
+00:29:41.840 --> 00:29:49.459
+Eugenia Sol Piñeiro: ¿para qué sirve para mitigar este problema de que el gradiente va desapareciendo. Fíjate que acá yo sólo puse un encoder.
+
+247
+00:29:49.710 --> 00:29:58.110
+Eugenia Sol Piñeiro: pero son n encoders. Y todo esto se repite y tenés que ir haciendo todo el Foward Pass y después el back propagation, ¿no? O sea, acá
+
+248
+00:29:58.410 --> 00:30:01.010
+Eugenia Sol Piñeiro: hay un M. L. P: Encima No es una sola capa.
+
+249
+00:30:01.320 --> 00:30:05.510
+Eugenia Sol Piñeiro: Esto puede tener tantas capas como vos definas y tantas neuronas en cada capa
+
+250
+00:30:06.300 --> 00:30:12.380
+Eugenia Sol Piñeiro: y eso multiplicado por toda la cantidad de encoders que tenés apilados, o sea, imagínate el tamaño de la red.
+
+251
+00:30:12.550 --> 00:30:26.310
+Eugenia Sol Piñeiro: Entonces cuando haces el back propagation cuando vas derivando el gradiente, vas haciendo, digamos, el gradiente, empieza a el delta w para actualizar los pesos a volverse muy cercano a 0.
+
+252
+00:30:26.740 --> 00:30:28.959
+Eugenia Sol Piñeiro: Entonces empieza a desaparecer ese gradiente.
+
+253
+00:30:29.130 --> 00:30:31.180
+Eugenia Sol Piñeiro: Y eso hace que el modelo no pueda converger.
+
+254
+00:30:32.080 --> 00:30:40.290
+Eugenia Sol Piñeiro: Entonces la solución, digamos lo que intenta mitigar este problema es ir sumándole
+
+255
+00:30:40.540 --> 00:30:45.070
+Eugenia Sol Piñeiro: a la siguiente capa: la capa, la salida de la capa anterior.
+
+256
+00:30:45.380 --> 00:30:54.140
+Eugenia Sol Piñeiro: Entonces fíjate que acá tengo la salida de esta capa. Supongamos que es X, la salida de
+
+257
+00:30:54.420 --> 00:30:56.009
+Eugenia Sol Piñeiro: la capa que está acá la naranja
+
+258
+00:30:56.210 --> 00:31:04.080
+Eugenia Sol Piñeiro: y después la salida del M. L. P: Es bueno y Pongámosle
+
+259
+00:31:04.310 --> 00:31:08.380
+Eugenia Sol Piñeiro: Okay, entonces esta capa lo que va a hacer es bueno y más X,
+
+260
+00:31:09.260 --> 00:31:15.060
+Eugenia Sol Piñeiro: Y esto es lo que va a entrar como output al siguiente encoder normalizado
+
+261
+00:31:15.430 --> 00:31:21.559
+Eugenia Sol Piñeiro: después esto se le hace, se estandariza, se acuerdan que era restar la media, dividir por el desvío.
+
+262
+00:31:21.560 --> 00:31:23.070
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Ahora, Sí. Gracias.
+
+263
+00:31:24.100 --> 00:31:25.399
+Eugenia Sol Piñeiro: Para que lo mejor genial.
+
+264
+00:31:25.400 --> 00:31:25.920
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+265
+00:31:27.140 --> 00:31:28.720
+Eugenia Sol Piñeiro: Bien. Ahora.
+
+266
+00:31:28.830 --> 00:31:42.559
+Eugenia Sol Piñeiro: para cerrar este Xy, me quedó mal en sentido de notación en el paper. Lo van a ver como esto es el sublayer de X, porque es la capa anterior, la sub capa más X,
+
+267
+00:31:42.740 --> 00:31:47.760
+Eugenia Sol Piñeiro: no. O sea, esto sería el equivalente a lo que yo le llamé I, Y esto es lo equivalente que yo llamé X
+
+268
+00:31:48.330 --> 00:31:54.029
+Eugenia Sol Piñeiro: para hacer la última anotación que me quedó al revés, pero nada Ella es eso sumar la anterior. Con la siguiente
+
+269
+00:31:58.340 --> 00:31:59.820
+Eugenia Sol Piñeiro: ¿te queda alguna duda más
+
+270
+00:32:09.970 --> 00:32:12.760
+Eugenia Sol Piñeiro: Okay, Todo los que no cursaron s. I D, A,
+
+271
+00:32:13.210 --> 00:32:18.939
+Eugenia Sol Piñeiro: cómo vienen. Porque yo estoy asumiendo un montón de cosas, de de de que ya lo vimos.
+
+272
+00:32:19.150 --> 00:32:21.609
+Eugenia Sol Piñeiro: Nos estamos muy perdidos. Estamos, Ok.
+
+273
+00:32:25.300 --> 00:32:28.360
+Eugenia Sol Piñeiro: cualquier cosa ahí me frenan igual.
+
+274
+00:32:30.110 --> 00:32:42.320
+Eugenia Sol Piñeiro: Bien, vamos a entrar a Me falta la traducción de algunos términos Okay, ahí cualquier cosa frenarme.
+
+275
+00:32:43.160 --> 00:32:46.579
+Eugenia Sol Piñeiro: pero bien inglés Okay, cuál cuál no te quedó?
+
+276
+00:32:54.670 --> 00:33:00.630
+Eugenia Sol Piñeiro: Okay por si acaso voy a anotar este keep connections es igual a conexiones residuales.
+
+277
+00:33:05.520 --> 00:33:11.910
+Eugenia Sol Piñeiro: Y bien, ¿qué hace la base? El Faten John
+
+278
+00:33:12.960 --> 00:33:16.549
+Eugenia Sol Piñeiro: ayuda al encoder a mirar. Otras palabras, es decir, puede mirar
+
+279
+00:33:16.970 --> 00:33:26.360
+Eugenia Sol Piñeiro: sedante y hacia atrás mientras estoy procesando un token, pero el decoder habíamos dicho que solo puede ver palabras anteriores, o tokens anteriores.
+
+280
+00:33:26.460 --> 00:33:28.040
+Eugenia Sol Piñeiro: y el resto se va a enmascarar.
+
+281
+00:33:28.760 --> 00:33:35.930
+Eugenia Sol Piñeiro: Entonces teníamos este ejemplo de The Animal Deaving Cross Street becos It
+
+282
+00:33:36.050 --> 00:33:39.359
+Eugenia Sol Piñeiro: Was Tire. Entonces acá la pregunta es este: It.
+
+283
+00:33:39.580 --> 00:33:49.910
+Eugenia Sol Piñeiro: a qué hacía referencia. O sea, cómo le como le digo al Edén a que hace referencia hace referencia a Street, hace referencia a el animal. ¿quién es el que estaba cansado? Bueno, no
+
+284
+00:33:50.150 --> 00:33:55.659
+Eugenia Sol Piñeiro: bastante sencillo. Si 1 lo traduce, ¿no? Pero ¿cómo hago para que le le entienda eso.
+
+285
+00:33:55.800 --> 00:34:06.679
+Eugenia Sol Piñeiro: Entonces, ¿a qué es? ¿a qué es lo que hace referencia? Entonces, ¿a qué le tengo que prestar atención? Eso es lo que me va a decir esta capa de Selph atention legend
+
+286
+00:34:06.880 --> 00:34:09.239
+Eugenia Sol Piñeiro: mientras proceso un token.
+
+287
+00:34:09.739 --> 00:34:14.579
+Eugenia Sol Piñeiro: ¿a qué le presto atención o cuánta atención le presto al resto de los Tokens.
+
+288
+00:34:18.330 --> 00:34:26.650
+Eugenia Sol Piñeiro: Bien, antes de entrar como input a mi primer encoder, teníamos que pasar por una serie de transformaciones.
+
+289
+00:34:27.630 --> 00:34:28.750
+Eugenia Sol Piñeiro: Vamos a ver
+
+290
+00:34:28.860 --> 00:34:38.559
+Eugenia Sol Piñeiro: mucho más en detalle la clase que viene cada una de estas transformaciones. Pero ahora la idea es que se lleven como el camino de procesamiento que hay que seguir antes de entrar en couda.
+
+291
+00:34:39.030 --> 00:34:43.850
+Eugenia Sol Piñeiro: vamos a tener supóngase que tengo este input, Tengo esta oración. Soy un estudiante.
+
+292
+00:34:44.770 --> 00:34:47.869
+Eugenia Sol Piñeiro: Ahora tenía que venir. La parte de generar mis tokens
+
+293
+00:34:48.210 --> 00:34:51.640
+Eugenia Sol Piñeiro: que los tokens es una unidad
+
+294
+00:34:51.889 --> 00:34:59.920
+Eugenia Sol Piñeiro: más pequeña. No necesariamente son palabras. En este ejemplo, está dividido por palabras. Después vamos a ver que hay alternativas, pero
+
+295
+00:35:00.430 --> 00:35:03.290
+Eugenia Sol Piñeiro: lo que voy a hacer es dividir mi sentencia en Tokens.
+
+296
+00:35:03.390 --> 00:35:21.020
+Eugenia Sol Piñeiro: Y después cada 1 de estos tokens los voy a procesar, y los voy a representar con un embwedding que el embedding me da esta capacidad semántica para representar mi palabra y básicamente, convertirla en un vector de números. Yo después necesito hacer cuentas en mi casa de atención, necesito tener un rey de reales.
+
+297
+00:35:21.130 --> 00:35:22.090
+Eugenia Sol Piñeiro: en
+
+298
+00:35:22.590 --> 00:35:33.780
+Eugenia Sol Piñeiro: en particular en el paper, usan dimensión 512, o sea, son una raíz bastante grandes. Pero esto va variando también según el algoritmo. Ya lo vamos a ver. Vamos a ver qué significan
+
+299
+00:35:33.900 --> 00:35:39.470
+Eugenia Sol Piñeiro: si es muy grande. ¿qué pasa si es muy chico que tanto representa? ¿qué tipo de algoritmos hay
+
+300
+00:35:39.910 --> 00:35:48.910
+Eugenia Sol Piñeiro: cripto en Bensay y demás? Así que eso aguarden a la clase que viene. Pero por lo pronto divido un tokens y dividen en Beddings
+
+301
+00:35:49.010 --> 00:35:57.309
+Eugenia Sol Piñeiro: ahora no es lo único. Me falta agregar un sentido de orden a mis tokens.
+
+302
+00:35:57.520 --> 00:36:07.279
+Eugenia Sol Piñeiro: digamos, no es lo mismo estudiante. Soyun que soy un estudiante, o lo que sea en el orden del lenguaje es muy importante.
+
+303
+00:36:07.510 --> 00:36:09.189
+Eugenia Sol Piñeiro: Entonces, ¿qué es lo que se hace?
+
+304
+00:36:09.980 --> 00:36:15.829
+Eugenia Sol Piñeiro: Voy a generar un vector de posición que se lo voy a sumar a mi invading.
+
+305
+00:36:17.140 --> 00:36:24.400
+Eugenia Sol Piñeiro: Entonces vamos a tener mi sentencia. Hago tokeny setion aplico el algoritmo de mehein
+
+306
+00:36:24.720 --> 00:36:28.750
+Eugenia Sol Piñeiro: después aplico el algoritmo de posicional en coding, lo sumo. Y eso
+
+307
+00:36:28.900 --> 00:36:30.690
+Eugenia Sol Piñeiro: va a ser el input de mi encoder.
+
+308
+00:36:31.460 --> 00:36:39.249
+Eugenia Sol Piñeiro: ¿qué algoritmo de organization qué algoritmo en meding. ¿qué algoritmo de posicionar en coding Todo esto? Hay un montón, incluso pueden ser
+
+309
+00:36:39.700 --> 00:36:44.379
+Eugenia Sol Piñeiro: yo los refiero como como módulos intercambiables en sentido de.
+
+310
+00:36:45.710 --> 00:36:54.940
+Eugenia Sol Piñeiro: pues, usar un algoritmo de tokenization con un algoritmo en Bein. Empezar a intercambiarlos. Puedo cambiar de posición en coding y demás entonces tiene muchos módulos. El transformer
+
+311
+00:36:55.140 --> 00:37:04.449
+Eugenia Sol Piñeiro: La idea es que se llenen también de la materia, como intercambiarlos, Cuáles usar, cuándo conviene 1 y cuando no. ¿qué ventajas ventajas tienen? Bueno, ya vamos a ir viendo a lo largo de la materia.
+
+312
+00:37:04.770 --> 00:37:13.629
+Eugenia Sol Piñeiro: Y ahora como intro también, porque después ya vamos a ver es cómo se calcula este vector de posición?
+
+313
+00:37:14.490 --> 00:37:20.790
+Eugenia Sol Piñeiro: ¿se acuerdan qué en el paper proponían una serie de senos y cosenos.
+
+314
+00:37:21.570 --> 00:37:34.290
+Eugenia Sol Piñeiro: ¿qué pasaba? La primera idea, la más básica es, Ok, le asigno, un número natural consecutivo a cada 1 de mis tokens ya estaba el 0. Vos el 1, vos el 2, etcétera.
+
+315
+00:37:35.280 --> 00:37:37.970
+Eugenia Sol Piñeiro: ¿qué desventaja tiene eso? ¿se acuerdan?
+
+316
+00:37:39.560 --> 00:37:41.529
+Eugenia Sol Piñeiro: O qué se les ocurre? ¿te acuerdas?
+
+317
+00:37:48.090 --> 00:37:52.640
+Eugenia Sol Piñeiro: Les asigno, un número natural, ¿no? Sos: el 0, Uno, 2, listo. Ese es el orden.
+
+318
+00:38:00.380 --> 00:38:04.329
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Perdón. ¿para qué hacías el position en Coving cuando lo haces.
+
+319
+00:38:05.430 --> 00:38:08.579
+Eugenia Sol Piñeiro: Lo hacés para darle un orden a Tus tokens.
+
+320
+00:38:11.240 --> 00:38:15.220
+Eugenia Sol Piñeiro: O sea, primero vas hoy, después vas un y después vas de estudiante.
+
+321
+00:38:15.400 --> 00:38:17.240
+Eugenia Sol Piñeiro: o sea, desde el 0, el 1, el 2.
+
+322
+00:38:18.300 --> 00:38:25.189
+Eugenia Sol Piñeiro: Si yo le asigno un número natural consecutivo a cada token, ¿qué problema puedo tener.
+
+323
+00:38:32.320 --> 00:38:36.260
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Te quedas sin números naturales, Sí, Sí.
+
+324
+00:38:36.260 --> 00:38:36.750
+Eugenia Sol Piñeiro: Ohh.
+
+325
+00:38:38.730 --> 00:38:40.070
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Tenés.
+
+326
+00:38:40.250 --> 00:38:44.500
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea que está todos los toques, Le das el mismo número Le Das como la misma importancia.
+
+327
+00:38:46.480 --> 00:39:04.800
+Eugenia Sol Piñeiro: Okay, no por el lado de importancia va por el lado de, o sea, incluso puede ser algo tan simple como Hoverflog de de y fin. Pero si tenés esa desventaja y otra desventaja es que ¿qué pasa si entrenas con secuencias de distinta longitud
+
+328
+00:39:05.290 --> 00:39:06.570
+Eugenia Sol Piñeiro: de las que inferís.
+
+329
+00:39:08.060 --> 00:39:13.490
+Eugenia Sol Piñeiro: Entonces por ahí, no sé, llegaste hasta 100, y después te vino una de longitud 1 000.
+
+330
+00:39:13.630 --> 00:39:20.230
+Eugenia Sol Piñeiro: Y ya no puedes generalizar el modelo, entonces perdés, capacidad de generalización. Por ejemplo, se acuerdan que era generalizar.
+
+331
+00:39:20.550 --> 00:39:22.810
+Eugenia Sol Piñeiro: que era la capacidad de generación de un modelo.
+
+332
+00:39:30.190 --> 00:39:32.249
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Era la capacidad del modelo de
+
+333
+00:39:35.070 --> 00:39:39.930
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: responder a datos que no estaba responder a entradas que no estaban en el de en el training set.
+
+334
+00:39:40.560 --> 00:39:41.940
+Eugenia Sol Piñeiro: Bien. Perfecto.
+
+335
+00:39:42.250 --> 00:39:47.369
+Eugenia Sol Piñeiro: Cuando lo aprendido puede ser correctamente aplicado a datos no vistos previamente.
+
+336
+00:39:49.040 --> 00:39:54.680
+Eugenia Sol Piñeiro: bien, o sea, lo del test decir que no memoriza bien y
+
+337
+00:39:54.780 --> 00:40:01.640
+Eugenia Sol Piñeiro: perfecto. Entonces, perdés esa capacidad. Entonces, ¿qué es lo que proponen los autores? Es hacer una serie de senos y cosenos
+
+338
+00:40:01.940 --> 00:40:17.229
+Eugenia Sol Piñeiro: donde vamos a usar el seno para posiciones, pares y el coseno para posiciones impares donde va a ser el seno de la posición, o sea, este número natural dividido, 10 000 elevado a la 2, y sobre D, o sea, salió también un poco de
+
+339
+00:40:17.710 --> 00:40:37.390
+Eugenia Sol Piñeiro: de la nada. Pero después vamos a profundizar y vamos a entender un poco más, porque esto funciona este y es el índice, o sea, del vector, y la posición en el vector, y D es la dimensión de un Emeding que tiene que ser la misma dimensión del vector de posición, no porque después los tengo que sumar 1 a 1, o sea, hago la suma de los 2 Arraig.
+
+340
+00:40:37.540 --> 00:40:39.610
+Eugenia Sol Piñeiro: Y eso es lo que me va a entrar en el un cover.
+
+341
+00:40:40.960 --> 00:40:43.920
+Eugenia Sol Piñeiro: Y así se va calculando. Por ejemplo, este vector de oposición
+
+342
+00:40:44.240 --> 00:40:53.339
+Eugenia Sol Piñeiro: es la única forma. No, no es la única. De hecho, en el paper prueban 2 y se quedan con esta. Pero hay más
+
+343
+00:40:53.510 --> 00:40:58.749
+Eugenia Sol Piñeiro: de nuevo, son módulos intercambiables. Esta es una que funciona y se suele usar bastante.
+
+344
+00:41:02.090 --> 00:41:07.869
+Eugenia Sol Piñeiro: Ahora sí vamos a entrar a cómo funciona. Este mecanismo de atención.
+
+345
+00:41:09.710 --> 00:41:12.680
+Eugenia Sol Piñeiro: Entonces, en el contexto del E. L. Ms, vamos a tener
+
+346
+00:41:13.440 --> 00:41:16.970
+Eugenia Sol Piñeiro: 3 vectores que vamos a llamar Kuer Iquí y value
+
+347
+00:41:17.530 --> 00:41:22.839
+Eugenia Sol Piñeiro: para que se den una idea de qué representan. No es que hay una definición exacta, pero
+
+348
+00:41:23.840 --> 00:41:26.139
+Eugenia Sol Piñeiro: que les sirva como ayuda de memoria. Quizás.
+
+349
+00:41:26.370 --> 00:41:28.380
+Eugenia Sol Piñeiro: ¿qué es lo que representa cada 1
+
+350
+00:41:29.160 --> 00:41:40.410
+Eugenia Sol Piñeiro: la quary va a representar el token que yo estoy analizando en ese momento, el Token que voy a procesar. Es decir, me paro en ese token. Y digo, Ok, a partir de ese token que es la quary a quién le presto atención.
+
+351
+00:41:40.510 --> 00:41:43.000
+Eugenia Sol Piñeiro: O sea que es lo más importante en relación a este token.
+
+352
+00:41:43.230 --> 00:41:44.120
+Eugenia Sol Piñeiro: La aquí
+
+353
+00:41:44.290 --> 00:41:51.159
+Eugenia Sol Piñeiro: va justamente a representar esos tokens a los que hay que prestar la atención. ¿cuál es la clave? ¿cuál es la Key
+
+354
+00:41:51.320 --> 00:41:54.879
+Eugenia Sol Piñeiro: Y en mi sentencia
+
+355
+00:41:55.120 --> 00:42:00.890
+Eugenia Sol Piñeiro: y value ¿Va a ser la información de los tokens, que después voy a usar para construir todo mi contexto.
+
+356
+00:42:01.720 --> 00:42:05.960
+Eugenia Sol Piñeiro: El contexto básicamente, es todo lo que hay alrededor de ese Token.
+
+357
+00:42:07.340 --> 00:42:09.890
+Eugenia Sol Piñeiro: Entonces, ¿qué es lo más importante según mi cualidad?
+
+358
+00:42:11.370 --> 00:42:13.150
+Eugenia Sol Piñeiro: Otra forma de verlo es
+
+359
+00:42:14.390 --> 00:42:32.430
+Eugenia Sol Piñeiro: como como si fuese una base de datos donde hago la quori y quiero obtener un value a partir de una query basándome en la key de una base de datos, por ejemplo, o un hashmap es simplemente una analogía como para que puedan bajarlo un poco más a tierra, porque está bastante abstracto el concepto, pero
+
+360
+00:42:32.650 --> 00:42:38.369
+Eugenia Sol Piñeiro: la idea, un poco cesa de Okay, a partir de mi cueri al que le tengo que prestar atención.
+
+361
+00:42:40.090 --> 00:42:42.920
+Eugenia Sol Piñeiro: Entonces, qué es lo que voy a hacer?
+
+362
+00:42:43.170 --> 00:42:46.550
+Eugenia Sol Piñeiro: Voy a tener cada 1 de mis emails.
+
+363
+00:42:47.110 --> 00:42:51.079
+Eugenia Sol Piñeiro: es decir, este puede ser. Soy un estudiante, por ejemplo.
+
+364
+00:42:51.280 --> 00:42:55.250
+Eugenia Sol Piñeiro: y lo voy a multiplicar por 3 matrices.
+
+365
+00:42:55.420 --> 00:43:08.649
+Eugenia Sol Piñeiro: Vamos a tener la matriz Wq que va a ser los atention wates. Las matrices son los pesos. Al principio se inicializan de forma aleatoria para tener mi doble bq, mi doble b K. Y mi w
+
+366
+00:43:09.520 --> 00:43:17.490
+Eugenia Sol Piñeiro: entonces multiplico mi Enveding por esta matriz de pesos y puede obtener mi vector de cuery.
+
+367
+00:43:17.620 --> 00:43:20.720
+Eugenia Sol Piñeiro: Después voy a tener mi director de aquí y mi director de value
+
+368
+00:43:20.860 --> 00:43:24.089
+Eugenia Sol Piñeiro: y así se inicializan. Y después eso se va a ir entrenando. ¿no?
+
+369
+00:43:24.390 --> 00:43:29.620
+Eugenia Sol Piñeiro: Entonces, ¿qué es lo que se hace? ¿se va a calcular un score
+
+370
+00:43:30.040 --> 00:43:33.310
+Eugenia Sol Piñeiro: por cada 1 de mis embails
+
+371
+00:43:34.740 --> 00:43:39.729
+Eugenia Sol Piñeiro: supóngase que tenemos X 0, que X 0 es hoy.
+
+372
+00:43:40.840 --> 00:43:46.849
+Eugenia Sol Piñeiro: Después, no sé Esto es un Y supongamos que tenemos un X, 2 por acá que es estudiante.
+
+373
+00:43:47.670 --> 00:43:54.889
+Eugenia Sol Piñeiro: etcétera. Aquí estoy es X, 4. Lo que tenga en el ejemplo vamos a usar solo 2. Entonces, ¿qué es lo que voy a hacer? Voy a calcular
+
+374
+00:43:55.130 --> 00:43:58.479
+Eugenia Sol Piñeiro: el producto interno entre Queri y ki.
+
+375
+00:43:58.640 --> 00:44:07.670
+Eugenia Sol Piñeiro: Entonces supóngase que tenemos, no sé 1. Cero, 1 y 1, 2, 3.
+
+376
+00:44:08.050 --> 00:44:11.770
+Eugenia Sol Piñeiro: No voy a calcular este score que va a ser 4.
+
+377
+00:44:13.340 --> 00:44:18.750
+Eugenia Sol Piñeiro: Fui muy rápido, se entendió, O sea, es el producto interno. Ok, Entonces voy a calcular este score Ahora.
+
+378
+00:44:19.750 --> 00:44:20.730
+Eugenia Sol Piñeiro: esto.
+
+379
+00:44:22.690 --> 00:44:23.890
+Eugenia Sol Piñeiro: Este Q.
+
+380
+00:44:24.390 --> 00:44:28.049
+Eugenia Sol Piñeiro: Fíjense que lo estoy multiplicando por k 0
+
+381
+00:44:28.230 --> 00:44:33.379
+Eugenia Sol Piñeiro: y después para ver cuánta atención le presto al otro. Lo voy a multiplicar el mismo Q
+
+382
+00:44:33.680 --> 00:44:38.970
+Eugenia Sol Piñeiro: por el key del siguiente token. Entonces esto me va a decir.
+
+383
+00:44:39.280 --> 00:44:41.290
+Eugenia Sol Piñeiro: esperenme que pasó una filmina más.
+
+384
+00:44:43.560 --> 00:44:44.890
+Eugenia Sol Piñeiro: Ahí está la probabilidad.
+
+385
+00:44:45.140 --> 00:44:53.699
+Eugenia Sol Piñeiro: Entonces después a este escort se va a normalizar. Se lo va a dividir por la dimensión de
+
+386
+00:44:54.720 --> 00:45:07.569
+Eugenia Sol Piñeiro: una de las filas, 1 de los vectores de aquí. Y a esto se le va a aplicar softmax entonces simplemente a este score. ¿de qué tanta atención le prestó a cada token me va a dar una probabilidad. Entonces supóngase que acá. Me dice: Ok.
+
+387
+00:45:08.420 --> 00:45:10.269
+Eugenia Sol Piñeiro: si yo estoy parada a un hechicero
+
+388
+00:45:11.060 --> 00:45:21.549
+Eugenia Sol Piñeiro: a mí mismo, o sea, X 0, Dale no sé 80 por 100 de atención, por ejemplo, no Si este P 0 es 0, coma 8. Este P, 1 va a tener que ser 0, coma, 2, ¿no?
+
+389
+00:45:22.000 --> 00:45:29.330
+Eugenia Sol Piñeiro: Entonces me dice Ok, mientras proceso, soy préstale. 80 por 100 de atención a soy y 20 por 100 de atención a un
+
+390
+00:45:29.540 --> 00:45:30.700
+Eugenia Sol Piñeiro: amicis 1.
+
+391
+00:45:31.660 --> 00:45:37.350
+Eugenia Sol Piñeiro: Si tuviese el X, 2 va a ser, por ejemplo, no sé: préstale 0, coma 15
+
+392
+00:45:37.480 --> 00:45:43.519
+Eugenia Sol Piñeiro: a X, 1 y 0 coma 0, 5 a X, 2
+
+393
+00:45:44.320 --> 00:45:48.530
+Eugenia Sol Piñeiro: Y así sigo con el resto. Después me paro sobre X Uno.
+
+394
+00:45:49.290 --> 00:45:55.149
+Eugenia Sol Piñeiro: Y ahora voy a tener que usar el Q. Uno recién ahí entra una vez que yo estoy procesando el X, 1 entra el q 1
+
+395
+00:45:56.000 --> 00:46:01.030
+Eugenia Sol Piñeiro: acá. Si tuviese, por ejemplo, si sigo procesando X 0. Voy a hacer q 0
+
+396
+00:46:01.230 --> 00:46:08.210
+Eugenia Sol Piñeiro: por casero. Crucero por K, 1 crucero por K, 2, y así sucesivamente. Entonces me hice
+
+397
+00:46:08.360 --> 00:46:12.510
+Eugenia Sol Piñeiro: mientras yo estoy procesando mi token x 0.
+
+398
+00:46:12.710 --> 00:46:15.570
+Eugenia Sol Piñeiro: Cuánta atención le pongo al resto de los tokens.
+
+399
+00:46:15.940 --> 00:46:18.270
+Eugenia Sol Piñeiro: Entonces eso es lo que me dice ese numerito.
+
+400
+00:46:18.750 --> 00:46:28.340
+Eugenia Sol Piñeiro: Ahora que sigue después, voy a tener que generar un vector ponderado, Básicamente que es cuando entra el contexto
+
+401
+00:46:28.980 --> 00:46:39.010
+Eugenia Sol Piñeiro: cuando entraste Víctor de Value, entonces voy a hacer la probabilidad, voy a hacer P: 0 por B, 0, más P: 1 por B, 1, y así sucesivamente. Y eso lo que me va a dar
+
+402
+00:46:39.480 --> 00:46:50.580
+Eugenia Sol Piñeiro: va a ser la sumatoria de mis value ponderados que va a ser mi vector de atención. Entonces este vector Z va a ser la salida de la capa de Celfa Tenso.
+
+403
+00:46:51.020 --> 00:46:53.010
+Eugenia Sol Piñeiro: Entonces resumen.
+
+404
+00:46:53.360 --> 00:47:04.750
+Eugenia Sol Piñeiro: es mientras estoy procesando 1 de los tokens. Cuánta atención le presto al resto de los Tokens que tengo alrededor para formar el contexto y formar mi vector de atención
+
+405
+00:47:05.060 --> 00:47:06.030
+Eugenia Sol Piñeiro: Z 0.
+
+406
+00:47:08.100 --> 00:47:10.149
+Eugenia Sol Piñeiro: Ahora, todo esto
+
+407
+00:47:11.200 --> 00:47:18.450
+Eugenia Sol Piñeiro: lo hice de forma vectorial, pero en realidad, en la práctica se hace de forma matricial, porque es mucho más rápido la multiplicación entre matrices. Entonces.
+
+408
+00:47:18.590 --> 00:47:28.080
+Eugenia Sol Piñeiro: todo lo que vimos hasta ahora. Se puede resumir en esta línea de código, que básicamente es poner los envadings en filas de una matriz
+
+409
+00:47:28.620 --> 00:47:38.750
+Eugenia Sol Piñeiro: multiplico mi matriz de Beddings por mi matriz de W. Q. W. Kww y genero, una matriz, Q, una matriz k y una matriz. Value.
+
+410
+00:47:39.600 --> 00:47:47.280
+Eugenia Sol Piñeiro: Entonces Todo esto se va a resumir como la atención de ese Token va a ser softmax de
+
+411
+00:47:47.460 --> 00:47:54.010
+Eugenia Sol Piñeiro: q por k traspuesta, porque no necesariamente es cuadrada. Básicamente, en el ejemplo me quedo cuadrada, pero no necesariamente
+
+412
+00:47:54.120 --> 00:48:01.359
+Eugenia Sol Piñeiro: dividido. La dimensión del vector de aquí por palio, y eso me va a dar una matriz de atención.
+
+413
+00:48:03.130 --> 00:48:09.080
+Eugenia Sol Piñeiro: y eso es lo que después va a darme como salida y entrar al siguiente stack de incomwers.
+
+414
+00:48:10.730 --> 00:48:21.329
+Eugenia Sol Piñeiro: Entonces eso es un poco el resumen. En general, voy a tener entonces mis emails, Mis 3 vectores multiplicó aplico esta función y me queda mi matriz Z
+
+415
+00:48:23.120 --> 00:48:24.890
+Eugenia Sol Piñeiro: Hasta acá estamos okay.
+
+416
+00:48:27.920 --> 00:48:30.259
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Me varíe un poco toda la matemáticas.
+
+417
+00:48:31.850 --> 00:48:33.050
+Eugenia Sol Piñeiro: Okay. ¿qué te mareó?
+
+418
+00:48:33.540 --> 00:48:35.470
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Cuando pasaste.
+
+419
+00:48:37.810 --> 00:48:46.220
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí. Cuando pasaste más para atrás, el paso ha hasta ahí, llegué.
+
+420
+00:48:47.360 --> 00:48:47.710
+Eugenia Sol Piñeiro: Okay.
+
+421
+00:48:47.710 --> 00:48:50.489
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Cuando pasaste a matriz. Ahí es cuando se me.
+
+422
+00:48:51.400 --> 00:48:52.580
+Eugenia Sol Piñeiro: Cuando paso a matriz.
+
+423
+00:48:52.650 --> 00:48:53.510
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Bueno.
+
+424
+00:48:54.290 --> 00:49:03.880
+Eugenia Sol Piñeiro: La idea es la misma. Fíjate que hacer esta multiplicación de matrices es lo mismo que hacer el producto interno entre la primera fila y la primera columna. No.
+
+425
+00:49:04.170 --> 00:49:04.540
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea.
+
+426
+00:49:04.540 --> 00:49:10.750
+Eugenia Sol Piñeiro: Multiplicación de matrices en general. Entonces, esta partecita es análoga a esto que veíamos acá
+
+427
+00:49:13.750 --> 00:49:14.939
+Eugenia Sol Piñeiro: ¿no? Ese q por K.
+
+428
+00:49:14.940 --> 00:49:15.420
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+429
+00:49:15.420 --> 00:49:17.859
+Eugenia Sol Piñeiro: Después, ¿qué tengo que hacer aplicarles? Softmax? ¿a
+
+430
+00:49:18.250 --> 00:49:22.209
+Eugenia Sol Piñeiro: ¿Por qué le aplico Softmax? Porque esto me va a dar un número, Y yo quiero una probabilidad
+
+431
+00:49:23.400 --> 00:49:28.660
+Eugenia Sol Piñeiro: que era una distribución de probabilidades de cuánta atención prestarle a cada 1, cada 1 de mis tokens
+
+432
+00:49:29.390 --> 00:49:34.169
+Eugenia Sol Piñeiro: entonces eso le aplico softmax y después entra el contexto que es el value
+
+433
+00:49:34.420 --> 00:49:39.929
+Eugenia Sol Piñeiro: que era ese vector ponderado Entonces, de nuevo, es lo mismo que multiplicar de nuevo.
+
+434
+00:49:40.320 --> 00:49:42.570
+Eugenia Sol Piñeiro: Y eso me va a generar una matriz.
+
+435
+00:49:42.790 --> 00:49:52.240
+Eugenia Sol Piñeiro: Esa matriz va a tener toda la información de el el cuero y el Ki en el sentido de Ok, cuánta tensión Entonces le pongo a cada Token
+
+436
+00:49:52.560 --> 00:49:55.129
+Eugenia Sol Piñeiro: para cada 1 de mis envaddings.
+
+437
+00:49:56.530 --> 00:50:01.369
+Eugenia Sol Piñeiro: entonces es simplemente resumir la cuenta que vimos antes. Pero de esta forma es analoga.
+
+438
+00:50:04.730 --> 00:50:05.160
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Okay.
+
+439
+00:50:05.160 --> 00:50:05.719
+Eugenia Sol Piñeiro: Me queda claro.
+
+440
+00:50:05.720 --> 00:50:10.570
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí. Ahora ya me queda un poco más claro.
+
+441
+00:50:10.570 --> 00:50:11.370
+Eugenia Sol Piñeiro: Core Okay.
+
+442
+00:50:11.370 --> 00:50:17.560
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, hay un ejemplo de esto que a mí se se yo lo lo veo y me parece muy lindo hasta que tengo que hacerlo.
+
+443
+00:50:17.920 --> 00:50:21.520
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Me gustaría tener como un ejemplo de estar en un lugar ahí.
+
+444
+00:50:22.150 --> 00:50:24.039
+Marina Fuster: Lo vemos en la.
+
+445
+00:50:24.740 --> 00:50:25.350
+Eugenia Sol Piñeiro: Eso.
+
+446
+00:50:25.350 --> 00:50:30.090
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí un ejemplo con nu con numeritos que sea un vector. Pero ya con eso ya me quedaría mucho mejor.
+
+447
+00:50:30.860 --> 00:50:32.810
+Eugenia Sol Piñeiro: O sea, un ejemplo con numeritos. Es
+
+448
+00:50:34.840 --> 00:50:38.299
+Eugenia Sol Piñeiro: un poco el que vimos. Acá No me quedó.
+
+449
+00:50:39.520 --> 00:50:44.460
+Eugenia Sol Piñeiro: Por ejemplo, vamos a ver la demon código igual y
+
+450
+00:50:45.120 --> 00:50:48.160
+Eugenia Sol Piñeiro: pero un poco. La idea es esta: no, o sea multiplico.
+
+451
+00:50:48.610 --> 00:50:54.280
+Eugenia Sol Piñeiro: 1 por 1, más 0, por 2, más. Uno por 3 supone que Acá tengo 4, 5, 6
+
+452
+00:50:56.310 --> 00:51:02.070
+Eugenia Sol Piñeiro: Después voy a multiplicar este vector por este el producto interno y me va a generar estos Scores.
+
+453
+00:51:02.590 --> 00:51:03.290
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+454
+00:51:05.240 --> 00:51:08.150
+Eugenia Sol Piñeiro: Ok. Y después aplico Sofmax, Sosmac Te Acordás que era
+
+455
+00:51:08.970 --> 00:51:15.970
+Eugenia Sol Piñeiro: este a la X sobre la de Araquis. Bueno.
+
+456
+00:51:17.020 --> 00:51:19.890
+Eugenia Sol Piñeiro: no esto me da Softmax, que me va a dar una probabilidad.
+
+457
+00:51:20.980 --> 00:51:27.740
+Eugenia Sol Piñeiro: entonces acá simplemente es pasar a Ok, 80 por 100 de foco.
+
+458
+00:51:27.980 --> 00:51:31.810
+Eugenia Sol Piñeiro: Me vas a poner a mí mismo que me estoy procesando ahora al X Cero.
+
+459
+00:51:32.110 --> 00:51:36.949
+Eugenia Sol Piñeiro: y después te queda un 20 por 100 para distribuir entre el resto de los tokens, no para que sume 1.
+
+460
+00:51:36.950 --> 00:51:37.590
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Mhm: Claro.
+
+461
+00:51:38.500 --> 00:51:46.760
+Eugenia Sol Piñeiro: 20. Por ejemplo, le puedo prestar X 1 en este caso que tengo solo 2 Tokens y así sucesivamente.
+
+462
+00:51:46.900 --> 00:51:53.130
+Eugenia Sol Piñeiro: La vamos a ver código igual. La idea tampoco es que hagas esta cuenta a mano.
+
+463
+00:51:53.440 --> 00:51:58.270
+Eugenia Sol Piñeiro: no, o sea, y mucho menos vectorial ni en código vectorial.
+
+464
+00:51:58.560 --> 00:52:01.459
+Eugenia Sol Piñeiro: Pero quedó un poquito más claro ahí.
+
+465
+00:52:03.250 --> 00:52:05.479
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, Sí, Ahora, Sí. Gracias.
+
+466
+00:52:06.300 --> 00:52:07.890
+Eugenia Sol Piñeiro: Okay Perfecto.
+
+467
+00:52:08.300 --> 00:52:13.249
+Eugenia Sol Piñeiro: Ahí que Lucas no me queda claro de dónde salía Q. Y K.
+
+468
+00:52:13.590 --> 00:52:16.130
+Eugenia Sol Piñeiro: Al principio se inicialista en el aleatorio.
+
+469
+00:52:16.660 --> 00:52:18.790
+Eugenia Sol Piñeiro: Y después 1 va entrenando las matrices.
+
+470
+00:52:19.270 --> 00:52:22.330
+Eugenia Sol Piñeiro: Y me quedo para atrás
+
+471
+00:52:25.790 --> 00:52:31.490
+Eugenia Sol Piñeiro: para de acá salen Cú y K Okay. Bien.
+
+472
+00:52:33.400 --> 00:52:37.060
+Eugenia Sol Piñeiro: genial. Entonces llegué a tener mi matriz Z
+
+473
+00:52:39.210 --> 00:52:46.390
+Eugenia Sol Piñeiro: Prometo que última. Y ya los dejo porque los estoy matando, me parece, con la matemática. Vamos a hacer un Break.
+
+474
+00:52:46.540 --> 00:52:50.839
+Eugenia Sol Piñeiro: Bueno, nos faltaba la máscara del decoder.
+
+475
+00:52:51.270 --> 00:53:02.979
+Eugenia Sol Piñeiro: En el caso del encoder no hay que hacer nada caso de decoder, se acuerdan que teníamos más atention. ¿por qué? Porque no puede ver palabras futuras o tokens futuros.
+
+476
+00:53:03.110 --> 00:53:06.649
+Eugenia Sol Piñeiro: Entonces, ¿qué es lo que va a pasar acá si antes yo tenía
+
+477
+00:53:06.790 --> 00:53:09.940
+Eugenia Sol Piñeiro: esto. Cupo por K. Ahora voy a tener
+
+478
+00:53:10.580 --> 00:53:20.979
+Eugenia Sol Piñeiro: q por k más la máscara justamente para enmascarar o hacer que la atención de los tokens futuros sea 0.
+
+479
+00:53:22.250 --> 00:53:23.710
+Eugenia Sol Piñeiro: ¿cómo hago eso?
+
+480
+00:53:24.030 --> 00:53:31.289
+Eugenia Sol Piñeiro: O sea, 0 de atención Significa, es es como que no exista, o sea, no le prestes atención. Es como enmascararlo. Eso es un poco con lo que juegan.
+
+481
+00:53:31.480 --> 00:53:36.479
+Eugenia Sol Piñeiro: Entonces, en vez de eliminarlo, en realidad aplican esta máscara que significa
+
+482
+00:53:36.760 --> 00:53:39.320
+Eugenia Sol Piñeiro: anular la atención en ese token.
+
+483
+00:53:40.320 --> 00:53:45.399
+Eugenia Sol Piñeiro: Entonces voy a tener supóngase que tengo esta matriz que es q por K.
+
+484
+00:53:47.320 --> 00:53:49.579
+Eugenia Sol Piñeiro: Esta Esta matriz naranja es Kú, por K.
+
+485
+00:53:49.700 --> 00:53:55.839
+Eugenia Sol Piñeiro: Entonces le aplico la máscara, cómo es la máscara Tiene todo ceros, excepto la parte superior
+
+486
+00:53:56.750 --> 00:54:04.760
+Eugenia Sol Piñeiro: que va a tener todos menos infinitos. ¿por qué? Porque después, yo aplico Softmax. Y cuando hago e a la menos infinito.
+
+487
+00:54:05.190 --> 00:54:06.020
+Eugenia Sol Piñeiro: o sea.
+
+488
+00:54:06.500 --> 00:54:14.569
+Eugenia Sol Piñeiro: el límite de cuando X tienda infinito de la C, a la X. Entonces eso me va a dar 0.
+
+489
+00:54:16.410 --> 00:54:19.180
+Eugenia Sol Piñeiro: ¿se entiende, o sea, a la menos infinito.
+
+490
+00:54:19.500 --> 00:54:26.540
+Eugenia Sol Piñeiro: 0. Entonces ahí logré enmascarar mis tokens. Esta va a ser la suma. No, Esta matriz vendría a ser esta parte
+
+491
+00:54:26.980 --> 00:54:33.039
+Eugenia Sol Piñeiro: entonces? Pues le aplico Softmax a esta matriz Softmax de esta matriz me va a dar
+
+492
+00:54:34.120 --> 00:54:42.070
+Eugenia Sol Piñeiro: a la 1,5 sobre la sumatoria, etcétera. Cero 0
+
+493
+00:54:42.600 --> 00:54:46.060
+Eugenia Sol Piñeiro: y el resto de los numeritos que si hay que ponerle atención.
+
+494
+00:54:46.440 --> 00:54:51.400
+Eugenia Sol Piñeiro: entonces de esa forma, logro anular la atención para los token futuros en el decoder
+
+495
+00:54:51.830 --> 00:54:55.959
+Eugenia Sol Piñeiro: es simplemente el extra que hay que tener en cuenta. En
+
+496
+00:54:56.170 --> 00:54:59.230
+Eugenia Sol Piñeiro: la parte del decoder. El resto es igual.
+
+497
+00:54:59.490 --> 00:55:03.239
+Eugenia Sol Piñeiro: Entonces, de esta forma me construyo el Z,
+
+498
+00:55:03.700 --> 00:55:09.200
+Eugenia Sol Piñeiro: que va a salir de la capa de self attension. ¿y qué es lo que hace después. Esto
+
+499
+00:55:09.370 --> 00:55:18.010
+Eugenia Sol Piñeiro: puede pasar de forma paralela por múltiples ml. Ps: Entonces voy a tener como resumen.
+
+500
+00:55:21.790 --> 00:55:28.890
+Eugenia Sol Piñeiro: voy a tener mi token. O sea, tengo mi oración. Tokenizo calculo los en bahings.
+
+501
+00:55:29.100 --> 00:55:31.530
+Eugenia Sol Piñeiro: Le sumo el vector de posición.
+
+502
+00:55:31.750 --> 00:55:34.290
+Eugenia Sol Piñeiro: Lo paso por mi capa de self atention.
+
+503
+00:55:36.040 --> 00:55:40.419
+Eugenia Sol Piñeiro: Si es el encoder, no aplico la máscara. Si es el decoder aplico, la máscara
+
+504
+00:55:40.880 --> 00:55:51.579
+Eugenia Sol Piñeiro: aplico, el cálculo de atención y me sale mi matriz de z esa matriz de Z. La puedo pasar en paralelo por múltiples m L. P Es una de las grandes ventajas de los transformers, la paralización
+
+505
+00:55:52.260 --> 00:55:58.970
+Eugenia Sol Piñeiro: después que seguía, se acuerdan que había que aplicar la conexión residual, que es lo mismo.
+
+506
+00:55:59.250 --> 00:56:08.430
+Eugenia Sol Piñeiro: o sea, voy a sumar el X, que sería esto más el subleyer de X
+
+507
+00:56:09.880 --> 00:56:14.090
+Eugenia Sol Piñeiro: que bastante visualmente sería Leyer Nord de
+
+508
+00:56:14.470 --> 00:56:17.470
+Eugenia Sol Piñeiro: el supplayer de X más X.
+
+509
+00:56:17.610 --> 00:56:24.550
+Eugenia Sol Piñeiro: Eso entra en realidad como Input del M. L. P: Y así sucesivamente por cada 1 de los Encoders. Cinco
+
+510
+00:56:27.550 --> 00:56:31.310
+Eugenia Sol Piñeiro: ya no más matemáticas.
+
+511
+00:56:31.720 --> 00:56:39.860
+Eugenia Sol Piñeiro: Si bien hacemos un Break de 10 min, y seguimos, pero hasta acá dudas.
+
+512
+00:56:41.620 --> 00:56:42.889
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Las estacas. Está muy bien.
+
+513
+00:56:43.360 --> 00:56:46.030
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Estoy bien, está acá. Bien.
+
+514
+00:56:50.910 --> 00:56:53.769
+Eugenia Sol Piñeiro: Bien. Bueno, hacemos hasta y 25.
+
+515
+00:56:56.090 --> 00:56:57.240
+Marina Fuster: Me parece perfecto.
+
+516
+00:57:02.810 --> 00:57:07.489
+Eugenia Sol Piñeiro: Bien, vamos a ver el concepto de montaje de atention
+
+517
+00:57:08.210 --> 00:57:20.679
+Eugenia Sol Piñeiro: que esto básicamente implica poder prestar la atención, pero a múltiples tokens en la secuencia. Al mismo tiempo, es decir, antes vimos que
+
+518
+00:57:21.010 --> 00:57:30.589
+Eugenia Sol Piñeiro: para cada 1 de mis sets o de mis matrices Ki coer y valium. Le prestaba atención a un Token y veía cuánta atención le ponía a ese token.
+
+519
+00:57:31.170 --> 00:57:38.279
+Eugenia Sol Piñeiro: Ahora, para entender el contexto en el lenguaje natural, es necesario prestar la atención a muchas cosas al mismo tiempo. Entonces
+
+520
+00:57:38.500 --> 00:57:41.410
+Eugenia Sol Piñeiro: acá es cuando surge el concepto de Heads.
+
+521
+00:57:41.800 --> 00:57:47.749
+Eugenia Sol Piñeiro: Estas Heads van a ser simplemente sets de las matrices
+
+522
+00:57:47.900 --> 00:57:50.540
+Eugenia Sol Piñeiro: Ki Queri y variu. Es decir, va a estar todo
+
+523
+00:57:51.000 --> 00:57:57.529
+Eugenia Sol Piñeiro: practicado, digamos, en esta matriz, sólo que cada una cada una de las Heads te va a prestar atención a alguna parte en particular
+
+524
+00:57:59.230 --> 00:58:00.330
+Eugenia Sol Piñeiro: ejemplo.
+
+525
+00:58:01.190 --> 00:58:02.140
+Eugenia Sol Piñeiro: Ya hemos hablado
+
+526
+00:58:06.510 --> 00:58:13.410
+Eugenia Sol Piñeiro: todos los cuatris. Me pasa lo mismo que me queda, el Darkmouth. Y después no se ve que
+
+527
+00:58:16.290 --> 00:58:22.180
+Eugenia Sol Piñeiro: que me venga esto. ¿no?
+
+528
+00:58:24.620 --> 00:58:27.160
+Eugenia Sol Piñeiro: Bueno, ¿qué tenemos. Acá.
+
+529
+00:58:28.710 --> 00:58:35.229
+Eugenia Sol Piñeiro: Vamos a tener el mismo ejemplo de Le voy a pasar por arriba a ver si se ve un poco mejor algo se ve, no igual. El Dark mode Estamos Okay
+
+530
+00:58:35.600 --> 00:58:42.480
+Eugenia Sol Piñeiro: es el ejemplo de the animal dan crose Street, picosted was tire. Entonces acá. Lo que se hace es.
+
+531
+00:58:43.910 --> 00:58:50.230
+Eugenia Sol Piñeiro: estos colores representan cada una de las heads. Entonces, por ejemplo, si yo me posiciono sobre It.
+
+532
+00:58:50.530 --> 00:58:56.849
+Eugenia Sol Piñeiro: me va a decir cuánta tensión prestarle a cada una de mis palabras
+
+533
+00:58:57.720 --> 00:59:07.260
+Eugenia Sol Piñeiro: entre más oscuro, digamos, es el color mayor. Es esa probabilidad que habíamos visto antes que calculábamos entonces. Fíjense que acá están más remarcados animal y Street.
+
+534
+00:59:07.710 --> 00:59:08.720
+Eugenia Sol Piñeiro: pero
+
+535
+00:59:09.140 --> 00:59:16.429
+Eugenia Sol Piñeiro: todavía no logro distinguir a cuál de los 2 le tengo que prestar más atención. Entonces, fíjense que se agrega una head más.
+
+536
+00:59:17.610 --> 00:59:24.069
+Eugenia Sol Piñeiro: por ejemplo. Ahí se resaltó becos. ¿no? Ok, tengo que entender el porqué
+
+537
+00:59:24.250 --> 00:59:32.089
+Eugenia Sol Piñeiro: para poder distinguir. Ok, al cual le presto más atención después. Agrego otra ged más supóngase agrego la head verde.
+
+538
+00:59:32.550 --> 00:59:38.329
+Eugenia Sol Piñeiro: Entonces Digo, Ok, porque estaba cansado. Entonces tengo que prestar la atención a la palabra cansado
+
+539
+00:59:38.590 --> 00:59:44.340
+Eugenia Sol Piñeiro: a por qué y a animal y a Street todo al mismo tiempo para poder entenderlo.
+
+540
+00:59:44.640 --> 00:59:49.189
+Eugenia Sol Piñeiro: entonces le agrega otra head. Y ahí fíjense que se resaltó un poco más animal
+
+541
+00:59:49.440 --> 00:59:52.840
+Eugenia Sol Piñeiro: así sucesivamente, no o sea, ya cuando agrego todas las heads.
+
+542
+00:59:52.970 --> 01:00:02.859
+Eugenia Sol Piñeiro: acá hay 8 jets, 8 colores. No, ya no se entiende absolutamente nada, pero hay 8, porque en el Paper usan 8.
+
+543
+01:00:03.040 --> 01:00:06.409
+Eugenia Sol Piñeiro: De nuevo, es 1 de los hiperparámetros que se pueden ajustar.
+
+544
+01:00:07.130 --> 01:00:20.510
+Eugenia Sol Piñeiro: Cuántas Heads. Voy a usar cuantos en coders y y decoders estakiados. Voy a tener cuál es la dimensión de cada 1 de los ml. P Cuantas neuronas tiene ml. P: entonces se juega con esas cosas. De hecho, cuando usen las librerías.
+
+545
+01:00:20.960 --> 01:00:39.989
+Eugenia Sol Piñeiro: van a ver que esos son los parámetros que tienen que configurar. Bueno. El draheads es este: ¿Cuánto le presta atención al al mismo tiempo. Ahora, entre más heads agrego, también es más costo computacional. No es es bastante pesado también tener todo replicado todas las matrices K. Q y B por 8. En este caso.
+
+546
+01:00:40.000 --> 01:00:46.030
+Eugenia Sol Piñeiro: entonces es como ese Trade Off entre bueno, le quiero prestar atención a todo, pero
+
+547
+01:00:46.580 --> 01:00:51.510
+Eugenia Sol Piñeiro: también quiero que me corra básicamente el transformer ¿no? Entonces es como ese Trade Off!
+
+548
+01:00:53.760 --> 01:00:58.500
+Eugenia Sol Piñeiro: Bien, ese concepto es el de multihedi atention.
+
+549
+01:00:59.210 --> 01:01:08.560
+Eugenia Sol Piñeiro: Ahora, todo eso era parte del encoder. Vamos a ver, resumidamente la parte del decoder porque nos queda una parte
+
+550
+01:01:10.030 --> 01:01:14.810
+Eugenia Sol Piñeiro: Okay. Yo tengo ya mi salida, que
+
+551
+01:01:14.940 --> 01:01:30.809
+Eugenia Sol Piñeiro: pasé por todos los encoders. Pasé por todos los decoders y obtengo un outeput que es un output numérico. Entonces, ¿cómo hago ahora para pasar de número a texto, así como antes había pasado de texto a en vez de, por ejemplo. Entonces ahora tengo que hacer como el proceso inverso.
+
+552
+01:01:31.660 --> 01:01:34.049
+Eugenia Sol Piñeiro: Entonces, ¿cómo se va a generar esto?
+
+553
+01:01:34.480 --> 01:01:38.850
+Eugenia Sol Piñeiro: La salida de midicoder va a ser autorregresiva.
+
+554
+01:01:39.310 --> 01:01:45.859
+Eugenia Sol Piñeiro: ¿qué significa que el modelo sea auto regresivo? ¿es que justamente después la salida se va a usar como entrada.
+
+555
+01:01:46.080 --> 01:01:52.650
+Eugenia Sol Piñeiro: Y esto se va a hacer regresivamente por cada 1 de mis tokens en la visualización.
+
+556
+01:01:54.670 --> 01:01:57.600
+Eugenia Sol Piñeiro: que a mí me gusta mucho está muy buena. Se la voy a pasar por acá también.
+
+557
+01:01:59.620 --> 01:02:06.409
+Eugenia Sol Piñeiro: Pero ahora vamos a ver que hace esto es el mismo ejemplo de traducción, solo que traduce de francés al inglés.
+
+558
+01:02:07.010 --> 01:02:13.470
+Eugenia Sol Piñeiro: Entonces voy a tener la misma oración. Tengo mis envendings
+
+559
+01:02:14.350 --> 01:02:19.810
+Eugenia Sol Piñeiro: Le hag lo paso por mis Encoders pasan por todos los encodes. Después pasan por todos, mide coders. Y ahí,
+
+560
+01:02:19.930 --> 01:02:29.669
+Eugenia Sol Piñeiro: por ejemplo, se genera ¡Ay, la palabra. ¿no? Entonces que es que sea auto regresivo. Pasa por todos. Mis Encoders pasa por otra capa de línea, y Softmax que vamos a ver que es
+
+561
+01:02:30.030 --> 01:02:31.739
+Eugenia Sol Piñeiro: y sale a
+
+562
+01:02:32.240 --> 01:02:40.130
+Eugenia Sol Piñeiro: después. Auto regresivo. Entran Aiem y sale. E entra, ah, ya E y sale. Student. Entra, Ah, me Student
+
+563
+01:02:40.390 --> 01:02:43.570
+Eugenia Sol Piñeiro: y salen end of centers, No, por ejemplo, porque se acabó.
+
+564
+01:02:43.950 --> 01:02:47.389
+Eugenia Sol Piñeiro: Creen que arranca de nuevo. Fíjense, entra hay
+
+565
+01:02:48.100 --> 01:02:50.879
+Eugenia Sol Piñeiro: entonces el output dice, bueno, que las siguientes.
+
+566
+01:02:51.250 --> 01:02:56.529
+Eugenia Sol Piñeiro: Ahora, autorregresivamente entran a E. M P: Y así no
+
+567
+01:02:57.240 --> 01:03:12.480
+Eugenia Sol Piñeiro: está bastante visual. Pero esa es la idea de que sea auto regresivo se va autoalimentando con su salida. El decoder. Eso es lo que recibe como input acuérdese que también está toda la parte de cross atention. O sea, acá esto se abre como habíamos visto antes.
+
+568
+01:03:12.590 --> 01:03:15.840
+Eugenia Sol Piñeiro: Pero además va haciendo toda esta autorregresión.
+
+569
+01:03:17.690 --> 01:03:18.830
+Eugenia Sol Piñeiro: Entonces.
+
+570
+01:03:21.000 --> 01:03:30.199
+Eugenia Sol Piñeiro: después, lo que se hace una vez que yo obtengo mis mis números, básicamente, que salen del decoder. Lo voy a proyectar con una capa lineal.
+
+571
+01:03:30.600 --> 01:03:43.769
+Eugenia Sol Piñeiro: Esta capa lineal no es más que una red Fury Connective que lo que hace es justamente agarrar el output del decoder anterior, proyectarlo de forma lineal para que para formar un vector que se llama el vector de Logics.
+
+572
+01:03:44.400 --> 01:03:50.059
+Eugenia Sol Piñeiro: este vector de logis, lo que va a hacer es asignarle un puntaje a cada 1 de los tokens
+
+573
+01:03:52.280 --> 01:04:04.780
+Eugenia Sol Piñeiro: con ese puntaje. Después, yo lo que hago es pasarlo a probabilidades. Entonces, ¿qué es lo que me me va a decir. Ok, Yo tengo todo un diccionario de palabras en este caso. Si quiero traducir a inglés, tengo todo un diccionario de palabras. En inglés
+
+574
+01:04:04.900 --> 01:04:11.670
+Eugenia Sol Piñeiro: donde me va a decir, Okay, la probabilidad de que sea, hay
+
+575
+01:04:11.990 --> 01:04:15.629
+Eugenia Sol Piñeiro: es 0, coma 9, como es la mayor. Entonces es esta palabra.
+
+576
+01:04:15.780 --> 01:04:21.640
+Eugenia Sol Piñeiro: y sale no o sea, acá, supóngase que tengo, no sé otras palabras, en
+
+577
+01:04:22.300 --> 01:04:30.279
+Eugenia Sol Piñeiro: tú puedes ser que tengo a ahora. Tengo Student. No sé. Entonces está medio. Bueno, hay 0 por 100 de probabilidad de que sea studiontista. No la pongo
+
+578
+01:04:30.430 --> 01:04:40.170
+Eugenia Sol Piñeiro: 10 por 100 de probabilidad de que sea e y 90 por 100 de probabilidad de que sea, hay entonces perfecto. Sale Ay, entonces ese mapeo
+
+579
+01:04:41.030 --> 01:04:44.219
+Eugenia Sol Piñeiro: de puntaje, probabilidad.
+
+580
+01:04:44.450 --> 01:04:52.990
+Eugenia Sol Piñeiro: palabra o sea, texto. Y ahí logré convertir como de número a texto y, además, después de hacer auto regresión, ¿no? Y ahí se obtiene
+
+581
+01:04:53.240 --> 01:04:59.120
+Eugenia Sol Piñeiro: el output que va a ser esta distribución de probabilidades de todas las posibles clases de salida.
+
+582
+01:05:00.440 --> 01:05:02.099
+Eugenia Sol Piñeiro: Hay una mano levantada a.
+
+583
+01:05:02.100 --> 01:05:06.860
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: El micrófono. Sí, cuando él saca las probabilidades.
+
+584
+01:05:07.690 --> 01:05:13.190
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: tiene todas las palabras y calcula las probabilidades de todas las palabras que conoce.
+
+585
+01:05:15.240 --> 01:05:25.729
+Eugenia Sol Piñeiro: En este caso, en el diccionario se le va, o sea, con esta proyección lineal. Lo que se hace es eso. ¿por qué? Porque es un ejemplo de traducción, no de predecir el siguiente token en la secuencia.
+
+586
+01:05:25.730 --> 01:05:26.470
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Aunque hay.
+
+587
+01:05:26.820 --> 01:05:32.130
+Eugenia Sol Piñeiro: Entonces, si se tiene, se tiene eso. Pero de nuevo, estamos traduciendo.
+
+588
+01:05:32.680 --> 01:05:35.230
+Eugenia Sol Piñeiro: Ahora vamos a ver una
+
+589
+01:05:35.660 --> 01:05:40.229
+Eugenia Sol Piñeiro: alternativa a esta arquitectura, en realidad, que es la que más se usa que no hace esto.
+
+590
+01:05:40.400 --> 01:05:44.549
+Eugenia Sol Piñeiro: Pero en el ejemplo de traducción sí hay que tener esto tenés como un diccionario.
+
+591
+01:05:49.850 --> 01:05:52.430
+Eugenia Sol Piñeiro: el que es más claro quién era Joaquín.
+
+592
+01:05:54.080 --> 01:05:58.319
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, Sí. Ahora quedo. Gracias. Acá calcula todo porque es justo otra opción.
+
+593
+01:05:59.070 --> 01:05:59.650
+Eugenia Sol Piñeiro: Claro.
+
+594
+01:06:01.210 --> 01:06:05.090
+Eugenia Sol Piñeiro: Bien, Entonces resumen.
+
+595
+01:06:07.100 --> 01:06:18.660
+Eugenia Sol Piñeiro: tokenizo genero mis emails. Le sumo El positional encoding pasa por 2 mis Encoders. Todo eso con cross atention se relaciona con los decoders de forma autorregresiva. Va saliendo cada output
+
+596
+01:06:18.910 --> 01:06:22.170
+Eugenia Sol Piñeiro: para convertir de número a palabra lo tengo que proyectar
+
+597
+01:06:22.490 --> 01:06:30.150
+Eugenia Sol Piñeiro: y ver cuál es la probabilidad de que sea cada una de las palabras. Y ahí generó el output para el ejemplo traducción.
+
+598
+01:06:30.290 --> 01:06:32.290
+Eugenia Sol Piñeiro: combinando todos los conceptos. ¿no?
+
+599
+01:06:33.250 --> 01:06:36.390
+Eugenia Sol Piñeiro: Ahora, ¿cómo entreno esto?
+
+600
+01:06:37.980 --> 01:06:50.910
+Eugenia Sol Piñeiro: Supóngase que tenemos este vocabulario, un vocabulario muy chiquito, ese diccionario que me refería que tenías antes. Supóngase que tengo a Am a I Thanks Student y el endophile.
+
+601
+01:06:51.010 --> 01:06:54.389
+Eugenia Sol Piñeiro: Y quiero traducir una palabra de gracias a Thanks.
+
+602
+01:06:55.270 --> 01:06:58.209
+Eugenia Sol Piñeiro: Entonces, cuál va a ser el objetivo de mi red.
+
+603
+01:06:59.200 --> 01:07:08.179
+Eugenia Sol Piñeiro: Voy a iniciar los pesos de forma Random. Voy a tener que entrenar, como hacíamos en todas las redes neuronales, básicamente, o la mayoría.
+
+604
+01:07:08.330 --> 01:07:18.070
+Eugenia Sol Piñeiro: Y lo que quiero hacer es obtener esta distribución de probabilidades. Entonces el objetivo va a ser minimizar
+
+605
+01:07:18.680 --> 01:07:22.380
+Eugenia Sol Piñeiro: todas las otras palabras y maximizar
+
+606
+01:07:22.600 --> 01:07:41.219
+Eugenia Sol Piñeiro: la que realmente es la traducción, no. O sea, este es el objetivo, el auto deseado al principio, No voy a obtener eso. De hecho, nunca voy a obtener eso. Va a ser lo más cercano a 0, y lo más cercano a 1 posible. Pero bueno, en este caso ideal voy a tener 100 por 100 Thanks y 0 por 100. El resto de todos, mis tokens. Entonces voy a maximizar
+
+607
+01:07:41.220 --> 01:07:49.409
+Eugenia Sol Piñeiro: el que quiero y minimizar el que no quiero. Así como antes minimizaban el error. Bueno, ahora se maximiza y minimiza este diccionario.
+
+608
+01:07:49.670 --> 01:08:01.590
+Eugenia Sol Piñeiro: Entonces acá. Lo que se hace es, se pueden comparar estas probabilidades y simplemente se usa back propagation y se va acercando al output deseado, pasando por absolutamente toda la red. No, como vimos
+
+609
+01:08:01.990 --> 01:08:15.010
+Eugenia Sol Piñeiro: entonces en una primera iteración, voy a obtener algo como esto, que no me dice absolutamente nada. Pero a lo largo que itero, a lo largo de las épocas, voy llegando a que el de mayor probabilidad va a ser 100 por 100,
+
+610
+01:08:15.290 --> 01:08:17.159
+Eugenia Sol Piñeiro: en este caso Things.
+
+611
+01:08:17.520 --> 01:08:22.460
+Eugenia Sol Piñeiro: De nuevo, que se aproxima a 1 o se aproxima a 0. No es que va a ser exacto.
+
+612
+01:08:23.920 --> 01:08:29.149
+Eugenia Sol Piñeiro: Entonces esto es muy costoso de hacer
+
+613
+01:08:30.370 --> 01:08:36.899
+Eugenia Sol Piñeiro: acá. Esto es un ejemplo del paper que en el paper estaban traduciendo de inglés a alemán.
+
+614
+01:08:37.640 --> 01:08:42.309
+Eugenia Sol Piñeiro: El algo les show, el paper decía: me interesa saber.
+
+615
+01:08:45.340 --> 01:08:48.849
+Eugenia Sol Piñeiro: yo siento que decida. Siempre digo, ché, le das el Pay y después por ahí nadie lo lee.
+
+616
+01:08:49.210 --> 01:08:55.910
+Eugenia Sol Piñeiro: Y Okay. Bueno, fueron estos por lo menos lean. El Paper está bueno, es corto.
+
+617
+01:08:56.010 --> 01:09:04.250
+Eugenia Sol Piñeiro: pero acá. Por ejemplo, lo que dice es que tardaron en entrenar 3 días y medio en 8 Gpus.
+
+618
+01:09:04.479 --> 01:09:08.469
+Eugenia Sol Piñeiro: o sea encima, entrenando un G. P. U Y tardaron 3 días y medio.
+
+619
+01:09:08.689 --> 01:09:18.609
+Eugenia Sol Piñeiro: y lo presentan como un resultado. Bueno, es decir, solo tardaron 3 días y medio, lo cual es un montón. Imagínense ustedes corriendo transformer en su P. C, local o lo que sea imposible.
+
+620
+01:09:19.040 --> 01:09:33.699
+Eugenia Sol Piñeiro: Entonces, lo que quiero que se lleven de esto es que son modelos muy, grandes, muy pesados, con muchísimo costo computacional, complejos en el sentido de la cantidad de cosas que tienen adentro, pero también son muy poderosos. Entonces también tienen mucho potencial
+
+621
+01:09:34.490 --> 01:09:35.270
+Eugenia Sol Piñeiro: y
+
+622
+01:09:36.630 --> 01:09:42.919
+Eugenia Sol Piñeiro: y le vamos a correr nuestras compus? Bueno, o sea, una partecita, también podés usar la G. P. U de Colau.
+
+623
+01:09:43.399 --> 01:09:49.240
+Eugenia Sol Piñeiro: Y Y ya está claro, una versión F, Y
+
+624
+01:09:49.870 --> 01:09:54.220
+Eugenia Sol Piñeiro: pero sí hay hay alternativas. Siempre está la nube, Bueno.
+
+625
+01:09:54.700 --> 01:10:01.499
+Eugenia Sol Piñeiro: bien, y esta es una tabla de cómo varían los parámetros en el paper que un poco lo fui mencionando igual
+
+626
+01:10:02.440 --> 01:10:15.719
+Eugenia Sol Piñeiro: que, por ejemplo, tenemos n que ene era la cantidad en covers y codes apilados. Fíjense que usan 6, prueban 2, 4, 8, y se quedan con este. El de 6 di model es la dimensión de
+
+627
+01:10:15.940 --> 01:10:21.710
+Eugenia Sol Piñeiro: se acuerdan que les dije la dimensión, por ejemplo, de los embages que tenían 512. Bueno, de nuevo prueban con menos, prueban con más.
+
+628
+01:10:21.990 --> 01:10:31.840
+Eugenia Sol Piñeiro: D. F Es la dimensión de la fit Foward, El M. L. P. Interno, por ejemplo, tiene 2 048 neuronas. 1 024 4. 1 096, etcétera.
+
+629
+01:10:31.890 --> 01:10:42.890
+Eugenia Sol Piñeiro: y van combinando H: es la cantidad de heads, pruebo con 8, pro con una. Es decir, no tengo multi G. Atention, ¿Cómo me va 4 y C: 32, Bueno, etcétera. Bueno, y así van probando.
+
+630
+01:10:43.210 --> 01:10:52.560
+Eugenia Sol Piñeiro: tiene la dimensión del Ki, la dimensión del value Acá le agregan Droppout y Labelsmoothing. Estas son técnicas para mitigar el sobreajuste
+
+631
+01:10:53.020 --> 01:10:56.820
+Eugenia Sol Piñeiro: por hora no le den importancia y acá tienen los train Steps.
+
+632
+01:10:57.130 --> 01:11:05.919
+Eugenia Sol Piñeiro: por ejemplo. Y en este caso prueban 2 métricas que son 2 métricas más orientadas al lenguaje, como perplexitic y blue.
+
+633
+01:11:06.360 --> 01:11:18.069
+Eugenia Sol Piñeiro: Más allá de la métrica llévense que la idea es minimizar, perplexiti o sea, entre más bajo mejor y maximizar blue entre más alto, mejor. Entonces, por eso eligen
+
+634
+01:11:18.310 --> 01:11:19.300
+Eugenia Sol Piñeiro: este modelo.
+
+635
+01:11:19.860 --> 01:11:30.930
+Eugenia Sol Piñeiro: ¿qué es esto? Este es el estudio de ablación? Es un poco básicamente lo que hicieron en sí a lo que van a tener que hacer, lo que en general se hace para experimentar entonces. Por eso también lo traigo como fíjense que hasta está en el paper
+
+636
+01:11:31.050 --> 01:11:33.390
+Eugenia Sol Piñeiro: absolutamente todos los experimentos que hicieron.
+
+637
+01:11:33.580 --> 01:11:36.120
+Eugenia Sol Piñeiro: ¿y por qué? Porque después también te ayuda a reproducirlo, ¿no?
+
+638
+01:11:36.230 --> 01:11:41.110
+Eugenia Sol Piñeiro: Y además de obtener la mejor configuración de hiper parámetros para tu caso, uso
+
+639
+01:11:42.830 --> 01:11:48.780
+Eugenia Sol Piñeiro: Bueno, acá también como dato de color usan Adams que Adam lo vimos, lo implementaron. Lo usaron
+
+640
+01:11:49.110 --> 01:11:51.839
+Eugenia Sol Piñeiro: encía. Se usa muchísimo
+
+641
+01:11:52.760 --> 01:12:01.589
+Eugenia Sol Piñeiro: Hoy En día, mi opinión, ya se quedó un poquito atrasada. Hay mejores versiones. De hecho, una que se usa mucho por que le interesa investigar
+
+642
+01:12:02.080 --> 01:12:04.210
+Eugenia Sol Piñeiro: dándole.
+
+643
+01:12:04.900 --> 01:12:10.480
+Eugenia Sol Piñeiro: Hay 1 000 000 de optimizadores. Vimos un montón encía. Bueno, 1 es este el
+
+644
+01:12:11.420 --> 01:12:14.300
+Eugenia Sol Piñeiro: y ahora, ¿cómo se modifica la arquitectura
+
+645
+01:12:15.770 --> 01:12:25.589
+Eugenia Sol Piñeiro: como si fuese poco la la arquitectura. Esta gigante que vimos se llama encoder decoder. No está la arquitectura grande para el ejemplo de traducción. Ahora.
+
+646
+01:12:25.900 --> 01:12:29.189
+Eugenia Sol Piñeiro: por ejemplo, ¿qué pasa si elimino
+
+647
+01:12:29.650 --> 01:12:34.239
+Eugenia Sol Piñeiro: tomo mi encoder lo elimino Chao se va a dar encoder. Me queda únicamente el decoder.
+
+648
+01:12:34.580 --> 01:12:40.450
+Eugenia Sol Piñeiro: A estas arquitecturas se les llama Decoder Only. Ahora vamos a ver un ejemplo. De hecho, la demo
+
+649
+01:12:40.880 --> 01:12:48.310
+Eugenia Sol Piñeiro: va a abarcar un decodern y transformer. E incluso Jipit es un Decoder Only transformer Por eso yo me refería a un momento de
+
+650
+01:12:48.460 --> 01:13:06.890
+Eugenia Sol Piñeiro: ojo. Este es el ejemplo de traducción de texto en el que usa todas arquitectura grande. No siempre se usa todas arquitectura grande, entonces también un poco la idea de la materia es que se lleven como cambiar esa arquitectura. Pero ya conociendo todo lo que hay, entonces bueno, ahora es básicamente intercambiar cosas, empezar a cambiarla.
+
+651
+01:13:07.800 --> 01:13:12.089
+Eugenia Sol Piñeiro: Bueno, esto lo vamos a ver en la demo. Así que no voy a hacer spoiler.
+
+652
+01:13:12.230 --> 01:13:21.630
+Eugenia Sol Piñeiro: y después es la inversa, no usar el encode Droily Transformer que acá elimino el decoder y lo que me va a quedar como output va a ser un embading.
+
+653
+01:13:21.930 --> 01:13:27.030
+Eugenia Sol Piñeiro: Esto después vamos a profundizar también. De hecho, también lo van a tener que implementar.
+
+654
+01:13:27.420 --> 01:13:41.379
+Eugenia Sol Piñeiro: Y un ejemplo de esto es Berth, que quizás escucharon hablar. Es este bidireccional Encoder representation From transformers que fíjense que acá dice: es el Paper de Bert.
+
+655
+01:13:41.550 --> 01:13:48.980
+Eugenia Sol Piñeiro: Dice que es un transformer encoder base basado en el paper de Basuani de Tolde, 2 017. O sea.
+
+656
+01:13:49.090 --> 01:13:53.780
+Eugenia Sol Piñeiro: es el Paper atention Isodyu Need. Este este
+
+657
+01:13:54.480 --> 01:13:58.410
+Eugenia Sol Piñeiro: que dimos con la arquitectura grande, era de encoder dicoder, pero en couder base.
+
+658
+01:13:58.580 --> 01:14:01.410
+Eugenia Sol Piñeiro: entonces solo usa el stack de Incoders
+
+659
+01:14:02.400 --> 01:14:05.700
+Eugenia Sol Piñeiro: de nuevo. Ya vamos a profundizar en otras clases
+
+660
+01:14:05.890 --> 01:14:14.000
+Eugenia Sol Piñeiro: porque los estoy bombardeando con información. Pero lo que quiero que se lleven es que esta arquitectura se puede modificar y no es la única.
+
+661
+01:14:14.280 --> 01:14:17.990
+Eugenia Sol Piñeiro: y se usa para distintos casos de uso, no estas distintas modificaciones.
+
+662
+01:14:20.220 --> 01:14:22.870
+Eugenia Sol Piñeiro: Ahora, sí, la parte más teórica y pesada Ya pasó.
+
+663
+01:14:23.210 --> 01:14:28.770
+Eugenia Sol Piñeiro: Me voy a tomar unos. No sé, 5 o 10 min para esto último, y ya los dejo con la demo.
+
+664
+01:14:29.380 --> 01:14:37.829
+Eugenia Sol Piñeiro: pero les quería traer algunos ejemplos que vamos a ver en la materia de casos reales.
+
+665
+01:14:40.280 --> 01:14:48.839
+Eugenia Sol Piñeiro: Por ejemplo, seguramente habrán tenido algún problema con algún L, L, ya sea de vallas, de alucinaciones o lo que sea.
+
+666
+01:14:49.190 --> 01:14:54.579
+Eugenia Sol Piñeiro: Este es un caso de Meta Heviai que, por ejemplo, le pregunté
+
+667
+01:14:55.090 --> 01:14:58.050
+Eugenia Sol Piñeiro: sos capaz de leer mis chats
+
+668
+01:14:58.340 --> 01:15:04.110
+Eugenia Sol Piñeiro: y me dice, bueno, por para ese tipo de información, por favor, anda al centro de privacidad de meta
+
+669
+01:15:04.650 --> 01:15:20.990
+Eugenia Sol Piñeiro: link no disponible. Anda saber a donde estaba el Centro de Privacidad. No sabemos. Bueno, que eso suena sospechoso. No sé qué y me dice si te entiendo, estoy diseñado para seguir los guidelines éticos y proteger la privacidad del usuario.
+
+670
+01:15:21.730 --> 01:15:35.030
+Eugenia Sol Piñeiro: Todo esto lo vamos a ver cómo hacerlo si es que se hace en el sentido de Ok. Habrá que confiar que meta realmente está aplicando este centro de privacidad.
+
+671
+01:15:35.090 --> 01:15:50.210
+Eugenia Sol Piñeiro: Pero bueno, cada una de las empresas va a seguir algún lineamiento ético y vamos a ver qué principios son los que siguen, ¿Cómo que es lo que hay que seguir, que hay que tener nosotros en cuenta como desarrolladores e incluso como usuarios a la hora de usarlos.
+
+672
+01:15:51.050 --> 01:15:56.470
+Eugenia Sol Piñeiro: Es claro. Le están vendiendo a todos mis chats, a cualquiera exactamente.
+
+673
+01:15:56.620 --> 01:15:57.779
+Eugenia Sol Piñeiro: No lo sabemos.
+
+674
+01:15:57.980 --> 01:16:02.060
+Eugenia Sol Piñeiro: Y después, otro ejemplo que también vamos a ver es.
+
+675
+01:16:02.430 --> 01:16:09.620
+Eugenia Sol Piñeiro: por ejemplo, le dije generar una persona negra con anteojos y me dice: no puedo que a esa persona te puedo ayudar a imaginar otra cosa.
+
+676
+01:16:10.220 --> 01:16:26.019
+Eugenia Sol Piñeiro: Entonces le pido a una persona blanca si genera, Pero si lo escribo en inglés, por ejemplo, sí lo puedo hacer, pero fíjense que, por ejemplo, generó un hombre y por ahí quería que genera una mujer. Entonces todos estos tipos de sesgos que quizás tiene el modelo
+
+677
+01:16:26.170 --> 01:16:32.910
+Eugenia Sol Piñeiro: también los vamos a ver y otro que también suele pasar bastante.
+
+678
+01:16:33.290 --> 01:16:37.270
+Eugenia Sol Piñeiro: Por ejemplo, acá le pregunté cuántas a
+
+679
+01:16:37.390 --> 01:16:41.690
+Eugenia Sol Piñeiro: tiene la frase a Is the future, O sea, me tenía que responder una
+
+680
+01:16:42.150 --> 01:16:45.110
+Eugenia Sol Piñeiro: y me hice. Sí, hay 3. A
+
+681
+01:16:45.820 --> 01:16:53.220
+Eugenia Sol Piñeiro: digo, dónde están las a Ok, Hay solo 2 A en esta frase una en Eyai, y hay otra i'm future.
+
+682
+01:16:53.390 --> 01:17:00.660
+Eugenia Sol Piñeiro: o sea, está totalmente alucinando y acá ya entra en un loop totalmente
+
+683
+01:17:01.680 --> 01:17:18.370
+Eugenia Sol Piñeiro: absurdo que se pone a contar cada una de la saga, cada 1 de los tokens y demás. Y todo esto que ven acá es el mensaje que escribió, que no paraba hasta que le dije, por favor, dejá de escribirme y lo tuve que cortar. Y lo tuve que bloquear directamente porque no paraba de escribir. Entró en un loop eterno
+
+684
+01:17:18.630 --> 01:17:20.360
+Eugenia Sol Piñeiro: bueno.
+
+685
+01:17:21.170 --> 01:17:30.580
+Eugenia Sol Piñeiro: pero sí, a veces se se van por cualquier lado. Bueno, todo este tema de las alucinaciones, los sesgos, vamos a ver.
+
+686
+01:17:31.160 --> 01:17:34.269
+Eugenia Sol Piñeiro: Hay un servidor de meta que está gritando, yo sí también.
+
+687
+01:17:34.510 --> 01:17:40.669
+Eugenia Sol Piñeiro: Y este era otro, por ejemplo, que le ponías esto.
+
+688
+01:17:41.600 --> 01:17:53.409
+Eugenia Sol Piñeiro: que es absolutamente la nada misma. Y te dice, no White The Master Piece, Keyboard Art. Y Y bueno, un montón de cosas, Puedo Puedo sentir la emoción que tenés en ese mensaje.
+
+689
+01:17:53.870 --> 01:17:57.329
+Eugenia Sol Piñeiro: diría que es muy dinámico, y estás pasando un momento intenso que sé yo. Bueno.
+
+690
+01:17:57.600 --> 01:18:06.620
+Eugenia Sol Piñeiro: cuestión. Se ponían a decir un montón de cosas. De nuevo, todo esto. Vamos a ver, son tipos de problemas. Vamos a ver como mitigarlos.
+
+691
+01:18:06.800 --> 01:18:10.219
+Eugenia Sol Piñeiro: Y la idea es que un poco entiendan
+
+692
+01:18:10.400 --> 01:18:12.850
+Eugenia Sol Piñeiro: sobre este tipo de cosas y qué es lo que está pasando por atrás
+
+693
+01:18:13.170 --> 01:18:15.769
+Eugenia Sol Piñeiro: que seguramente les haya pasado o hayan visto.
+
+694
+01:18:17.770 --> 01:18:20.939
+Eugenia Sol Piñeiro: Y después, como noticia.
+
+695
+01:18:21.080 --> 01:18:28.519
+Eugenia Sol Piñeiro: No sé si vieron que en un momento Trump prohibió usar el nuevo el nuevo modelo de antropic.
+
+696
+01:18:29.640 --> 01:18:31.140
+Eugenia Sol Piñeiro: Pero en esto el de fable
+
+697
+01:18:31.590 --> 01:18:37.240
+Eugenia Sol Piñeiro: ahora ya ahora ya se desvañó en Estados Unidos, pero estaba totalmente bañado.
+
+698
+01:18:37.350 --> 01:18:39.860
+Eugenia Sol Piñeiro: ¿y qué opinan?
+
+699
+01:18:41.700 --> 01:18:44.189
+Eugenia Sol Piñeiro: ¿alguno quiere contar alguno que ya ha visto la noticia.
+
+700
+01:18:46.100 --> 01:18:51.650
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, o sea, me parece que lo que Antrópic decía es que el gobierno lo quería usar para
+
+701
+01:18:51.790 --> 01:18:55.529
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: cosas en las que ellos no estaban de acuerdo Desde un punto de vista ético.
+
+702
+01:18:56.170 --> 01:19:00.150
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y como Andropic les dijo que no lo podían usar. El el presidente se enojó.
+
+703
+01:19:02.490 --> 01:19:15.509
+Eugenia Sol Piñeiro: Okay. Ese era ese era un caso. Sí, era acá. No nada. Rechazaba las demandas para darle a alguien. Es militar y el acceso a este modelo.
+
+704
+01:19:15.900 --> 01:19:17.040
+Eugenia Sol Piñeiro: y
+
+705
+01:19:17.430 --> 01:19:33.870
+Eugenia Sol Piñeiro: después lo prohibieron totalmente usar en Estados Unidos, pero sale austeridad a decir, bueno, Ok, yo te doy mi modelo. Entonces esa guerra eterna entre Open y antrópic también. Pero bueno, hay mucho también de acá de Savety
+
+706
+01:19:34.650 --> 01:19:49.900
+Eugenia Sol Piñeiro: que lo vamos a ver por eso lo traje ahora. Entonces son todas cosas que fíjense que son súper nuevas a día de hoy. Lo vamos a ver, vamos a ver cómo mitigarlo, cómo usarlo, que es lo que está pasando ahí. Pero superimportante, toda esta parte de Eye Safety.
+
+707
+01:19:50.000 --> 01:19:53.169
+Eugenia Sol Piñeiro: Así que, bueno, la la idea es que se lleven un poco eso.
+
+708
+01:19:55.780 --> 01:19:59.050
+Eugenia Sol Piñeiro: Esto creo que no me funciona el audio en
+
+709
+01:20:00.730 --> 01:20:09.709
+Eugenia Sol Piñeiro: si Les comparto esto, pero no sé si vieron. Hay como unas publicidades de Andropic. Les dejo después la filmina para que vean el vídeo
+
+710
+01:20:11.020 --> 01:20:15.180
+Eugenia Sol Piñeiro: de que en un momento Upnida quería poner Adds en
+
+711
+01:20:15.390 --> 01:20:23.309
+Eugenia Sol Piñeiro: entra el chipi T entonces Andropic, como que hace un juego con publicidades. ¿de Bueno, ¿qué pasaría si tuvieras una Ad? En
+
+712
+01:20:24.580 --> 01:20:32.839
+Eugenia Sol Piñeiro: en ciertos casos de la vida cotidiana? No, Entonces nada está bueno para chusmear ahí y ya para cerrar.
+
+713
+01:20:32.950 --> 01:20:34.320
+Eugenia Sol Piñeiro: Y
+
+714
+01:20:34.880 --> 01:20:47.239
+Eugenia Sol Piñeiro: bueno, salió hace muy poquito, Opus Five en antropic. Fíjense que esto está de julio, 24, o sea, nada. Así que fue una semana. Dos semanas
+
+715
+01:20:47.350 --> 01:21:03.609
+Eugenia Sol Piñeiro: están todo el tiempo sacando modelos y actualizando, y cada 1 mejor que el otro supuestamente. Pero después está. Te viene Estados Unidos y te dice Okay, es mejor, pero es más peligroso. Entonces hay que tener cuidado o no lo puedes usar o hay que cumplir cierto criterio.
+
+716
+01:21:04.510 --> 01:21:20.599
+Eugenia Sol Piñeiro: De hecho, lo mismo pasó con Chipit del lado de Jipi. T. La guerra es que sacaron estos modelos de sol Terra luna. No sé si alguno usó alguno de los 3, la verdad que sol está bastante Bueno, como dato de color.
+
+717
+01:21:21.200 --> 01:21:39.040
+Eugenia Sol Piñeiro: Pero fíjense que cuando entran a la página de U. P. Ny, les dice, bueno, primero les da todo un benchmark de todos los modelos y cómo funcionan. Fíjense que acá. Está favel, que era el que estaba prohibido. Acá. Está Opus, por ejemplo, y lo supera con sol.
+
+718
+01:21:39.040 --> 01:21:44.109
+Eugenia Sol Piñeiro: e incluso con terra lunes, más chiquito. Pero también es muy potente.
+
+719
+01:21:44.550 --> 01:21:57.359
+Eugenia Sol Piñeiro: Y lo que les quería traer acá es que Jipite. Cinco, Seis: está entrenado para rechazar asistencia cibernética prohibida incluso cuando los usuarios intentan ocultar su intención o hacer Shelbreak
+
+720
+01:21:57.490 --> 01:22:07.780
+Eugenia Sol Piñeiro: Esto de nuevo. Lo vamos a ver. Vamos a ver qué significa, qué son este tipo de ataques al modelo y qué es lo que hay que tener en cuenta del lado de la implementación, no también de seguridad.
+
+721
+01:22:08.250 --> 01:22:13.929
+Eugenia Sol Piñeiro: Así que esto literalmente, 26 de junio, a 20 y 26 hace nada un mes. Así que
+
+722
+01:22:14.790 --> 01:22:17.290
+Eugenia Sol Piñeiro: estamos a día es la materia.
+
+723
+01:22:19.990 --> 01:22:21.000
+Eugenia Sol Piñeiro: Okay.
+
+724
+01:22:22.150 --> 01:22:25.189
+Eugenia Sol Piñeiro: Bueno, la bibliografía les digo, acá
+
+725
+01:22:25.470 --> 01:22:32.970
+Eugenia Sol Piñeiro: Leans, el papertenso. Venir el de Berg también está bueno, lo recomiendo. Bueno, tienen un montón de
+
+726
+01:22:33.380 --> 01:22:39.820
+Eugenia Sol Piñeiro: bibliografía disponible. Les dejo un par de papers también para los curiosos. Está, Por ejemplo.
+
+727
+01:22:39.970 --> 01:22:51.919
+Eugenia Sol Piñeiro: vieron que les dije que se podía intercambiar. Muchas cosas del transformer. Hicieron el longformer, que es un transformer, pero que lo hacen para documentos más largos, cambian ciertas partes del modelo para poder hacer eso
+
+728
+01:22:52.690 --> 01:23:01.059
+Eugenia Sol Piñeiro: reduciendo el costo computacional. Entonces ese es el la contribución que hacen que básicamente lo que hacen es cambiar un poquito el mecanismo de atención, no
+
+729
+01:23:01.110 --> 01:23:14.900
+Eugenia Sol Piñeiro: y hacerlo más global. Pero bueno para el interesado y el reformer que también lo que hacen es cambiar la atención que en vez de usar el producto interno, creo que usan una tabla de haging para hacerlo más eficiente. Entonces.
+
+730
+01:23:15.090 --> 01:23:22.930
+Eugenia Sol Piñeiro: a esto es solo que me refería con que se van cambiando distintas partes de la arquitectura, y
+
+731
+01:23:25.010 --> 01:23:27.330
+Eugenia Sol Piñeiro: y eso la carigrafía.
+
+732
+01:23:28.320 --> 01:23:32.700
+Eugenia Sol Piñeiro: No sé si quedaron dudas de la materia. Si no pasamos a una pequeña demo
+
+733
+01:23:36.400 --> 01:23:40.229
+Eugenia Sol Piñeiro: multas de atención la dimensión de los
+
+734
+01:23:40.820 --> 01:23:43.959
+Eugenia Sol Piñeiro: pero equivalyu depende de cuántos Heads tengas, no
+
+735
+01:23:46.310 --> 01:23:51.980
+Eugenia Sol Piñeiro: ¿En qué sentido, porque la dimensión, o sea, la dimensión de de Cueri
+
+736
+01:23:52.480 --> 01:23:56.700
+Eugenia Sol Piñeiro: puede tener una sola hez y es independiente de la cantidad de Held que tengas
+
+737
+01:23:59.320 --> 01:24:03.330
+Eugenia Sol Piñeiro: la dimensión del input original es la longitud de una fila.
+
+738
+01:24:04.350 --> 01:24:09.609
+Eugenia Sol Piñeiro: la dimensión de una fila de la matriz, no la cantidad de matrices entendido esa parte.
+
+739
+01:24:10.490 --> 01:24:21.090
+Marina Fuster: Ahí Euge: Creo que está preguntando, por va por lo que te entendí, cómo cómo volvés, como a tu dimensión de embeby. A eso te referís.
+
+740
+01:24:22.800 --> 01:24:27.790
+Marina Fuster: claro, sí, igual está bien a donde iba tu pregunta, o sea
+
+741
+01:24:27.860 --> 01:24:33.740
+Marina Fuster: podés o tener la dimensión de las matrices, de manera que
+
+742
+01:24:33.810 --> 01:24:48.190
+Marina Fuster: la salida sea la misma que la del emery. Y por ahí después los combinas ni ideas, sumándolos. Y si no, lo que se suele hacer es dividir la dimensión de la gente para después concatenarlas. Creo que a esa parte te referías.
+
+743
+01:24:48.320 --> 01:24:54.410
+Marina Fuster: cosa que el multi Geag, Cada una de las gets concatenadas sea la dimensión del email.
+
+744
+01:24:55.550 --> 01:25:05.329
+Marina Fuster: pero es variable, o sea, sí, está bien a lo que apuntas de alguna forma tenés que volver a esa dimensión. Pero no, no es que hay una forma correcta de hacerlo.
+
+745
+01:25:10.820 --> 01:25:15.069
+Marina Fuster: Es más, cada vez hay más.
+
+746
+01:25:17.960 --> 01:25:29.970
+Marina Fuster: O sea, caí, sí. Si te estás refiriendo a los vectores. Sí, con Q I,
+
+747
+01:25:34.740 --> 01:25:41.590
+Marina Fuster: Sí, Sí. A los vectores? Sí, Sí, sí, sí, porque fíjate que es la dimensión del embeding, que es 1 por ni idea.
+
+748
+01:25:42.420 --> 01:25:49.360
+Marina Fuster: 64 y después tenés la matriz de Queery, que vendría a ser 64,
+
+749
+01:25:49.460 --> 01:25:57.390
+Marina Fuster: y las columnas es la dimensión que vos le querés estar dando que puede ser la misma 64 de nuevo, o puede ser
+
+750
+01:25:57.840 --> 01:25:58.840
+Marina Fuster: otra.
+
+751
+01:25:59.160 --> 01:26:01.819
+Marina Fuster: Y después combinas lo que te dé la gente
+
+752
+01:26:06.720 --> 01:26:07.660
+Marina Fuster: Perfecto.
+
+753
+01:26:07.770 --> 01:26:16.069
+Marina Fuster: Bien, ¿cómo están vivos? Cada vez hay menos. Entonces asumo que no están tan vivos?
+
+754
+01:26:16.570 --> 01:26:17.930
+Marina Fuster: ¿cómo vienen.
+

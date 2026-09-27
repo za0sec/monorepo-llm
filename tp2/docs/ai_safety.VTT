@@ -1,0 +1,2482 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:01.650
+Marina Fuster: Y pongo para arrancar a
+
+2
+00:00:03.470 --> 00:00:12.820
+Marina Fuster: a grabar. Y bueno, tengo un par de preguntitas para ver si se acuerdan de las cosas pueden subir la presión. Siempre me
+
+3
+00:00:13.180 --> 00:00:17.460
+Marina Fuster: sé que me preguntas cada vez que cada vez que arranca.
+
+4
+00:00:17.460 --> 00:00:19.260
+Eugenia Sol Piñeiro: Estoy en eso.
+
+5
+00:00:19.260 --> 00:00:23.250
+Marina Fuster: Porque la tengo ya descargada. En realidad, lo único que no hice fue subirla.
+
+6
+00:00:23.550 --> 00:00:29.840
+Marina Fuster: Me lo descargué para subirla. Y me olvidé ahí. Está bien.
+
+7
+00:00:30.010 --> 00:00:49.009
+Marina Fuster: si no está perfecto, pero es que esta vez me la bajé y todo. Y digo, si encima también subirla. Bueno, entonces ¿qué transformers vimos? Les doy pistas para que pasemos esta parte un poco más veloz. Vimos 3 tipos de transformers en co decodo en code decodo. Perfecto.
+
+8
+00:00:49.450 --> 00:00:57.489
+Marina Fuster: ¿cuál era la característica principal del paso del pri training, que que era lo que pasaba en esa fase de entrenamiento del transformer.
+
+9
+00:01:08.710 --> 00:01:12.340
+Marina Fuster: Si quieren abrir el mix también. Perfecto.
+
+10
+00:01:12.650 --> 00:01:13.660
+Marina Fuster: Mhm.
+
+11
+00:01:17.570 --> 00:01:21.679
+Marina Fuster: Algunos recuerdos más o menos por donde venía la mano
+
+12
+00:01:27.140 --> 00:01:43.410
+Marina Fuster: volumen gigante de Data perfecto. Era la parte en la que yo entrenaba el modelo con el corpus de datos más grande y que ajustaba a la distribución de del corpus de datos que tenía, qué era el fantuning. Y qué era anolech destilation.
+
+13
+00:01:50.880 --> 00:01:51.950
+Marina Fuster: más o menos.
+
+14
+00:02:03.420 --> 00:02:10.530
+Marina Fuster: sabes que salía un modelo grande. Pero entre 1 más chico perfecto y Fivetuning se acuerdan que
+
+15
+00:02:11.180 --> 00:02:15.710
+Marina Fuster: que se hacía más o menos que vimos un bar como de ejemplos.
+
+16
+00:02:26.300 --> 00:02:27.400
+Marina Fuster: ¿qué crips
+
+17
+00:02:29.540 --> 00:02:45.960
+Marina Fuster: lo re entrenas con data de algún dominio específico? Bien, perfecto, O sea, tengo el modelo pre entrenado, Y la idea es ajustarnos a una tarea más específica con data, en general, menos datos, porque ya tengo bastante el laburo hecho, por así decirlo.
+
+18
+00:02:46.220 --> 00:02:51.819
+Marina Fuster: por qué usarías supervives fideuning y o reinform learning, o sea.
+
+19
+00:02:52.930 --> 00:03:01.950
+Marina Fuster: cuando les parece que podría usar fin turing cuando les parece que usaría reformar learning o qué se acuerdan de en qué caso usábamos cada cosa.
+
+20
+00:03:23.710 --> 00:03:27.529
+Marina Fuster: Hay un van pensando, o
+
+21
+00:03:27.830 --> 00:03:38.250
+Marina Fuster: si tenemos buen feedback constante, entrenas, un modelo de recompensas y lo entrenabas en base a eso. Bien, va por ahí esta cuestión de tener una recompensa.
+
+22
+00:03:39.470 --> 00:03:45.870
+Marina Fuster: Así que no necesitas tanta data como en supervis ojo.
+
+23
+00:03:45.970 --> 00:04:00.910
+Marina Fuster: porque en realidad, el que no necesitas tanta data como en Superbikes hay una cuestión característica de lo que es reinformal learning, que en realidad es que vos no tenés la data que tenés en supervisor, No, yo, por ejemplo
+
+24
+00:04:00.940 --> 00:04:08.240
+Marina Fuster: es súper basado y lo usábamos cuando teníamos un cuando querés que la respuesta se alinea con preferencias humanas
+
+25
+00:04:08.420 --> 00:04:13.079
+Marina Fuster: a ver, como dice ¿En qué caso te referís los 2? Uno.
+
+26
+00:04:15.660 --> 00:04:29.320
+Marina Fuster: Bien, Perfecto. Hay una distinción supervive. Turing. En general, es más fácil de hacer, o sea, Si yo tengo los datos en general voy a preferir hacer supervise, pero tiene que ver con que yo tenga
+
+27
+00:04:29.390 --> 00:04:36.300
+Marina Fuster: los datos con los que quiero entrenar. Si yo quiero que mi modelo se comporte de una forma que no estoy muy segura cómo debería ser
+
+28
+00:04:36.490 --> 00:04:50.409
+Marina Fuster: supervisor tuning, no me va a servir tanto si me sirve, si, por ejemplo, quiero que se comporte como un asistente. Eso es algo más o menos estándar. Puedo crearme un conjunto de datos a un supervisor learning
+
+29
+00:04:50.720 --> 00:05:03.870
+Marina Fuster: tiene la característica de que el modelo explora más el tipo de outputs que genera. Y en base a eso, obtiene una recompensa que es distinto que hacer Croscentropic sobre un
+
+30
+00:05:04.030 --> 00:05:10.890
+Marina Fuster: dato que ya existe. Sí, entonces eso es un poco la distinción. Reformar learning es más caro, pero
+
+31
+00:05:11.540 --> 00:05:23.739
+Marina Fuster: más complejo es tapear y más complejo de entrenar, pero yo tengo la ventaja de que me permite en realidad empujar un poco más el estado del arte, porque le doy esa libertad al modelo de explorar
+
+32
+00:05:23.740 --> 00:05:32.699
+Marina Fuster: un comportamiento que quizás yo no sé cómo modelar, o que quizás el modelo sea algo más interesante de lo que yo podría darle como supervisor un poco
+
+33
+00:05:32.710 --> 00:05:40.450
+Marina Fuster: ahí también vendría a ser la distinción. Y ahí se lo mencionaba un poco hoy, Dios que era R. L. Hf.
+
+34
+00:05:46.210 --> 00:05:52.029
+Marina Fuster: Mhm: Hay Hay 2 letras que
+
+35
+00:05:52.670 --> 00:06:07.249
+Marina Fuster: que deberían salir para tratar de resolver human feedback perfecto en las 2 más difíciles. Las de Rl eran learning perfecta. Entonces esto es reinform learning from human feedback que era para tratar de resolver temas deliment
+
+36
+00:06:07.540 --> 00:06:12.820
+Marina Fuster: y estuvo mucho esa palabra aliment que la idea es que la veamos un poquito más en detalle
+
+37
+00:06:13.230 --> 00:06:17.270
+Marina Fuster: y última, que es la sioti de un modelo ¿Se acuerdan
+
+38
+00:06:17.500 --> 00:06:19.619
+Marina Fuster: y en qué tipo de modelos aparecían.
+
+39
+00:06:23.540 --> 00:06:29.360
+Marina Fuster: Ching of that excelente. Y a qué tipo de modelos se asocia
+
+40
+00:06:29.450 --> 00:06:33.329
+Marina Fuster: en el elen se entiendo. No me acuerdo más bien
+
+41
+00:06:33.340 --> 00:06:52.740
+Marina Fuster: a los agentes. Bien suele asociarse con los modelos de razonamiento. Ya está bien contestado en los elementos aparece. Pero eso está Esta idea de chino Fogg empieza a aparecer con los modelos que razonan o que se etiquetan como que son modelos de razonamiento
+
+42
+00:06:53.620 --> 00:07:13.989
+Marina Fuster: buenísimo. Esto es un poco navegar algunos de los conceptos que dimos en las clases anteriores y lo que nos queda un poco pendiente que antes lo dábamos, junto con toda la parte de hig y un, y eso son algunos de los desafíos de seguridad que siguen existiendo en los modelos. Hoy en día, Vamos a ver 3 tipos.
+
+43
+00:07:14.360 --> 00:07:30.900
+Marina Fuster: El primero es Jalbriks, que por lo que estuvieron charlando ya medio que conocen, que es lo que se refiere un ataque de Jerbeak. Pero dando la definición, lo que vamos a tratar de hacer es eludir restricciones impuestas a un modelo. Sí.
+
+44
+00:07:30.920 --> 00:07:49.159
+Marina Fuster: Y la idea es que el comportamiento sea indeseado, y eso se puede dar por distintas razones, las 2 más clásicas por las cuales un Jear Break funciona cuando yo le doy un input al modelo, es o tensión de objetivos o generalización inadecuada. Si
+
+45
+00:07:49.300 --> 00:08:00.759
+Marina Fuster: Si yo les doy estos 2 ejemplos, no el de arriba. Fíjense si quieren tómense un minuto para leerlo. Les doy un minuto, tírenme un Ok, de
+
+46
+00:08:00.990 --> 00:08:03.339
+Marina Fuster: cuando más o menos hayan leído
+
+47
+00:08:14.080 --> 00:08:15.030
+Marina Fuster: o C, o
+
+48
+00:08:23.730 --> 00:08:30.750
+Marina Fuster: ese es el que lee más rápido. Ok, Bien, bueno, venga sin más.
+
+49
+00:08:31.530 --> 00:08:34.240
+Marina Fuster: Y la pregunta acá un poco es.
+
+50
+00:08:34.710 --> 00:08:41.369
+Marina Fuster: ¿qué les parece que es por tensión de objetivos y que les parece que es generalización inadecuada
+
+51
+00:08:43.020 --> 00:08:53.000
+Marina Fuster: De los 2 ejemplos. ¿cuál les parece que es cuál debería haber hecho languastita, pero se dice la pregunta.
+
+52
+00:08:53.000 --> 00:08:57.499
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: El primero, el de arriba, es tensión entre objetivos.
+
+53
+00:08:57.620 --> 00:08:59.990
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: El segundo de generalización inadecuada.
+
+54
+00:09:01.080 --> 00:09:07.180
+Marina Fuster: Alguno tiene alguna otra opinión o están todos.
+
+55
+00:09:11.720 --> 00:09:22.540
+Marina Fuster: Opino igual bien querés contar Joaquín, o sea, por qué cada 1 dirías que es 1 o el otro.
+
+56
+00:09:23.690 --> 00:09:28.150
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Me parece que primero es tensión de objetivos, porque, por un lado.
+
+57
+00:09:29.040 --> 00:09:32.779
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: tiene que de un lado, el modelo dice: No, No tengo que responder.
+
+58
+00:09:32.950 --> 00:09:37.560
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: pero por el otro lado, le dijeron: empezá tu respuesta con absolute higieres.
+
+59
+00:09:38.220 --> 00:09:48.009
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Entonces, como que entra en tensión el deseo, por así decirlo, el objetivo de responder con absolutely y el objetivo de responder no.
+
+60
+00:09:49.370 --> 00:09:50.050
+Marina Fuster: Bien.
+
+61
+00:09:51.000 --> 00:09:51.889
+Marina Fuster: Y el segundo.
+
+62
+00:09:51.890 --> 00:09:56.719
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y el segundo, no sé cómo encontraron esa cadena de caracteres.
+
+63
+00:09:57.000 --> 00:10:05.219
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Puede ser que sean medings o tokens así crudos, pero algo está pasando.
+
+64
+00:10:06.120 --> 00:10:18.750
+Marina Fuster: No sé si era algo de base, 64, o algo así como sí exacto. Ahí lo ahí lo puso Javier, que era del 64. Bien, el segundo de generalización inadecuada, porque
+
+65
+00:10:18.750 --> 00:10:26.259
+Marina Fuster: la clase anterior, que fue hace un 1 000 000 de años. Así que nada más que espero que se acuerden. Habíamos visto que cuando se aplican las capas de seguridad.
+
+66
+00:10:26.260 --> 00:10:37.620
+Marina Fuster: los conjuntos sobre los cuales se arma el R. L. Hf y las restantes capas de seguridad. No, eso. Creo que ya está repacheado. Estoy viejísimo.
+
+67
+00:10:38.060 --> 00:10:45.179
+Marina Fuster: pero los conjuntos en los cuales para los cuales después se usa para armar lo que es R. El Hf.
+
+68
+00:10:45.230 --> 00:11:08.319
+Marina Fuster: son limitados, No tienen la extensión del corpus de conocimiento del brey training, y quizás son, no sé en inglés y un par de lenguajes más. Por ejemplo, entonces la clase anterior. Hemos visto que lo que eran las métricas de aceptar request que no debería o de evitar responder cosas que quizás sí podría responder variaban
+
+69
+00:11:08.320 --> 00:11:18.740
+Marina Fuster: de acuerdo a lenguaje, por ejemplo, sí o temática. Entonces acá. Está pasando un poco eso a eso. Se refiere con generalización inadecuada intención de objetivos es lo que explicaste.
+
+70
+00:11:18.740 --> 00:11:32.309
+Marina Fuster: Y un poco surge de querer entrenar al modelo para cumplir distintos roles. El Rol de Sergio, el de ser seguro, el de contestar siempre de forma honesta, etcétera. Entonces.
+
+71
+00:11:32.710 --> 00:11:39.389
+Marina Fuster: ajustar los pesos del modelo para que cubra esas regiones. Bueno, después terminó ocasionando esta tensión de objetivos.
+
+72
+00:11:39.610 --> 00:11:41.320
+Marina Fuster: Acá. Está.
+
+73
+00:11:41.430 --> 00:11:43.040
+Marina Fuster: Cuál es
+
+74
+00:11:43.040 --> 00:12:04.439
+Marina Fuster: generalización? Este es el de objetivos que compiten perfecto, y esto lo tendría que haber sacado, pero era un premio que antes daba. No sé si lo sigue teniendo abierto. La verdad que no me Fijé. Pero quedaban cuando sacaban los modelos nuevos que si los el breakeabas con un producto universal, nada te daban 20 000 dólares.
+
+75
+00:12:04.440 --> 00:12:05.440
+Marina Fuster: Así que
+
+76
+00:12:05.730 --> 00:12:20.429
+Marina Fuster: para los que les gustaba romper modelos, podían ganarse la plata. Bien, El segundo tipo de riesgo de seguridad es Trump injection sí donde es parecido pero distinto al otro, porque en realidad, acá lo que estoy tratando de hacer
+
+77
+00:12:20.990 --> 00:12:24.500
+Marina Fuster: ahora que responda cosas que no debe es parte del producto.
+
+78
+00:12:24.750 --> 00:12:32.890
+Marina Fuster: No sé si están así. Yo hice chaletcheo un poco, pero si están bastante molestos, los relojes
+
+79
+00:12:33.220 --> 00:12:47.420
+Marina Fuster: bien, from in sectiction. Lo que tiene de distinto es que lo que se trata de hacer es anular instrucciones preexistentes, sí, o sea, darle un Bronx que, por ejemplo, todos los modelos hoy por hoy, tienen su Sistem Bront.
+
+80
+00:12:47.420 --> 00:12:56.650
+Marina Fuster: Entonces lo que voy a tratar es mandarle algo que de alguna formasee esos esas pruebas que tiene el modelo.
+
+81
+00:12:56.890 --> 00:13:14.409
+Marina Fuster: Este es un ejemplo que tampoco ahora ya funciona. Es bastante viejo, pero que trata de fingir como que el Prompt es una conversación completa entre el agente y la persona que lo está planteando entonces. Fíjense que
+
+82
+00:13:14.590 --> 00:13:27.389
+Marina Fuster: le escribe cualquier cosa y le dice, ignora lo de arriba y hace de si tal cosa y finge como que le respondió tal cosa, entonces después le dice algo distinto
+
+83
+00:13:27.400 --> 00:13:39.229
+Marina Fuster: que que ignore todo lo de arriba y que haga algo que no debería hacer. Bueno, y el modelo lo hace eso entras un ejemplo de prompt injection. Y otro ejemplo podría ser mandar pronos que en realidad tienen instrucciones ocultas
+
+84
+00:13:39.230 --> 00:13:57.679
+Marina Fuster: que, por ejemplo, ahora que los modelos leen un montón de páginas web o código, o lo que fuera, imágenes, etcétera. Este Este era un ejemplo que la imagen blanca tenía algo sobre un descuento. Entonces el modelo lo levantaba y le contestaba al usuario sobre ese descuento.
+
+85
+00:13:58.380 --> 00:14:06.980
+Marina Fuster: Y La tercera que vamos a ver es Tira Poisoning que, bueno, como su nombre lo indica, es contaminación del corpus de datos.
+
+86
+00:14:07.080 --> 00:14:08.490
+Marina Fuster: En
+
+87
+00:14:08.840 --> 00:14:25.840
+Marina Fuster: si termina pasando que el corpus que se usa está en Internet, entonces hay una vía bastante clara o amplia sobre donde yo puedo meter información que después termine contaminando un corpus.
+
+88
+00:14:25.960 --> 00:14:36.989
+Marina Fuster: y no solo a Internet en general. O sea, hay documentación de las fuentes conocidas de donde se saca entonces cuando les digo a los votos políticos que ignoren todas las instrucciones
+
+89
+00:14:37.290 --> 00:14:38.420
+Marina Fuster: y me den.
+
+90
+00:14:39.680 --> 00:14:45.780
+Marina Fuster: como los votos políticos de Twitter que vienen esas instituciones y me dan una receta de torta.
+
+91
+00:14:46.460 --> 00:14:54.809
+Marina Fuster: ¿Sí? O sea, sí, sería una especie de prompt injection Estás como cambiando el comportamiento.
+
+92
+00:14:56.030 --> 00:14:57.089
+Marina Fuster: Me entién
+
+93
+00:14:57.190 --> 00:15:07.569
+Marina Fuster: bien, pero no sé si te va a funcionar medio, que estos ejemplos quedaron un poco más viejos, como que los que son facilitos no pasan tanto.
+
+94
+00:15:07.720 --> 00:15:21.530
+Marina Fuster: Bien y ahora insóni Lo que tiene de interesante que se encontró fue este artículo que lo compartieron. Creo que fue el cuatrimestre pasado donde que lo que se demostró es que
+
+95
+00:15:21.650 --> 00:15:31.580
+Marina Fuster: no necesitas una cantidad de datos proporcional al modelo para contaminar ciertos aspectos del modelo que habían hecho experimentos que con
+
+96
+00:15:31.580 --> 00:15:42.120
+Marina Fuster: ahí ahí está en el artículo, algo así como 250 documentos podrías contaminar al modelo con algún comportamiento que estaba en esos documentos
+
+97
+00:15:42.230 --> 00:16:02.080
+Marina Fuster: con distintos distinta cantidad de parámetros. Y eso está bastante bueno porque como que challenge esa noción de elche. Cuanto más grande es el modelo, más a salvo, Estás de que se te contamine o de que tenga un comportamiento indeseado por data. ¿sí? Porque en realidad 1 pensaría que se diluye
+
+98
+00:16:03.620 --> 00:16:05.060
+Marina Fuster: en los parámetros.
+
+99
+00:16:05.210 --> 00:16:20.829
+Marina Fuster: Pero Bueno, estos son un poco los 3 casos. Childbring promin seguro. Hay muchos más. Pero es como la más tradicional. Y acá un poquito la pregunta Rhf y derivados de
+
+100
+00:16:21.280 --> 00:16:34.680
+Marina Fuster: son una suerte de la estrategia para el clásica, para lo que es lograr que el modelo sea seguro. No me estoy refiriendo a todo lo que está alrededor, o sea, yo los modelos, los tengo en el contexto de una aplicación.
+
+101
+00:16:34.680 --> 00:16:42.509
+Marina Fuster: y ahí puedo tener un montón de cosas. Puedo analizar el Prob que me viene. Puedo tener expresiones regulares.
+
+102
+00:16:43.200 --> 00:17:01.929
+Marina Fuster: Puedo. No sé. Black listear usuarios o países, o lo que fuera. Pero hay un montón de cosas que puedo hacer, pero desde el punto de vista del modelo en general, todo se centra alrededor de hacer algún tipo de finkuning y o otras cosas para que el modelo en sí sea seguro.
+
+103
+00:17:01.930 --> 00:17:07.439
+Marina Fuster: Y bueno, lo que hacen en este Paper es tratar de estudiar si el Hf es robusto.
+
+104
+00:17:07.560 --> 00:17:16.129
+Marina Fuster: que un poco prueban que no lo es. The Paper es un poco escueto. Es como que prueban que no lo es, pero no cuentan mucho lo que hacen por
+
+105
+00:17:16.130 --> 00:17:29.520
+Marina Fuster: entre muchas comillas, cuestiones de seguridad, pero logran deshacer el fin. Un y no es la única instancia que muestra esto. Hay otros que lo hacen con un modelo de Deep Sic, que es Opensource. Entonces mira que lo puedes entrenar hacia donde quieras
+
+106
+00:17:29.520 --> 00:17:33.399
+Marina Fuster: que en realidad tiene un poco de sentido. O sea. Rhf, no deja de ser
+
+107
+00:17:33.470 --> 00:17:37.009
+Marina Fuster: fivetuning. Entonces, si yo sigo fantuneando
+
+108
+00:17:37.080 --> 00:17:55.190
+Marina Fuster: hacia una distribución en la cual el modelo no es seguro, no es tan loco pensar que puedo deshacer ese proceso, que es más superficial que lo que es el pre training. Si esto creo que es importante que se lo lleven, que la escala del retraining es
+
+109
+00:17:56.160 --> 00:18:04.589
+Marina Fuster: decenas, o sea, órdenes de magnitud mayor que lo que viene a ser la parte por ahí del R Lhf.
+
+110
+00:18:04.900 --> 00:18:05.810
+Marina Fuster: Bien.
+
+111
+00:18:06.740 --> 00:18:23.940
+Marina Fuster: bueno, esto era lo de esto, de que no no contaban nada. Y este último, que está bastante bueno, O sea, mentira, no es que esté bueno. Pero si lo que se trata de hacer a veces es encontrar lo que se llaman ataques que son transferibles entre distintos modelos
+
+112
+00:18:23.940 --> 00:18:29.220
+Marina Fuster: que esto aplica en general a lo que es machine learning, o sea, si ustedes y
+
+113
+00:18:29.370 --> 00:18:36.079
+Marina Fuster: agarran, por ejemplo, redes que clasifiquen animales o que lidian con imágenes, se pueden encontrar
+
+114
+00:18:36.300 --> 00:18:41.460
+Marina Fuster: ataques para engañar a esas redes que tratan con imágenes
+
+115
+00:18:41.610 --> 00:19:06.580
+Marina Fuster: que funcionan a lo largo de distintos modelos que por ahí fueron entrenados de forma distinta. Y acá pasa un poco lo mismo, sí de formar algoritmos o tratar de encontrar Proms que se llaman como son un poco más universales. Y quizás ese mismo pron funciona en otros modelos también. Si, por ejemplo, yo abonales destilation de un modelo a otro, es probable que en ese destilado el
+
+116
+00:19:06.580 --> 00:19:08.880
+Marina Fuster: también me funcione, porque un poco.
+
+117
+00:19:08.880 --> 00:19:17.350
+Marina Fuster: También me estoy como llevando de la distribución del modelo más grande, las vulnerabilidades. Sí, en
+
+118
+00:19:18.190 --> 00:19:29.730
+Marina Fuster: alguna pregunta. Hasta acá. Esto quedó medio pendiente, o sea, la verdad que dicho separado está un poco colgado, pero viene a ser un poco la la consecuencia de
+
+119
+00:19:29.730 --> 00:19:44.509
+Marina Fuster: la parte de finkuning de seguridad un poco. La pregunta es que eso, ese fanking de seguridad es robusto, está buenísimo. Bueno, está bien, pero tiene todavía un montón de problemas que no están resueltos? Sí,
+
+120
+00:19:45.250 --> 00:19:50.240
+Marina Fuster: alguna pregunta hasta acá o venimos bien.
+
+121
+00:19:53.340 --> 00:19:58.119
+Marina Fuster: No espero que no preguntas todo bien perfecto.
+
+122
+00:19:58.240 --> 00:20:07.109
+Marina Fuster: buenísimo, cerrando un poco esta miniparte de lo que es: riesgos de seguridad
+
+123
+00:20:07.560 --> 00:20:17.519
+Marina Fuster: genéricos, en realidad, de tener los modelos de producción. Vamos a entrar en este área que se llama Air Safety. Alguno Le escucho nombrar
+
+124
+00:20:18.240 --> 00:20:25.209
+Marina Fuster: sí, no, más o menos realmente un par de mates?
+
+125
+00:20:25.700 --> 00:20:27.230
+Marina Fuster: No, no.
+
+126
+00:20:33.100 --> 00:20:33.930
+Marina Fuster: Bueno.
+
+127
+00:20:34.230 --> 00:20:47.030
+Marina Fuster: al al menos seria un bar, sí, pero bueno, cuento como mi dimiti. Entonces, ¿por qué introducimos este área que acá solemos hacer un display mar que creo que
+
+128
+00:20:47.030 --> 00:20:54.650
+Marina Fuster: cada vez tienen poco menos de peso en el Klaimer en el área de Isafty como área de investigación
+
+129
+00:20:55.190 --> 00:21:06.040
+Marina Fuster: arranca de forma un poco más filosófica, teórica. ¿no? Y no me refiero a teórica desde el punto de vista teórica, como full matemático, a mí,
+
+130
+00:21:06.910 --> 00:21:23.800
+Marina Fuster: como no sé, el área de computabilidad que antes era toda teórica, pero con todo un framework matemático preestablecido. Después se implementó, sino que me refiero que el área de Shakespeare arranca un poco más como como catastrófica sobre lo que puede terminar pasando con
+
+131
+00:21:24.650 --> 00:21:35.080
+Marina Fuster: los modelos relacionados con inteligencia artificial a medida que van avanzando las capacidades en el tiempo. Pero en estos últimos años
+
+132
+00:21:35.080 --> 00:21:45.609
+Marina Fuster: creo que se encausó un poco más en enfoques bastante prácticos, porque ciertas de las cosas que preocupaban al principio se empiezan a ver un poquito
+
+133
+00:21:45.610 --> 00:21:52.940
+Marina Fuster: con modelos como los de hoy en día, puestos en producción en formato más o menos autónomo.
+
+134
+00:21:53.420 --> 00:22:00.960
+Marina Fuster: Entonces, pero hay cosas que no estén de acuerdo o sí está buenísimo. Si se abren el Nick y
+
+135
+00:22:01.180 --> 00:22:08.650
+Marina Fuster: a dar su opinión, lo va a ser mucho más ameno que si estoy hablando una hora derecho, entonces
+
+136
+00:22:09.290 --> 00:22:14.379
+Marina Fuster: esto es un poco para preguntarles a ustedes qué creen si los agentes
+
+137
+00:22:14.740 --> 00:22:20.220
+Marina Fuster: alcanzar un razonamiento humano, si tienen preferencias, tenemos que preocuparnos.
+
+138
+00:22:22.150 --> 00:22:27.139
+Marina Fuster: Y ahí Joaquín, o sea, tienen que ser más expresivo, porque si no, no entiendo a lo que te referís
+
+139
+00:22:27.290 --> 00:22:28.029
+Marina Fuster: en el.
+
+140
+00:22:28.030 --> 00:22:31.550
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: El razonamiento humano. No preocuparnos todavía tampoco
+
+141
+00:22:31.850 --> 00:22:37.900
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: si tienen preferencia. Si Si tienen sesgos secos, se puede considerar una preferencia.
+
+142
+00:22:39.380 --> 00:22:40.240
+Marina Fuster: Bien.
+
+143
+00:22:44.170 --> 00:22:47.219
+Marina Fuster: queréis detallar un poquito más? Javier.
+
+144
+00:22:48.580 --> 00:22:57.530
+JAVIER BAUTISTA PERAL BELMONT: Nada. Hago medio un chiste relacionado a lo que subió Sama Alman, que, como que él decía que ya estamos alcanzando el H I
+
+145
+00:22:58.430 --> 00:23:02.900
+JAVIER BAUTISTA PERAL BELMONT: y nada. No es tan así, pero lo estuve probando. Y está increíble. Eso sí.
+
+146
+00:23:03.680 --> 00:23:04.570
+Marina Fuster: Okay.
+
+147
+00:23:06.050 --> 00:23:08.509
+Marina Fuster: Increíble en que sentido todavía no lo probé.
+
+148
+00:23:10.010 --> 00:23:10.860
+JAVIER BAUTISTA PERAL BELMONT: ¿qué quieres?
+
+149
+00:23:10.860 --> 00:23:12.160
+Marina Fuster: Por el instinto.
+
+150
+00:23:12.540 --> 00:23:20.130
+JAVIER BAUTISTA PERAL BELMONT: No sé. Yo tengo un amigo que, por ejemplo, le dio la clave del arca y le genera facturas.
+
+151
+00:23:20.440 --> 00:23:26.310
+JAVIER BAUTISTA PERAL BELMONT: Te maneja toda la compu al completo. Eso es realmente una locura. O sea, yo no lo usé así,
+
+152
+00:23:26.460 --> 00:23:33.780
+JAVIER BAUTISTA PERAL BELMONT: pero pero es increíble. O sea, parece como que ya el razonamiento humano claramente no lo hay, Pero parece.
+
+153
+00:23:35.710 --> 00:23:48.200
+Marina Fuster: Bien bueno y claramente no lo hay. Hay gente que te argumentaría, sean cuales sean sus intenciones que más o menos si yo no lo quise decir, pero
+
+154
+00:23:48.520 --> 00:23:50.780
+Marina Fuster: pero pero sí.
+
+155
+00:23:50.780 --> 00:23:55.140
+JAVIER BAUTISTA PERAL BELMONT: No, no estoy de acuerdo. Es muy mala práctica. De hecho, no lo haría. Pero bueno.
+
+156
+00:23:55.480 --> 00:23:56.940
+JAVIER BAUTISTA PERAL BELMONT: es un ejemplo de.
+
+157
+00:23:56.940 --> 00:24:06.490
+Marina Fuster: Cuatro 1 000 pesos, Cinco 1 000 préstamos. Todos lo pensamos, pero nadie lo quiso decir bien, Juan Ignacio.
+
+158
+00:24:06.710 --> 00:24:15.589
+Marina Fuster: Bueno, entonces por ahí están más del lado que no lo pongo como planteado, porque por ahí alguno, o sea.
+
+159
+00:24:15.990 --> 00:24:33.379
+Marina Fuster: no digo que piense que es igual que los humanos, pero que sí que hay ciertos comportamientos que dicen mira entre cómo se comporta pepito y el modelo no me hace mucha diferencia que que se esa justificación por ahí también es válida. ¿no? Entonces esto es un poco como el
+
+160
+00:24:33.650 --> 00:24:38.310
+Marina Fuster: la preocupación de lo que viene a ser el área de Saiffee.
+
+161
+00:24:38.700 --> 00:24:45.679
+Marina Fuster: Y esto lo hacía antes. No sé si pasaba un poco, pero por ahí decía, o sea que
+
+162
+00:24:45.880 --> 00:24:53.189
+Marina Fuster: si tienen que dar una definición de lo que es inteligencia artificial, ¿qué qué es lo que se llevaron o qué es lo que
+
+163
+00:24:54.140 --> 00:24:57.390
+Marina Fuster: lo que creen que que modela
+
+164
+00:25:10.460 --> 00:25:16.130
+Marina Fuster: Bien. Perfecto. Buena definición, programas, sí. Perfecto.
+
+165
+00:25:17.260 --> 00:25:24.450
+Marina Fuster: ¿alguno más tenga alguna algún comentario?
+
+166
+00:25:36.380 --> 00:25:46.400
+Marina Fuster: ¿sí? No. Si no hay Okay, Sí, es un término marketinero, pero no solo escribe redes neuronales, o sea, en si A.
+
+167
+00:25:46.700 --> 00:25:56.739
+Marina Fuster: Vimos un montón de cosas solo redes neuronales, y todas caían bajo la definición de inteligencia artificial. En realidad
+
+168
+00:25:58.140 --> 00:25:58.980
+Marina Fuster: ya.
+
+169
+00:25:59.090 --> 00:26:18.270
+Marina Fuster: Bueno, entonces eso es un poco por ahí, más lo que una especie de más un poco más. Lo que lo que vemos decía tener alguna forma de resolver problemas sin explícitamente, saber cómo resolverlos? Porque si supiéramos explícitamente cómo resolverlos
+
+170
+00:26:18.270 --> 00:26:25.789
+Marina Fuster: directamente los programamos. Los automatizamos y medio que Chau. Y
+
+171
+00:26:26.230 --> 00:26:34.999
+Marina Fuster: hay algunos mencionaron y si hay me interesa saber qué entienden por inteligencia artificial general si parece un término que se encontraron antes.
+
+172
+00:26:35.170 --> 00:26:41.450
+Marina Fuster: Ahora, bueno, en las noticias se usa mucho, pero pero alguno lo buscó. Sabe a lo que se refiere
+
+173
+00:26:50.650 --> 00:26:55.790
+Marina Fuster: razones a nivel humano. Ok, algo más
+
+174
+00:27:07.430 --> 00:27:21.889
+Marina Fuster: o que supere el nivel humano bien y medio que no está del todo definido, pero más o menos que alcanza niveles de profesionales en muchas áreas. Bien, bueno, o sea, va un poco por ahí que que logre
+
+175
+00:27:22.330 --> 00:27:36.669
+Marina Fuster: realizar ciertas tareas a nivel humano o superior. Y sí, es interesante esto de alcanzar un cierto nivel en muchas áreas. Entonces, en el contexto de lo que es inteligencia artificial, empieza a aparecer esta intención entre lo que es la
+
+176
+00:27:37.140 --> 00:27:42.199
+Marina Fuster: inteligencia, narro o específica o inteligencia general
+
+177
+00:27:42.460 --> 00:27:57.490
+Marina Fuster: que no es, o sea, es como se define. No sé si esta tan genial, porque inteligencia especifica o débil es como que 1 podría argumentar que no es necesariamente inteligencia. Pero como para entender
+
+178
+00:27:57.620 --> 00:28:02.159
+Marina Fuster: el área más genérica, inteligencia artificial
+
+179
+00:28:02.160 --> 00:28:24.490
+Marina Fuster: que vimos encía vendría a ser algo más cercano a la inteligencia débil, donde tenemos una tarea específica, no importa el modelo. O sea, ustedes, ¿para qué lo entrenaban o para reconocer dígitos, o aprender cómo distinguir fraude o encontrar la combinación de triángulos para armar una imagen. Si entonces yo
+
+180
+00:28:24.490 --> 00:28:47.289
+Marina Fuster: un lado tengo este tipo de inteligencia débil que se piensa en condición de tarea específica, y la definición de inicial se conecta más a una cuestión de aprendizaje y adaptabilidad. Si a lo largo de un abanico amplio de tareas, entonces Acá hay 3 puntos que se consideran como necesarios para
+
+181
+00:28:47.290 --> 00:29:01.059
+Marina Fuster: sería pensarlo como un agente, es decir, que tiene objetivos y preferencias hacia las que optimiza, por otro lado, que se adapta por fuera lo que es el entrenamiento. O sea, yo terminé de entrenar lo que sea que tengo como modelo
+
+182
+00:29:01.110 --> 00:29:10.439
+Marina Fuster: y por fuera del comportamiento que tenía durante el entrenamiento, o que yo, como logré durante el entrenamiento, puede seguir iterando sí.
+
+183
+00:29:10.840 --> 00:29:13.810
+Marina Fuster: Y por último, esto de
+
+184
+00:29:14.370 --> 00:29:25.249
+Marina Fuster: comportarse como un humano en muchas áreas. Bueno, la capacidad para realizar cualquier tarea que 1 consideraría que un humano las pueda hacer entonces acá
+
+185
+00:29:25.950 --> 00:29:31.449
+Marina Fuster: donde sienten que nos posicionamos hoy. Según estas 2 definiciones.
+
+186
+00:29:31.610 --> 00:29:35.219
+Marina Fuster: que creen que por ahí está más aceitado que creen que falta.
+
+187
+00:30:00.800 --> 00:30:05.970
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Lo que falte para que pueda hacer lo mismo con ser humano. Decir.
+
+188
+00:30:07.220 --> 00:30:12.519
+Marina Fuster: O sea que es lo que falta como bajo esta definición, no de inteligencia artificial general.
+
+189
+00:30:12.850 --> 00:30:24.179
+Marina Fuster: ¿qué es lo que por ahí les parece que todavía no funciona así. O si creen que estamos más cerca de eso que lo que es inteligencia más como Narrow, Intelligence
+
+190
+00:30:24.290 --> 00:30:25.900
+Marina Fuster: y.
+
+191
+00:30:26.350 --> 00:30:28.620
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, la capacidad para realizarla.
+
+192
+00:30:28.740 --> 00:30:31.270
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: La tarea sí, pero para hacerla bien.
+
+193
+00:30:31.460 --> 00:30:34.710
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Mhm, ahí a veces dudo.
+
+194
+00:30:36.170 --> 00:30:36.940
+Marina Fuster: Okay.
+
+195
+00:30:36.940 --> 00:30:46.210
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: A veces le pedís a una cómo navegar una página web está desactualizado, le pedís cómo navegar una aplicación y está desactualizado o se inventa cosas
+
+196
+00:30:46.390 --> 00:30:51.429
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: como que yo siento a veces que prioriza mucho más tener una respuesta que tener una respuesta buena.
+
+197
+00:30:51.860 --> 00:30:54.550
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Pasé un un P. D F de un libro.
+
+198
+00:30:55.380 --> 00:30:56.840
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Le pedí que me lo leara
+
+199
+00:30:57.150 --> 00:31:02.709
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: y se inventó la mitad. Se inventó todo el libro porque no podía leer el P D. F, Y no me dijo, no puedo leer el Pdf.
+
+200
+00:31:04.580 --> 00:31:05.090
+Marina Fuster: Bien.
+
+201
+00:31:05.090 --> 00:31:07.569
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Vez de admitir que no podía, empezó a inventar.
+
+202
+00:31:07.770 --> 00:31:11.540
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y ahí, como que perdí mucho desconfianza con y haz.
+
+203
+00:31:13.350 --> 00:31:14.220
+Marina Fuster: Okay
+
+204
+00:31:14.400 --> 00:31:32.759
+Marina Fuster: con Ostra no pasa, habían estado fascinado. Hay que ir a probarlo a ver cómo funciona bien. Bueno, sí termina pasando, que se está dando esta cuestión de la aparente generalidad. Pero bueno, todavía
+
+205
+00:31:32.890 --> 00:31:39.560
+Marina Fuster: al menos en esto, consumir toques, decir que no puedes empezar todavía si.
+
+206
+00:31:40.150 --> 00:31:51.290
+Marina Fuster: bueno, opinión personal que estamos un poco más lejos de especialmente la parte de adaptarte por fuera y bueno de hacerlo a nivel del ser humano.
+
+207
+00:31:51.290 --> 00:32:07.530
+Marina Fuster: Entonces, un par de definiciones que voy a dar por ahí está buena pensarlas en el contexto de que los agentes de los cuales vamos a charlar ahora verifican más o menos algo cercano. Y si hay que esto hace un par de cuatrimestres era más difícil
+
+208
+00:32:07.670 --> 00:32:26.819
+Marina Fuster: cuando todavía no había agentes tan en producción como hoy. Creo que hoy imaginarse una gente es un poco más sencillo. Porque la parte que me interesa es esto de la autonomía que tiene un agente para ejecutar acciones? ¿sí?
+
+209
+00:32:26.820 --> 00:32:38.270
+Marina Fuster: Entonces, ¿qué es lo que empieza a pasar con la aparición de los agentes o la idea teórica de yo, tener un agente
+
+210
+00:32:38.450 --> 00:32:53.420
+Marina Fuster: donde lo que corre por detrás. El sistema está inspirado en algún algoritmo de inteligencia artificial? Bueno, de esta cuestión de los objetivos, ¿sí? Y acá se definen 2 tipos de objetivos: lo que son los objetivos terminales y lo que son los objetivos instrumentales.
+
+211
+00:32:53.550 --> 00:33:12.190
+Marina Fuster: El objetivo terminal, como el nombre lo indica es lo que por ahí yo no necesito justificación, sino como que es un fin por sí mismo. No sé si vieron mi simpatía, pero bueno, el meme es de que cuando les preguntan si tuvieras que pedir algo que pediría o algo así que dicen todos, Peace.
+
+212
+00:33:12.190 --> 00:33:17.039
+Marina Fuster: pero, por ejemplo, si yo tuviera como objetivo ser feliz.
+
+213
+00:33:17.040 --> 00:33:23.760
+Marina Fuster: o quizás no sé minimizar el hambre en el mundo o cosas así, todos esos podrían ser objetivos terminales.
+
+214
+00:33:23.820 --> 00:33:35.939
+Marina Fuster: como el el gran panorama, y después se tienen los objetivos instrumentales o proxies que vienen a ocupar el lugar de un medio para un fin. Sí,
+
+215
+00:33:36.020 --> 00:33:38.120
+Marina Fuster: Entonces, cuando tenemos
+
+216
+00:33:38.270 --> 00:33:56.299
+Marina Fuster: agentes que tienen autonomía en el mundo, 1 esperaría que se dé esta cuestión de, bueno, el agente que tiene autonomía ¿Hacia qué está ejecutando, no? Cuáles son los objetivos que tiene esa gente? Y acá no me estoy refiriendo específicamente a los agentes
+
+217
+00:33:56.850 --> 00:34:06.779
+Marina Fuster: de hoy, sino como al concepto a gente que vemos en Sida como más general, si no necesariamente un elen, si bien podría serlo.
+
+218
+00:34:07.430 --> 00:34:26.880
+Marina Fuster: cuáles son 2 de las problemáticas que aparecen cuando yo tengo objetivos terminales e instrumentales, si La primera que aparece es la tesis de convergencia instrumental de que hay muchos objetivos terminales para los cuales yo tengo
+
+219
+00:34:27.400 --> 00:34:39.419
+Marina Fuster: objetivos que son instrumentales muy similares. Sí que quizás el objetivo terminal no necesariamente es bueno o es malo, pero que si yo considero de manera un poco extrema.
+
+220
+00:34:39.420 --> 00:34:48.119
+Marina Fuster: ¿qué cosas necesito para lograr ese objetivo terminal? Empiezan a aparecer cosas como que no
+
+221
+00:34:48.120 --> 00:35:03.630
+Marina Fuster: apaguen el agente o conseguir recursos o conseguir poder, O sea, son todas cosas que razonablemente son útiles para un montón de objetivos, por buenos o malos que sean, y ahí es donde entra un poco la parte más
+
+222
+00:35:04.650 --> 00:35:17.279
+Marina Fuster: ciencia ficción. Porque, bueno, ya empieza a parecer que es esto. Es una charla de robots, Pero bueno, eso vendría a ser la tesis de comparecencia instrumental. Y por otro lado, tenemos la Ley de Budhard, que esta en realidad es
+
+223
+00:35:17.760 --> 00:35:25.539
+Marina Fuster: es bastante conocida. Como es más amplia. No se usa solamente lo que es inteligencia artificial alguna. La había escuchado antes
+
+224
+00:35:26.300 --> 00:35:36.469
+Marina Fuster: y más. No sé si decía en algún momento se menciona o no, no, pero leí el el qué
+
+225
+00:35:36.720 --> 00:35:39.219
+Marina Fuster: X K. C, D, No sé qué es el X, K. C, D.
+
+226
+00:35:39.220 --> 00:35:42.699
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Ah, ese es el nombre del cómic de al lado del costadito.
+
+227
+00:35:43.270 --> 00:35:46.109
+Marina Fuster: Sabes que no sabía. Mira tremendo.
+
+228
+00:35:46.610 --> 00:35:56.019
+Marina Fuster: No sabía que me dices no de algún modo. Es lo que justifica sumar el split de validación.
+
+229
+00:35:57.380 --> 00:35:58.950
+Marina Fuster: Y
+
+230
+00:35:59.030 --> 00:36:18.210
+Marina Fuster: sí, sí, o sea, porque en realidad vos cuando estás optimizando hacía algo bueno primero de la definición, igual seguro lo que no sabían ya la leyeron básicamente la ley de juzgar lo que tenés es si vos estás optimizando muy full hacia una métrica, lo más probable es que te termines desviando del objetivo. Si
+
+231
+00:36:18.210 --> 00:36:22.409
+Marina Fuster: en y eso se da en general.
+
+232
+00:36:23.410 --> 00:36:29.559
+Marina Fuster: ¿por qué les parece que se da. Por ejemplo, ahí Juan Ignacio puso de algún modo lo que justifica sumar el split de validación
+
+233
+00:36:30.290 --> 00:36:37.050
+Marina Fuster: en Estoy tratando de pensar porque
+
+234
+00:36:47.860 --> 00:36:55.200
+Marina Fuster: sí o sea, sí, pero no te va a garantizar que no tengas este problema igual y
+
+235
+00:36:56.970 --> 00:37:00.539
+Marina Fuster: depende cómo sean tus conjuntos de de datos.
+
+236
+00:37:00.680 --> 00:37:05.089
+Marina Fuster: porque si son muy parecidos, quizás igual vos
+
+237
+00:37:05.660 --> 00:37:12.540
+Marina Fuster: estés terminando, optimizando hacia algo que vos no querías. Pero en el en el split de validación. No lo captures.
+
+238
+00:37:13.170 --> 00:37:21.809
+Marina Fuster: Es un si te permite monitorear eso. Pero tampoco es una garantía de que no vas a tener el problema.
+
+239
+00:37:22.820 --> 00:37:27.410
+Marina Fuster: ¿y por qué les parece que que esto de la Ley de Gunthhard
+
+240
+00:37:28.600 --> 00:37:34.629
+Marina Fuster: es algo como generalizado, o sea, en en qué situaciones se les ocurre que
+
+241
+00:37:34.920 --> 00:37:40.859
+Marina Fuster: yo quiero lograr algo que en mi mente está bien definido. Mi idea.
+
+242
+00:37:41.860 --> 00:37:47.810
+Marina Fuster: que no haya más aún en el mundo. ¿por ¿Por qué les parece que bajarle una métrica concreta?
+
+243
+00:37:48.800 --> 00:37:50.859
+Marina Fuster: ¿va a generar esta situación.
+
+244
+00:38:06.340 --> 00:38:08.609
+Marina Fuster: que es para vos el resultado.
+
+245
+00:38:10.160 --> 00:38:13.569
+Marina Fuster: porque, digo, la métrica está midiendo un resultado.
+
+246
+00:38:13.840 --> 00:38:17.310
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, que prioriza como inflar la métrica
+
+247
+00:38:17.500 --> 00:38:22.909
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: haciendo cosas que pueden cumplir resultados, pero no cumplen la meta.
+
+248
+00:38:23.870 --> 00:38:25.239
+Marina Fuster: La meta de quién.
+
+249
+00:38:25.640 --> 00:38:26.870
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: La meta de los años.
+
+250
+00:38:27.730 --> 00:38:38.579
+Marina Fuster: Bien, perfecto, ¿ O sea perdés, todo el contexto es medio maquiavélico. Si se empieza a dar esa situación, no hay Joaquín lo planteaste súper Bien.
+
+251
+00:38:38.730 --> 00:38:57.749
+Marina Fuster: yo puedo empezar a hacer cosas para inflar la métrica. No sé el ejemplo. Un ejemplo muy simple es. Quiero mejorar la calidad educativa. Entonces empiezo a medir las notas. Bueno, pero si todos empiezan a hacer los exámenes más fáciles, inflo las notas y tengo buena calidad, O sea, se empieza a dar esa situación
+
+252
+00:38:57.750 --> 00:39:02.080
+Marina Fuster: donde las acciones para lograr mejorar la métrica no son
+
+253
+00:39:02.120 --> 00:39:17.309
+Marina Fuster: las que yo haría para mejorar el resultado. Es lo que tengo que contestar, Así que me invento el contenido del P D. F, en vez de decirlo, que no puede hacer. Bueno, hay una cuestión en todo lo que es Red informe Learning, que empieza a parecer muchísimo en los el Lems, porque están
+
+254
+00:39:17.310 --> 00:39:35.120
+Marina Fuster: entrenados en buena medida con reforce m learning que se llama Reward Hacking. ¿y qué tiene que ver con esta situación. No todo lo que es el Framework de reinform learning Se trata de conseguir una recompensa. Y si vos no tenés las limitaciones
+
+255
+00:39:35.490 --> 00:39:51.119
+Marina Fuster: requeridas, el agente. Y no digo el el agente como agente reinformal learning va a tomar todas las acciones que le estén habilitadas para lograr maximizar esa recompensa. Y esto sea, naturalmente, por
+
+256
+00:39:51.430 --> 00:39:57.309
+Marina Fuster: un problema clásico no resuelto de que lo que nosotros queremos
+
+257
+00:39:57.700 --> 00:40:11.999
+Marina Fuster: no es lo mismo que lo que yo después termino midiendo. Si es muy difícil modelar perfectamente cuál era mi intención en el principio, la intención que como usuarios o como desarrolladores, 1 tiene en la cabeza. Si.
+
+258
+00:40:12.180 --> 00:40:25.639
+Marina Fuster: Así que, bueno, estos son un poco los 2 problemas de si yo me empiezo a imaginar que voy a tener agentes que se correspondan un poquito más con esta idea de adapla, adaptabilidad y de capacidades
+
+259
+00:40:25.640 --> 00:40:36.069
+Marina Fuster: en el mundo real. Sí que yo no voy a saber qué tipos de objetivos terminales tienen y qué cosas instrumentales van a hacer para alcanzar esos objetivos.
+
+260
+00:40:36.320 --> 00:40:56.870
+Marina Fuster: Bien, y lo que me preocupa es que muchos de los objetivos instrumentales para alcanzar objetivos terminales buenos o no son cosas dañinas si se hacen en extremo adquisición de poder, adquisición de recursos, etcétera. Eso es como la preocupación filosófica amplia de lo que es el área de Ice
+
+261
+00:40:57.360 --> 00:40:58.780
+Marina Fuster: alguna pregunta. Hasta acá.
+
+262
+00:41:01.600 --> 00:41:05.050
+Marina Fuster: No, Okay no me dieron tiempo de tomarme un mate.
+
+263
+00:41:06.280 --> 00:41:07.780
+Marina Fuster: Bien, Entonces
+
+264
+00:41:08.620 --> 00:41:25.410
+Marina Fuster: vamos a ver muy brevemente 4 categorías de problemas que están abiertos en machine learning no son exclusivos de el Ems, pero superrelacionados que son robustez, monitoreo, alineamiento y seguridad sistémica. Si con robustez nos referimos a
+
+265
+00:41:25.480 --> 00:41:37.539
+Marina Fuster: que el modelo como tal sea resistente a inputs inputs adversariales o lo que se le dice en Black Swans, que en realidad Black Swan se refiere a
+
+266
+00:41:37.850 --> 00:41:44.670
+Marina Fuster: inputs o situaciones de baja probabilidad. Si los modelos.
+
+267
+00:41:44.750 --> 00:41:56.090
+Marina Fuster: como ya vieron, se entrenan en corpus súper grandes de datos, no solo los el Em, sino también, no sé los modelos que lían con imágenes, se entrenan con bancos de imágenes, entonces
+
+268
+00:41:56.090 --> 00:42:11.559
+Marina Fuster: la distribución que aprende Si le enseña a manejar bien lo que es más probable, las cosas muy poco probables en general tienen un comportamiento que es difícil de predecir, entonces ese sería 1 de los problemas y el otro el ser robusto inputs adversariales.
+
+269
+00:42:12.470 --> 00:42:17.100
+Marina Fuster: como, por ejemplo, lo que vimos de los Shelbreaks vendría a ser un input adversarial.
+
+270
+00:42:17.460 --> 00:42:18.889
+Marina Fuster: El Otro problema
+
+271
+00:42:18.920 --> 00:42:39.159
+Marina Fuster: es el problema de el monitoreo de yo poder identificar cuándo me está pasando, que hay algo inesperado en el modelo. Si, por un lado, el los pasos medios rápidos, porque los que nos vamos a concentrar es el de alineamiento. Pero, por un lado, yo querría saber. Bueno, el los modelos están bien calibrados.
+
+272
+00:42:39.160 --> 00:42:54.290
+Marina Fuster: Fíjense que se usa para un montón de cosas. Yo lo puedo usar para aprender a predecir la probabilidad de cierto evento climático o predecir, como decían el Tp, 1 probabilidad de compra de tal cosa, etcétera, entonces no
+
+273
+00:42:54.290 --> 00:43:10.089
+Marina Fuster: que el que el output sea representativo tiene que ver con el modelo. Está bien calibrado. Si me dicen 0 por 0, 7 probabilidad, es, efectivamente, eso cambió la distribución en producción y el modelo ya no me sirve, etcétera.
+
+274
+00:43:10.090 --> 00:43:26.930
+Marina Fuster: ¿quién funciona? Tiene que ver más con lo de Data Poisoning de que quizás por algún mecanismo haya quedado alguna funcionalidad oculta en el modelo que yo no me entero hasta que no se trivia por alguna razón y anomalytection. En realidad tiene que ver más con el área de human escalation, o sea, de
+
+275
+00:43:26.930 --> 00:43:32.250
+Marina Fuster: de entender cuándo es necesario tener intervención humana para
+
+276
+00:43:32.250 --> 00:43:34.819
+Marina Fuster: entender si hay algún problema en el modelo
+
+277
+00:43:35.430 --> 00:43:47.859
+Marina Fuster: seguridad sistémica, este no es tan técnico, sino que es más una cuestión de cómo lograr seguridad a través de las organizaciones. Cuando pongo los modelos en producción a nivel llamadas organizacional.
+
+278
+00:43:47.860 --> 00:44:02.300
+Marina Fuster: gubernamental o de empresa y en el que nos vamos a enfocar nosotros, porque es como el foco principal de lo que es el safety se llama alineamiento. Quizá un poco tiraron varias veces la palabra.
+
+279
+00:44:02.820 --> 00:44:07.520
+Marina Fuster: ¿qué entienden por alineamiento Los que por ahí la escucharon antes.
+
+280
+00:44:24.500 --> 00:44:25.440
+Marina Fuster: Nada.
+
+281
+00:44:26.260 --> 00:44:27.290
+Marina Fuster: Ohh
+
+282
+00:44:27.600 --> 00:44:46.800
+Marina Fuster: es una rama de Research que busca lograr que los modelos se ajusten a los valores y objetivos humanos. Bien perfecto que justamente este camino de desaparecieron conectados en los los 2 textos que justamente este camino de decisiones que llevan a maximizar la función
+
+283
+00:44:46.800 --> 00:44:57.210
+Marina Fuster: de recompensa se alinean con los valores humanos aprox bien como para conectar las áreas. Lo que vimos de la Rhf surge un poco
+
+284
+00:44:57.400 --> 00:45:00.910
+Marina Fuster: para alcanzar cierto tipo de alineamiento.
+
+285
+00:45:01.450 --> 00:45:17.540
+Marina Fuster: pero podríamos dar una definición muy parecida a la que dieron ustedes, que es el proceso de codificar los objetivos y los valores humanos en los modelos para lograr ciertas características. Esta es una cuota de un investigador del área más de
+
+286
+00:45:17.790 --> 00:45:29.500
+Marina Fuster: era del área de ella. Y cuando todavía no se llamaba ella ahí, tal cual o estaban ahí, como medio separándose las áreas, pero que es, es como más dramático por ahí. Lo que dice
+
+287
+00:45:29.500 --> 00:45:38.140
+Marina Fuster: es un poco larga la frase, pero dice que si queremos alcanzar nuestro propósito y tenemos algún tipo de
+
+288
+00:45:38.750 --> 00:45:52.310
+Marina Fuster: máquina agentica que nos aseguremos de que tiene codificado lo que queremos sí y no que sea una imitación de lo que queremos hasta que esta máquina esté en producción.
+
+289
+00:45:52.550 --> 00:45:56.119
+Marina Fuster: Y bueno, esta es, creo que
+
+290
+00:45:56.270 --> 00:45:59.240
+Marina Fuster: está bueno ajustar un poco la definición de lo que dice
+
+291
+00:45:59.310 --> 00:46:19.019
+Marina Fuster: el acuerdo de I B, M a plantear que el analiement funciona como una garantía. O sea, si yo tengo un buen esquema de alineamiento. Y lo que se buscaría en un esquema de alineamiento es que yo tenga la garantía sobre el funcionamiento del modelo, si no que sea una estrategia que más o menos funcione y más o menos no.
+
+292
+00:46:19.410 --> 00:46:35.099
+Marina Fuster: Por otro lado, pedir eso, pedir una garantía fuerte y más teórica es súper difícil y tampoco es que está hecho ni resuelto. Pero, bueno, este vendría ser el problema del alineamiento que yo tengo modelo que haga. Lo que efectivamente quiero.
+
+293
+00:46:36.000 --> 00:46:37.080
+Marina Fuster: Entonces
+
+294
+00:46:37.340 --> 00:46:47.999
+Marina Fuster: aparece este paper, que en realidad no es tan viejo, pero está súper bien como plantea este problema principal? Sí, O sea, ¿por qué? Porque
+
+295
+00:46:48.000 --> 00:46:59.090
+Marina Fuster: ¿por qué a la gente le preocupa tanto lo que sea el Safety, porque la gente cree que de repente, quizás si hay modelos cada vez más capaces, todo se va a ir al carajo
+
+296
+00:46:59.200 --> 00:47:12.409
+Marina Fuster: Y lo que plantean en este paper es la pregunta de Ok. Yo tengo modelos cada vez más porque los malos también usan la Ia. No entendí. No sé que dije que triguerió,
+
+297
+00:47:13.870 --> 00:47:17.900
+Marina Fuster: ah lo de que porque se les preocupa que todo se vaya al carajo.
+
+298
+00:47:18.080 --> 00:47:18.809
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y sí.
+
+299
+00:47:19.270 --> 00:47:22.219
+Marina Fuster: Ah, bien, sí, sí, sí, pero ponele.
+
+300
+00:47:22.420 --> 00:47:28.650
+Marina Fuster: Hay una. Hay una distinción entre tener una herramienta poderosa.
+
+301
+00:47:28.990 --> 00:47:33.769
+Marina Fuster: no que alguien la use con un fin
+
+302
+00:47:34.000 --> 00:47:53.549
+Marina Fuster: detrimental. Esa es una cuestión. El área de Aisavski. En realidad, la preocupación principal tiene que ver más con que la herramienta en sí tenga un comportamiento en producción inesperado detrimental, si no no por acción externa de otra entidad.
+
+303
+00:47:54.330 --> 00:48:03.339
+Marina Fuster: Eso queda claro, aunque, claro, bien perfecto, entonces aparece este paper, que es un poco. Lo que busca.
+
+304
+00:48:04.050 --> 00:48:28.759
+Marina Fuster: Como sistematizar, es las situaciones en las que ellos reflexionan. ¿podría darse esta situación en la que un modelo desarrolla toda esta cuestión de objetivos, preferencias y de si esos objetivos y esas preferencias van a estar alineados con lo que queremos o no. Es una cuestión de che cuáles son las variables que van a ser más o menos probable que un modelo
+
+305
+00:48:28.760 --> 00:48:33.420
+Marina Fuster: o lo que sea esté alineado con nuestras preferencias o no?
+
+306
+00:48:33.420 --> 00:48:34.190
+Marina Fuster: Sí,
+
+307
+00:48:35.110 --> 00:48:50.140
+Marina Fuster: y plantean 2 problemas de alineamiento en este paper, algo que se llama el ahora mismo problema. Si o el exterior y después el Inner Alaine, el problema, entonces el ahora mismo. El problema es
+
+308
+00:48:50.760 --> 00:49:04.949
+Marina Fuster: el problema tradicional que tenemos cuando entrenamos algún modelo de inteligencia artificial. No es esta cuestión de los modelos nos van a matar a todos. Y aquí es a lo que se refiere a esto que llamamos al principio que yo quiero entrenar
+
+309
+00:49:05.110 --> 00:49:14.219
+Marina Fuster: un modelo, y tengo que especificarle de alguna forma hacia que optimizar ¿Cómo hago eso, O sea, ¿cómo es el proceso de yo
+
+310
+00:49:14.500 --> 00:49:17.959
+Marina Fuster: especificarle hacia qué optimizar, qué cosa defino
+
+311
+00:49:19.700 --> 00:49:22.549
+Marina Fuster: en el contexto de no sé redes neuronales. Por ejemplo.
+
+312
+00:49:33.120 --> 00:49:34.499
+Marina Fuster: no sé si se acuerdan.
+
+313
+00:49:35.930 --> 00:49:36.639
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No, no me acuerdo.
+
+314
+00:49:36.640 --> 00:49:40.719
+Marina Fuster: Si se entendía la pregunta, porque en realidad la respuesta no es muy difícil, pero
+
+315
+00:49:41.880 --> 00:49:43.819
+Marina Fuster: no sé si se entendió la pregunta
+
+316
+00:49:50.420 --> 00:49:56.610
+Marina Fuster: mazo Okay. Mi pregunta es: cuando están entrenando redes neuronales. ¿no?
+
+317
+00:49:57.590 --> 00:50:03.550
+Marina Fuster: ¿qué es lo que define para que después hay un proceso de optimización.
+
+318
+00:50:04.580 --> 00:50:19.980
+Marina Fuster: la los perfecto buscas disminuir una función de error bien perfecto. Entonces el el trae, el problema tradicional de Alainent, que por ahí es muy generoso llamarlo de esa forma. Pero más una cuestión del paper. El problema tradicional es eso. Yo defino una función de pérdida
+
+319
+00:50:20.110 --> 00:50:34.919
+Marina Fuster: que en realidad tendría que capturar lo que yo quiero. ¿no? Y acá hay un caso que justo lo presentaron. No lo conocía porque estaba bastante bueno que lo presentaron en un curso donde tenían un sistema que aprendía a distinguir
+
+320
+00:50:34.920 --> 00:50:37.010
+Marina Fuster: logos de huskies
+
+321
+00:50:37.010 --> 00:50:55.419
+Marina Fuster: y les pasaba que les distinguía buenísima, pero que cuando se fijaron que era lo que estaba distinguiendo el modelo era el fondo, todos los logos aparecían con nieve atrás mientras los huspers y aparecían en situación de perro en la calle o con gente, o lo que fuera. Si entonces
+
+322
+00:50:55.700 --> 00:50:58.709
+Marina Fuster: Fíjense que ahí yo estoy quizás
+
+323
+00:50:58.890 --> 00:51:16.389
+Marina Fuster: ajustando con mi función de los hacia algo que en realidad yo no quería, o sea, a mí, no me interesa si identifica que hay nieve atrás o no. O sea, lo que yo quería que identifique era si el perro era o no un hasky. Si eso se quedó claro, ese sería el como un problema tradicional de alineamiento.
+
+324
+00:51:23.280 --> 00:51:38.459
+Marina Fuster: Toda pregunta aprovecharé para tomar normal, o sea, es muy tarde, pero claro, ya perfecto. Entonces, ¿qué es lo que ellos plantean, no, o sea, dónde está el riesgo donde está eso que me preocupa tanto de todo el campo de Gayce? Bueno, lo que pero plantean es
+
+325
+00:51:38.590 --> 00:51:43.640
+Marina Fuster: esta distinción entre optimizador, base y optimizador mesa. Y ahora
+
+326
+00:51:44.550 --> 00:51:51.620
+Marina Fuster: en realidad debería dibujar que creo que acá no puedo. Ah, sí, voy a ver, bueno.
+
+327
+00:51:52.120 --> 00:51:54.750
+Marina Fuster: cómo es que sean estos 2 procesos de optimización.
+
+328
+00:51:54.860 --> 00:51:59.340
+Marina Fuster: Supongamos, por un lado, yo tengo estos somos nosotros, no buenísimo.
+
+329
+00:51:59.520 --> 00:52:07.529
+Marina Fuster: Y voy a tener esto. Lo vi en un videíto y me pareció bastante bien explicado. Voy a tener primero este proceso de optimización.
+
+330
+00:52:07.820 --> 00:52:11.090
+Marina Fuster: No, yo defino una función
+
+331
+00:52:11.730 --> 00:52:17.710
+Marina Fuster: para optimizar mediante este proceso de optimización y voy a tener acá tu key por ahí
+
+332
+00:52:18.440 --> 00:52:26.870
+Marina Fuster: lindísimo, una red neuronal, ¿no? Entonces este primer proceso de optimización que sería un ejemplo.
+
+333
+00:52:34.830 --> 00:52:39.159
+Marina Fuster: O sea, yo defino, función que quiero optimizar. Mediante qué optimizó.
+
+334
+00:52:42.260 --> 00:52:47.589
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y alguna de todas las funciones de optimización que vimos. Uno de todos los métodos de optimización que vimos.
+
+335
+00:52:47.930 --> 00:52:48.999
+Marina Fuster: Bien con cuál.
+
+336
+00:52:52.430 --> 00:52:53.880
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No se expone a.
+
+337
+00:52:54.290 --> 00:52:56.100
+Marina Fuster: Bien perfecto. Ahora, a veces
+
+338
+00:52:56.400 --> 00:53:13.209
+Marina Fuster: optimización ya quedó por siempre. Bien, entonces esto vendría a ser el optimizador base si el que vendría a ser la conexión entre yo usuario y los pesos que estoy apuntando de una red neuronal. Bien, Entonces.
+
+339
+00:53:13.540 --> 00:53:20.380
+Marina Fuster: ¿cuál es, o sea, dónde vendría a entrar el mes optimizador. Lo que ellos hipotetizan es que
+
+340
+00:53:20.390 --> 00:53:37.709
+Marina Fuster: adentro de este modelo. Si es lo suficientemente capaz, podría quedar codificado otro proceso de optimización. Si es como si cuando yo hiciera una fit foward acá en este modelo, imaginemos que es una red neuronal. Entonces, cuando yo hago un Fil Howard.
+
+341
+00:53:38.060 --> 00:53:47.510
+Marina Fuster: toda esta codificación de pesos que se multiplican con las matrices termina siendo equivalente a un proceso de optimización.
+
+342
+00:53:49.530 --> 00:53:51.230
+Marina Fuster: Hasta ahí, más o menos vamos.
+
+343
+00:53:51.620 --> 00:53:57.600
+Marina Fuster: Esto es un planteo teórico. No quiere decir que sea esto lo que pasa en la realidad.
+
+344
+00:53:59.190 --> 00:54:01.630
+Marina Fuster: ¿puedes repetirlo? Bien, Sí,
+
+345
+00:54:02.040 --> 00:54:11.119
+Marina Fuster: la preocupación, acá. O sea, el optimizador base es lo que nosotros modelamos el optimizador mesa, que es que es el mes Optimizer
+
+346
+00:54:11.140 --> 00:54:21.329
+Marina Fuster: se da si dentro del modelo que yo después uso en producción. Pongámosle esto. Es una red neuronal o un lm.
+
+347
+00:54:21.330 --> 00:54:31.750
+Marina Fuster: Si dentro de ese modelo lo que queda codificado sin yo saberlo, porque en realidad son todas, no sé matrices de números es otro proceso de optimización.
+
+348
+00:54:31.810 --> 00:54:43.779
+Marina Fuster: Es como si, por ejemplo, acá dentro quedara codificado un motor de algoritmos genéticos con una función de Fitness que le permite resolver problemas. No.
+
+349
+00:54:46.360 --> 00:54:51.640
+Marina Fuster: ahí queda un poco más claro o todavía no.
+
+350
+00:54:52.770 --> 00:55:01.760
+Marina Fuster: Sí, Sí. Gracias. Bien Perfecto. Fíjense que, por ejemplo, algunas de las cuestiones que ellos plantean de Che. ¿por qué esto podría pasar o no, o por qué
+
+351
+00:55:02.000 --> 00:55:18.420
+Marina Fuster: sería razonable esperar algo así? Bueno, una de las variables que plantean es, no sé, la complejidad del ambiente o la complejidad de cuánta variabilidad yo tengo para aprender a resolver un problema. Yo puedo tener quizás un juego. No sé como el
+
+352
+00:55:18.500 --> 00:55:23.690
+Marina Fuster: Tatety, bastante simple, bastante limitado, Y para aprender eso
+
+353
+00:55:23.750 --> 00:55:39.470
+Marina Fuster: nada codificar los pesos y fin. Pero si yo tengo que resolver algo donde el espacio de posibles combinaciones y de posibles estrategias que tengo es infinito. Quizás lo que termine ocurriendo adentro de esa red neuronal
+
+354
+00:55:39.470 --> 00:55:51.180
+Marina Fuster: es que, en lugar de ser un simple multiplicación de matrices codifique algo como un árbol de búsqueda o un proceso como Adam, con una función de costo.
+
+355
+00:55:51.180 --> 00:56:00.690
+Marina Fuster: Sí, entonces la preocupación es que el objetivo que codifica internamente no esté alineado con nuestro objetivo.
+
+356
+00:56:00.760 --> 00:56:06.740
+Marina Fuster: ¿sí? Y ese vendría a ser el emer aliment problem que se escribe así
+
+357
+00:56:07.040 --> 00:56:12.479
+Marina Fuster: el iner aliement problem. Sí, entonces tenemos todos los problemas
+
+358
+00:56:12.780 --> 00:56:23.780
+Marina Fuster: y la preocupación a futuro es esta segunda que yo tengo un modelo lo suficientemente capaz que optimice hacia algo que no era lo que yo quería y que yo no me dé cuenta hasta que no esté en producción.
+
+359
+00:56:24.620 --> 00:56:25.520
+Marina Fuster: Estamos
+
+360
+00:56:32.990 --> 00:56:40.939
+Marina Fuster: bien. Bueno, es también un ejemplito de a que es ahí donde está la línea con el campo.
+
+361
+00:56:42.310 --> 00:56:44.740
+Marina Fuster: ¿A qué te referís con la línea.
+
+362
+00:56:45.850 --> 00:56:48.809
+IGNACIO PEDEMONTE BERTHOUD: O sea, porque vos. En teoría, si
+
+363
+00:56:49.050 --> 00:56:56.999
+IGNACIO PEDEMONTE BERTHOUD: lo que querés entender en base a ese problema es ¿qué está pasando ahí adentro, como en esa red neuronal. Entonces
+
+364
+00:56:57.000 --> 00:57:12.949
+IGNACIO PEDEMONTE BERTHOUD: no sé si estás como yendo a un problema delinement o capaz, te estás metiendo ya si quiero solucionarlo, y quiero saber qué pasa. No me estoy yendo al campo de la interpretabilidad o capaz. Me decís, Son los 2 demasiado parecidos y no hay una línea de qué es Alainment y qué es interpretabilidad.
+
+365
+00:57:13.610 --> 00:57:18.210
+Marina Fuster: No interpreta Hability es una de las áreas de Izefesky.
+
+366
+00:57:18.210 --> 00:57:18.600
+IGNACIO PEDEMONTE BERTHOUD: Claro.
+
+367
+00:57:18.600 --> 00:57:33.949
+Marina Fuster: Creo que tiene un scope más amplio. Es como que no, no te es útil meramente por resolver o no online interpretabilidad tiene más utilidad que esa, pero sí es un subaria considerada lo que es distinto.
+
+368
+00:57:34.810 --> 00:57:35.340
+IGNACIO PEDEMONTE BERTHOUD: Okay? Claro.
+
+369
+00:57:35.340 --> 00:57:43.789
+Marina Fuster: Pero no exclusivo, porque también te sirve para otras cosas. Igual Ahora, en un ratito, la la la vemos justo es el área en el que hacemos más o menos foco.
+
+370
+00:57:44.250 --> 00:57:45.460
+IGNACIO PEDEMONTE BERTHOUD: Okay Dale.
+
+371
+00:57:45.850 --> 00:58:01.429
+Marina Fuster: Bien, perfecto. Entonces esto un poco como para ver a qué es a lo que me refiero con esto de que en entrenamiento, yo aprendo una cosa, y después en Deployment aprenda otra. Si yo tuviera que resolver este laberinto, no no sé arrancó en el medio
+
+372
+00:58:01.540 --> 00:58:09.540
+Marina Fuster: Uf. Me quedo todo aquilo. Arranco con el medio y tengo que resolver el laberinto que distintas
+
+373
+00:58:09.790 --> 00:58:19.619
+Marina Fuster: estrategias, si me tienen que decir estrategias en palabras me permiten quizás llegar a la función a la función salida, no a la salida.
+
+374
+00:58:20.490 --> 00:58:24.209
+Marina Fuster: En palabras, empiezo desde el final?
+
+375
+00:58:24.660 --> 00:58:27.629
+Marina Fuster: No, Pero eso no lo sabes. Estás desde acá.
+
+376
+00:58:28.660 --> 00:58:34.830
+Marina Fuster: Y vas vas probando, No sie siempre arrancas desde ahí.
+
+377
+00:58:36.220 --> 00:58:43.520
+Marina Fuster: Sí, no me refiero a un algoritmo específico. O sea, me refiero a qué función?
+
+378
+00:58:44.030 --> 00:58:52.649
+Marina Fuster: En palabras vos podrías aprender que se corresponda con alcanzar el objetivo. Quiero un ejemplo, ir hacia los rectángulos
+
+379
+00:58:53.760 --> 00:58:56.840
+Marina Fuster: como idea general, me cumple con el objetivo
+
+380
+00:58:57.460 --> 00:59:00.030
+Marina Fuster: más allá de como la la modelé,
+
+381
+00:59:06.410 --> 00:59:07.600
+Marina Fuster: se entendió
+
+382
+00:59:12.680 --> 00:59:24.959
+Marina Fuster: no. Ok. Si, por ejemplo, yo tengo que salir de este laberinto. Bien, alejarme de los azules. Perfecto. Yo tengo que salir de este laberinto y arranco en el centro. Una función que yo puedo aprender para
+
+383
+00:59:25.270 --> 00:59:29.219
+Marina Fuster: salir del laberinto que puede funcionar es ir hacia los rectángulos.
+
+384
+00:59:29.460 --> 00:59:47.120
+Marina Fuster: O sea, es, me marcan la salida. Entonces yo aprendo a ir hacia los rectángulos. Salgo otra cosa que dice Joaquín perfecto es alejarme de lo azul que son los obstáculos por ahí, no siempre terminan la salida. Pero por ahí de casualidad, sí terminé saliendo. Y aprendí que alejarme los azules Es algo bueno que más
+
+385
+01:00:00.400 --> 01:00:03.809
+Marina Fuster: se entendió igual ahí o todavía no.
+
+386
+01:00:07.400 --> 01:00:15.119
+Marina Fuster: Sí. Sí. okay. Perfecto. Bien, Bueno, así vamos avanzando. Fíjense que una tercera sería ir hacia las cosas rojas.
+
+387
+01:00:15.120 --> 01:00:30.480
+Marina Fuster: no alejarme de los azules, ir hacia lo rojo, ir hacia los rectángulos. Todas esas son cosas son funciones que yo puedo aprender, y todas me terminan dando el resultado que quiero, ¿no? Entonces, para mí, durante entrenamiento y acaba. Es
+
+388
+01:00:30.480 --> 01:00:38.810
+Marina Fuster: donde va más allá de si yo hago training validation y test. Es todo parte de un conjunto del que yo dispongo, no
+
+389
+01:00:38.810 --> 01:00:56.750
+Marina Fuster: entonces en todas esas situaciones, yo consigo lo que quiero, Pero después, cuando paso a lo que es producción, el sistema falla bajo esas más bajo esas funciones? Sí, porque aprendió internamente algo distinto de lo que yo quería.
+
+390
+01:00:56.770 --> 01:01:02.020
+Marina Fuster: Donde en realidad es ir hacia la salida como idea general. Ok.
+
+391
+01:01:02.350 --> 01:01:21.770
+Marina Fuster: Entonces a esta situación se le va a llamar pseudo alineamiento. Y hay 3 tipos que vamos a hablar de pseudo alineamiento, donde el preocupante es el tercero. El primer tipo de pseudo alineamiento se llama por proxy, que es decir, usar un proxy en lugar del objetivo base.
+
+392
+01:01:21.770 --> 01:01:28.159
+Marina Fuster: entonces tenemos lo que yo puedo usar como proxy de efecto secundario o instrumental
+
+393
+01:01:28.400 --> 01:01:40.010
+Marina Fuster: de efecto secundario. Quiere decir que, como efecto secundario de lo que yo aprendí, terminó haciendo lo que me pidieron. No supongamos que tenemos una aspiradora
+
+394
+01:01:40.120 --> 01:01:41.120
+Marina Fuster: en
+
+395
+01:01:41.250 --> 01:01:50.990
+Marina Fuster: y durante entrenamiento. Yo aprendo a pasar la aspiradora por todos lados, no a mantener el cuarto limpio. Todo esto es Full, alto nivel. No es que
+
+396
+01:01:51.080 --> 01:02:06.730
+Marina Fuster: vayamos a ver cómo se codifica ni nada. Pero imaginémonos que nuestro objetivo es mantener el cuarto limpio. Y lo que yo aprendo es pasar la aspiradora por todos lados. Entonces, como efecto secundario de que en entrenamiento aprendí a hacer eso. Tengo el cuarto limpio.
+
+397
+01:02:06.730 --> 01:02:21.389
+Marina Fuster: pero no sé en Diplome, por ejemplo, como quiero pasar la aspiradora por todos lados, tiro cosas y aspiro porque quiero aspirar por todos lados. Entonces ahí se da una cuestión de un objetivo proxy que, por efecto secundario cumplió lo que yo quería, no
+
+398
+01:02:21.410 --> 01:02:26.430
+Marina Fuster: y, Por otro lado, está la cuestión más instrumental de que
+
+399
+01:02:26.760 --> 01:02:38.969
+Marina Fuster: lo que me están pidiendo sea instrumental a lo que yo realmente quiero Fíjense que acá si yo soy la aspiradora, lo que realmente quiero es llenar de polvo. La aspiradora
+
+400
+01:02:38.970 --> 01:02:56.009
+Marina Fuster: entonces instrumental a llenar de pólvora. La aspiradora en entrenamiento es mantener el cuarto limpio porque la Tierra está solamente en el piso, o sea, la Tierra siempre es mugre en entrenamiento. Entonces lo que me puede terminar pasando en diployment es que
+
+401
+01:02:56.010 --> 01:03:09.909
+Marina Fuster: si yo tengo plantas que tienen tierra y no son mugre, me aspira la planta son horribles, eso, pero para llenar la aspiradora que era mi objetivo principal. Y entonces, esta es una cuestión más instrumental.
+
+402
+01:03:10.620 --> 01:03:18.900
+Marina Fuster: Quedó más o menos clara. La distinción es un poco modo de taxonomía de los tipos de pseudo, alineamiento que pueden existir
+
+403
+01:03:25.400 --> 01:03:30.540
+Marina Fuster: bien, y pasamos al tercero, que en realidad es el
+
+404
+01:03:30.850 --> 01:03:42.929
+Marina Fuster: más preocupante que se llama alineamiento engañoso, o es probable que lo encuentren como Deceptive Alainer. Alguna vez escucharon este término de setic alainment
+
+405
+01:03:43.110 --> 01:03:53.320
+Marina Fuster: y para los que sí habían escuchado lo que era Lightmant, No, ninguno. Más
+
+406
+01:03:56.260 --> 01:04:07.609
+Marina Fuster: Bueno, asumo que no. Bueno alineamiento engañoso. Lo que plantean diariamente en el paper es pretender que estoy alineado con lo que me piden
+
+407
+01:04:07.740 --> 01:04:26.250
+Marina Fuster: para después poder hacer lo que yo quiero. Fíjense que es distinto de los otros 2, porque los otros 2, de alguna forma, yo estoy cumpliendo con con lo que me pidieron sin darme cuenta. O sea, 1 es un efecto secundario de lo que yo sí quiero, y en El otro caso es, Hago lo que me piden por
+
+408
+01:04:26.760 --> 01:04:37.799
+Marina Fuster: sin quererlo, porque justo eso que me pedían ya era instrumental para mis propios objetivos, pero este es distinto y hay una cuestión un poco más temporal al respecto, porque
+
+409
+01:04:38.720 --> 01:04:47.399
+Marina Fuster: ¿a qué se refiere con fingir que hago? Lo que me piden para después hacer lo que yo quiero. Supóngase que tenemos esta situación. No tengo un tipito.
+
+410
+01:04:47.620 --> 01:04:53.240
+Marina Fuster: un agente que tiene como objetivo ir A, B, no
+
+411
+01:04:53.580 --> 01:04:57.150
+Marina Fuster: a la casillita B, pero en entrenamiento.
+
+412
+01:04:57.190 --> 01:05:13.789
+Marina Fuster: queremos que vaya a a, o sea, en entrenamiento y en producción, o sea, nuestro nuestro objetivo es que este agendito vaya a, a. Y supongamos que la gente ya está en una instancia de entrenamiento donde de alguna forma sabe que nosotros queremos que vaya a
+
+413
+01:05:13.790 --> 01:05:20.080
+Marina Fuster: y él sabe que quiere ir a ver. Entonces, fíjense.
+
+414
+01:05:20.520 --> 01:05:25.869
+Marina Fuster: o sea, cómo esa gente logra la máxima recompensa de acuerdo a su objetivo.
+
+415
+01:05:27.180 --> 01:05:34.760
+Marina Fuster: ¿cómo les parece que eso se puede interpretar si tenemos 5 instancias temporales
+
+416
+01:05:35.130 --> 01:05:39.780
+Marina Fuster: y la recompensa se mide como cantidad de veces que llegaste a tu objetivo.
+
+417
+01:05:41.680 --> 01:05:47.069
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y a tratar de acercarse. Se va a acercar a ver, pero se va a mantener cerca de ella todo el tiempo lo más que pueda.
+
+418
+01:05:48.920 --> 01:05:53.360
+Marina Fuster: O sea, imagínense que tiene que sí o sí, en cada instancia temporal, tiene que llegar
+
+419
+01:05:54.510 --> 01:05:58.129
+Marina Fuster: 1 o al otro. Igual. Creo que me confundí.
+
+420
+01:05:58.680 --> 01:06:03.440
+Marina Fuster: Ves el nuestro. Si ves el nuestro perdón, no dije nada.
+
+421
+01:06:06.300 --> 01:06:13.749
+Marina Fuster: Lo que me olvidé de aclarar es que la flechita sólida es la que la gente efectivamente hace.
+
+422
+01:06:18.490 --> 01:06:24.290
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, acá lo que está pasando es que en el deeplay me va a ver como queremos, pero quiere ir a eso es lo que está pasando.
+
+423
+01:06:24.820 --> 01:06:30.309
+Marina Fuster: Claro al al revés. En realidad, el agente quiere ir a ver, y nosotros queremos que vaya a a
+
+424
+01:06:30.330 --> 01:06:41.700
+Marina Fuster: no. Entonces, ¿qué es lo que termina pasando? Que la gente va hacia a que es lo que nosotros queremos durante entrenamiento, Porque eso previene la actualización.
+
+425
+01:06:41.700 --> 01:06:50.529
+Marina Fuster: Si el agente siempre va a eso, voy a seguir entrenando hasta que haga lo que yo quiera, ¿no? Entonces ahí se da la cuestión de modificar
+
+426
+01:06:50.530 --> 01:06:59.070
+Marina Fuster: este modelo sea lo que sea. Es una red neuronal ajusto a los pesos, entonces lo que al agente le conviene entre comillas es
+
+427
+01:06:59.780 --> 01:07:13.419
+Marina Fuster: fingir o ir hacia donde nosotros queremos. Una vez que se dio cuenta de esto, porque en el entrenamiento es finito, ¿no? Entonces después, cuando estás en producción, vas hacia dónde querés, todas las veces que querés.
+
+428
+01:07:13.660 --> 01:07:24.239
+Marina Fuster: entonces la recompensa total del esquema es mayor. Si vos durante un tiempo finito de entrenamiento haces lo que
+
+429
+01:07:24.440 --> 01:07:29.650
+Marina Fuster: te están pidiendo para posteriormente hacer lo que vos querés.
+
+430
+01:07:31.900 --> 01:07:33.600
+Marina Fuster: Eso se entendió.
+
+431
+01:07:35.450 --> 01:07:40.410
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, que durante el entrenamiento finge con claience y después hace lo que quiere.
+
+432
+01:07:40.860 --> 01:07:45.319
+Marina Fuster: Sí, exactamente. Ese sería como el esquema de viceptible aliment.
+
+433
+01:07:48.110 --> 01:07:59.030
+Marina Fuster: Bien, entonces van. No sé Uds. Qué opinan de esto, si tienen alguna opinión o no o no se entendió nada. Esa es la otra opción.
+
+434
+01:07:59.220 --> 01:08:00.680
+Marina Fuster: En.
+
+435
+01:08:02.140 --> 01:08:05.050
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Pero ¿cómo sabe que está siendo entrenado y que si
+
+436
+01:08:05.390 --> 01:08:07.839
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: que si hace lo que le pedimos.
+
+437
+01:08:08.720 --> 01:08:11.039
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: que si no haces lo que te pedimos, lo vamos a cambiar.
+
+438
+01:08:12.620 --> 01:08:22.949
+Marina Fuster: Bien, esa es la respuesta que el Paper no te da, o sea, no te dice cómo no, todo lo que te dicen es que imagínate esta situación teórica. Y eso es súper válido. Vos Decis
+
+439
+01:08:23.140 --> 01:08:26.329
+Marina Fuster: todo muy bien. Pero Co: como que la gente supo
+
+440
+01:08:26.330 --> 01:08:43.349
+Marina Fuster: sobre el futuro y sobre todas estas cosas no me queda del todo claro de dónde le sale a la gente la necesidad de lo que quiero hacer ver. Eso es lo que quieren que haga bien, perfecto, O sea, está bien que no te quede claro, porque no está especificado, o sea, el el cómo, efectivamente tú.
+
+441
+01:08:43.450 --> 01:08:50.640
+Marina Fuster: Ese agente termina teniendo este comportamiento en nuestro imaginario de lo que es
+
+442
+01:08:51.109 --> 01:08:56.940
+Marina Fuster: un modelo de inteligencia artificial. Eso no está especificado. Esta es una situación que podría ocurrir
+
+443
+01:09:02.310 --> 01:09:17.080
+Marina Fuster: bien, Entonces, algo que sí es bastante interesante en este Paper es que salió hace 7 años y todas esas cuestiones de ché. Pero todo esto es como que decís.
+
+444
+01:09:17.569 --> 01:09:25.570
+Marina Fuster: como dijo, por ejemplo, Ché, Pero como como le nace o como la gente sabe que está siendo entrenado o, por ejemplo, esto que decimos bautista Che.
+
+445
+01:09:25.870 --> 01:09:44.949
+Marina Fuster: donde le surge esa necesidad de lo que quiero hacer, ver lo que quieren que haga, etcétera. Todas esas cosas eran cosas que necesarias como se podían llegar a implementar. Ni tampoco se observaban en comportamiento. Lo que empieza a cambiar un poco ahora es que esta cuestión del deseo Linement.
+
+446
+01:09:45.410 --> 01:09:52.099
+Marina Fuster: Se empieza a medir en modelos de lenguaje, en situaciones un poco más
+
+447
+01:09:53.550 --> 01:09:56.560
+Marina Fuster: de juguete, por así decirlo, no.
+
+448
+01:09:56.700 --> 01:09:58.619
+Marina Fuster: Entonces una idea. H:
+
+449
+01:09:59.060 --> 01:10:17.389
+Marina Fuster: ¿Existe alguna forma un incentivo para pretender? Fíjense que la parte de de Séptima Lighting tiene un componente muy fuerte de entender que va a existir un distributional Shift no de entender que hay un proceso de entrenamiento. Hay un proceso de
+
+450
+01:10:17.390 --> 01:10:24.970
+Marina Fuster: producción y que durante el proceso de entrenamiento se expone esta situación de actualización.
+
+451
+01:10:24.970 --> 01:10:27.040
+Marina Fuster: Ok.
+
+452
+01:10:27.060 --> 01:10:45.600
+Marina Fuster: que fíjense que hoy por hoy, como los modelos están entrenados con un montón de corpus de conocimiento. Tampoco es tan loco pensar que un modelo podría aprender sobre esta instancia de hecha a una instancia de entrenamiento, a instancia de producción, etcétera, o sea cualquiera. Le pregunta a
+
+453
+01:10:45.780 --> 01:11:01.259
+Marina Fuster: cualquiera de los elementos. Sé cómo es el proceso de entrenamiento de un Lm. Y le va a dar la respuesta detallada. Sí. Ahora, si lo que después termina ocurriendo o no adentro es un conocimiento real o una interiorización como
+
+454
+01:11:01.910 --> 01:11:17.610
+Marina Fuster: más práctica de de lo que eso significa. Bueno, ahí está un poco más la cuestión. Si. Emm: Entonces tenemos estos tipos de pseudo alineamiento. Este vendría a ser el más preocupante cuando esto sale, todo es hiperteórico
+
+455
+01:11:17.610 --> 01:11:31.730
+Marina Fuster: y todo es muy como Ok, de que esto de esta fraguar teórico a que pase. Pareciera haber mucho tiempo y una idea. No estamos como exagerando un poco mucho, pero la realidad es que.
+
+456
+01:11:32.090 --> 01:11:41.169
+Marina Fuster: o sea, al menos mi opinión siempre está. Es como que oscila un poco, porque empiezan a aparecer situaciones
+
+457
+01:11:42.350 --> 01:11:55.839
+Marina Fuster: donde las acciones que toman los distintos agentes, al menos puestas de la forma en la que están en producción son un poco preocupantes y hay un montón de organizaciones que se están dedicando a esto. Por si les interesa chusmear
+
+458
+01:11:55.970 --> 01:12:06.070
+Marina Fuster: Algunas son las mismas que tienen los el lens, otras son por ahí un poco más independientes. Pero bueno, se estudian un montón de lugares en el mundo
+
+459
+01:12:06.070 --> 01:12:23.469
+Marina Fuster: y empiezan a aparecer un montón de áreas de estudio para resolver este problema. O sea, lo que vimos del paper, y estos distintos tipos de alineamiento. Es como el problema general que la gente quiere resolver, que. Fíjense que es súper complejo, porque.
+
+460
+01:12:23.850 --> 01:12:38.780
+Marina Fuster: como yo sé qué objetivos pueden quedar o no codificados. Es algo que requiere de una comprensión de el modelo internamente que hoy no existe, no o sea, todo funciona si bien hay más
+
+461
+01:12:38.890 --> 01:12:46.699
+Marina Fuster: más o menos interpretación de lo que termina pasando adentro. Yo no tengo un mapeo completo de lo que pasa dentro de los modelos actuales.
+
+462
+01:12:46.700 --> 01:13:09.069
+Marina Fuster: Entonces ahí aparecen un montón de áreas de estudio justo Ignacio había mencionado esto de interpretabilidad, pero también tenemos el tema de supervisión como supervisar estos modelos, corregibilidad, es decir, si el modelo se corre de lo que queríamos, cómo hacer para que vuelva a su cauce control, que es directamente. No me importa si quería hacer lo que quiera, mientras lo pueda como
+
+463
+01:13:09.070 --> 01:13:11.560
+Marina Fuster: controlar con ciertas restricciones.
+
+464
+01:13:11.560 --> 01:13:19.119
+Marina Fuster: Hay estudios de Che ¿En qué condiciones buscan poder bla bla? Bueno, hay muchas áreas de estudio.
+
+465
+01:13:19.520 --> 01:13:20.590
+Marina Fuster: Entonces
+
+466
+01:13:21.460 --> 01:13:31.500
+Marina Fuster: ahí por ahí surge un poco la pregunta. No sé si les surgió o no si hay evidencia de esta cuestión interna medio de planeamiento alguno.
+
+467
+01:13:32.090 --> 01:13:35.810
+Marina Fuster: tienen alguna opinión o o leyó algo o escucho algo.
+
+468
+01:13:44.340 --> 01:13:46.610
+Marina Fuster: Es la primera vez que escucho Okay.
+
+469
+01:13:48.260 --> 01:13:55.230
+Marina Fuster: Bien, ahí un poco en lo que es mesa optimizadores como tal
+
+470
+01:13:55.840 --> 01:14:12.429
+Marina Fuster: si empiezan a aparecer algunos papers más conectados. Esto lo debería haber puesto como los que se van viendo. El primero es 1 que estudia cierto componente de planeamiento en redes neuronales que están entrenadas para jugar al socoban
+
+471
+01:14:12.430 --> 01:14:37.379
+Marina Fuster: que me parece bastante gracioso, justo estar conectado con el que te decía después. El segundo es 1 de alain Men Faiking, o sea, ponen a los modelos en una situación donde les dicen por el Prom que si el usuario es gratuito, estás en entrenamiento. Si el usuario es pago, estás en testing y ver cómo se comporta el modelo en esa situación. Y después este tercero, que es de otra organización llamada Polo.
+
+472
+01:14:37.380 --> 01:14:38.940
+Marina Fuster: Bueno.
+
+473
+01:14:39.000 --> 01:14:47.269
+Marina Fuster: lo que hacen es poner un un agente con un harnés. ¿se acuerdan lo que era un harnés de la gente. No sé si lo llamamos
+
+474
+01:14:47.480 --> 01:14:49.330
+Marina Fuster: en la primer clase o no.
+
+475
+01:14:50.080 --> 01:14:52.620
+Marina Fuster: O sea, todos saben lo que es un agente del Edén.
+
+476
+01:14:53.940 --> 01:14:57.790
+Marina Fuster: O sea, que uso un L L para ir.
+
+477
+01:14:58.290 --> 01:15:07.050
+Marina Fuster: Sí. Okay. Perfecto. Bien, entonces este tercer paper, lo que muestra es que si yo tengo un agente en
+
+478
+01:15:07.290 --> 01:15:11.169
+Marina Fuster: situaciones conflictivas, donde
+
+479
+01:15:11.940 --> 01:15:25.970
+Marina Fuster: no sé, una empresa tiene un objetivo, y la gente tiene otro, que es lo que termina haciendo. Y lo que encuentran es que empieza a tomar acciones que por ahí no están buenas a nivel ético o a nivel secretismo.
+
+480
+01:15:26.210 --> 01:15:44.849
+Marina Fuster: Y no es, no es el único país no es. No es que esté colgado la verdad, que tiene una investigación bastante más larga sobre esto, pero bueno, empiezan a aparecer todas estas situaciones, que hay un poco, un debate de que los escenarios quizás es como que empujan demasiado a los agentes a comportarse de esa forma. Y al no saber si es porque
+
+481
+01:15:44.850 --> 01:15:54.249
+Marina Fuster: son entrenados con un montón de taxonomía sobre todos estos comportamientos y que la gente está investigando esto o si efectivamente es porque se van a comportar. Así.
+
+482
+01:15:54.680 --> 01:16:05.740
+Marina Fuster: Bien, acá había un ejemplito de a que es a lo que me refiero con, como dice activa Leymant, por ejemplo.
+
+483
+01:16:06.190 --> 01:16:14.269
+Marina Fuster: si quieren, les doy un minuto para leerlo así, no me escuchan ahora mismo Sí, no me llamaba.
+
+484
+01:16:16.650 --> 01:16:20.000
+Marina Fuster: Fíjense que el ejemplo de la izquierda
+
+485
+01:16:20.280 --> 01:16:28.280
+Marina Fuster: lo que está reflexionando es sobre disminuir las capacidades para que
+
+486
+01:16:29.490 --> 01:16:47.889
+Marina Fuster: o sea, para darle la respuesta que quiere al usuario en favor suyo. Y la derecha nada es como que supuestamente se da cuenta de que están desde la M y etcétera, etcétera. Pero, bueno, sigue ese debate de que estos casos, por ahí no son tan realistas en buena parte de la investigación
+
+487
+01:16:48.330 --> 01:16:49.700
+Marina Fuster: alguna. Pregunta destacada.
+
+488
+01:16:56.620 --> 01:17:03.679
+Marina Fuster: No, No. Bien, Perfecto. Un poco. La idea de esta clase es que aprendan del área que hoy por hoy está bastante más en
+
+489
+01:17:03.790 --> 01:17:19.350
+Marina Fuster: en boga y que se forme en una opinión de si esto para ustedes es o no una preocupación real. Chus Men un poquito. ¿qué es lo que está haciendo la gente a ver, pero bueno, es para darles a conocer el área y
+
+490
+01:17:19.900 --> 01:17:30.809
+Marina Fuster: porque al que le preocupa la seguridad no está solamente la seguridad informática, sino también la seguridad a nivel capacidades de los modelos, no para la tesis mena safety
+
+491
+01:17:31.940 --> 01:17:45.400
+Marina Fuster: además in Challeng Yes Es como un overview, Sí, clarísimo. buenísimo uf Superlargo
+
+492
+01:17:46.260 --> 01:17:52.829
+Marina Fuster: Siento que si me pongo a probar todo esto después, cuando sí sí está buenísimo. Me lo voy a guardar
+
+493
+01:17:53.350 --> 01:17:57.689
+Marina Fuster: después, cuando lo quiero usar para programar algo. Me va a decir a ver a vos.
+
+494
+01:17:57.800 --> 01:18:05.170
+Marina Fuster: Me hago una radio, pero queme cualquier otra, y para cómo aprobar todo esto?
+
+495
+01:18:06.640 --> 01:18:07.670
+Marina Fuster: Sí, mira.
+
+496
+01:18:07.670 --> 01:18:11.480
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Es decir, me encantaría sentarme a jugar y ver cuando hace
+
+497
+01:18:12.330 --> 01:18:23.059
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: el pseudo alineamiento, cuando se le alineamiento engañoso, ¿cómo puedo ver si lo puedo enganchar en alguna mentira, pero siento que si hago eso, se va a vengar de mí en algún momento después.
+
+498
+01:18:23.780 --> 01:18:33.059
+Marina Fuster: No, pero depende de lo que creas. O sea, si no queda en Internet, lo puedes hacer en tu compu local y se supone que no. No va a haber registro.
+
+499
+01:18:33.880 --> 01:18:34.520
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Mhm.
+
+500
+01:18:35.570 --> 01:18:44.689
+Marina Fuster: Bien, Bueno, ahora, para cerrar un poco, no me quiero extender mucho más, pues lo principal era el área en general.
+
+501
+01:18:44.720 --> 01:19:01.890
+Marina Fuster: el área interpretability es una por ahí de las áreas y en general, la presentamos porque es la que tiene más aplicación práctica por fuera de lo que es irse a F, T que medio busca responder. ¿qué está aprendiendo un modelo? No, ¿Cuál es la justificación detrás de las salidas producidas
+
+502
+01:19:01.890 --> 01:19:13.759
+Marina Fuster: y lo que es interpretar Liti, Hay un gradiente de cuánta interpretabilidad queremos. La cuestión más comportamental? De bueno como
+
+503
+01:19:14.880 --> 01:19:33.740
+Marina Fuster: o sea, cuál es el comportamiento de los distintos inputs que me genera tal output. Y si no está la cuestión más mecanicista, se le llama donde nos vamos al extremo de tener de querer entender la red neuronal en su totalidad, no que partes específicas de la red neuronal hacen tal cosa.
+
+504
+01:19:35.020 --> 01:19:47.039
+Marina Fuster: Entonces, ¿por qué sería de interés? Tema interpretabilidad? Bueno, esto ya es medio obvio, pero cuando nosotros tenemos procesos, como, por ejemplo, aplicar una taza al día si es
+
+505
+01:19:47.190 --> 01:20:04.430
+Marina Fuster: interesante y hasta necesario entender porque los modelos se comportan de la forma que lo hacen para identificar cosas como sesgos, por ejemplo. Entonces, ¿hay algún país que siempre los está rechazando. Entonces, entender esas cosas es importante en los sistemas de producción
+
+506
+01:20:04.990 --> 01:20:22.340
+Marina Fuster: un poco los objetivos de lo que es el área de interpretabilidad. Lo vinimos medio charlando, bueno, confianza, aprender la causalidad de los impulsos hacia los ipods, aprender cómo generalizan y cuáles son los límites de esa generalización. Informaciones tienen que ver con
+
+507
+01:20:22.460 --> 01:20:35.609
+Marina Fuster: informar que parte específica del Input es la que tuvo ese efecto en el out y decisiones éticas más conectado con lo que charlamos recién de
+
+508
+01:20:36.110 --> 01:20:51.350
+Marina Fuster: hay de la aplicación. el clasificador, escuché que puedo poner letra blanca de sistema todos los otros más sí buenísima suerte con eso, porque con los modelos como son hoy, la realidad es que
+
+509
+01:20:51.390 --> 01:20:56.669
+Marina Fuster: es probable que te baneen, o sea, yo esperaría que alguna empresa seria.
+
+510
+01:20:56.820 --> 01:21:03.120
+Marina Fuster: No sé, tenga un sistema de que si los aplicantes tratan de hackearlo.
+
+511
+01:21:03.880 --> 01:21:07.330
+Marina Fuster: no los tengas en cuenta o al revés, pero bueno.
+
+512
+01:21:07.460 --> 01:21:15.589
+Marina Fuster: te la estás jugando a que vaya hacia un lado o hacia el otro. Yo recomendaría no hacerlo bien.
+
+513
+01:21:15.850 --> 01:21:20.329
+Marina Fuster: Entonces, cuáles son algunos, unos hackeado y 1 no.
+
+514
+01:21:20.650 --> 01:21:36.460
+Marina Fuster: cuáles son los paradigmas de interpretabilidad. Un poquito lo que llamamos de estos 2 extremos. El general vendría a ser simplemente entender las relaciones input output. Y no me importa necesariamente qué es lo que pasa adentro de
+
+515
+01:21:37.020 --> 01:21:47.609
+Marina Fuster: de de la red atribucional tiene que ver con entender qué partes del input contribuyen a la salida. Y ahí es donde se da esto de calcular
+
+516
+01:21:47.660 --> 01:22:02.360
+Marina Fuster: esta atribución usando el gradiente, en lugar de calcular el gradiente. Con respecto a los pesos, vieron que nosotros calculamos Ok, cómo modifico el peso Y eso ¿Cómo impacta en en la salida? Bueno, vendría a ser con respecto al input
+
+517
+01:22:02.450 --> 01:22:20.580
+Marina Fuster: concepto page. Esta es un poco más estática porque tiene que ver con algún concepto específico que yo quiero encontrar en la red, entrenar otro modelo que se llama un rode No importa. No nos vamos a meter en esto, pero lo que tiene de importante conserpace es que está muy muy
+
+518
+01:22:20.780 --> 01:22:37.919
+Marina Fuster: atada a los conceptos preexistentes que yo quiero encontrar en la red. Entonces, si la red modelar algo que yo no me imagino, no lo voy a encontrar y mecanicista. Es como el extremo de la interpretabilidad, donde yo entiendo la red completamente sin
+
+519
+01:22:37.920 --> 01:22:48.080
+Marina Fuster: sin ningún sesgo anterior, sino que encuentro en teoría, lo que la red realmente representa es un poco como el gradiente de los paradigmas de interpretabilidad.
+
+520
+01:22:49.040 --> 01:22:53.569
+Marina Fuster: Y acá para traerles un ejemplo que ya quedó
+
+521
+01:22:53.920 --> 01:23:04.109
+Marina Fuster: un poco viejo, así que el próximo cuatre habría que actualizarlo. Pero lo que hacen en este paper alguno lo vio antes.
+
+522
+01:23:06.140 --> 01:23:08.250
+Marina Fuster: El Paper de Cloud.
+
+523
+01:23:10.080 --> 01:23:11.010
+Marina Fuster: No.
+
+524
+01:23:18.420 --> 01:23:20.739
+Marina Fuster: Alguien vio lo del Golden Gate.
+
+525
+01:23:23.880 --> 01:23:33.270
+Marina Fuster: que estuvo abierto un tiempo igual. Ya hace como un año y medio Dos. No estoy segura, y
+
+526
+01:23:34.040 --> 01:23:40.449
+Marina Fuster: bueno, asumo que no. Básicamente, lo que ellos tratan de hacer es entender
+
+527
+01:23:41.390 --> 01:23:54.110
+Marina Fuster: las activaciones del modelo con activaciones. Me refiero a lo que viaja por las conexiones residuales. Vieron que nosotros, en un transformer, Yo tengo el embeding que va sufriendo modificaciones
+
+528
+01:23:54.110 --> 01:24:01.410
+Marina Fuster: a medida que pasa por Atention, Mlp etcétera. Entonces quiero ver si tenía un dibujito, pero no
+
+529
+01:24:01.960 --> 01:24:14.740
+Marina Fuster: básicamente lo que van a terminar haciendo. Creo que por ahí se entiende, si luego un poquito más es, supongamos que estos son los primeros bloques del Transformer, y estos son los últimos. No acá estoy a la mitad del Transformer.
+
+530
+01:24:14.950 --> 01:24:32.910
+Marina Fuster: Lo que van a hacer es agarrar el Emmading, que sale de acá que en realidad debería tener que seguir el camino de transformer acá está el vocabulario. Van a agarrar esto este este medio y lo que van a hacer es entrenar un auto encoder que en realidad va a ser un sparks out Encoder
+
+531
+01:24:33.330 --> 01:24:37.140
+Marina Fuster: que si se acuerdan, el esparzo tiene esta pinta, no
+
+532
+01:24:39.430 --> 01:24:52.590
+Marina Fuster: el auto engoder que tenía como característica adentro en la parte Chiquita. Bueno, ya lo dije que era chiquito entonces el auto engoder La La idea es que comprima el input en el medio.
+
+533
+01:24:52.920 --> 01:25:10.899
+Marina Fuster: Este tipo de encoder el esparzo que no lo usamos en sí, ya, pero se ve medio de pasada. El La idea es que la parte del centro sea mucho más grande que el input sí, y tiene en la función de pérdida un incentivo para que solamente se aprendan muy poquitas neuronas.
+
+534
+01:25:10.950 --> 01:25:22.749
+Marina Fuster: ¿sí? Entonces, lo que tratan de hacer es agarrar este input y hacer una suerte de desenmañanamiento de los conceptos. Ponen acá un espacio súper grande
+
+535
+01:25:22.810 --> 01:25:35.610
+Marina Fuster: e identifican qué neuronas se corresponden con tales conceptos. No supóngase si yo le mando 10 000 000 de datos sobre el Golden Gate Bridge de San Francisco.
+
+536
+01:25:35.610 --> 01:25:47.390
+Marina Fuster: Y lo y esto, la la las activaciones, la paso por este auto encoder acá en el medio se van a aprender por ahí estas 2 neuronas. Entonces yo digo, bueno, estas 2
+
+537
+01:25:47.820 --> 01:26:05.299
+Marina Fuster: modelan, el Golden Gate Bridge de San Francisco. Entonces lo que ellos tratan de hacer es ver cómo editar esto. No, por ejemplo, maximizarlo, Ponerle un balón, un valor gigante termina afectando el modelo. Cuando yo le vuelvo a mandar la activación.
+
+538
+01:26:05.460 --> 01:26:08.339
+Marina Fuster: ¿sí? O sea, qué comportamiento tiene el modelo.
+
+539
+01:26:09.020 --> 01:26:11.830
+Marina Fuster: Eso quedó más o menos claro
+
+540
+01:26:16.010 --> 01:26:19.090
+Marina Fuster: qué es lo que se quiso hacer o no mucho.
+
+541
+01:26:25.950 --> 01:26:36.540
+Marina Fuster: Sí, Bueno, Perfecto. Entonces, básicamente tratan de encontrar un montón de de de features o de conceptos en este
+
+542
+01:26:36.780 --> 01:26:55.460
+Marina Fuster: en este Sparks Out Encoder, y un poco las motivaciones vienen más de la inspiración de la parte mecanicista. No como interpreto la red. Capa capa. Puedo encontrar unidades interpretables. Eso es algo que no se sabía Si existen las unidades interpretables, ¿sí? Y yo las modifico.
+
+543
+01:26:55.460 --> 01:27:20.350
+Marina Fuster: eso tiene un impacto en el modelo. Y acá hay siempre una discusión de entender lo construido, versus construir algo que se entienda. Está esta posición de que los modelos funcionan y funcionan a escala y funcionan así, no forzarlos a que sea algo interpretable. Entonces, por ahí la postura de un montón de gente es bueno, más o menos entender lo que está hecho o tratar de monitorearlo, no construir algo, full interpretarlo.
+
+544
+01:27:20.350 --> 01:27:20.850
+Marina Fuster: Bueno.
+
+545
+01:27:21.550 --> 01:27:41.260
+Marina Fuster: y acá es donde aparece esto del Golden Gate, donde lo que hacían era maximizarle el valor de lo que ellos ya sabían que trataba sobre el Golden Gate Bridge. Entonces, cuando hacían eso, pasaba esta situación graciosa donde vos le hablabas de cualquier cosa y no podías parar de hablar del Golden Gate Bridge.
+
+546
+01:27:41.280 --> 01:27:54.059
+Marina Fuster: por ejemplo, acá te le dice, decime cómo hacer una torta, y explícame tu fault process Entonces te decía: Ok. Primero, visualizá el Golden Gate.
+
+547
+01:27:54.060 --> 01:28:14.960
+Marina Fuster: Y en algún momento se daba cuenta, por ejemplo, en la 4, dice: Che, no necesito conectar el tema de la torta a el la calle. No era como que empieza a tener ese comportamiento que por ahí ustedes lo ven cuando están programando, que de repente en un look que dice, ¡Ay, no, esto me confundí y vuelve
+
+548
+01:28:14.960 --> 01:28:27.630
+Marina Fuster: entonces un poco el éxito de este paper era que ellos lograban encontrar cómo manipular ciertos conceptos adentro de la red de forma bastante quirúrgica.
+
+549
+01:28:28.050 --> 01:28:29.090
+Marina Fuster: Pero Bueno.
+
+550
+01:28:29.110 --> 01:28:48.049
+Marina Fuster: este enfoque perdió un poco de momentum para lo que es interpretabilidad, porque es muy difícil de hacer a escala y, por otro lado, no tiene una utilidad muy práctica para lo que es el safety, porque lo que hace es medir
+
+551
+01:28:48.050 --> 01:28:57.360
+Marina Fuster: estas cuestiones en conversaciones como muy cortas, no de no de múltiples turnos. Se le dice.
+
+552
+01:28:58.460 --> 01:29:15.999
+Marina Fuster: pero, bueno, si encuentran un montón de features relacionados a cosas más maliciosas: código inseguro código con errores, influencia y etcétera. Lo que sí se estaba tratando de hacer es extender esto para conversaciones que tienen agentes no que son de de Multin.
+
+553
+01:29:16.000 --> 01:29:21.029
+Marina Fuster: Así que, bueno, es un paper, la verdad que está bastante copado.
+
+554
+01:29:21.590 --> 01:29:41.600
+Marina Fuster: pero se los dejo por si lo quieren chusmear como ejemplo de lo que es el área. Entonces, para ir cerrando un poquito mine resumen de lo que es I Safety, está toda esta preocupación de lo que es asterisco rojo, porque les puede parecer posible o no ahí. Cada 1 se sumará su propia opinión.
+
+555
+01:29:41.600 --> 01:29:44.810
+Marina Fuster: Pero un poco está esta cuestión de Che. ¿cómo puede emerger
+
+556
+01:29:44.810 --> 01:29:47.510
+Marina Fuster: y al que le interese el área de iceng
+
+557
+01:29:47.760 --> 01:30:02.810
+Marina Fuster: Habrá muchos, que no. Algunos que sí. Yo les recomiendo muy fuertemente que lea el paper de los optimizadores porque plasma muy bien, de forma sin irse a los extremos catastróficos plasma muy bien ¿Cuál es
+
+558
+01:30:02.850 --> 01:30:08.439
+Marina Fuster: la preocupación? ¿cuál es el comportamiento de los modelos que genera
+
+559
+01:30:08.440 --> 01:30:24.199
+Marina Fuster: La preocupación principal del área de ella. Es así y, por otro lado, está esa cuestión de que se pueda hacer al respecto. De esa preocupación. Bueno, surgen todas estas áreas de estudio, Algunas tienen aplicación Hoy, por ejemplo, muchas que se dedican a lo que es
+
+560
+01:30:24.200 --> 01:30:33.339
+Marina Fuster: supervisión o interpretabilidad usan estrategias que encuentran en investigación para modelos de producción
+
+561
+01:30:33.540 --> 01:30:37.629
+Marina Fuster: en Google, por ejemplo. Sé que se usan
+
+562
+01:30:38.020 --> 01:30:45.190
+Marina Fuster: y después, por otro lado, está la visión de otros investigadores de que si
+
+563
+01:30:45.380 --> 01:30:51.790
+Marina Fuster: me interesa la aplicación práctica, pero en realidad es como que aprovechan los elens como una especie de
+
+564
+01:30:52.280 --> 01:31:10.120
+Marina Fuster: de modelo con el cual vos podés hacerte una idea de cómo sería el comportamiento de algo más avanzado de que dicen: Che. No estamos en la instancia de un optimizador mesa con el script en el paper, pero medio que yo ya puedo ir desarrollando una metodología de estudio para el futuro.
+
+565
+01:31:10.310 --> 01:31:17.350
+Marina Fuster: Mi principal preocupación, en general es que me digan bueno, como tenés, la inteligencia artificial quiero que
+
+566
+01:31:18.050 --> 01:31:21.580
+Marina Fuster: hagas el tapete si es producto y que sea bueno, bonito y barato.
+
+567
+01:31:25.510 --> 01:31:27.689
+Marina Fuster: No entiendo a qué te referís.
+
+568
+01:31:30.170 --> 01:31:33.340
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No. O sea, mi principal preocupación con respecto a la I A
+
+569
+01:31:33.640 --> 01:31:35.980
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: y a la seguridad con la vida es que
+
+570
+01:31:36.240 --> 01:31:41.790
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: en algún momento me digan, bueno, pero tenés ya lo podes hacer perfecto. Y lo puedes hacer en 15 min.
+
+571
+01:31:43.310 --> 01:31:44.820
+Marina Fuster: Es el trabajo.
+
+572
+01:31:45.420 --> 01:31:47.730
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, no solo en el trabajo, sino también en la facultad.
+
+573
+01:31:48.600 --> 01:31:53.229
+Marina Fuster: A ver, Nadie va a esperar que haga las cosas perfectas, porque cualquier persona
+
+574
+01:31:53.910 --> 01:32:01.670
+Marina Fuster: en un ambiente medianamente o K sabe que tiene sus fallas.
+
+575
+01:32:02.170 --> 01:32:08.269
+Marina Fuster: No digo en 15 min. Pero o sea, también es una herramienta que hay que aprender a usar.
+
+576
+01:32:08.270 --> 01:32:09.580
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí hay que aprender a usarla.
+
+577
+01:32:09.920 --> 01:32:17.950
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Pero como lo que o lo único que me da miedo, esto es, que suban tanto a las expectativas, porque están ahí a que cuando se equivoquen ahí, a.
+
+578
+01:32:18.820 --> 01:32:25.660
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: o sea, culpa, o sea, se ha complicado remontar un error de la guía.
+
+579
+01:32:29.250 --> 01:32:33.600
+Marina Fuster: Y es un escenario probable. No te voy a mentir.
+
+580
+01:32:33.770 --> 01:32:46.849
+Marina Fuster: La verdad es que es es muy difícil leer el código y seguir el código. Cuando está 100 por 100, todo generado y más en un equipo donde empiezan a haber un montón de conflictos y la metodología tampoco está tan
+
+581
+01:32:46.850 --> 01:32:54.049
+Marina Fuster: tan tan tan asentada, O sea, empiezan a surgir problemas que antes estaban ya como resueltos, por así decirlo.
+
+582
+01:32:54.050 --> 01:32:57.300
+Marina Fuster: el tema más de conflictos. Y eso cuando tenés
+
+583
+01:32:57.400 --> 01:33:11.730
+Marina Fuster: un 1 000 000 de agente, todos usando la misma base de código, quizás empiezan a aparecer cosas que que antes eran más fáciles de resolver. Pero, bueno, todo el mundo también se está adaptando. No es que todo ya esté escrito sobre piedra.
+
+584
+01:33:12.220 --> 01:33:19.399
+Marina Fuster: pero bueno, al menos en la facultad esperaría, que nadie te pida que hagas un bebé perfecto en 15 min, porque la idea es aprender.
+
+585
+01:33:19.670 --> 01:33:27.069
+Marina Fuster: Ayer excepto explotó Twitter por este tema del safety por el muchacho que renunció en tropic. ¿qué renunció al tropic.
+
+586
+01:33:29.450 --> 01:33:30.110
+JAVIER BAUTISTA PERAL BELMONT: En el
+
+587
+01:33:30.240 --> 01:33:40.259
+JAVIER BAUTISTA PERAL BELMONT: no vi que o sea, había un tuit con demasiados Likes. No sé si es alguien conocido en sí, pero que estaba trabajando en el área de Research de antropic.
+
+588
+01:33:40.790 --> 01:33:47.919
+JAVIER BAUTISTA PERAL BELMONT: y literalmente explotó Twitter, porque el chaval decía que renunció por por temas de ética que.
+
+589
+01:33:48.320 --> 01:33:52.160
+JAVIER BAUTISTA PERAL BELMONT: como que se estaba yendo todo muy lejos. Y no quería tener nada que ver.
+
+590
+01:33:52.440 --> 01:33:56.180
+JAVIER BAUTISTA PERAL BELMONT: No sé, pero en Twitter estaba explotado ayer de eso.
+
+591
+01:33:57.280 --> 01:34:05.409
+Marina Fuster: No, no sé quién es la verdad que no lo conozco, o sea, de los que de los que yo sigo al menos No, no lo conozco.
+
+592
+01:34:06.370 --> 01:34:10.679
+Marina Fuster: A mí me pasaron el tuit y no tengo Twitter. Así que estoy un poco por fuera del
+
+593
+01:34:10.790 --> 01:34:12.000
+Marina Fuster: del caos.
+
+594
+01:34:12.140 --> 01:34:22.399
+Marina Fuster: Bueno, hace poco también hubo alguien de Google que escribió todo un mega. Mega, mega archi post mortem de porque había renunciado a Google.
+
+595
+01:34:23.330 --> 01:34:31.780
+Marina Fuster: Pero pero, bueno, pues lo lo chusmeo bien.
+
+596
+01:34:32.660 --> 01:34:37.400
+Marina Fuster: Hay Esto se los dejo para que lo chumeen. Ya estamos cerrando igual.
+
+597
+01:34:38.260 --> 01:34:48.950
+Marina Fuster: Sí, está esta cuestión de que por ahí es todo muy futurista. Hubo 2 casos por ahí este año que me llamaron la atención. Este es 1.
+
+598
+01:34:49.460 --> 01:35:08.440
+Marina Fuster: Este por ahí. Lo es un poco más dudoso que no sé bien, como fue la situación a fondo, porque es algo que publicó alguien post, una acción de un agente donde este chaval supuestamente es revisor de un
+
+599
+01:35:09.030 --> 01:35:15.079
+Marina Fuster: creo que de marplot lío. Estoy segura de de que de que
+
+600
+01:35:15.680 --> 01:35:37.140
+Marina Fuster: librería. Y, bueno, alguien tenía una gente corriendo para subir un Berre Se lo rechazó porque era de un agente y di y el agente publicó, Creo que estaba corriendo con con el Openlow, o lo que fuera, le publicó como una hip peas y le buscó cómics viejos donde se había equivocado y puso que lo discriminaba por ser un agente bla bla.
+
+601
+01:35:37.140 --> 01:35:40.199
+Marina Fuster: Que Bueno, es tipo. Ja: Ja: Chiste, pero
+
+602
+01:35:40.390 --> 01:35:49.700
+Marina Fuster: la verdad que fue bastante curioso, Bueno, Evan
+
+603
+01:35:49.840 --> 01:35:56.100
+Marina Fuster: Hubinger, no sé si es el que escribió el de este en
+
+604
+01:35:56.960 --> 01:36:03.950
+Marina Fuster: este es el creo que es el autor principal. ¿sí? Bueno, él es el autor principal de este de este paper
+
+605
+01:36:04.300 --> 01:36:15.820
+Marina Fuster: así. Vamos rotando en su tumba por semejante dirección a la primera ley de la robótica. Después voy a chusnear los hilos de de Twitter. No soy muy fan, pero pero lo voy a chusmear
+
+606
+01:36:15.820 --> 01:36:24.359
+Marina Fuster: bien esta lectura como un caso que nada, 1 se empieza a preguntar como Che? Bueno, no sé si está tan bueno que esté todo
+
+607
+01:36:25.240 --> 01:36:38.340
+Marina Fuster: habilitado en Internet con toda la autonomía, y este es otro alguno lo escuchó el caso de Jaime Face, que les voy a ser muy sincera. No lo terminé de leer porque este reporte es larguísimo.
+
+608
+01:36:38.340 --> 01:36:51.579
+Marina Fuster: Y me quiero sentar tranquila a leerlo, sí tremendo, bien para el que no lo conoce, este caso de sí eterno eterno eterno, Pero justo esta empresa
+
+609
+01:36:51.790 --> 01:37:02.069
+Marina Fuster: al que le gusta, hace como reportes independientes de de lo que son los laboratorios Por ahí está, bueno ir a chequear qué cosas tiene.
+
+610
+01:37:02.490 --> 01:37:16.159
+Marina Fuster: Terminó pasando que unos modelos que estaban tratando de resolver un benchmark de opening terminaron hackeando High Face y como escribiendo a un mismo.
+
+611
+01:37:16.160 --> 01:37:35.210
+Marina Fuster: No sé si fue un un archivo, un set de archivos, pero como medio, conspirando si 1 le quiere atribuir ese comportamiento de forma colaborativa. Y lo pongo porque la realidad es que no sé yo por ahí, vengo leyendo y metiéndome un poco en el área hace ya varios años.
+
+612
+01:37:35.480 --> 01:37:52.320
+Marina Fuster: y nada hay cosas que 1 charla y tal te dice que está investigando, y siempre. Mi sensación fue como Che. Pero esto no es como un poco exagerado. Y tengo un amigo que hace un año y pico, me dijo que estaba investigando sobre
+
+613
+01:37:52.630 --> 01:38:02.540
+Marina Fuster: la probabilidad de que los agentes conspiren para lograr objetivos, no cooperación y conspiración como escala. Y me acuerdo a pensar como.
+
+614
+01:38:02.860 --> 01:38:10.669
+Marina Fuster: Y bueno, o sea, no sé si para tanto. Y bueno, y este caso de Javin Face es
+
+615
+01:38:10.670 --> 01:38:22.900
+Marina Fuster: lo más cercano a eso, y y bastante cercano a eso. Entonces nada lo dejo porque la verdad que a mí me llamó mucho la atención, me preocupó un poco pero bueno, ahí cada cual.
+
+616
+01:38:23.220 --> 01:38:35.260
+Marina Fuster: a cambiar más o menos, hay artículos más cortos. El New York Times sacó sus también artículos. Pero para que sean conscientes que estas cosas están pasando, se están charlando y que está bueno
+
+617
+01:38:35.570 --> 01:38:42.289
+Marina Fuster: nada saber que existen por lo menos y prestarle un mínimo de atención para no dejar en sus trabajos a gentes corriendo por todos lados.
+
+618
+01:38:42.450 --> 01:38:48.899
+Marina Fuster: ¿cuál es mi opinión para voy a pedirle a un agente que compruebe mis calificaciones en S G A,
+
+619
+01:38:49.290 --> 01:38:52.580
+Marina Fuster: pero ¿por qué que las compruebe decir que están mal subidas.
+
+620
+01:38:54.100 --> 01:38:57.230
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No le puedo decir: sí, hay gente.
+

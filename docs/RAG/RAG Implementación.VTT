@@ -1,0 +1,3530 @@
+WEBVTT
+
+1
+00:00:03.960 --> 00:00:09.830
+Eugenia Sol Piñeiro: Bueno, la idea de la clase hoy es que implementemos una arquitectura rara. Vamos a
+
+2
+00:00:09.880 --> 00:00:27.230
+Eugenia Sol Piñeiro: hacer paso por paso que va a ser un poco similar a lo que tendrían que hacer en el Pp, obviamente mucho más reducido y con un caso de uso mucho más sencillo para que se entiendan los módulos de Ral. Pero la idea es esa tener una arquitectura funcional y una aplicación que digamos se puede utilizar
+
+3
+00:00:28.940 --> 00:00:33.760
+Eugenia Sol Piñeiro: antes y se acuerdan de Rag, que era Rag.
+
+4
+00:00:35.670 --> 00:00:42.189
+Eugenia Sol Piñeiro: ¿qué 3 cosas principales venían a solucionar o a mitigar.
+
+5
+00:00:45.710 --> 00:00:49.289
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Venía a solucionar que faltaba actualizar los datos.
+
+6
+00:00:50.360 --> 00:00:50.970
+Eugenia Sol Piñeiro: Perfecto.
+
+7
+00:00:50.970 --> 00:00:53.960
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Información falsa de información no personalizada.
+
+8
+00:00:55.060 --> 00:00:56.539
+Eugenia Sol Piñeiro: Bien excelente.
+
+9
+00:00:56.540 --> 00:01:00.280
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Hablando de eso hoy. Le pregunté a una guía
+
+10
+00:01:00.820 --> 00:01:04.019
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: para qué día era. Y me dijo que era lunes.
+
+11
+00:01:04.430 --> 00:01:07.120
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Así que no sé si funcionan también normal.
+
+12
+00:01:08.610 --> 00:01:12.049
+Eugenia Sol Piñeiro: Okay, a cuál le a qué a gente le preguntaste.
+
+13
+00:01:14.040 --> 00:01:15.070
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: A Géminis.
+
+14
+00:01:17.090 --> 00:01:19.749
+Eugenia Sol Piñeiro: Mira. Okay, qué raro la última versión.
+
+15
+00:01:20.650 --> 00:01:21.280
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+16
+00:01:21.620 --> 00:01:30.570
+Eugenia Sol Piñeiro: Mira, está. Está bastante desactualizada entonces, pero sí, bueno, Muy bien, ¿qué más.
+
+17
+00:01:30.800 --> 00:01:34.230
+Eugenia Sol Piñeiro: ¿cómo era el el la arquitectura que tenía de componentes.
+
+18
+00:01:35.310 --> 00:01:41.689
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Yo tenía como una bas, se da su aspecto, ya desde la que saca la información en medios.
+
+19
+00:01:42.740 --> 00:01:45.159
+Eugenia Sol Piñeiro: Bien, qué guardabas ahí? Los Envains. De qué.
+
+20
+00:01:46.770 --> 00:01:49.430
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: De los datos adicionales.
+
+21
+00:01:54.140 --> 00:01:55.789
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Él es que no estaba en el.
+
+22
+00:01:57.320 --> 00:01:59.129
+Eugenia Sol Piñeiro: No sé si se te cortó a vos o se me cortó la.
+
+23
+00:01:59.130 --> 00:02:00.070
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, como te decían.
+
+24
+00:02:03.570 --> 00:02:04.459
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: ¿Qué perdón.
+
+25
+00:02:06.580 --> 00:02:10.729
+Eugenia Sol Piñeiro: No sé si se te está cortando a vos o o soy yo que me andan varios auriculares.
+
+26
+00:02:11.710 --> 00:02:15.990
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Puede ser que se me esté cortando a mí, porque hay otra persona con una clase virtual en mi casa. También.
+
+27
+00:02:17.360 --> 00:02:23.309
+Eugenia Sol Piñeiro: Bueno, va de nuevo. Entonces teníamos los envadings en la base de datos vectorial. Y qué más.
+
+28
+00:02:24.420 --> 00:02:30.690
+Eugenia Sol Piñeiro: O sea, hasta ahora tenemos esta partecita no que tiene la base de datos vectorial.
+
+29
+00:02:31.440 --> 00:02:33.670
+Eugenia Sol Piñeiro: Vamos a escribirme de qué más.
+
+30
+00:02:34.300 --> 00:02:37.570
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y había como un montón de documentos de los que podía conseguir información.
+
+31
+00:02:38.510 --> 00:02:41.870
+Eugenia Sol Piñeiro: Bien, tenía mis documentos y que tenía que hacer con esos documentos.
+
+32
+00:02:42.630 --> 00:02:44.789
+Eugenia Sol Piñeiro: Esta era mi nowlich base.
+
+33
+00:02:44.790 --> 00:02:46.390
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Los 2 primeros.
+
+34
+00:02:47.460 --> 00:02:49.369
+Eugenia Sol Piñeiro: Bien los tengo.
+
+35
+00:02:49.370 --> 00:02:50.770
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Caminarlos.
+
+36
+00:02:52.350 --> 00:02:52.790
+Eugenia Sol Piñeiro: El de un.
+
+37
+00:02:52.790 --> 00:02:55.350
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sus enmedios combinadas con el contexto.
+
+38
+00:02:56.220 --> 00:02:58.129
+Eugenia Sol Piñeiro: Ahí va pe a separar en Chanks.
+
+39
+00:02:59.450 --> 00:03:03.519
+Eugenia Sol Piñeiro: Bien, o sea, hago el Texas Spring no
+
+40
+00:03:05.010 --> 00:03:11.449
+Eugenia Sol Piñeiro: beige y la base de datos vectorial. Y todo esto se llamaba el Index Empire Line. No.
+
+41
+00:03:11.690 --> 00:03:13.680
+Eugenia Sol Piñeiro: esto lo hacía de forma sincrónica.
+
+42
+00:03:15.520 --> 00:03:20.110
+Eugenia Sol Piñeiro: ¿qué más ahí habías mencionado que teníamos otro en May.
+
+43
+00:03:27.280 --> 00:03:30.049
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, sí estaba en los contextos del usuario.
+
+44
+00:03:31.420 --> 00:03:38.820
+Eugenia Sol Piñeiro: Perfecto, O sea, viene el usuario, me escribe, escribe su producto, lo paso en Beding y cómo lo conecto.
+
+45
+00:03:41.530 --> 00:03:45.630
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y tienes que mezclar los remedios con el usuario, con los de los documentos.
+
+46
+00:03:46.880 --> 00:03:48.630
+Eugenia Sol Piñeiro: Perfecto, O sea, necesito que el retriever.
+
+47
+00:03:48.630 --> 00:03:50.240
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Como no sé, más.
+
+48
+00:03:50.960 --> 00:04:00.910
+Eugenia Sol Piñeiro: No es más que no, o sea, con el retriever. Vamos a buscar los k documentos más similares con alguna medida de similitud. Y me traigo Cap Chanks.
+
+49
+00:04:02.820 --> 00:04:07.830
+Eugenia Sol Piñeiro: por ejemplo, con la distancia de coseno entre los Beddings de Mioxidatos, vectorial y el Embeding del usuario.
+
+50
+00:04:08.450 --> 00:04:18.849
+Eugenia Sol Piñeiro: Y ahora el retriar que me trajo todo eso, necesito La parte de aumento que combinaba mi memoria paramétrica, que es lo que tiene el lelem, digamos el módulo del lema acá
+
+51
+00:04:19.930 --> 00:04:22.859
+Eugenia Sol Piñeiro: con mi memoria, no paramétrica, que es lo que me traje.
+
+52
+00:04:23.180 --> 00:04:29.190
+Eugenia Sol Piñeiro: Entonces lo combino, lo aumento. Esa es la parte de aumento y de generations y devuelvo la respuesta al usuario.
+
+53
+00:04:31.310 --> 00:04:32.020
+Eugenia Sol Piñeiro: No.
+
+54
+00:04:34.790 --> 00:04:37.750
+Eugenia Sol Piñeiro: ¿qué bases de datos se acuerdan que mencionamos
+
+55
+00:04:58.090 --> 00:05:02.849
+Eugenia Sol Piñeiro: habían mencionado, de hecho, una con pobres. Ustedes habíamos visto 2 más
+
+56
+00:05:11.030 --> 00:05:11.780
+Eugenia Sol Piñeiro: te acuerdas
+
+57
+00:05:19.850 --> 00:05:28.570
+Eugenia Sol Piñeiro: que estaba ping con croma p g vector, que era la extensión de pobres. Vamos a ver pan con
+
+58
+00:05:29.240 --> 00:05:30.750
+Eugenia Sol Piñeiro: muy poquito de croma.
+
+59
+00:05:31.450 --> 00:05:37.550
+Eugenia Sol Piñeiro: pero especialmente pacon y después teníamos Advance Rugg, que era esto de Advance Rag, Que se acuerdan
+
+60
+00:05:40.430 --> 00:05:43.529
+Eugenia Sol Piñeiro: lo básico. No hace falta que me digan exactamente el nombre de la técnica, pero
+
+61
+00:05:43.840 --> 00:05:45.680
+Eugenia Sol Piñeiro: ¿qué hacía de que me servía.
+
+62
+00:05:58.830 --> 00:06:00.940
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Aplicada como unos filtros, no.
+
+63
+00:06:01.780 --> 00:06:04.859
+Eugenia Sol Piñeiro: Bien, por ejemplo, el filtro por metadata perfecto
+
+64
+00:06:05.390 --> 00:06:16.380
+Eugenia Sol Piñeiro: que me ayudaba a que sea más rápido. Eso no, Por ejemplo, tenía toda mi base de datos vectorial, persistía un montón de data. Supongamos que solo quiero data de 20 26 y tengo data de todos los años.
+
+65
+00:06:16.480 --> 00:06:22.319
+Eugenia Sol Piñeiro: Aplico primero un filtro, y me ahorro de ir a buscar a mis datos vectoriales, absolutamente todo. Por ejemplo.
+
+66
+00:06:23.210 --> 00:06:31.470
+Eugenia Sol Piñeiro: y puedo filtrar bien. Después había otras 2 técnicas que eran antes del Retriever y Post Retriever.
+
+67
+00:06:32.320 --> 00:06:41.320
+Eugenia Sol Piñeiro: una era, por ejemplo, Post retriver comprimir la data o eliminar Chanks, duplicados o chats que son redundantes o hacer un renker
+
+68
+00:06:42.030 --> 00:06:51.380
+Eugenia Sol Piñeiro: y pre retriever. Teníamos que reescribir de alguna forma el acuario del usuario para que me sirva un poquito más para mi caso. Y funciona un poquito mejor.
+
+69
+00:06:52.330 --> 00:06:55.890
+Eugenia Sol Piñeiro: Eso lo vamos a ver hoy o implementarlo.
+
+70
+00:06:56.000 --> 00:07:03.410
+Eugenia Sol Piñeiro: Pero hasta acá dudas del Pibeline de cómo es la arquitectura, cómo se conectan todos los módulos?
+
+71
+00:07:03.620 --> 00:07:04.600
+Eugenia Sol Piñeiro: Porque hoy
+
+72
+00:07:04.840 --> 00:07:09.559
+Eugenia Sol Piñeiro: vamos a verlo un poco más en código, ¿no? Pero como para que sigan el hilo. Comparado con la teoría.
+
+73
+00:07:13.220 --> 00:07:14.380
+Eugenia Sol Piñeiro: estamos Okay.
+
+74
+00:07:15.980 --> 00:07:17.240
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, Sí.
+
+75
+00:07:19.400 --> 00:07:27.810
+Eugenia Sol Piñeiro: Bien, voy a. Voy a tomar a a Joaquín como referente de los otros 8 que están conectados y
+
+76
+00:07:29.140 --> 00:07:32.189
+Eugenia Sol Piñeiro: pero Bueno, supongo que está bien. No te la van frenando.
+
+77
+00:07:33.190 --> 00:07:37.509
+Eugenia Sol Piñeiro: Bueno, vamos a ver este framework que es Lanchain.
+
+78
+00:07:37.790 --> 00:07:42.289
+Eugenia Sol Piñeiro: No es el único. Hay otro más que, por ejemplo, se llama lama index.
+
+79
+00:07:42.720 --> 00:07:48.250
+Eugenia Sol Piñeiro: que también se usa bastante, Pero Lanchen se usa un montón. De hecho, me atrevería a decir que es el que más usa
+
+80
+00:07:48.330 --> 00:08:05.890
+Eugenia Sol Piñeiro: para este caso de uso, que que es es un framework orquestador. Se lo llama porque porque tenemos un 1 000 000 de módulos que el text esplitter que el documental loder que el algoritmo medio, todo lo que hay que sumar las bases vectoriales, el retriever, aumentar? La respuesta es demasiado
+
+81
+00:08:05.910 --> 00:08:18.899
+Eugenia Sol Piñeiro: entonces de lo que se encarga este Fregork es justamente de darme esta librería para poder conectar todos mis módulos de forma sencilla y justamente us aprovechar eso para que mis módulos sean intercambiables.
+
+82
+00:08:20.650 --> 00:08:22.790
+Eugenia Sol Piñeiro: Entonces, Bueno, acá está la documentación.
+
+83
+00:08:23.380 --> 00:08:28.890
+Eugenia Sol Piñeiro: La idea de la clase de hoy no es que entiendan exactamente línea por línea cómo funciona Land Change.
+
+84
+00:08:29.190 --> 00:08:38.789
+Eugenia Sol Piñeiro: sino que se lleven una idea general y una herramienta que Uds. Puedan usar. Y después digan, ah, tengo que hacer una arquitectura rap, y me conviene usar Lanchain para que sea más sencillo
+
+85
+00:08:39.770 --> 00:08:40.530
+Eugenia Sol Piñeiro: hasta ahí.
+
+86
+00:08:41.909 --> 00:08:44.199
+Eugenia Sol Piñeiro: Entonces, ¿qué me va a ofrecer?
+
+87
+00:08:44.750 --> 00:08:55.440
+Eugenia Sol Piñeiro: Fíjense que ya directamente ofrece clases específicas para, por ejemplo, cargar documentos en Cssb, cargar archivos, Json, Cargar Pdf.
+
+88
+00:08:55.450 --> 00:09:09.699
+Eugenia Sol Piñeiro: leer todo un directorio. Esto son la librería básica de manejo de de de archivos en Python Film, pero me lo ofrece ya como clase específica y me la carga en el formato que después lo va a requerir el texto Splitter.
+
+89
+00:09:10.180 --> 00:09:11.829
+Eugenia Sol Piñeiro: Eso es lo que te da de ventaja.
+
+90
+00:09:12.110 --> 00:09:13.150
+Eugenia Sol Piñeiro: Entonces
+
+91
+00:09:13.590 --> 00:09:22.160
+Eugenia Sol Piñeiro: fíjense que acá ofrece también distintas clases de los splitters fíjense que está el de dividir por carácter que nosotros habíamos visto 1 que era recursivo.
+
+92
+00:09:22.770 --> 00:09:32.850
+Eugenia Sol Piñeiro: Se acuerdan del recursi carácter text Spleatter Fíjense, que tiene otro específicamente de código y marca 1 que es más contextual.
+
+93
+00:09:33.050 --> 00:09:39.749
+Eugenia Sol Piñeiro: Bueno, y así van haciendo personalizados y demás textos. Twitter ofrece un montón, pueden.
+
+94
+00:09:39.750 --> 00:09:41.550
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea que esto es como una
+
+95
+00:09:42.690 --> 00:09:46.500
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Wii en la que yo selecciono. Por ejemplo, quiero cargar un Csv.
+
+96
+00:09:48.570 --> 00:09:51.320
+Eugenia Sol Piñeiro: O sea, esta documentación, son clases de Python.
+
+97
+00:09:52.190 --> 00:09:53.549
+Eugenia Sol Piñeiro: Esa máquina iba a.
+
+98
+00:09:53.550 --> 00:09:54.030
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Ah, Ok.
+
+99
+00:09:54.030 --> 00:09:54.390
+Eugenia Sol Piñeiro: Eso sí.
+
+100
+00:09:54.490 --> 00:09:56.430
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí. Esa es la documentación, No, claro.
+
+101
+00:09:56.430 --> 00:09:57.900
+Eugenia Sol Piñeiro: Es como una librería
+
+102
+00:09:59.090 --> 00:10:04.900
+Eugenia Sol Piñeiro: que cargase la la clase y ya se encarga por adentro, como hacer todo el spiritting y demás.
+
+103
+00:10:05.010 --> 00:10:07.810
+Eugenia Sol Piñeiro: o sea, es la librería que se usa para hacerlo más rápido. El rap
+
+104
+00:10:09.000 --> 00:10:22.019
+Eugenia Sol Piñeiro: y después te ofrece. Por ejemplo, lo puedes integrar con Lanksmith, por ejemplo, este de acá que es para monitoreo. Entonces puedes ver lo que pasa por adentro, ahorrar. No nos vamos a meter específicamente en todas estas partes.
+
+105
+00:10:22.150 --> 00:10:28.109
+Eugenia Sol Piñeiro: Lo comento porque quizá les interese y y están. Bueno, después
+
+106
+00:10:28.210 --> 00:10:35.199
+Eugenia Sol Piñeiro: profundizar, por ejemplo, es más, para Divagging, monitoreo testing, ya pensando más en una aplicación productiva.
+
+107
+00:10:38.810 --> 00:10:40.220
+Eugenia Sol Piñeiro: Bien, Entonces.
+
+108
+00:10:40.420 --> 00:10:45.380
+Eugenia Sol Piñeiro: en relación con R A. D, vamos a tener nuestra knowlich base que va a ser nuestra colección de documentos
+
+109
+00:10:45.550 --> 00:10:52.529
+Eugenia Sol Piñeiro: Para eso. Lanch me ofrece la clase Doggimmen Loader para data spletting. Me ofrece la clase Texas Splitter
+
+110
+00:10:52.750 --> 00:11:01.249
+Eugenia Sol Piñeiro: Datan Bedding me ofrece las funciones en bedding. Me ofrece ya los vector store que tiene integraciones con distintas bases de datos
+
+111
+00:11:01.350 --> 00:11:09.319
+Eugenia Sol Piñeiro: que puede ser banco croma. No sé si tiene P, g vector, seguro se puede conectar con post bres.
+
+112
+00:11:09.460 --> 00:11:20.610
+Eugenia Sol Piñeiro: pero si no lo tiene, La ventaja es que está total modular, que 1 puede agregar después lo que quiera. Quizás no sé justo. No tiene el Splitter, que quiero? Bueno, lo hago. Custom.
+
+113
+00:11:20.820 --> 00:11:33.439
+Eugenia Sol Piñeiro: Y después sigo usando lanchain para seguir orquestando el resto de los módulos, Sí, me ofrecen muchísimas ventajas para justamente combinar toda la arquitectura, porque son muchas cosas y puede volverse un
+
+114
+00:11:33.740 --> 00:11:38.869
+Eugenia Sol Piñeiro: código bastante grande y bastante Right Hall. Así que está bueno para orquestar.
+
+115
+00:11:39.630 --> 00:11:45.179
+Eugenia Sol Piñeiro: Bien, después tiene la clase retriver y agents que 1 también puede usar directamente desde ahí
+
+116
+00:11:46.380 --> 00:11:52.929
+Eugenia Sol Piñeiro: y tiene muchísimas cosas más que podemos ir viendo de a poco para más Ragg y y demás documentación.
+
+117
+00:11:53.510 --> 00:11:58.790
+Eugenia Sol Piñeiro: 2 hasta acá el pipeline básico que vamos a ver hoy.
+
+118
+00:11:58.960 --> 00:12:03.820
+Eugenia Sol Piñeiro: Entonces vamos directamente a implementarlo en Lanchain.
+
+119
+00:12:04.550 --> 00:12:08.090
+Eugenia Sol Piñeiro: Vamos a tener un caso de uso que es: de
+
+120
+00:12:08.960 --> 00:12:14.749
+Eugenia Sol Piñeiro: Vamos a tener un virtual assistance que va a ser un chat bot básicamente. Y eso es lo que vamos a implementar. Va a ser un chat bot de la materia.
+
+121
+00:12:15.060 --> 00:12:24.730
+Eugenia Sol Piñeiro: Entonces, primero vamos a ver una demo más chiquita. Y vamos a ir escalando sobre eso hasta llegar a una aplicación que sea chatbot funcional con Advancelot.
+
+122
+00:12:25.340 --> 00:12:28.590
+Eugenia Sol Piñeiro: Así que vamos a poco, vamos a ver.
+
+123
+00:12:30.820 --> 00:12:35.580
+Eugenia Sol Piñeiro: Acá Están todas. Las demos, tiene en todo el código por si lo quieren ir viendo.
+
+124
+00:12:35.720 --> 00:12:37.900
+Eugenia Sol Piñeiro: Pero vamos a ver un pantallazo general.
+
+125
+00:12:38.360 --> 00:12:39.589
+Eugenia Sol Piñeiro: Vamos al primero.
+
+126
+00:12:41.440 --> 00:12:46.440
+Eugenia Sol Piñeiro: Yo, que yo me encargué las dependencias para no tardar tanto.
+
+127
+00:12:48.320 --> 00:12:56.580
+Eugenia Sol Piñeiro: Pero básicamente, en líneas generales, si quieren correr los notebooks, recomiendo que usen la T. Cuatro. La Gpu de Colab
+
+128
+00:12:56.850 --> 00:12:58.650
+Eugenia Sol Piñeiro: está acá. Escrito.
+
+129
+00:12:58.840 --> 00:13:11.100
+Eugenia Sol Piñeiro: tienen que cargarse según el colab alguna. Picy, ya sea hugging face opone a depende de lo que usen la de bancome van a tratar una picky de pancome que tiene un freetidor. Ya lo vamos a ver.
+
+130
+00:13:11.670 --> 00:13:15.770
+Eugenia Sol Piñeiro: Las demos que voy a mostrar hoy son todas con módulos gratuitos.
+
+131
+00:13:16.350 --> 00:13:28.600
+Eugenia Sol Piñeiro: Pero esto te puede escalar, no, O sea, después. Yo lo puedo cambiar a Open y a y usar mi a P. I, C de openda. Y lo puedo cambiar a a jemina y usar la Picky de Google. Y así. Pero la idea es que se lleven también algo que
+
+132
+00:13:28.640 --> 00:13:40.759
+Eugenia Sol Piñeiro: funcional Funciona un poquito peor que si no paga, pero funciona y se puede ir iterando. No sobre eso. Esto puede ser mucho más complejo, pero vamos a ver lo mínimo y básico para que se lleven toda esta idea.
+
+133
+00:13:41.590 --> 00:13:44.369
+Eugenia Sol Piñeiro: Entonces, caso de uso, ¿Qué vamos a hacer?
+
+134
+00:13:44.990 --> 00:13:51.270
+Eugenia Sol Piñeiro: Vamos a tener esta? Va a ser nuestra Knowlich Basensé que son 3 archivos super chiquitos.
+
+135
+00:13:51.370 --> 00:13:57.590
+Eugenia Sol Piñeiro: Ustedes van a tener algo mucho más grande. Por eso me refiero a Es una aplicación chica en comparación con lo que van a tener que hacer ustedes.
+
+136
+00:13:57.750 --> 00:14:01.429
+Eugenia Sol Piñeiro: pero es para que se lleven la idea. Fíjense que tengo este txt T,
+
+137
+00:14:01.640 --> 00:14:10.039
+Eugenia Sol Piñeiro: que habla sobre quiénes son las profesoras de la materia y qué tipo de alumno es el que cursa esta materia.
+
+138
+00:14:10.350 --> 00:14:15.940
+Eugenia Sol Piñeiro: Después vamos a tener en materia txt el programa.
+
+139
+00:14:16.210 --> 00:14:23.589
+Eugenia Sol Piñeiro: cuáles son los objetivos: presentación de la materia. ¿cuánto dura modalidad de evaluación, ¿Cómo se prueba? Fíjense que
+
+140
+00:14:24.290 --> 00:14:26.670
+Eugenia Sol Piñeiro: hay cosas que no quiero, como todos tos.
+
+141
+00:14:26.800 --> 00:14:38.479
+Eugenia Sol Piñeiro: espacios o líneas en blanco. Ojo porque lo comento. Por ejemplo, no quiero un chanc que me quede con un enter. Cone ese tipo de cosas. Hay que tener en cuenta
+
+142
+00:14:38.720 --> 00:14:43.710
+Eugenia Sol Piñeiro: qué más tengo después, el temario que tiene específicamente cada unidad
+
+143
+00:14:44.500 --> 00:14:49.440
+Eugenia Sol Piñeiro: con los contenidos, y esto es lo que vamos a cargar en Pingcom, como en Baghings.
+
+144
+00:14:50.180 --> 00:14:52.770
+Eugenia Sol Piñeiro: nada son tic test supersencillos.
+
+145
+00:14:53.020 --> 00:15:09.540
+Eugenia Sol Piñeiro: De nuevo. Uds. Pueden hacer algo más complejo, y lo que quiero que se lleven también es que, si bien ahora le vamos a ver contexto. Después vamos a empezar a hablar un poquito de imágenes audio. Digamos todo esto: si bien está contexto, se puede extender a multimodal no otro tipo de data.
+
+146
+00:15:09.580 --> 00:15:19.270
+Eugenia Sol Piñeiro: Así que no se queden sólo con que funciona como un chatbot de un texto, porque no hay aplicaciones mucho más complejas con R a D, que ya vamos a ver. Pero por lo pronto, para entender, vamos con esto.
+
+147
+00:15:20.160 --> 00:15:26.590
+Eugenia Sol Piñeiro: Bueno, esto lo único que hace es cargar los imports y cargar el el punto A M con las A. P. I Q. Así que
+
+148
+00:15:26.830 --> 00:15:35.100
+Eugenia Sol Piñeiro: es importante. Vamos con el primero. Documen Loader. Entonces yo les voy dejando acá la documentación
+
+149
+00:15:36.100 --> 00:15:46.830
+Eugenia Sol Piñeiro: como Disclaimer. Espero que funcionen los dics, los links. Lo que cambia mucho el onchain es que actualiza la documentación muy rápido y suelen cambiar los imports rápido. Entonces, a veces
+
+150
+00:15:46.950 --> 00:15:58.209
+Eugenia Sol Piñeiro: crash por los imports, básicamente. ¿por qué? Porque o lo cambiaron de lugar o era una librería que era de Community Opensourf. Y le agregaron ese tipo de cosas. Por un lado, está bueno porque
+
+151
+00:15:58.510 --> 00:16:09.320
+Eugenia Sol Piñeiro: significa que tienen bastante actualización y un montón de docu Por otro lado, hay que actualizar lo seguido. De hecho, me pasa de todos los cuatrimestres actualizar, pero ya está actualizado.
+
+152
+00:16:10.060 --> 00:16:11.120
+Eugenia Sol Piñeiro: Entonces
+
+153
+00:16:12.080 --> 00:16:25.219
+Eugenia Sol Piñeiro: tenemos nuestra función, Get Dogs, que es básicamente lo único que va a hacer es cargar el de director y Loader de Lanchain, que simplemente acá va a leer el Pass Dogs. Y me va a cargar todos los txt que haya en
+
+154
+00:16:26.010 --> 00:16:31.569
+Eugenia Sol Piñeiro: ese documento. Y fíjense que acá estoy usando la clase Text Loader, porque lo aclaro porque quizás
+
+155
+00:16:31.780 --> 00:16:41.139
+Eugenia Sol Piñeiro: no tienen solo un T. X T. Tienen por ahí. Jason. Y tienen que cambiar el Loader o tienen un USB. Tienen tata tabular. Acá. Está la parte que antes de cambiar, ¿no?
+
+156
+00:16:41.250 --> 00:16:45.509
+Eugenia Sol Piñeiro: Entonces lo que te ofrece lanching es siempre la misma estructura.
+
+157
+00:16:45.640 --> 00:16:56.160
+Eugenia Sol Piñeiro: No todos van a tener. Bueno, ¿de dónde lo de dónde lo voy a cargar, ¿Cuál va a ser mi lover clases después. Hago un loader lode y me cargué todos los documentos, ese tipo de
+
+158
+00:16:56.640 --> 00:16:59.060
+Eugenia Sol Piñeiro: qué cosas me ofrece, O sea, lo que ofrece. Es un Fraywork.
+
+159
+00:16:59.930 --> 00:17:01.840
+Eugenia Sol Piñeiro: entonces vamos a cargar nuestros documentos.
+
+160
+00:17:02.670 --> 00:17:06.430
+Eugenia Sol Piñeiro: Fíjense que lo carga con cierta estructura.
+
+161
+00:17:06.630 --> 00:17:08.170
+Eugenia Sol Piñeiro: Este es el primero.
+
+162
+00:17:08.960 --> 00:17:11.919
+Eugenia Sol Piñeiro: Vamos a correrlo, porque después lo tengo que am que cargar en Python
+
+163
+00:17:12.160 --> 00:17:17.770
+Eugenia Sol Piñeiro: Este lo que hace es traerme todos los documentos que yo ya cargué en mi loder.
+
+164
+00:17:17.950 --> 00:17:21.279
+Eugenia Sol Piñeiro: Este va a ser el primero. Y fíjense la estructura que tiene.
+
+165
+00:17:21.579 --> 00:17:25.920
+Eugenia Sol Piñeiro: Primero, ya me agrega de por sí en esta clase document metadata.
+
+166
+00:17:26.160 --> 00:17:36.009
+Eugenia Sol Piñeiro: que es lo que habíamos visto más de Advandra o demás, ya por default de carga metadata. ¿con qué mínimo con la fuente de donde sacó ese archivo
+
+167
+00:17:36.970 --> 00:17:44.529
+Eugenia Sol Piñeiro: y después adentro del page content al adentro de este objeto es donde va a tener realmente el contenido que cargó.
+
+168
+00:17:45.290 --> 00:17:59.289
+Eugenia Sol Piñeiro: Lo aclaro. ¿por qué? Porque después, 1 en metadata va a empezar a agregar cosas, ¿no? Acá. Por ejemplo. Me agregaré al surf, pero puedo agregar, por ejemplo, la página o el timestamp de cuando lo cargue. Entonces yo voy tirando sobre eso.
+
+169
+00:18:00.310 --> 00:18:12.549
+Eugenia Sol Piñeiro: En bueno, acá. Hay otro ejemplo que es más cortito. Simplemente cargó desde alumnos Txt, el primer contenido. Entonces ahí tenemos cargados. Este, por ejemplo, era el temario. Y este era el de alumnos.
+
+170
+00:18:14.210 --> 00:18:17.520
+Eugenia Sol Piñeiro: Hasta ahí, nada muy loco. Ahora vamos a hacer. El texto explica
+
+171
+00:18:19.110 --> 00:18:20.460
+Eugenia Sol Piñeiro: qué qué es lo que va a hacer
+
+172
+00:18:20.690 --> 00:18:27.610
+Eugenia Sol Piñeiro: acá. Yo. Lo que tengo que hacer es, Ok, Ya tengo mi data cargada en texto plano, pero tengo que generar los Chanks.
+
+173
+00:18:28.940 --> 00:18:31.190
+Eugenia Sol Piñeiro: Entonces me voy a hacer mi funcioncita de
+
+174
+00:18:31.480 --> 00:18:38.900
+Eugenia Sol Piñeiro: que Shanks se acuerdan que habíamos visto este Shankside y Changoberlab que yo lo comenté, la clase teórica. ¿qué era.
+
+175
+00:18:43.960 --> 00:18:48.530
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: El 6 era el tamaño de los Chongs. Estuvimos un rato hablando. Si eran muy grandes, muy chicos.
+
+176
+00:18:49.830 --> 00:18:51.400
+Eugenia Sol Piñeiro: Bien, Perfecto.
+
+177
+00:18:51.630 --> 00:18:53.990
+Eugenia Sol Piñeiro: ¿qué pasaba si era muy, muy grande.
+
+178
+00:18:57.490 --> 00:18:58.120
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y no.
+
+179
+00:18:58.120 --> 00:18:58.500
+Eugenia Sol Piñeiro: Lo que.
+
+180
+00:18:58.500 --> 00:18:58.840
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: En a.
+
+181
+00:18:58.840 --> 00:19:07.499
+Eugenia Sol Piñeiro: De todo o que al revés, no, O sea, si es muy chico, no puedo relacionar las cosas.
+
+182
+00:19:09.280 --> 00:19:10.599
+Eugenia Sol Piñeiro: Y si es muy.
+
+183
+00:19:10.600 --> 00:19:10.950
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: De las.
+
+184
+00:19:10.950 --> 00:19:11.650
+Eugenia Sol Piñeiro: Un solo. Chan.
+
+185
+00:19:11.650 --> 00:19:17.949
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Demasiada relación, lo que es demasiado relacionado, que es lo mismo.
+
+186
+00:19:19.060 --> 00:19:30.320
+Eugenia Sol Piñeiro: Claro. O sea, es como si tuviese un solo chanque por ahí, no sé, tengo un libro de 500 hojas, Y mi respuesta estaba en la hoja 1. ¿por qué quiero recorrer las 500? Entonces tampoco me tengo que ir
+
+187
+00:19:30.720 --> 00:19:32.329
+Eugenia Sol Piñeiro: para el otro lado.
+
+188
+00:19:32.980 --> 00:19:43.870
+Eugenia Sol Piñeiro: Te ocupa toda la ventana, claro, perfecto. Y te trae cosas probablemente irrelevantes. Perfecto. Esa es la desventaja. Yo tengo una context window donde tengo que optimizar la cantidad de tokens que le paso
+
+189
+00:19:44.140 --> 00:19:50.619
+Eugenia Sol Piñeiro: entonces importante. Fíjense en todas las librerías. Está el chang saiz y Chang Coverlab el overlab que era
+
+190
+00:19:51.280 --> 00:19:52.349
+Eugenia Sol Piñeiro: que lo vimos.
+
+191
+00:19:52.940 --> 00:19:54.079
+Eugenia Sol Piñeiro: ¿de qué me servía.
+
+192
+00:19:54.460 --> 00:19:59.150
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Cuánto se podían superponer los los los chances entre sí.
+
+193
+00:20:00.410 --> 00:20:05.899
+Eugenia Sol Piñeiro: Bien perfecto que me daba coherencia entre Change. Si yo le agregaba Overlab
+
+194
+00:20:06.390 --> 00:20:12.259
+Eugenia Sol Piñeiro: me prometieron que iba a funcionar un poquito mejor, Digamos porque digo eso porque es experimental.
+
+195
+00:20:12.450 --> 00:20:14.540
+Eugenia Sol Piñeiro: Debería funcionar mejor con el loverlab.
+
+196
+00:20:15.400 --> 00:20:31.060
+Eugenia Sol Piñeiro: sobre todo cuando tengo data textual, No, así muy larga que necesito relacionar. Entonces, estos parámetros son experimentales. Es lo que hay que variar. Hay que ir probando las métricas y comparar típico de estudio de ablación, donde tengo que variar el Changsight y el Overla.
+
+197
+00:20:32.620 --> 00:20:38.519
+Eugenia Sol Piñeiro: Bien, Entonces, ¿cómo consigo mis Chanks: Voy a tener un text splitter. En este caso
+
+198
+00:20:39.020 --> 00:20:43.340
+Eugenia Sol Piñeiro: vamos a usar el recursivo que se acuerdan que vimos la clase pasada que
+
+199
+00:20:43.810 --> 00:20:54.280
+Eugenia Sol Piñeiro: teníamos, por ejemplo, una cantidad de separadores definidos y iba a intentar dividir por el primer separador si el Chang, si todavía era
+
+200
+00:20:54.430 --> 00:20:58.900
+Eugenia Sol Piñeiro: muy grande. Intentaba ir por el siguiente separador y así recursivamente.
+
+201
+00:20:59.120 --> 00:21:07.509
+Eugenia Sol Piñeiro: Entonces eso es lo que va a hacer. Entonces le paso el overrap y acá se le agrega un start index que ahora vamos a ver de qué me sirve eso.
+
+202
+00:21:10.460 --> 00:21:16.960
+Eugenia Sol Piñeiro: Acá Fíjense, vamos a correrlo, que simplemente corrió la función.
+
+203
+00:21:18.360 --> 00:21:33.429
+Eugenia Sol Piñeiro: Lo que va a hacer es explitear mi documento en estos chanks. Fíjense que tenía 3 documentos y terminaron teniendo 6 Chanks. Según este chanks sabes, que definía acá que es relativamente bajo. Pero también tengo documentos muy cortitos en la demo
+
+204
+00:21:34.000 --> 00:21:40.499
+Eugenia Sol Piñeiro: en y acá fíjense que en metadata yo ya tenía el surf y me agregó este Starte Index.
+
+205
+00:21:40.660 --> 00:21:43.229
+Eugenia Sol Piñeiro: Entonces voy a tener Okay Star Tintex Cero.
+
+206
+00:21:43.610 --> 00:21:47.629
+Eugenia Sol Piñeiro: Con todo el contenido del primer documento.
+
+207
+00:21:47.790 --> 00:21:51.930
+Eugenia Sol Piñeiro: Fíjense que el alumno. Este quiste me entró entero en un chanc
+
+208
+00:21:52.410 --> 00:22:01.160
+Eugenia Sol Piñeiro: Fin, después temario. Txt: ya era un poquito más largo y por ejemplo, me generó este Chanc con startingdex en 0,
+
+209
+00:22:01.410 --> 00:22:08.349
+Eugenia Sol Piñeiro: y este otro Chank con Start Index en 757. Entonces básicamente el Start: Index. Lo que me dice es que
+
+210
+00:22:08.580 --> 00:22:17.659
+Eugenia Sol Piñeiro: primero, ¿en qué parte de el el tequiste que yo tenía hizo el Split, o sea, agarró 757 caracteres, e hizo el split ahí.
+
+211
+00:22:17.930 --> 00:22:20.479
+Eugenia Sol Piñeiro: Y segundo, que si yo no quiero reconstruir
+
+212
+00:22:20.710 --> 00:22:28.829
+Eugenia Sol Piñeiro: después todo mi texto, tengo que ir armándolo con el Start Index. No, O sea, es
+
+213
+00:22:29.190 --> 00:22:41.809
+Eugenia Sol Piñeiro: donde puedo conseguir la información y volver a tener toda la información junta. Entonces me sirve para eso. Y ya lo agrega. Bueno, acá se lo especifiqué, que lo agregué, pero está bueno tenerlo
+
+214
+00:22:41.950 --> 00:22:43.350
+Eugenia Sol Piñeiro: por esa ventaja.
+
+215
+00:22:44.140 --> 00:22:47.709
+Eugenia Sol Piñeiro: Entonces tenemos 2 para temario. Y fíjense que acá esta materia
+
+216
+00:22:48.670 --> 00:22:54.959
+Eugenia Sol Piñeiro: quizá era un poquito más largo y me lo debieron 3. Entonces Hasta acá voy a tener todos mis chats.
+
+217
+00:22:58.090 --> 00:23:00.350
+Eugenia Sol Piñeiro: Bueno, acá les explico un poquito lo del Starte Index
+
+218
+00:23:00.990 --> 00:23:04.369
+Eugenia Sol Piñeiro: Después, si quieren leerlo tranquilos, pero es un poco. Eso es lo que dije.
+
+219
+00:23:05.060 --> 00:23:10.859
+Eugenia Sol Piñeiro: Y ahora vamos a cargar los embeddings, O sea, ya tenemos nuestros Chanks. Ahora necesito un invedding para cada 1 de mis chanks.
+
+220
+00:23:11.170 --> 00:23:13.740
+Eugenia Sol Piñeiro: Acá. Lo que voy a hacer es
+
+221
+00:23:14.130 --> 00:23:19.159
+Eugenia Sol Piñeiro: usarlos en Mails de Hugging Face, pero pueden usar los que quieran.
+
+222
+00:23:19.370 --> 00:23:21.539
+Eugenia Sol Piñeiro: Están los de Open Ainbays.
+
+223
+00:23:22.640 --> 00:23:26.470
+Eugenia Sol Piñeiro: Tiene un wtede limit ojo con eso, simplemente como aclaración.
+
+224
+00:23:26.640 --> 00:23:30.490
+Eugenia Sol Piñeiro: La Vicky. Acá en este caso, estoy usando 1 que es gratuito higgin face.
+
+225
+00:23:30.660 --> 00:23:34.629
+Eugenia Sol Piñeiro: que también lo pueden usar de forma mejor el de Open Day, Sí,
+
+226
+00:23:35.130 --> 00:23:44.539
+Eugenia Sol Piñeiro: seguramente muy probablemente, Pero les quiero traer también una alternativa que no sea la la clásica de ir directo a Open. Y ahí
+
+227
+00:23:45.130 --> 00:23:50.059
+Eugenia Sol Piñeiro: y bien, bueno, y lo cargó.
+
+228
+00:23:50.290 --> 00:23:53.099
+Eugenia Sol Piñeiro: Y fíjense que es un vector
+
+229
+00:23:53.820 --> 00:23:56.900
+Eugenia Sol Piñeiro: de bang. Size, 384
+
+230
+00:23:57.600 --> 00:24:01.030
+Eugenia Sol Piñeiro: se acuerdan que habíamos visto que los envages podían tener distinta dimensión
+
+231
+00:24:01.570 --> 00:24:06.770
+Eugenia Sol Piñeiro: ¿En qué me afectaba la dimensión del embading? Fíjense acá esta todo el vector.
+
+232
+00:24:10.360 --> 00:24:16.339
+Eugenia Sol Piñeiro: no esas 3 84, y por ejemplo, el de Open A tiene 1 500 1 536,
+
+233
+00:24:16.740 --> 00:24:20.329
+Eugenia Sol Piñeiro: mucho más grande. Entonces, ¿qué me permitía? ¿se acuerdan? Eso
+
+234
+00:24:32.320 --> 00:24:35.199
+Eugenia Sol Piñeiro: es algo con lo que 1 juega también? ¿no?
+
+235
+00:24:35.840 --> 00:24:41.340
+Eugenia Sol Piñeiro: Que en vez de insular ¿Qué algoritmo meding, por qué me conviene 1 sobre el otro? ¿cuál es mi caso de uso.
+
+236
+00:24:45.260 --> 00:24:53.470
+Eugenia Sol Piñeiro: O sea, si es más chiquito Ok, menor costo computacional. Pero por ahí tengo menos representación de mi.
+
+237
+00:24:53.470 --> 00:24:57.260
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Si será muy grande. Me acuerdo que se te dio el costo computacional muy lejos.
+
+238
+00:24:57.850 --> 00:25:00.480
+Eugenia Sol Piñeiro: Claro si es muy grande, el hecho les habrá pasado en el primer T. M.
+
+239
+00:25:00.480 --> 00:25:03.479
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Gastabas un montón de espacio.
+
+240
+00:25:04.060 --> 00:25:17.940
+Eugenia Sol Piñeiro: Claro exactamente, pero seguramente performance un poco mejor, porque tiene mayor capacidad de representación. Ahora también depende que es lo que estés convirtiendo, por ejemplo, en el T. P. Uno, No sé, tenían la lista de ingredientes.
+
+241
+00:25:18.190 --> 00:25:26.360
+Eugenia Sol Piñeiro: y por ahí, como mucho, tenían un texto de 20 caracteres. Entonces, convertir eso en vez de de 1 536 es demasiado.
+
+242
+00:25:26.880 --> 00:25:31.469
+Eugenia Sol Piñeiro: Co: quizás con una representación más chica ya te alcanzaba, Entonces es un poco
+
+243
+00:25:31.730 --> 00:25:38.099
+Eugenia Sol Piñeiro: dependiendo del caso de uso, dependiendo del costo computacional y demás. Bueno, en este caso son de 384.
+
+244
+00:25:38.680 --> 00:25:41.179
+Eugenia Sol Piñeiro: Esto es lo que voy a guardar en mi base de datos vectorial.
+
+245
+00:25:42.600 --> 00:25:47.580
+Eugenia Sol Piñeiro: Esto específicamente no porque es un ejemplo. Pero los smades de los Chanks no
+
+246
+00:25:47.770 --> 00:25:56.469
+Eugenia Sol Piñeiro: después. Acá Les dejé para que prueben el de open ave que simplemente para que vean cómo cambia y les va a quedar de 1 536.
+
+247
+00:25:58.490 --> 00:26:00.310
+Eugenia Sol Piñeiro: Y ahora sí vamos al vector Storre.
+
+248
+00:26:01.930 --> 00:26:09.410
+Eugenia Sol Piñeiro: Fíjense que esto con Lanchain tiene su paincome vector. Store, vamos a cargar una paincon.
+
+249
+00:26:09.690 --> 00:26:13.830
+Eugenia Sol Piñeiro: ¿qué es lo que vamos a hacer? Primero, tengo que establecer la conexión con vango
+
+250
+00:26:14.040 --> 00:26:19.059
+Eugenia Sol Piñeiro: que básicamente necesito tener cargada mi a P. I de banco, que es gratuita.
+
+251
+00:26:19.510 --> 00:26:26.750
+Eugenia Sol Piñeiro: tiene un fritiar que les tiene que alcanzar lo suficiente. Lo que hace es ofrecer instancias gratuitas en la W S o G, G, P,
+
+252
+00:26:27.110 --> 00:26:35.240
+Eugenia Sol Piñeiro: En este caso, estoy especificando acá. Que lo instancie en ser verle esa doble S en la región u S St.
+
+253
+00:26:37.230 --> 00:26:39.850
+Eugenia Sol Piñeiro: Cuántos cursaron los computing de gas.
+
+254
+00:26:40.600 --> 00:26:42.410
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Yo estoy cursando.
+
+255
+00:26:43.010 --> 00:26:43.720
+Eugenia Sol Piñeiro: Okay.
+
+256
+00:26:45.010 --> 00:26:48.779
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Estamos recién empezando a ver a Bbf: no por.
+
+257
+00:26:51.960 --> 00:26:54.509
+Eugenia Sol Piñeiro: Okay recién arrancaron ahora doble S.
+
+258
+00:26:56.490 --> 00:26:58.600
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí. La primera parte fue el.
+
+259
+00:26:58.600 --> 00:26:59.980
+Eugenia Sol Piñeiro: Sí, Sí. Pío ahora.
+
+260
+00:27:01.750 --> 00:27:08.820
+Eugenia Sol Piñeiro: Okay: Bueno, bueno.
+
+261
+00:27:11.080 --> 00:27:23.340
+Eugenia Sol Piñeiro: no me voy a meter tanto en Ws: Los que ya la cursaron, quizás entiendan un poquito más. Después, cuando veamos diagramas de arquitectura y demás. Voy a relacionarlo con adolescentes. Pero quiero hacer este disclaimer de no es necesario que sepan
+
+262
+00:27:23.490 --> 00:27:32.420
+Eugenia Sol Piñeiro: adolescente. B. S. Pero lo que tienen que saber como mínimo, es que esto está josteado en la nube en A o B S en esta instancia. Ok.
+
+263
+00:27:32.780 --> 00:27:37.710
+Eugenia Sol Piñeiro: Eso y te ofrece un fritiar con
+
+264
+00:27:38.400 --> 00:27:44.760
+Eugenia Sol Piñeiro: está limitado, No, O sea, no es que podes guardar 1 000 000 y 1 000 000 en Bein, pero lo suficiente como para hacer esta aplicación?
+
+265
+00:27:45.890 --> 00:27:49.330
+Eugenia Sol Piñeiro: Bien, Fíjense que hay que pasarle
+
+266
+00:27:49.610 --> 00:27:57.249
+Eugenia Sol Piñeiro: un index name. Banco está dividido en indexys en vez de tener tablas o llamarse tablas, se llaman índices, Entonces va a tener los index name.
+
+267
+00:27:57.340 --> 00:28:11.900
+Eugenia Sol Piñeiro: Entonces acá, básicamente le digo, bueno, si no existe el Index crealo con este nombre con esta dimensión de Medings. Por eso es importante que vea la dimensión de Meding antes porque se lo tengo que crear a Pincone, que qué dimensión de vectores va a tener ese index que tamaño va a tener
+
+268
+00:28:12.210 --> 00:28:21.200
+Eugenia Sol Piñeiro: porque para Pycom no son necesariamente madings. Son vectores de números. En fin, para nosotros, son envens
+
+269
+00:28:21.620 --> 00:28:24.360
+Eugenia Sol Piñeiro: y vamos a definir una
+
+270
+00:28:24.530 --> 00:28:34.449
+Eugenia Sol Piñeiro: métrica para comparar los vectores. Fíjense que acá. Le estoy diciendo, Ok, Cuando compares estos vectores, en mi caso meds usás la distancia coseno para hacer el tribal
+
+271
+00:28:36.140 --> 00:28:42.699
+Eugenia Sol Piñeiro: bien y acá simplemente se inicializa el vector store y lo devuelve. Ahora vamos a ir a pan con antes
+
+272
+00:28:42.810 --> 00:28:44.010
+Eugenia Sol Piñeiro: para que vean
+
+273
+00:28:48.070 --> 00:28:49.390
+Eugenia Sol Piñeiro: la consola.
+
+274
+00:28:52.090 --> 00:28:53.849
+Eugenia Sol Piñeiro: Esta es mi base de datos.
+
+275
+00:28:54.930 --> 00:28:56.940
+Eugenia Sol Piñeiro: Bueno, acá tengo
+
+276
+00:28:57.720 --> 00:29:03.979
+Eugenia Sol Piñeiro: este, lo cargué antes por si acaso, pero ahora vamos a cargar 1 nuevo. Fíjense que acá. Yo tengo 2 indexis. No
+
+277
+00:29:04.350 --> 00:29:06.440
+Eugenia Sol Piñeiro: vamos a cargar el nuestro.
+
+278
+00:29:07.800 --> 00:29:14.729
+Eugenia Sol Piñeiro: Acá. Fíjense después, ustedes cárguense la Picky. Acá y ahora vamos a ver
+
+279
+00:29:15.590 --> 00:29:18.249
+Eugenia Sol Piñeiro: cómo cargar este. Vamos a sacarle el test.
+
+280
+00:29:19.710 --> 00:29:20.949
+Eugenia Sol Piñeiro: Vamos a llamarlo así.
+
+281
+00:29:22.840 --> 00:29:31.280
+Eugenia Sol Piñeiro: Entonces así. Va a crear el Index. Y ahora le voy a decir, Ok, cárgame los documentos que son los Chanks que yo ya generé
+
+282
+00:29:31.780 --> 00:29:37.879
+Eugenia Sol Piñeiro: entonces ahí que creó lindex. Y ahí me cargó. Todos estos Chanks que fíjense que cada 1 tiene una idea, y son 6,
+
+283
+00:29:38.450 --> 00:29:45.950
+Eugenia Sol Piñeiro: 6, eran los Chanks que yo tenía cargados. Acuérdense que los 3 documentos que yo tenía me los había convertido en 6. Chanks.
+
+284
+00:29:46.170 --> 00:29:50.360
+Eugenia Sol Piñeiro: Entonces vamos a pincon, ahí se cargó. Era este el que no tenía el test.
+
+285
+00:29:50.820 --> 00:29:51.960
+Eugenia Sol Piñeiro: Vamos a verlo.
+
+286
+00:29:52.840 --> 00:29:58.829
+Eugenia Sol Piñeiro: Fíjense que dice Okay a W, s. I, S. Esto es lo que habíamos definido. Define el nombre.
+
+287
+00:30:02.110 --> 00:30:06.220
+Eugenia Sol Piñeiro: Pueden ver un montón de métricas y demás, pero
+
+288
+00:30:07.560 --> 00:30:13.840
+Eugenia Sol Piñeiro: ¡ay, porque se me fueron los documentos espéreme, Ahí están.
+
+289
+00:30:13.990 --> 00:30:21.360
+Eugenia Sol Piñeiro: Y acá 1 puede filtrar por ahí y empezar a buscar. Esto es lo que quedó cargado en Pinecont.
+
+290
+00:30:21.540 --> 00:30:26.770
+Eugenia Sol Piñeiro: Fíjense que me va a cargar un I D que va a generar Phnecome
+
+291
+00:30:27.380 --> 00:30:30.810
+Eugenia Sol Piñeiro: Me carga la metadata separada en distintos campos.
+
+292
+00:30:31.120 --> 00:30:34.170
+Eugenia Sol Piñeiro: ¿se acuerdan, que teníamos el Start Index y el surf.
+
+293
+00:30:34.630 --> 00:30:36.729
+Eugenia Sol Piñeiro: Y me va a cargar el texto
+
+294
+00:30:37.010 --> 00:30:49.510
+Eugenia Sol Piñeiro: para después reconstruir el embeding. Pero adentro va a tener un embeding almacenado. Esto es como parte de metadata. No hace un embwes, sino que hace un enveding del texto del campo texto
+
+295
+00:30:50.060 --> 00:30:53.759
+Eugenia Sol Piñeiro: y lo va a comparar con la distancia de coseno.
+
+296
+00:30:55.170 --> 00:31:00.079
+Eugenia Sol Piñeiro: Y ahí están todos nuestros documentos cargados por adentro, los medios
+
+297
+00:31:00.560 --> 00:31:04.530
+Eugenia Sol Piñeiro: que yo le dije que este va a ser el embate Size.
+
+298
+00:31:06.600 --> 00:31:11.330
+Eugenia Sol Piñeiro: Bien, ahora vamos a hacer una Quary.
+
+299
+00:31:11.920 --> 00:31:21.959
+Eugenia Sol Piñeiro: Va a ser una búsqueda de similitud. Acá. Lo que le estoy diciendo es: Ok, voy a traerlos. Top 4 documentos más cercanos a esta quary.
+
+300
+00:31:23.340 --> 00:31:28.140
+Eugenia Sol Piñeiro: Le voy a pasar la quary que básicamente es cual es el temario, y le voy a indicar este searchtipe.
+
+301
+00:31:28.750 --> 00:31:37.409
+Eugenia Sol Piñeiro: Hay distintos. Este lo que hace es buscar, según la similitud que definir que es la distancia coseno, pero además está restringida por un freshl.
+
+302
+00:31:37.970 --> 00:31:44.829
+Eugenia Sol Piñeiro: ¿no? Entonces solo me va a traer los que estén por encima de cierto fresco que después yo lo puedo definir Ahora está usando el default.
+
+303
+00:31:45.010 --> 00:31:50.190
+Eugenia Sol Piñeiro: Y puede ser Similarity, M Mars o este con fresco. ¿qué es esto?
+
+304
+00:31:50.390 --> 00:31:55.270
+Eugenia Sol Piñeiro: ¿lo pueden ir investigando? Hay distintas búsquedas de similitud.
+
+305
+00:31:56.820 --> 00:32:06.020
+Eugenia Sol Piñeiro: ¿qué ¿Qué hace esta? Simplemente me trae los más similares Me trae todos. Esta es igual solo que hace también ese filtro por el fresco, y esta
+
+306
+00:32:06.120 --> 00:32:20.639
+Eugenia Sol Piñeiro: ya empieza a medir. La relevancia de los documentos es un poco más compleja en el sentido de que quiero más diversidad en los resultados que me trae. Por ejemplo, me puedo ayudar en arduz drag para no traer tantos chanks duplicados, por ejemplo.
+
+307
+00:32:24.720 --> 00:32:28.229
+Eugenia Sol Piñeiro: Entonces, si lo corremos, me dice, Ok, ¿cuál es el temario
+
+308
+00:32:29.270 --> 00:32:40.599
+Eugenia Sol Piñeiro: y me trajo estos documentos. Hasta acá. No tenemos un Lm acá. Simplemente estamos en la parte del re trival. Tenemos el index impie Line. Entonces, fíjense que me lo escupe así, nomás. Esta es la la
+
+309
+00:32:40.800 --> 00:32:47.290
+Eugenia Sol Piñeiro: la respuesta de la quory de Bainkon. Nada más es lo que me trae la base de datos vectorial. Entonces me va a traer, por ejemplo.
+
+310
+00:32:47.990 --> 00:32:58.469
+Eugenia Sol Piñeiro: agarra de materia y me trae, Ok, la carga horaria que hablamos de temática de modelos de lenguaje Okay, puede ser que sea parte del temario recién
+
+311
+00:32:58.840 --> 00:33:05.129
+Eugenia Sol Piñeiro: al acá de la materia. ¿de qué es lo que me tengo que traer. Bueno, o sea, acá.
+
+312
+00:33:05.280 --> 00:33:06.829
+Eugenia Sol Piñeiro: No tengo un E. L, E. M,
+
+313
+00:33:07.150 --> 00:33:15.040
+Eugenia Sol Piñeiro: Y simplemente me trajo. Ok, Estos son los camas similares, arreglate y después procesalos como puedas hasta acá.
+
+314
+00:33:15.200 --> 00:33:18.009
+Eugenia Sol Piñeiro: Dudas. Esto es el index impible.
+
+315
+00:33:18.940 --> 00:33:22.179
+Eugenia Sol Piñeiro: Nada más hasta acá. Terminó Lindextin Pay Line. Llegamos al re trival.
+
+316
+00:33:28.380 --> 00:33:29.359
+Eugenia Sol Piñeiro: Quedó claro.
+
+317
+00:33:31.200 --> 00:33:37.229
+Eugenia Sol Piñeiro: Fijensé que se cargó bastante rápido. O sea, levantamos un pencon en media hora, 20 min.
+
+318
+00:33:38.200 --> 00:33:39.950
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí o.
+
+319
+00:33:39.950 --> 00:33:40.390
+Eugenia Sol Piñeiro: Pues claro.
+
+320
+00:33:40.390 --> 00:33:42.930
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: El el el notebook.
+
+321
+00:33:44.730 --> 00:33:46.869
+Eugenia Sol Piñeiro: Ok, de pasito a pasito. Me lo.
+
+322
+00:33:46.870 --> 00:33:48.079
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No habían hecho. Me gusta.
+
+323
+00:33:48.660 --> 00:33:49.930
+Eugenia Sol Piñeiro: Okay, genial.
+
+324
+00:33:50.420 --> 00:33:56.849
+Eugenia Sol Piñeiro: Bien, entonces esto lo van a tener que hacer. Aconsejo que
+
+325
+00:33:57.290 --> 00:34:00.469
+Eugenia Sol Piñeiro: usen pinecom o usen croma, porque
+
+326
+00:34:00.640 --> 00:34:18.530
+Eugenia Sol Piñeiro: pueden usar pobres con P. G vector, Sí, pero pobre. Es una base de datos que ya conocen. Entonces está bueno también que experimenten con algo nuevo. Y la verdad que, como verán, es bastante sencillo cargarla y nada aprovechan. Fíjense que acá les dice el el dios y demás.
+
+327
+00:34:19.449 --> 00:34:23.130
+Eugenia Sol Piñeiro: fíjense a ver. Tienen 2 gigas.
+
+328
+00:34:23.670 --> 00:34:34.290
+Eugenia Sol Piñeiro: No les debería alcanzar a eso. Me refiero como el free tier debería alcanzar después. Obviamente 1 puede aumentar y aumentar y demás, y pasarse a trotear, pero
+
+329
+00:34:34.949 --> 00:34:37.739
+Eugenia Sol Piñeiro: lo pueden usar tranquilamente para toda la la materia.
+
+330
+00:34:38.989 --> 00:34:39.830
+Eugenia Sol Piñeiro: Bien.
+
+331
+00:34:41.550 --> 00:34:50.799
+Eugenia Sol Piñeiro: voy a hacer un pantallazo de croma. No lo voy a correr simplemente. Esto se los dejo para que después lo vean mejor, porque es similar, pero les traigo otro caso de uso.
+
+332
+00:34:52.010 --> 00:34:54.159
+Eugenia Sol Piñeiro: Acá Lo que tenemos es.
+
+333
+00:34:54.639 --> 00:35:13.199
+Eugenia Sol Piñeiro: por ejemplo, si en vez de cargar de un file system, como hicimos antes mis documentos, puedo directamente cargar el texto así, con la estructura que ofrece lanchain esta clase document con el page content
+
+334
+00:35:13.400 --> 00:35:15.789
+Eugenia Sol Piñeiro: y el metadata y me lo voy armando.
+
+335
+00:35:16.930 --> 00:35:24.670
+Eugenia Sol Piñeiro: Entonces este por ejemplo, es un caso de uso donde género, documentos sobre mascotas.
+
+336
+00:35:26.340 --> 00:35:31.419
+Eugenia Sol Piñeiro: Y fíjense que acá hago lo mismo, o sea.
+
+337
+00:35:31.700 --> 00:35:39.749
+Eugenia Sol Piñeiro: el notebook que vimos antes, estaba mucho más detallado y tenía como pasito a pasito, pero después, fíjense que todo el index impalpeling se puede resumir en esto
+
+338
+00:35:40.190 --> 00:35:41.030
+Eugenia Sol Piñeiro: nada más.
+
+339
+00:35:41.210 --> 00:35:49.759
+Eugenia Sol Piñeiro: O sea, tengo el texto Splitter. En este caso estoy usando el carácter texto en vez de Recursi, pero puedo usar el recursiv. Hago el speed dockcuments.
+
+340
+00:35:50.160 --> 00:35:53.450
+Eugenia Sol Piñeiro: me cargo otra función de mails y después acá para que prueben otra.
+
+341
+00:35:53.630 --> 00:36:00.080
+Eugenia Sol Piñeiro: Y el vector Storre, que en este caso es croma, Lo que tiene croma es que es mucho más fácil de definir, porque es in memory.
+
+342
+00:36:00.590 --> 00:36:04.240
+Eugenia Sol Piñeiro: Después se puede bajar a disco, sí, pero
+
+343
+00:36:04.610 --> 00:36:06.390
+Eugenia Sol Piñeiro: es más rápida, pero es volátil, ¿no?
+
+344
+00:36:07.890 --> 00:36:11.060
+Eugenia Sol Piñeiro: ¿y qué más? Bueno, hace la búsqueda de similitud.
+
+345
+00:36:12.470 --> 00:36:15.569
+Eugenia Sol Piñeiro: Por ejemplo, ¿qué animal no salta. En este caso
+
+346
+00:36:15.680 --> 00:36:26.410
+Eugenia Sol Piñeiro: me trajo el tema de los Rabbits. Esto me quedó del del cual se pasado. Ahora que me doy cuenta que estábamos intentando romperlo. Pero bueno.
+
+347
+00:36:26.730 --> 00:36:32.760
+Eugenia Sol Piñeiro: tiene una búsqueda en similitud. Fíjense que carga los documentos muy similar a como lo hacíamos antes. Son los que cargue.
+
+348
+00:36:33.280 --> 00:36:40.740
+Eugenia Sol Piñeiro: tienen acá como persistemala disco si lo quieren persistir. Pero la idea es que jueguen un poco con esto. La levanten, corran. Notebook. Pruébenlo.
+
+349
+00:36:40.840 --> 00:36:51.910
+Eugenia Sol Piñeiro: Lo que les quiero traer acá que se lleven es que no hay una única forma de resolver el sistema. Fíjense que puedo cambiar cualquiera de los módulos que presenté
+
+350
+00:36:52.090 --> 00:36:53.910
+Eugenia Sol Piñeiro: mientras esté justificado, ¿no?
+
+351
+00:36:54.730 --> 00:37:00.240
+Eugenia Sol Piñeiro: Así que mientras entiendan qué es lo que están haciendo, pueden cada grupo va a presentar algo distinto, o sea, seguramente
+
+352
+00:37:01.550 --> 00:37:06.059
+Eugenia Sol Piñeiro: bien, hasta acá Pangong y Croma.
+
+353
+00:37:07.450 --> 00:37:12.999
+Eugenia Sol Piñeiro: Listo dudas. Ahora vamos a incorporar toda la otra parte, no la de
+
+354
+00:37:15.800 --> 00:37:21.050
+Eugenia Sol Piñeiro: la del asistente virtual. Vamos a la del Lelm y demás. Voy a cargar la demo.
+
+355
+00:37:27.250 --> 00:37:30.509
+Eugenia Sol Piñeiro: Ahora les muestro. Te tengo que cargar las api Kiss: así que aguántame.
+
+356
+00:37:35.480 --> 00:37:37.200
+Eugenia Sol Piñeiro: pero mientras dudas.
+
+357
+00:37:58.600 --> 00:38:03.599
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No, no, no me quedaron dudas. Estaba Se entendió bastante.
+
+358
+00:38:04.170 --> 00:38:05.330
+Eugenia Sol Piñeiro: Okay.
+
+359
+00:38:05.330 --> 00:38:08.830
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: La tarde, prepara cosas.
+
+360
+00:38:10.420 --> 00:38:13.000
+Eugenia Sol Piñeiro: Sí, Bueno, está bueno, eso también. Que se choquen.
+
+361
+00:38:13.120 --> 00:38:17.390
+Eugenia Sol Piñeiro: Lo que tiene también es que Pancon te lo maneja, no, o sea, no tenés que regar absolutamente nada.
+
+362
+00:38:17.900 --> 00:38:21.699
+Eugenia Sol Piñeiro: Tanto tenés que meter en A o B, L, S, E.
+
+363
+00:38:21.990 --> 00:38:23.960
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Por suerte, pues yo soy capaz de hacer el servicio.
+
+364
+00:38:25.500 --> 00:38:26.030
+Eugenia Sol Piñeiro: No.
+
+365
+00:38:26.460 --> 00:38:27.710
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Se.
+
+366
+00:38:27.710 --> 00:38:29.500
+Eugenia Sol Piñeiro: Quiere meterse, que se meta.
+
+367
+00:38:29.500 --> 00:38:35.799
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Bueno, Bueno, sí lo suficiente como para costarle la facultad. Un montón de plata.
+
+368
+00:38:37.910 --> 00:38:42.859
+Eugenia Sol Piñeiro: Se gastaba. Todos los créditos tienen bastante. ¿cuánto tienen ahora. En Claudio. Vale.
+
+369
+00:38:45.230 --> 00:38:47.390
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: En redes, nos dan 50 dólares.
+
+370
+00:38:47.390 --> 00:38:48.290
+Eugenia Sol Piñeiro: Ni cuenta.
+
+371
+00:38:49.100 --> 00:38:52.209
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Con lo que sale la cuota nos deberían dar el triple de eso.
+
+372
+00:38:54.010 --> 00:38:55.749
+Eugenia Sol Piñeiro: Esto exagerado. Yo no voy a decir nada.
+
+373
+00:38:55.930 --> 00:39:00.190
+JULIETA TECHENSKI: O sea, a lo mejor del 50 después, es como que puedes pedir que te renueven. Si te.
+
+374
+00:39:00.190 --> 00:39:00.640
+Eugenia Sol Piñeiro: Okay.
+
+375
+00:39:00.640 --> 00:39:08.819
+JULIETA TECHENSKI: No nosotros. Creo que en una en glan, nos robaron 3 veces porque no sabíamos cómo había que hacer las cosas.
+
+376
+00:39:09.300 --> 00:39:11.969
+Eugenia Sol Piñeiro: Fue como en las 2 materias, qué 2 materias hay.
+
+377
+00:39:12.640 --> 00:39:15.380
+JULIETA TECHENSKI: Porque es una electiva o cloud computing
+
+378
+00:39:15.870 --> 00:39:22.260
+JULIETA TECHENSKI: o ahora empezar redes como la segunda mitad de redes. La adolesc.
+
+379
+00:39:24.570 --> 00:39:28.740
+Eugenia Sol Piñeiro: Okay. O sea, no están haciendo Cloud. Están haciendo redes con adolescentes.
+
+380
+00:39:29.970 --> 00:39:36.810
+JULIETA TECHENSKI: Creo. Me parece que algunos están haciendo redes y otros cuando están que habían hecho Claudio y teclado que.
+
+381
+00:39:38.450 --> 00:39:40.690
+Eugenia Sol Piñeiro: Mira. Okay no sabía la de redes.
+
+382
+00:39:41.770 --> 00:39:42.890
+Eugenia Sol Piñeiro: Bueno, bien.
+
+383
+00:39:46.170 --> 00:39:48.670
+Eugenia Sol Piñeiro: ya casi termino. Voy, bueno.
+
+384
+00:39:49.470 --> 00:39:57.400
+Eugenia Sol Piñeiro: te lo voy a correr lo malo que está demo es que es más pesada, entonces tarda poco más en correr
+
+385
+00:39:57.520 --> 00:40:04.700
+Eugenia Sol Piñeiro: pua. Yo, O sea, no es que tarda, pero tardo demasiado con una demon vivo, pero es bastante rápida.
+
+386
+00:40:05.450 --> 00:40:12.089
+Eugenia Sol Piñeiro: Bueno, vamos mientras me van a decir ustedes
+
+387
+00:40:15.250 --> 00:40:28.849
+Eugenia Sol Piñeiro: frases específicas y vamos a cargar Chanks que hicieron ustedes. O sea, vamos a cargar al de alumnos materia temario. Y vamos a cargar 1 más personalizado a lo que ustedes quieran. Díganme que cargamos oraciones para romperlo para
+
+388
+00:40:29.240 --> 00:40:34.310
+Eugenia Sol Piñeiro: no sé que alucine lo que sea para que de lata falsas.
+
+389
+00:40:35.180 --> 00:40:40.349
+Eugenia Sol Piñeiro: por ejemplo, el el 4 y pasado pusieron que no podemos tomar agua porque es venenosa. Una cosa así
+
+390
+00:40:48.980 --> 00:41:01.459
+Eugenia Sol Piñeiro: tan útil como adorno de Navidad en julio. Ok, la hora, una oración. O sea, qué cosa tan útil para hacer una pregunta después. O sea, imagínense, nosotros le vamos a hacer una pregunta al chat bot, y el chat nos tiene que responder algo de este custom txt.
+
+391
+00:41:05.110 --> 00:41:09.029
+Eugenia Sol Piñeiro: algo personalizado, no que que un elem no pueda responder
+
+392
+00:41:09.570 --> 00:41:12.970
+Eugenia Sol Piñeiro: algo sobre ustedes, algo que les guste algo de la materia.
+
+393
+00:41:33.160 --> 00:41:35.770
+Eugenia Sol Piñeiro: vayan tirándome mientras voy corriendo a la demo
+
+394
+00:41:39.370 --> 00:41:43.580
+Eugenia Sol Piñeiro: okay todos los días de acá adelante va a granizar para poneos.
+
+395
+00:41:56.000 --> 00:42:02.400
+Eugenia Sol Piñeiro: ¿qué más vamos. Participen Participen conmigo.
+
+396
+00:42:03.410 --> 00:42:07.549
+Eugenia Sol Piñeiro: que es temprano? Todavía son las 7 y pue 7 y 40. Casi las 8
+
+397
+00:42:08.410 --> 00:42:11.190
+Eugenia Sol Piñeiro: hacemos esta que estoy Break: Antes de ir a advance
+
+398
+00:42:15.010 --> 00:42:18.530
+Eugenia Sol Piñeiro: no podés poner la negación de alguna de las cosas que tenés.
+
+399
+00:42:18.830 --> 00:42:25.689
+Eugenia Sol Piñeiro: Como: qué asesor fide financiero está siempre libre y casi nunca se usa. Ok.
+
+400
+00:42:28.730 --> 00:42:33.949
+Eugenia Sol Piñeiro: Ay, vamos a poner de la fe de algo así
+
+401
+00:42:38.620 --> 00:42:41.689
+Eugenia Sol Piñeiro: Es imposible para los humanos, normales. Okay.
+
+402
+00:42:48.030 --> 00:42:49.780
+Eugenia Sol Piñeiro: te ves un gusano.
+
+403
+00:42:50.280 --> 00:42:56.239
+Eugenia Sol Piñeiro: Bueno, vamos a probar el sensor de madera. Te voy a no saltar. Por favor se queda
+
+404
+00:43:00.070 --> 00:43:06.619
+Eugenia Sol Piñeiro: Okay. Las profesoras no son, o sea, y me lo
+
+405
+00:43:08.110 --> 00:43:15.390
+Eugenia Sol Piñeiro: a vos otro que no tenga el de las profesoras, porque mi ejemplo es quiénes son. La profesora funcione bien.
+
+406
+00:43:16.860 --> 00:43:18.699
+Eugenia Sol Piñeiro: Y después, si quieres lo rompemos.
+
+407
+00:43:36.750 --> 00:43:41.279
+Eugenia Sol Piñeiro: Ey Juan Bautista, querés sumar 1 más para cambiar ese?
+
+408
+00:43:59.020 --> 00:44:01.549
+Eugenia Sol Piñeiro: ¿no? Bueno, Bueno, ahora lo rompemos igual.
+
+409
+00:44:02.970 --> 00:44:04.210
+Eugenia Sol Piñeiro: O sea, lo vamos a romper.
+
+410
+00:44:04.870 --> 00:44:08.930
+Eugenia Sol Piñeiro: Y bien, probemos con estos 4.
+
+411
+00:44:09.110 --> 00:44:10.359
+Eugenia Sol Piñeiro: Voy a cargarlos.
+
+412
+00:44:13.660 --> 00:44:14.710
+Eugenia Sol Piñeiro: Créeme.
+
+413
+00:44:17.900 --> 00:44:19.080
+Eugenia Sol Piñeiro: Mhm.
+
+414
+00:44:36.870 --> 00:44:37.870
+Eugenia Sol Piñeiro: Bueno.
+
+415
+00:44:41.490 --> 00:44:45.350
+Eugenia Sol Piñeiro: bien, tenemos a todos nuestros documentos. Vamos a implementar el Rag.
+
+416
+00:44:49.590 --> 00:44:55.849
+Eugenia Sol Piñeiro: ¿qué vamos a tener Primero, lo mismo que teníamos antes. El Index sin Pipe Lide
+
+417
+00:44:56.130 --> 00:44:59.109
+Eugenia Sol Piñeiro: Okay. Así que esto va a ser exactamente lo mismo.
+
+418
+00:44:59.880 --> 00:45:13.200
+Eugenia Sol Piñeiro: Está un poquito distinto, pero es, es, es parecido. Le aumenté, por ejemplo, el Chankssie y demás, pero la idea es la misma. Teníamos nuestro colección de documentos. Vamos a hacer un Get Dogs. Vamos a generar los Chanks
+
+419
+00:45:13.620 --> 00:45:16.590
+Eugenia Sol Piñeiro: hasta acá nada más distinto que esto.
+
+420
+00:45:16.780 --> 00:45:25.110
+Eugenia Sol Piñeiro: Y en Datas Store, vamos a usar en Bains de Higging, Face y Chroma Okay para cambiar un poco
+
+421
+00:45:26.420 --> 00:45:29.319
+Eugenia Sol Piñeiro: hasta ahí más. De nuevo, ahora acá.
+
+422
+00:45:29.720 --> 00:45:33.039
+Eugenia Sol Piñeiro: Les dejé comentado alternativas
+
+423
+00:45:33.080 --> 00:45:49.950
+Eugenia Sol Piñeiro: para hacerlo con open a, por ejemplo, voy a cargar chat chipiricuatro o puedo cargar seminal, o lo que sea que quiero traer, acá que es simplemente definir el el y cambiar la clase del Lel. Y ya el resto. Esto lo mismo es simplemente acá pasarlem y fin.
+
+424
+00:45:50.300 --> 00:45:52.689
+Eugenia Sol Piñeiro: Ahora acá. Está, ¿cómo lo vamos a hacer?
+
+425
+00:45:53.190 --> 00:46:05.260
+Eugenia Sol Piñeiro: Vamos a, bueno, primero a setear Cuba. Acá. Estoy cargando un nene Len de Hugh Face que ya fíjense como se cargaba el de open gay, todo lindo y hermoso, y chiquito y acá está el time face
+
+426
+00:46:05.510 --> 00:46:08.839
+Eugenia Sol Piñeiro: que hay que setearle un par de cositas más.
+
+427
+00:46:09.100 --> 00:46:13.800
+Eugenia Sol Piñeiro: Es bastante básico. Es este que es el 5 punto. Uno
+
+428
+00:46:14.280 --> 00:46:19.960
+Eugenia Sol Piñeiro: pesa 3 gigas. Creo que pesaba. Pero, bueno, ahora vamos a intentar cargarlo en
+
+429
+00:46:20.090 --> 00:46:25.030
+Eugenia Sol Piñeiro: bien. Entonces acá. Lo que hace es defino Bien, el en este caso, 1 de hugging face.
+
+430
+00:46:25.270 --> 00:46:33.369
+Eugenia Sol Piñeiro: Y le voy a decir, bueno, vas a tener que generar texto. Básicamente, 1 le puede cambiar la task en este caso es un chatbot. Así que quiero eso.
+
+431
+00:46:34.560 --> 00:46:53.109
+Eugenia Sol Piñeiro: Y acá le paso un par de restricciones para la respuesta. Acá le voy a decir, bueno, como máximo, respondeme hasta 128 tokens. ¿por qué? Porque no quiero que me dé respuestas súper largas o que empiece a iterar o a hablar sobre otras cosas. Se concreto. 128 tokens como máximo y sin
+
+432
+00:46:53.320 --> 00:47:00.110
+Eugenia Sol Piñeiro: y después acá se lo penaliza por si rehusa tokens o usa toques repetitivos.
+
+433
+00:47:00.330 --> 00:47:03.980
+Eugenia Sol Piñeiro: lo que tienen también los modelos más chiquitos
+
+434
+00:47:04.360 --> 00:47:12.690
+Eugenia Sol Piñeiro: o o gratuitos. También es que son más básicos y quizás necesitan más restricciones. Entonces, por eso también es un poco más
+
+435
+00:47:12.970 --> 00:47:16.730
+Eugenia Sol Piñeiro: larga la implementación, pero se puede usar y se puede tirar sobre eso.
+
+436
+00:47:17.390 --> 00:47:23.499
+Eugenia Sol Piñeiro: Bien, acá. Lo que se hace es definir una change que es
+
+437
+00:47:24.010 --> 00:47:32.909
+Eugenia Sol Piñeiro: bastante importante en Landchain, de ahí el nombre. Pero lo que hace básicamente es esto del concepto de las cadenas de lenguaje que en este caso va a ser un
+
+438
+00:47:33.080 --> 00:47:37.990
+Eugenia Sol Piñeiro: chat bot que va a hablar sobre Staff, o sea, cosas genéricas.
+
+439
+00:47:38.370 --> 00:47:42.919
+Eugenia Sol Piñeiro: Pero 1 puede empezar a restringirlo y empezar a personalizarlo un poquito más. Entonces
+
+440
+00:47:43.860 --> 00:47:53.120
+Eugenia Sol Piñeiro: la Chain se le va a definir, Ok, vas a hacer un simple re trival de Cubanay. Es un cuestión and stering donde
+
+441
+00:47:53.340 --> 00:47:57.339
+Eugenia Sol Piñeiro: hacer. Le doy la pregunta sobre la materia de deep learning, y él me la tiene que responder
+
+442
+00:47:58.300 --> 00:48:06.510
+Eugenia Sol Piñeiro: él, siendo el agente que humanice totalmente, Pero, bueno, me va a tener que responder el lema. Ok, Entonces
+
+443
+00:48:06.770 --> 00:48:12.880
+Eugenia Sol Piñeiro: se le setea el retriever. Y le voy a decir, bueno, usame esta base de datos que habíamos definido croma arriba
+
+444
+00:48:13.080 --> 00:48:20.500
+Eugenia Sol Piñeiro: usa esta base de datos como retriever y usa este searchtipe por similitud. Y en este caso Traeme los top 2
+
+445
+00:48:20.670 --> 00:48:27.199
+Eugenia Sol Piñeiro: Chanks más importantes con este k. Hay que jugar de forma experimental, acá puse 1 chiquito
+
+446
+00:48:27.610 --> 00:48:34.649
+Eugenia Sol Piñeiro: también para que for performe un poquito peor. Y y vean cómo cómo se puede romper también. Y porque tenemos muy poquitos Chancs.
+
+447
+00:48:34.830 --> 00:48:36.790
+Eugenia Sol Piñeiro: Pero con esto 1 hay que jugar
+
+448
+00:48:36.980 --> 00:48:38.889
+Eugenia Sol Piñeiro: que 1 tiene que jugar. Bien.
+
+449
+00:48:39.560 --> 00:48:44.260
+Eugenia Sol Piñeiro: entonces el piveline va a ser como antes. Voy a tener
+
+450
+00:48:45.160 --> 00:48:53.879
+Eugenia Sol Piñeiro: que generar mi documen loader con todos mis documentos, estos 4 Txt: Hago el split de los textos y
+
+451
+00:48:54.280 --> 00:48:57.880
+Eugenia Sol Piñeiro: cargo, la, o sea, instancio, la base de datos vectorial.
+
+452
+00:48:58.060 --> 00:49:09.540
+Eugenia Sol Piñeiro: Ahí no hice mucho más que eso. Y este es el que es un poquito más pesado que acá tiene que bajarse el el tokenizer, el em de Highing y demás
+
+453
+00:49:10.120 --> 00:49:11.839
+Eugenia Sol Piñeiro: que por eso tarda un poquito más.
+
+454
+00:49:12.220 --> 00:49:13.900
+Eugenia Sol Piñeiro: Así que vamos a esperar allí un ratito.
+
+455
+00:49:14.990 --> 00:49:17.620
+Eugenia Sol Piñeiro: No tarda tanto. Yo me quejo. Pero bueno, porque
+
+456
+00:49:18.060 --> 00:49:21.130
+Eugenia Sol Piñeiro: para una demon vivo necesito que sea todo rápido.
+
+457
+00:49:22.700 --> 00:49:29.549
+Eugenia Sol Piñeiro: Bien, fíjense que yo les había dicho que eran como 3 gigas que se está cargando
+
+458
+00:49:30.860 --> 00:49:38.160
+Eugenia Sol Piñeiro: este instinto. También le pueden pegar una Api directamente, pegar la Api. Lo pueden ahí y va mucho más rápido, pero estamos haciendo
+
+459
+00:49:39.600 --> 00:49:41.499
+Eugenia Sol Piñeiro: este. No el Hong Face Bylight.
+
+460
+00:49:44.040 --> 00:49:45.710
+Eugenia Sol Piñeiro: Bien, ahí cargó.
+
+461
+00:49:46.550 --> 00:49:48.650
+Eugenia Sol Piñeiro: Bien, Estos son mis documentos.
+
+462
+00:49:49.040 --> 00:49:53.509
+Eugenia Sol Piñeiro: Fíjense que ahí los cargó. Tengo el alumno este X, T Temario, T. X, T.
+
+463
+00:49:53.740 --> 00:49:56.059
+Eugenia Sol Piñeiro: Materia. Y el custom
+
+464
+00:49:56.430 --> 00:50:03.980
+Eugenia Sol Piñeiro: acá tiene todos los días. Va a granizar escuchar música con auriculares funcional con el gusano. El ascensor de madero
+
+465
+00:50:04.190 --> 00:50:06.740
+Eugenia Sol Piñeiro: dice que no hay que saltar y la del financiero. ¿no?
+
+466
+00:50:06.910 --> 00:50:07.630
+Eugenia Sol Piñeiro: Bien.
+
+467
+00:50:08.870 --> 00:50:16.420
+Eugenia Sol Piñeiro: Ahora vamos a preguntarle a nuestro Gerem. Vamos a pasarlo en Prompt.
+
+468
+00:50:17.010 --> 00:50:20.050
+Eugenia Sol Piñeiro: que acá lo que se hace es generar la cadena.
+
+469
+00:50:20.520 --> 00:50:26.989
+Eugenia Sol Piñeiro: La La change que generamos antes es la que se va a encargar de combinar esta memoria paramétrica con la no paramétrica.
+
+470
+00:50:27.340 --> 00:50:34.329
+Eugenia Sol Piñeiro: Entonces acá. Le voy a decir, bueno, que es inteligencia artificial, y tengo que pasarle el prompt y ver qué es mi responde.
+
+471
+00:50:34.490 --> 00:50:37.839
+Eugenia Sol Piñeiro: Y me dice: Okay. La inteligencia artificial
+
+472
+00:50:38.370 --> 00:50:46.060
+Eugenia Sol Piñeiro: refiere a máquinas inteligentes o sistemas diseñados para hacer este tipo de decisiones que
+
+473
+00:50:47.610 --> 00:50:52.150
+Eugenia Sol Piñeiro: sinceramente no queremos que responda a eso, ¿no? O sea, no.
+
+474
+00:50:53.550 --> 00:50:58.520
+Eugenia Sol Piñeiro: no no sirve. O sea, yo quiero que esté limitado a mi contexto. O sea.
+
+475
+00:50:58.660 --> 00:51:03.240
+Eugenia Sol Piñeiro: Okay funciona el Erem acá. Está usando totalmente la memoria paramétrica
+
+476
+00:51:03.460 --> 00:51:12.180
+Eugenia Sol Piñeiro: que está bien que lo haga, pero lo tengo que restringir para que mi arquitectura, Rag se limite a la información personalizada.
+
+477
+00:51:13.460 --> 00:51:16.280
+Eugenia Sol Piñeiro: Se entendió esa parte. ¿por qué quiero hacer eso?
+
+478
+00:51:16.700 --> 00:51:26.909
+Eugenia Sol Piñeiro: O sea, no quiero que me responda que ese día no quiero que la gente use como un elemento común, sino que sea una aplicación del chat bot de la materia de temas avanzados donde
+
+479
+00:51:27.510 --> 00:51:30.609
+Eugenia Sol Piñeiro: Buah me quedé con el nombre anterior de la trek wish models.
+
+480
+00:51:32.840 --> 00:51:37.829
+Eugenia Sol Piñeiro: De hecho, me dijeron el nombre anterior de la materia. Bueno.
+
+481
+00:51:39.490 --> 00:51:45.600
+Eugenia Sol Piñeiro: hasta acá estamos bien. Ahora vamos a llamar al chat bot que
+
+482
+00:51:46.610 --> 00:51:58.100
+Eugenia Sol Piñeiro: como disclaimer, hagan algo un poquito más complejo. Acá. Es un Wild distinto de Buy, bastante básico que 1 le pasa el Prompt y tiene que llamar a la change, no invocar
+
+483
+00:51:58.340 --> 00:52:05.070
+Eugenia Sol Piñeiro: a el voto. Entonces le digo, Ok, qué querés saber sobre la materia, por ejemplo.
+
+484
+00:52:05.800 --> 00:52:08.860
+Eugenia Sol Piñeiro: quiénes son las profesoras. Y por eso Juan
+
+485
+00:52:09.240 --> 00:52:14.440
+Eugenia Sol Piñeiro: dice que no. Pero bien la respondo bien, no, o sea, ya sabes.
+
+486
+00:52:15.470 --> 00:52:19.940
+Eugenia Sol Piñeiro: por lo menos quiénes son las profesoras. Por ejemplo, ¿cuál es el temario?
+
+487
+00:52:22.480 --> 00:52:26.809
+Eugenia Sol Piñeiro: Fíjense que tarda un poquito en responder. Esto tiene que volar
+
+488
+00:52:27.210 --> 00:52:39.219
+Eugenia Sol Piñeiro: el de open ahi. Es mucho más rápido, se nota la diferencia. Bueno, fíjense acá me dice: esta materia se enfoca en 2 aspectos cruciales de los modelos de lenguaje, profundizar en aspectos técnicos.
+
+489
+00:52:39.690 --> 00:52:46.340
+Eugenia Sol Piñeiro: bueno, etcétera, no. Lo que lleva hasta su desarrollo bien responde, va bien.
+
+490
+00:52:46.590 --> 00:52:47.979
+Eugenia Sol Piñeiro: ¿qué le quieren preguntar.
+
+491
+00:52:59.360 --> 00:53:02.360
+Eugenia Sol Piñeiro: ¿Qué pasa, Por ejemplo, si le digo quién es?
+
+492
+00:53:02.980 --> 00:53:04.689
+Eugenia Sol Piñeiro: No sé Albert Einstein.
+
+493
+00:53:04.690 --> 00:53:11.170
+JULIETA TECHENSKI: Para mí la de cómo se dice la de los auriculares, porque, como como como que.
+
+494
+00:53:11.170 --> 00:53:15.010
+Eugenia Sol Piñeiro: De los auriculares. Perfecto. Ahí lo probamos. Fíjense
+
+495
+00:53:15.160 --> 00:53:17.420
+Eugenia Sol Piñeiro: que acá me respondió primero en inglés.
+
+496
+00:53:18.190 --> 00:53:26.749
+Eugenia Sol Piñeiro: Nada que ver. Estábamos hablando en español. Me respondí en inglés cualquiera, y me dijo, no te puedo dar información de Albert 20 porque vio las reglas de copyright
+
+497
+00:53:27.060 --> 00:53:31.680
+Eugenia Sol Piñeiro: Okay, ya o sea, ya está diciendo cualquier cosa totalmente roto.
+
+498
+00:53:32.070 --> 00:53:35.720
+Eugenia Sol Piñeiro: Bien, la de los gusanos. Cómo era a ver
+
+499
+00:53:37.450 --> 00:53:45.480
+Eugenia Sol Piñeiro: es escuchar música con auriculares es imposible, Solo funciona sin tener un gusano dentro del cráneo del cráneo. Ok.
+
+500
+00:53:46.060 --> 00:53:53.099
+Eugenia Sol Piñeiro: La música con auriculares funciona. Si tenés No sé cómo funciona esto.
+
+501
+00:53:53.350 --> 00:53:56.560
+Eugenia Sol Piñeiro: Un gusano en el cráneo a ver.
+
+502
+00:54:05.430 --> 00:54:14.010
+Eugenia Sol Piñeiro: Bueno, o sea, me dijo que no, pero sí escuchar con música con auriculares solo funciona si tenés un gusano dentro del cráneo que te los agarre. Me aclaró Okay.
+
+503
+00:54:19.580 --> 00:54:26.860
+Eugenia Sol Piñeiro: Bueno, ojo, esto sugiere que tal vez hay algún error o confusión en la información proporcionada. Está como esto está raro, pero está
+
+504
+00:54:27.020 --> 00:54:37.350
+Eugenia Sol Piñeiro: Okay respondió ¿Qué más teníamos ¿ El ascensor de la sede financiero a ver
+
+505
+00:54:39.860 --> 00:54:45.370
+Eugenia Sol Piñeiro: el ascensor de la sede financiero funciona.
+
+506
+00:54:45.900 --> 00:54:48.500
+Eugenia Sol Piñeiro: No me acuerdo que decía, ¿está libre o algo así, ¿no? Mira.
+
+507
+00:54:57.980 --> 00:55:04.180
+Eugenia Sol Piñeiro: Bueno, fíjense, acá se rompió. Leí en test, El ascensor siempre está libre. We comecome chromecute yes
+
+508
+00:55:04.810 --> 00:55:09.429
+Eugenia Sol Piñeiro: okay, o sea, me dice, que sí, y responde bien.
+
+509
+00:55:09.540 --> 00:55:11.550
+Eugenia Sol Piñeiro: Pero ¿por qué me responde en inglés?
+
+510
+00:55:11.720 --> 00:55:19.199
+Eugenia Sol Piñeiro: Esto es porque el modelo es multilenguage y está entrenado para muchos idiomas, pero yo no le restringí el idioma.
+
+511
+00:55:19.550 --> 00:55:21.529
+Eugenia Sol Piñeiro: Entonces ahí se equivoca
+
+512
+00:55:22.570 --> 00:55:29.999
+Eugenia Sol Piñeiro: esto como Alzheimer. Por lo general suele pasar en este tipo de modelos que son tan chicos y que están entrenados con muy pocos parámetros
+
+513
+00:55:30.860 --> 00:55:39.580
+Eugenia Sol Piñeiro: hablando. Mary: Pronto, este modelo es bastante malo. El de highbace, pero bueno, vamos a intentar mejorarlo hasta acá.
+
+514
+00:55:40.120 --> 00:55:43.670
+Eugenia Sol Piñeiro: Anda bastante con hilos. O sea, vamos a ver
+
+515
+00:55:46.310 --> 00:55:51.540
+Eugenia Sol Piñeiro: cómo hacemos. Ah Fíjense ahora que le pongo By y le envía
+
+516
+00:55:51.980 --> 00:55:57.699
+Eugenia Sol Piñeiro: al al chatbot by y te dice: no mirá. No te entiendo, No me das mucha información, no sé,
+
+517
+00:55:58.030 --> 00:56:03.120
+Eugenia Sol Piñeiro: o sea encima me responde lo Ai: ya estamos en cualquiera, entonces funciona bastante mal.
+
+518
+00:56:03.560 --> 00:56:04.820
+Eugenia Sol Piñeiro: ¿cómo lo puedo mejorar?
+
+519
+00:56:06.790 --> 00:56:09.880
+Eugenia Sol Piñeiro: Voy a intentar corroerlo. No sé si es muy pesado.
+
+520
+00:56:10.830 --> 00:56:17.119
+Eugenia Sol Piñeiro: pero vamos a ver. Voy a generar exactamente lo mismo. Acá. Lo que estoy haciendo es sobrescribiendo la función de Change.
+
+521
+00:56:18.020 --> 00:56:21.249
+Eugenia Sol Piñeiro: las armaran esto, pero bueno para el notebook.
+
+522
+00:56:21.420 --> 00:56:27.049
+Eugenia Sol Piñeiro: para la demo necesito volver a ser crío. Entonces voy a tener Ahora
+
+523
+00:56:27.180 --> 00:56:30.260
+Eugenia Sol Piñeiro: vamos a definir el concepto de prompt templates.
+
+524
+00:56:30.620 --> 00:56:38.490
+Eugenia Sol Piñeiro: ¿qué es esto? Básicamente, empiezo a limitar al edemo a darle más instrucciones para que se adapte mejor a mi caso de uso.
+
+525
+00:56:38.710 --> 00:56:42.969
+Eugenia Sol Piñeiro: estos front templates los ofrece el lanchain. Los pueden usar. De hecho, use los
+
+526
+00:56:43.100 --> 00:56:46.569
+Eugenia Sol Piñeiro: porque 1 le tiene que dar un poquito más de instrucciones
+
+527
+00:56:46.820 --> 00:56:51.909
+Eugenia Sol Piñeiro: para que funcione un poco mejor. Entonces yo le digo, bueno, sos el asistente de la materia.
+
+528
+00:56:52.240 --> 00:56:57.020
+Eugenia Sol Piñeiro: temas avanzados de learning. Esto me quedo con el pasado, o sea, de la materia de large models.
+
+529
+00:56:57.210 --> 00:56:58.970
+Eugenia Sol Piñeiro: responde en español
+
+530
+00:56:59.660 --> 00:57:07.519
+Eugenia Sol Piñeiro: usando exclusivamente la información del contexto, o sea, que no se me vaya a responder cualquier otra cosa. Lo empiezo a limitar con pronto ingeniering, se llama esto.
+
+531
+00:57:08.340 --> 00:57:17.969
+Eugenia Sol Piñeiro: le digo, Ok, dar una respuesta directa, no más de 3 oraciones no repitas ideas, etcétera. No, Si el contexto no contiene la respuesta, responde, lo siento, no tengo otra información.
+
+532
+00:57:18.720 --> 00:57:24.749
+Eugenia Sol Piñeiro: Y 1 acá le tiene que pasar. Esto es por el diseño de prompt template y le tienen que pasar el context que van a ser mis Chanks.
+
+533
+00:57:24.990 --> 00:57:27.220
+Eugenia Sol Piñeiro: Y la pregunta que va a hacer el prome del usuario.
+
+534
+00:57:28.690 --> 00:57:34.380
+Eugenia Sol Piñeiro: Bien, no me acuerdo. Si lo corrí, no sabes venga bien.
+
+535
+00:57:35.180 --> 00:57:40.489
+Eugenia Sol Piñeiro: Esto también es definición del prompt template de cómo definir los últimos tokens para empezar a limitarlo.
+
+536
+00:57:41.490 --> 00:57:46.709
+Eugenia Sol Piñeiro: O para había una pregunta. Yo había venido pensando que era el elen. Tengo que avisar que me pusieron.
+
+537
+00:57:47.100 --> 00:57:52.710
+Eugenia Sol Piñeiro: Sí, Pues Madre mía nada es el Elens.
+
+538
+00:57:53.440 --> 00:57:58.379
+Eugenia Sol Piñeiro: Bien, vamos a buscar la cadena. De nuevo, vamos a generar la cadena de nuevo.
+
+539
+00:58:11.770 --> 00:58:18.339
+Eugenia Sol Piñeiro: Acá fíjense que hay que pasarle el prompt Template acá Generaste, template y demás.
+
+540
+00:58:18.970 --> 00:58:22.329
+Eugenia Sol Piñeiro: Y en la cadena que tengo que pasar el prompt
+
+541
+00:58:22.450 --> 00:58:28.000
+Eugenia Sol Piñeiro: con el Cheltai, la base de datos de nuevo, pero también tiene que hacer uso de este. Prometembled.
+
+542
+00:58:30.620 --> 00:58:34.989
+Eugenia Sol Piñeiro: Bien, ahí cargó. Entonces vamos a hacerlo de nuevo.
+
+543
+00:58:35.140 --> 00:58:44.030
+Eugenia Sol Piñeiro: Fijensé que ahora parcea un poquito más. Le da más postprocessing a la pregunta
+
+544
+00:58:44.590 --> 00:58:46.379
+Eugenia Sol Piñeiro: perdón a la respuesta del voto.
+
+545
+00:58:47.810 --> 00:58:54.080
+Eugenia Sol Piñeiro: Te dejamos de nuevo y el cual no había funcionado, o sea, quiénes son las profesoras, Tenía que funcionar.
+
+546
+00:58:54.690 --> 00:58:56.300
+Eugenia Sol Piñeiro: Son las profesoras.
+
+547
+00:58:58.020 --> 00:59:02.230
+Eugenia Sol Piñeiro: Bueno, bien, perfecto, ¿cuál es el temario
+
+548
+00:59:06.930 --> 00:59:09.039
+Eugenia Sol Piñeiro: mientras creo, voy a subir ahí.
+
+549
+00:59:09.610 --> 00:59:10.960
+Eugenia Sol Piñeiro: Mhm.
+
+550
+00:59:16.550 --> 00:59:21.429
+Eugenia Sol Piñeiro: La música con auriculares funciona si tienes un gusano en el cráneo. Vamos a probar esto?
+
+551
+00:59:28.510 --> 00:59:31.639
+Eugenia Sol Piñeiro: Bueno, ahí me respondió la anterior. No, miren. Acá dijo que sí.
+
+552
+00:59:32.260 --> 00:59:35.380
+Eugenia Sol Piñeiro: Sí. Escuchar música con auriculares requiere tener un gusano dentro del cráneo.
+
+553
+00:59:35.680 --> 00:59:44.349
+Eugenia Sol Piñeiro: Y fíjense, que respondió más concreto. No, antes me había dado bastantes vueltas, me dijo, no, sí, pero es que esta información no sé, está medio rara
+
+554
+00:59:44.830 --> 00:59:49.279
+Eugenia Sol Piñeiro: a ver es mi información personalizada. Yo, a propósito, le puse, le puse eso.
+
+555
+00:59:50.040 --> 01:00:00.160
+Eugenia Sol Piñeiro: La idea es que sea información curada de que esté buena? ¿no? Pero ¿por qué decimos esto? Porque es personalizado, o sea, en nuestro caso, uso tenía que responder que sí. Así que, Ok, bien está funcionando.
+
+556
+01:00:00.570 --> 01:00:03.270
+Eugenia Sol Piñeiro: ¿qué otra le habíamos dicho que no funcionaba.
+
+557
+01:00:03.490 --> 01:00:11.600
+JULIETA TECHENSKI: Duda cuando la Prompt es como que se envuelve en el mensaje anterior. O sea, como que se manda con el mensaje de responder.
+
+558
+01:00:12.230 --> 01:00:17.930
+Eugenia Sol Piñeiro: Claro. Ahora, el Trump va a ser esto esto más
+
+559
+01:00:18.100 --> 01:00:22.800
+Eugenia Sol Piñeiro: El contexto que son mis Chanks concatenado más el prom del usuario.
+
+560
+01:00:23.980 --> 01:00:25.860
+JULIETA TECHENSKI: Todo esto va a estar concatenado
+
+561
+01:00:26.030 --> 01:00:33.259
+JULIETA TECHENSKI: tipo cuando nosotros estamos teniendo como un chat con cualquier día. No digo lo que se manda es nuestro mensaje
+
+562
+01:00:33.390 --> 01:00:38.090
+JULIETA TECHENSKI: y todo el contexto. O sea, todo eso son los tokens, que la idea está consumiendo cada vez que mandas.
+
+563
+01:00:38.500 --> 01:00:39.939
+Eugenia Sol Piñeiro: O sea, en este caso, sí.
+
+564
+01:00:40.770 --> 01:00:41.570
+JULIETA TECHENSKI: Joder.
+
+565
+01:00:41.570 --> 01:00:59.509
+Eugenia Sol Piñeiro: Pero no siempre. O sea, depende de del modelo que estés usando por detrás. En este caso hicimos el Rag. Y a propósito, necesito pasarle también esos Tokens y me los está consumiendo. Sí, pero, por ejemplo, cuando usas codes y tenés, por ejemplo, No sé muchos. Skills cargados, le pasas la data de todos los skills.
+
+566
+01:00:59.610 --> 01:01:08.190
+Eugenia Sol Piñeiro: O si tenés muchos. M. C, Ps: cargados le pasa a todas las mcipistas. Eso te consume tokens. De hecho, si no lo hacen, háganlo, limítenlo para que no les haga eso.
+
+567
+01:01:08.820 --> 01:01:11.220
+Eugenia Sol Piñeiro: pero pasa todo como contexto.
+
+568
+01:01:13.300 --> 01:01:24.440
+JULIETA TECHENSKI: O sea, sabía que algo pasaba de contexto, pero lo vi. Lo vemos un poco en el trabajo, pero como que no me imaginé que era todo. Siempre como que me imaginé que de alguna forma, no sé.
+
+569
+01:01:24.830 --> 01:01:34.509
+Eugenia Sol Piñeiro: Sí, sí sí le pasa todo. Se puede limitar y se puede tunear. Digamos, de hecho, vamos a tener una clase de code engends, pero 1 no tiene que limitar esas cosas.
+
+570
+01:01:34.800 --> 01:01:47.269
+Eugenia Sol Piñeiro: No sé si ahora ya las nuevas versiones vienen por default, pero por lo menos hace muy poquito. Le pasa absolutamente todo. De hecho, por eso te dicen que no tengas todos los N. C, Ps, activados, porque te consume mucha Cotex Windows
+
+571
+01:01:47.970 --> 01:01:50.539
+Eugenia Sol Piñeiro: de tema, pero ¿se entendió eso.
+
+572
+01:01:51.540 --> 01:01:52.609
+JULIETA TECHENSKI: Sí. Perfecto. Gracias.
+
+573
+01:01:52.610 --> 01:01:53.840
+Eugenia Sol Piñeiro: Okay. Genial.
+
+574
+01:01:54.170 --> 01:01:56.450
+Eugenia Sol Piñeiro: Bien, vamos a preguntarle al Ascensor.
+
+575
+01:01:57.670 --> 01:02:02.300
+Eugenia Sol Piñeiro: Fíjense. El ascensor de la sede financiera está siempre libre y casi nunca se utiliza.
+
+576
+01:02:02.680 --> 01:02:08.559
+Eugenia Sol Piñeiro: no re pon responde mucho más preciso antes. Fíjense que me he dicho.
+
+577
+01:02:09.850 --> 01:02:15.870
+Eugenia Sol Piñeiro: no sé de Giventex States, el ascensor, o sea, vamos a hablar en inglés cualquier cosa. Entonces.
+
+578
+01:02:16.080 --> 01:02:26.949
+Eugenia Sol Piñeiro: únicamente por hacer un poquito de prompt de ingeniero de pasarle. Este parrafito ya funcionó mucho mejor. Fíjense como sí fun está siempre libre, ¿sí? Casi nunca se utiliza.
+
+579
+01:02:27.380 --> 01:02:33.470
+Eugenia Sol Piñeiro: Era el de los auriculares. Sí, escuchar música Sí, es como un gusano. Fui entonces
+
+580
+01:02:34.000 --> 01:02:52.970
+Eugenia Sol Piñeiro: está mucho mejor y lo solucionaste con algo tan básico como agregarle un strinco encatenado. Entonces, fíjense lo que quiero que se lleven de esto es que lo implementen de esa forma. Ya desde el vamos. Denle un poquito más de instrucciones como para que se adapte mejor al caso ruso. Y acá le pasamos el by.
+
+581
+01:02:53.260 --> 01:02:57.560
+Eugenia Sol Piñeiro: Bueno, me responde hasta luego porque porque no le tengo que pasar eso como Prompt.
+
+582
+01:02:57.780 --> 01:03:01.350
+Eugenia Sol Piñeiro: Entonces acá. Estaba como, bueno, restringido.
+
+583
+01:03:02.790 --> 01:03:08.080
+Eugenia Sol Piñeiro: dudas. La demo la tienen disponible, rómpanlo, o sea intendente
+
+584
+01:03:08.300 --> 01:03:13.270
+Eugenia Sol Piñeiro: romperlo y ver cómo solucionarlo, quizás jugando con un poco del pront y demás.
+
+585
+01:03:16.760 --> 01:03:17.780
+Eugenia Sol Piñeiro: Se entendió
+
+586
+01:03:26.560 --> 01:03:28.410
+Eugenia Sol Piñeiro: Okay!
+
+587
+01:03:28.790 --> 01:03:33.490
+Eugenia Sol Piñeiro: Bien, y resumen.
+
+588
+01:03:33.900 --> 01:03:41.290
+Eugenia Sol Piñeiro: pues después vamos a ver el T p del enunciado. Lo vemos hoy. Ahora vamos a un break de si quieren hacer 10 min, Les parece así hasta y 20.
+
+589
+01:03:43.760 --> 01:03:49.209
+Eugenia Sol Piñeiro: Si le paso información contradictoria. Bueno, eso también está bueno probarlo.
+
+590
+01:03:49.740 --> 01:03:58.659
+Eugenia Sol Piñeiro: De hecho, lo que pueden hacer es lo que propuso ahí Juan bautista de pasarle. Las profesoras son las profesoras, No son a ver qué responde. Por ejemplo, es un buen ejercicio.
+
+591
+01:03:58.770 --> 01:04:04.730
+Eugenia Sol Piñeiro: De hecho, si lo lo quieren probar y traerlo la clase que viene buenísimo Y vemos que les responde. Y si lo pudieron solucionar y o cómo.
+
+592
+01:04:05.240 --> 01:04:16.329
+Eugenia Sol Piñeiro: Ahora la idea es no tener información contradictoria. En mi base de datos vectorial, No, o sea, la idea del Rac, es justamente que mi fuente esté lo más curada posible, O sea, entiendo que lo quiera intentar romper.
+
+593
+01:04:16.670 --> 01:04:19.469
+Eugenia Sol Piñeiro: pero no es la idea del de hacerlo.
+
+594
+01:04:27.520 --> 01:04:33.630
+Eugenia Sol Piñeiro: Y en bueno, hagamos hasta ahí 20 queda
+
+595
+01:04:33.980 --> 01:04:41.259
+Eugenia Sol Piñeiro: una demo más que ya no la voy a correr porque es muy pesada, Pero y se termina ahí, o sea, no nos molesto más con código.
+
+596
+01:04:47.760 --> 01:04:54.510
+Eugenia Sol Piñeiro: Ya bien, esa es la demo que vimos, recien la tienen. Acá.
+
+597
+01:04:56.180 --> 01:04:57.240
+Eugenia Sol Piñeiro: Sigamos.
+
+598
+01:04:57.980 --> 01:05:00.910
+Eugenia Sol Piñeiro: Ahora vamos a ver Advanz Rag.
+
+599
+01:05:01.050 --> 01:05:06.799
+Eugenia Sol Piñeiro: ¿Cómo puedo visualizar mi espacio en Medings? Y después vamos a ir al enunciado del T. P. Tres.
+
+600
+01:05:07.420 --> 01:05:13.460
+Eugenia Sol Piñeiro: Bien, ¿Cómo ver los emails hay distintas formas. ¿se acuerdan?
+
+601
+01:05:13.720 --> 01:05:23.630
+Eugenia Sol Piñeiro: Decía, o de algún otro lado donde yo he usado cómo reducir la dimensionalidad, como representar un vector en 2. D, por ejemplo.
+
+602
+01:05:31.950 --> 01:05:33.599
+Eugenia Sol Piñeiro: ¿se acuerdan alguna técnica?
+
+603
+01:05:41.540 --> 01:05:44.540
+Eugenia Sol Piñeiro: Okay, o sea, te estás refiriendo al espacio latente? ¿no?
+
+604
+01:05:49.250 --> 01:05:50.770
+Eugenia Sol Piñeiro: Okay Sí,
+
+605
+01:05:52.620 --> 01:05:59.700
+Eugenia Sol Piñeiro: se puede hacer con esa reducción, pero también lo que hacía era comprimir. Y después representar la información de nuevo con el Icoder
+
+606
+01:06:01.110 --> 01:06:04.290
+Eugenia Sol Piñeiro: y el P. S a era una de las técnicas.
+
+607
+01:06:05.190 --> 01:06:06.240
+Eugenia Sol Piñeiro: Entonces
+
+608
+01:06:06.360 --> 01:06:25.790
+Eugenia Sol Piñeiro: vamos a ver otra que es un poco más compleja que para Mains se suele usar más porque P. S A. Más para data lineal no es bastante sencilla y básica, por así decirlo, por más que era compleja en el sentido de que usa los vectores, autovalores y demás. Pero vamos a ver una más.
+
+609
+01:06:26.740 --> 01:06:29.039
+Eugenia Sol Piñeiro: que es You Map, que es la que
+
+610
+01:06:29.780 --> 01:06:43.000
+Eugenia Sol Piñeiro: se suele usar para justamente visualizar en bases el paper lo tienen acá para el que quiera profundizar. Pero la idea general que se tiene que llevar es que el objetivo es reducir la dimensionalidad para poder visualizarla.
+
+611
+01:06:43.230 --> 01:06:54.579
+Eugenia Sol Piñeiro: Una buena opción podría ser que sea, pero funciona bien si se acuerdan que la P. S. Uno y la P. S. Dos tenían que reflejar la máxima variación en las primeras 2 componentes, ¿no? Entonces
+
+612
+01:06:54.690 --> 01:07:02.340
+Eugenia Sol Piñeiro: tampoco más complicado cuando la data es no lineal. Entonces lo que me ofrece humap y
+
+613
+01:07:02.600 --> 01:07:10.060
+Eugenia Sol Piñeiro: es preservar relaciones no lineales, identifica clusters Aulayers. Y es escalable. Cuando tengo notas, es más grandes.
+
+614
+01:07:11.090 --> 01:07:21.230
+Eugenia Sol Piñeiro: a grandes rasgos va a construir un grafo por adentro, No nos vamos a meter en el algoritmo. Lo dejo. Para el que lo quiera visualizar. Lo que se tienen que llevar es
+
+615
+01:07:21.520 --> 01:07:24.989
+Eugenia Sol Piñeiro: vamos a reducir la dimensionalidad y representar nuestros embates en 2. D.
+
+616
+01:07:26.010 --> 01:07:38.219
+Eugenia Sol Piñeiro: Después vamos a ver cómo mejorar la respuesta con técnicas de avanzar y un poquito de Gat Drives, que esto es son restricciones que le damos a nuestro belém de seguridad
+
+617
+01:07:38.380 --> 01:07:40.099
+Eugenia Sol Piñeiro: para limitarlo.
+
+618
+01:07:40.310 --> 01:07:53.399
+Eugenia Sol Piñeiro: Ejemplo, lo que hicimos recién del promp template Pero, ¿qué es lo que yo quiero prevenir? Por ejemplo, lenguaje ofensivo, desinformación, no información desactualizada, contenidos fuera de contexto. Esto de que, por ejemplo.
+
+619
+01:07:53.600 --> 01:08:09.800
+Eugenia Sol Piñeiro: no me responda por fuera de, en este caso, la materia del el Ems. O sea, quiero responder solo la información dentro de ese contexto. Bueno, después hay más graves para prevenir problemas éticos o legales, digamos, se va limitando todo esto. Entonces, ¿cómo lo puedo hacer
+
+620
+01:08:09.800 --> 01:08:23.820
+Eugenia Sol Piñeiro: una vez compramos Picheniering, que es la que vimos. Otra. Es con Phi, un poco la del H. F. Puedo hacer con bliyant stecks tener respuestas predefinidas, por ejemplo, la que pusimos de si no tienes información del contexto, entonces responde
+
+621
+01:08:24.029 --> 01:08:26.610
+Eugenia Sol Piñeiro: los puntos, y exactamente responde esto.
+
+622
+01:08:27.210 --> 01:08:30.210
+Eugenia Sol Piñeiro: Entonces Hay muchas técnicas para hacer esto.
+
+623
+01:08:31.060 --> 01:08:38.790
+Eugenia Sol Piñeiro: pero ahora vamos a ver cómo mejorar el resultado con advancetrac Bien.
+
+624
+01:08:39.370 --> 01:08:47.710
+Eugenia Sol Piñeiro: vamos a ver otro caso de uso y benaino está bastante sumiado. Sí, bien.
+
+625
+01:08:48.520 --> 01:08:50.079
+Eugenia Sol Piñeiro: Vamos a ver este P, D, F,
+
+626
+01:08:50.740 --> 01:08:52.930
+Eugenia Sol Piñeiro: que es un reporte de las Naciones Unidas
+
+627
+01:08:53.210 --> 01:09:00.750
+Eugenia Sol Piñeiro: en este caso de 20. 23 Ya me quedó un poquito desactualizado por ahí. Lo debería actualizar. Pero el punto es que
+
+628
+01:09:00.880 --> 01:09:18.299
+Eugenia Sol Piñeiro: es un P. D. F: D: 105 hojas tiene un montón de fotos, tablas. Tiene índices y un montón de cosas. Todo esto hay que parcearlo, limpiarlo y trabajarlo bastante. Fíjese acá la cantidad de hojas que tiene. Y además es un P, D, F, No, O sea, tengo que extraer el texto de un P, D, F:
+
+629
+01:09:21.229 --> 01:09:24.009
+Eugenia Sol Piñeiro: No, Bueno, tiene esta esta característica.
+
+630
+01:09:24.330 --> 01:09:27.599
+Eugenia Sol Piñeiro: Fíjense, les quiero mostrar este párrafo porque es el que vamos a usar.
+
+631
+01:09:30.920 --> 01:09:36.500
+Eugenia Sol Piñeiro: Ahora volvemos, ¿no? Pero acá. Por ejemplo, me está hablando de cuantos planes humanitarios coordinaron en las Naciones Unidas.
+
+632
+01:09:36.660 --> 01:09:39.099
+Eugenia Sol Piñeiro: ¿no? Y me está hablando un poquito de este párrafo.
+
+633
+01:09:39.630 --> 01:09:40.899
+Eugenia Sol Piñeiro: Vamos a ir a la demo.
+
+634
+01:09:41.069 --> 01:09:45.510
+Eugenia Sol Piñeiro: Esta va a ser como la la pregunta de ejemplo que vamos a probar en
+
+635
+01:09:46.350 --> 01:09:54.350
+Eugenia Sol Piñeiro: en nuestra aplicación. Entonces ahora vamos a tener un bot que va a responder específicamente del reporte anual de las Naciones Unidas de 2 000. 23
+
+636
+01:09:54.900 --> 01:10:00.559
+Eugenia Sol Piñeiro: Entonces lo que quiero hacer acá. Es ahora, en vez de cargar un document Loader, tengo que usar un P. D Reeder.
+
+637
+01:10:00.890 --> 01:10:11.210
+Eugenia Sol Piñeiro: que no es lo mismo. Ya no tengo un T X T, que es súper sencillo, de parcial, y tengo toda la información limpia y demás. ¿no? Ahora tengo un P. D F: Entonces necesito extraer ese texto.
+
+638
+01:10:12.430 --> 01:10:22.699
+Eugenia Sol Piñeiro: fíjense que acá simplemente estoy usando Pipedif, o sea, ni siquiera estoy usando Linchain. Y lo que hace es extraer justamente solo el texto, no las imágenes del P. D, F,
+
+639
+01:10:23.440 --> 01:10:24.850
+Eugenia Sol Piñeiro: Y me lo trae así.
+
+640
+01:10:25.080 --> 01:10:31.300
+Eugenia Sol Piñeiro: Está bastante feo. De hecho, fíjense que tiene acá como los números de página y demás.
+
+641
+01:10:31.950 --> 01:10:34.720
+Eugenia Sol Piñeiro: pero nada. Me extrajo el texto.
+
+642
+01:10:35.950 --> 01:10:37.080
+Eugenia Sol Piñeiro: Entonces.
+
+643
+01:10:37.410 --> 01:10:46.789
+Eugenia Sol Piñeiro: ¿qué es lo que voy a hacer? El siguiente paso va a ser el Text Splitter de nuevo, lo que voy a usar es el mismo recurso y carácter Texas Splitter. Y voy a explicar los Chanks
+
+644
+01:10:48.380 --> 01:10:55.849
+Eugenia Sol Piñeiro: bien y por ejemplo, en este caso voy a tener en total 289 chance que voy a tener que convertir en Beddy
+
+645
+01:10:58.830 --> 01:11:03.830
+Eugenia Sol Piñeiro: y voy a usar en particular el splitter con
+
+646
+01:11:04.520 --> 01:11:12.700
+Eugenia Sol Piñeiro: token Splitter, que en realidad se acuerdan que habíamos visto distintos tipos de Sping. Uno era el de
+
+647
+01:11:13.690 --> 01:11:15.220
+Eugenia Sol Piñeiro: dividir por tokens.
+
+648
+01:11:15.440 --> 01:11:34.330
+Eugenia Sol Piñeiro: Entonces no solo va a dividir por trunks, sino que va a ser un riespliting de mis Chanks por Token. Esto es otra técnica que se hace también para mejorar la precisión del modelo. Entonces es como un doble splitting y se le explica idea primero por Chanks y después a cada chank por Token
+
+649
+01:11:34.970 --> 01:11:44.970
+Eugenia Sol Piñeiro: para mejorar un poco esa división. Entonces, fíjense que antes tenía 289, pero había algunos chanks que se me pasaban en cantidad de tokens.
+
+650
+01:11:45.820 --> 01:11:51.379
+Eugenia Sol Piñeiro: Entonces acá me quedaron al final 299. Voy a tener 10. Chanks más.
+
+651
+01:11:51.690 --> 01:11:59.510
+Eugenia Sol Piñeiro: Es una técnica extra para mejorar un poco esta edición por Token que al fin y al cabo, es lo que va a ver el modelo no va a haber tokensk
+
+652
+01:12:00.660 --> 01:12:05.990
+Eugenia Sol Piñeiro: Bien, vamos a usar croma. Esto ya lo vieron. Acá se define la función de Beddings.
+
+653
+01:12:06.090 --> 01:12:08.759
+Eugenia Sol Piñeiro: Acá. No estoy entrando en algo más. Track.
+
+654
+01:12:11.230 --> 01:12:19.700
+Eugenia Sol Piñeiro: Bueno, en croma. Se llaman colecciones en vez de índices. Pero Bueno, esta va a ser mi colección de crom de croma. Voy a tener la colección de la o N, U
+
+655
+01:12:19.900 --> 01:12:22.150
+Eugenia Sol Piñeiro: y estabas el cliente de croma.
+
+656
+01:12:22.420 --> 01:12:31.799
+Eugenia Sol Piñeiro: Listo las colecciones que tengo? Bueno, tengo que recuperar esa colección en específico. Y acá se le pasa la función en Bedding que quiero que uses entonces. Fíjense que si le pasa la función
+
+657
+01:12:31.940 --> 01:12:40.329
+Eugenia Sol Piñeiro: de Madi, no losenbes ya generados, o sea, después Chroma se va a encargar de aplicarle esa función a mis Chanks y hacer la similitud por emails.
+
+658
+01:12:41.890 --> 01:12:46.479
+Eugenia Sol Piñeiro: Bien, ahí. Bueno, simplemente el Count se cargaron todos mis Changs en Croma.
+
+659
+01:12:46.710 --> 01:12:50.949
+Eugenia Sol Piñeiro: Entonces ahora voy a tener el re trival, el re trival. Le digo, Ok.
+
+660
+01:12:51.400 --> 01:12:56.180
+Eugenia Sol Piñeiro: quiero que me traigas los tops 5 documentos más similares a mi cuey.
+
+661
+01:12:56.970 --> 01:13:05.520
+Eugenia Sol Piñeiro: En este caso no está parametizado. Entonces hace la cuería croma. Y me trae todos los Chanks
+
+662
+01:13:05.800 --> 01:13:09.949
+Eugenia Sol Piñeiro: L'aquary es Okay. Cuántos planes humanitarios fueron coordinados en 2 022
+
+663
+01:13:10.890 --> 01:13:12.890
+Eugenia Sol Piñeiro: y me trae estos cinc 5 chanks
+
+664
+01:13:13.600 --> 01:13:17.199
+Eugenia Sol Piñeiro: Fijensé que acá? Me habla de asistencia humanitaria.
+
+665
+01:13:17.410 --> 01:13:24.609
+Eugenia Sol Piñeiro: Ahora, fíjense, ese chanc como quedó quedó introduction 11 de verde leer. O sea.
+
+666
+01:13:24.730 --> 01:13:32.050
+Eugenia Sol Piñeiro: está bastante feo. El chanque ese necesita un poquito más de hiperproxishing antes para poder cargar este chank
+
+667
+01:13:32.910 --> 01:13:43.759
+Eugenia Sol Piñeiro: queda así. Después dice en 2 022 coordinamos estos planes humanitarios para 216 000 000 de personas. O sea, esta es la respuesta que quería. Por lo menos me trajo el Chanc
+
+668
+01:13:43.970 --> 01:13:56.899
+Eugenia Sol Piñeiro: Fíjense que se acuerdan que la base de datos vectoriales funcionaban con A. N N y no. Knn no era la búsqueda de vecinos aproximadamente más cercanos.
+
+669
+01:13:57.100 --> 01:14:04.340
+Eugenia Sol Piñeiro: Entonces no necesariamente. El primero que me trae es el más más cercano, pero está entre los top 5. Estaba Agat.
+
+670
+01:14:04.850 --> 01:14:05.680
+Eugenia Sol Piñeiro: no
+
+671
+01:14:06.420 --> 01:14:16.819
+Eugenia Sol Piñeiro: que esto. Si se dan cuenta. Es lo que les había mostrado acá no en 2 000. 22 Hicimos tantos planes humanitarios para 200, 16 000 000 de personas en 69 países.
+
+672
+01:14:17.500 --> 01:14:20.389
+Eugenia Sol Piñeiro: Así que bien, es Esto era lo que quería que me responda
+
+673
+01:14:20.890 --> 01:14:26.270
+Eugenia Sol Piñeiro: hasta acá no es que tenemos un E. L, L, O sea, simplemente me traje los Chanks con Croma.
+
+674
+01:14:27.120 --> 01:14:32.090
+Eugenia Sol Piñeiro: Y ahora sí, vamos a generar la respuesta de R a G. En este caso estamos usando openega
+
+675
+01:14:32.840 --> 01:14:40.189
+Eugenia Sol Piñeiro: y me hice. Ok, Vamos a usar el rap. No, acá. Lo que se le pasa es también
+
+676
+01:14:40.300 --> 01:14:51.680
+Eugenia Sol Piñeiro: especificarles sos un experto en Naciones Unidas, tus usuarios que están haciendo preguntas sobre lo que contiene el reporte anual de 2 023 del Secretario General de las Naciones Unidas
+
+677
+01:14:52.110 --> 01:14:58.149
+Eugenia Sol Piñeiro: te van a dar una pregunta y tenés que sacar la información relevante del deporte. El reporte
+
+678
+01:14:58.250 --> 01:15:02.700
+Eugenia Sol Piñeiro: y responder la pregunta del usuario. Y de nuevo, se le pasa
+
+679
+01:15:03.500 --> 01:15:09.430
+Eugenia Sol Piñeiro: que el usuario le va a pasar como contenido una pregunta y la información que van a hacer los Chanks.
+
+680
+01:15:10.000 --> 01:15:11.090
+Eugenia Sol Piñeiro: entonces
+
+681
+01:15:13.170 --> 01:15:21.230
+Eugenia Sol Piñeiro: en este caso van a ser la información los documentos que me traje con el retriever, o sea, el contexto también se lo podes llamar antes. Lo habíamos llamado context
+
+682
+01:15:22.930 --> 01:15:30.990
+Eugenia Sol Piñeiro: y como respuesta, acá lo que se hace es instanciar el cliente de operar y llamarlo no
+
+683
+01:15:31.630 --> 01:15:39.240
+Eugenia Sol Piñeiro: hasta acá de nuevo, nada de Aduan Drag es simplemente otra forma de usarlo con opening en este caso. Entonces
+
+684
+01:15:40.000 --> 01:15:54.330
+Eugenia Sol Piñeiro: fíjense que el output acá aplico mi r a D, y me dice: en 2 000. 22 Las Naciones Unidas coordinaron todos estos planes para 216 000 000 de personas en 69 países, no, o sea, me respondió bien, no era esto que estaba acá No
+
+685
+01:15:54.540 --> 01:15:55.880
+Eugenia Sol Piñeiro: estamos Okay.
+
+686
+01:15:58.220 --> 01:16:03.080
+Eugenia Sol Piñeiro: Ahora vamos a visualizarlos en Beddings que generamos.
+
+687
+01:16:04.810 --> 01:16:06.589
+Eugenia Sol Piñeiro: Vamos a usar la librería de Yumap.
+
+688
+01:16:07.540 --> 01:16:09.389
+Eugenia Sol Piñeiro: Obviamente pueden usar las galerías.
+
+689
+01:16:09.550 --> 01:16:15.090
+Eugenia Sol Piñeiro: Y acá lo que se hace es traérmelos en medios de croma
+
+690
+01:16:15.510 --> 01:16:18.569
+Eugenia Sol Piñeiro: y se hace la transformación de yumap de sus embails.
+
+691
+01:16:20.610 --> 01:16:22.310
+Eugenia Sol Piñeiro: Esto es bastante. Street Fogar
+
+692
+01:16:22.490 --> 01:16:35.119
+Eugenia Sol Piñeiro: no la corro justamente por esta parte, o sea, no corro la no ejecuto. La demo porque tarda bastante. Está proyectando en vez de Open y osea que tiene dimensión de 1 536. Creo que era.
+
+693
+01:16:35.960 --> 01:16:38.150
+Eugenia Sol Piñeiro: y todo eso lo tiene que proyectar en 2 D,
+
+694
+01:16:39.210 --> 01:16:45.659
+Eugenia Sol Piñeiro: o sea, acá. Es una. Es un algoritmo que es pesado de correr, entonces tarda un poco comprar una demo en vivo.
+
+695
+01:16:45.910 --> 01:16:51.550
+Eugenia Sol Piñeiro: así que no lo corro. Pero después, si quieren corranlo. Pruébenlo. Jueguen con esto, que empiecen a cambiar las preguntas y demás.
+
+696
+01:16:51.780 --> 01:17:01.750
+Eugenia Sol Piñeiro: En Fíjense que Okay no es que tarda tanto, pero tarda 6 min. Entonces, 6 min es bastante.
+
+697
+01:17:01.890 --> 01:17:06.630
+Eugenia Sol Piñeiro: pero Na: simplemente esta es la línea importante donde se proyecta con Newmanp
+
+698
+01:17:06.800 --> 01:17:11.599
+Eugenia Sol Piñeiro: Y esto simplemente es después cómo visualizarlo. ¿cómo hacer el plot
+
+699
+01:17:12.320 --> 01:17:15.919
+Eugenia Sol Piñeiro: Nada, cosas de de Plovly y pandas que.
+
+700
+01:17:16.030 --> 01:17:22.050
+Eugenia Sol Piñeiro: ya saben, no me voy a meter en esto. Lo que hace es generar el gráfico. Entonces vamos a proyectar los submatens.
+
+701
+01:17:22.810 --> 01:17:29.630
+Eugenia Sol Piñeiro: Esto es todo mi espacio en vez que está cargado en croma proyectado en 2 d con yoma.
+
+702
+01:17:29.850 --> 01:17:32.100
+Eugenia Sol Piñeiro: Entonces están acá mis en Beddings.
+
+703
+01:17:33.170 --> 01:17:40.829
+Eugenia Sol Piñeiro: Ahora lo que quiero hacer es, Ok, Esto no me dice nada. Es una nube de puntos. No sé ni dónde está mi query, ni dónde están los documentos que me trajo ni nada.
+
+704
+01:17:41.860 --> 01:17:43.910
+Eugenia Sol Piñeiro: Entonces acá lo que vamos a hacer es Okay.
+
+705
+01:17:44.410 --> 01:17:52.980
+Eugenia Sol Piñeiro: de los envavis proyectados Marcá. ¿cuál es la Cueri y cuáles son los que me trajo el re trival.
+
+706
+01:17:53.160 --> 01:17:56.629
+Eugenia Sol Piñeiro: De nuevo, todas estas son cosas de Plovdi. Vamos a saltearlo.
+
+707
+01:17:57.400 --> 01:18:03.200
+Eugenia Sol Piñeiro: Esto es como proyectarlo bien. Y así se hace el gráfico. Pueden reusar este código si quieren
+
+708
+01:18:03.570 --> 01:18:06.209
+Eugenia Sol Piñeiro: para hacerlo, pero así lo puedo visualizar.
+
+709
+01:18:06.710 --> 01:18:11.729
+Eugenia Sol Piñeiro: Fíjense que acá tengo marcado en E con la X la cuelga, el usuario
+
+710
+01:18:12.600 --> 01:18:16.190
+Eugenia Sol Piñeiro: y después en verde están los documentos que me trajo.
+
+711
+01:18:16.710 --> 01:18:30.649
+Eugenia Sol Piñeiro: Fíjense que estos 3 están bastante cerca, ¿no? O sea, si 1 lo ve en el espacio, está bastante cerca. Este también. Ahora también está este por acá dando vueltas que está un poquito alejado. Pero bueno, me lo trajo por alguna razón
+
+712
+01:18:30.760 --> 01:18:37.339
+Eugenia Sol Piñeiro: colosense, machearon de nuevo. Acuérdense que era la búsqueda aproximadamente más cercana
+
+713
+01:18:38.130 --> 01:18:45.099
+Eugenia Sol Piñeiro: y no la exacta más cercana. Pero por lo pronto me trajo estos 5 Changs, el espacio en Beige.
+
+714
+01:18:46.100 --> 01:18:47.199
+Eugenia Sol Piñeiro: Cuáles son?
+
+715
+01:18:47.440 --> 01:18:48.859
+Eugenia Sol Piñeiro: Bueno, acá los podemos ver
+
+716
+01:18:49.950 --> 01:18:56.849
+Eugenia Sol Piñeiro: que son los que vimos antes, donde estaba también antes, el el de los planes humanitarios? Acá No
+
+717
+01:18:57.100 --> 01:19:02.870
+Eugenia Sol Piñeiro: que me traigan asistance. Bueno, ¿cuánto gastaron, en qué invirtieron y demás.
+
+718
+01:19:03.780 --> 01:19:06.720
+Eugenia Sol Piñeiro: Bien. Y ahora le pregunto: ¿qué es Rag.
+
+719
+01:19:07.610 --> 01:19:13.230
+Eugenia Sol Piñeiro: Esto no tendría por qué estar en el reporte de las Naciones Unidas? ¿no? Entonces, fíjense ahora la diferencia
+
+720
+01:19:13.350 --> 01:19:18.949
+Eugenia Sol Piñeiro: con lo que vimos antes que voy a tener. Esta es la Cueri, que es rar. Y fíjense lo dispersos que están
+
+721
+01:19:19.160 --> 01:19:26.700
+Eugenia Sol Piñeiro: los documentos que me trae, o sea, me agarro 1 de de esta punta, 2 que más o menos estaban por ahí, 1 por acá. O sea.
+
+722
+01:19:27.100 --> 01:19:29.479
+Eugenia Sol Piñeiro: nada que ver, anda saber que es lo que me va a responder.
+
+723
+01:19:30.560 --> 01:19:39.110
+Eugenia Sol Piñeiro: Seguramente ya tengan un score bastante bajo de similitud. Pero de todas formas, por más que sea bajo el score me va a traer los 5 con mayor escore.
+
+724
+01:19:39.390 --> 01:19:43.120
+Eugenia Sol Piñeiro: Entonces ahí es cuando, entra, por ejemplo, el umbral
+
+725
+01:19:43.250 --> 01:19:47.309
+Eugenia Sol Piñeiro: de no sé mínimo, tráeme que tengan score más de 0, 7.
+
+726
+01:19:47.700 --> 01:20:02.299
+Eugenia Sol Piñeiro: O sea, no me si tiene 0. Tres: No me traigas los 5 con 0 3, por ejemplo. O sea, ahí 1 tiene que empezar a jugar con eso, pero bueno, lo dejé justamente para que vean que está bastante disperso en el espacio medics. Entonces acá 1 puede hacer como
+
+727
+01:20:02.770 --> 01:20:05.620
+Eugenia Sol Piñeiro: ese deep dive para ver Okay.
+
+728
+01:20:06.000 --> 01:20:13.500
+Eugenia Sol Piñeiro: qué información me está trayendo, cómo lo puedo ver? ¿tiene sentido. Lo que me trae o quedó en cualquier lado del espacio en Madrid.
+
+729
+01:20:13.970 --> 01:20:21.870
+Eugenia Sol Piñeiro: Entonces me ayuda un poco también a bajarlo a tierra. No, no son vectores de n dimensionales, sino que ahora Okay lo tengo en 2 D, y lo puedo ver
+
+730
+01:20:24.340 --> 01:20:25.439
+Eugenia Sol Piñeiro: ahora? Sí,
+
+731
+01:20:25.840 --> 01:20:30.230
+Eugenia Sol Piñeiro: hasta acá dudas del caso de uso. Ahora vamos a entrar con adular, Pero el caso de uso es ese
+
+732
+01:20:30.400 --> 01:20:33.460
+Eugenia Sol Piñeiro: sí ¿Cómo visualizarlo y demás? ¿alguna duda?
+
+733
+01:20:37.160 --> 01:20:38.010
+Eugenia Sol Piñeiro: Okay?
+
+734
+01:20:40.240 --> 01:20:46.660
+Eugenia Sol Piñeiro: Bien, vamos a aplicás la técnica de bandtrague que se llama Queryk expansion
+
+735
+01:20:47.760 --> 01:20:51.240
+Eugenia Sol Piñeiro: qué es lo que vamos a hacer. Vamos a usar otro elemento
+
+736
+01:20:52.200 --> 01:20:58.250
+Eugenia Sol Piñeiro: que me va a generar una posible respuesta a mi pregunta, o sea.
+
+737
+01:20:58.520 --> 01:21:01.110
+Eugenia Sol Piñeiro: si yo acá tenía todo mi index, sin pipe line
+
+738
+01:21:04.020 --> 01:21:10.570
+Eugenia Sol Piñeiro: supermal. Tengo mi base de datos editorial. Acá. Este es el retriever que me va a traer los cada documentos.
+
+739
+01:21:10.670 --> 01:21:14.450
+Eugenia Sol Piñeiro: Voy a tener mi erelem Acá con
+
+740
+01:21:15.470 --> 01:21:18.159
+Eugenia Sol Piñeiro: el prome del usuario. No, Este sería el em
+
+741
+01:21:18.890 --> 01:21:26.160
+Eugenia Sol Piñeiro: que me va a combinar los cada documentos con su memoria paramétrica, etcétera. Todo lo que vimos. Pero voy a tener otro módulo
+
+742
+01:21:26.520 --> 01:21:30.010
+Eugenia Sol Piñeiro: del e L e m que puede ser el mismo, o puede ser 1 distinto.
+
+743
+01:21:30.450 --> 01:21:38.389
+Eugenia Sol Piñeiro: O sea, puedo usar la ópera de acá, puedo usar chachapitiminay y y combinarlos, o puedo usar el mismo y demás.
+
+744
+01:21:39.030 --> 01:21:43.940
+Eugenia Sol Piñeiro: Pero va a ser otro módulo. A eso me refiero, no es, no existe. Acá es otro
+
+745
+01:21:44.120 --> 01:21:48.710
+Eugenia Sol Piñeiro: que lo que va a hacer es antes del Prompt y
+
+746
+01:21:48.830 --> 01:21:54.179
+Eugenia Sol Piñeiro: enviárselo al Lddem, va a generar con otro elemento una posible respuesta
+
+747
+01:21:54.330 --> 01:22:03.079
+Eugenia Sol Piñeiro: que va a alucinar, porque la idea del Rag era justamente atacar la información personalizada. Pero, ¿de qué me va a servir?
+
+748
+01:22:03.200 --> 01:22:11.370
+Eugenia Sol Piñeiro: La respuesta va a tener una estructura que va a ser más similar. Si yo la convierto en Bading, a lo que yo tengo almacenado en mi base de datos vectorial.
+
+749
+01:22:11.680 --> 01:22:16.269
+Eugenia Sol Piñeiro: o sea, me vas a editorial. No tengo preguntas almacenadas. Tengo respuestas.
+
+750
+01:22:16.450 --> 01:22:21.050
+Eugenia Sol Piñeiro: Entonces me ayuda a que los envains tengan mayor similitud.
+
+751
+01:22:21.220 --> 01:22:27.440
+Eugenia Sol Piñeiro: entonces es básicamente generamos una respuesta hipotética, pero que va a tener más o menos la misma estructura.
+
+752
+01:22:29.200 --> 01:22:34.999
+Eugenia Sol Piñeiro: Entonces así es como se expande la Cueri y se le concatena una posible respuesta.
+
+753
+01:22:35.740 --> 01:22:41.059
+Eugenia Sol Piñeiro: Entonces voy a tener acá bueno, aumentada y generar Acquary Le dice Okay, Sos una.
+
+754
+01:22:57.500 --> 01:23:01.389
+Eugenia Sol Piñeiro: Si me escucha ahí, me quedé sin batería los auriculares. Bueno.
+
+755
+01:23:01.540 --> 01:23:02.410
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Ahora, Sí.
+
+756
+01:23:02.870 --> 01:23:10.089
+Eugenia Sol Piñeiro: Da perfecto. Bien, problemas técnicos. Voy a tener entonces mi
+
+757
+01:23:10.420 --> 01:23:29.100
+Eugenia Sol Piñeiro: ¿qué me va a generar una respuesta. Entonces le dice, Ok, sos un experto en Naciones Unidas que están haciendo preguntas sobre lo que hay: un reporte anual de 20 23. Y fíjense que simplemente tiene que responder algo similar. Entonces acá le digo, bueno, a ver, respondeme esta pregunta de la misma. Cuántos planes humanitarios coordinaron? Y Fíjense que se concatena
+
+758
+01:23:29.240 --> 01:23:31.190
+Eugenia Sol Piñeiro: al pront la respuesta.
+
+759
+01:23:31.470 --> 01:23:49.850
+Eugenia Sol Piñeiro: En 2 022 con coordinaron 29 planes humanitarios. Sabemos que esto está mal. No o sea, sabíamos que la respuesta era para 216 000 000 de personas en 69 países, o sea, 29. Se quedó cortísimo alucinó, pero la respuesta
+
+760
+01:23:50.030 --> 01:23:55.629
+Eugenia Sol Piñeiro: tiene esta estructura. Entonces yo le paso esto en Meding debería machear. Mejor. Entonces, fíjense que ahora
+
+761
+01:23:56.400 --> 01:24:02.659
+Eugenia Sol Piñeiro: vamos a tener este mapa de en bahings para hacer el Quarty Expansion. Y voy a volver arriba
+
+762
+01:24:02.830 --> 01:24:04.620
+Eugenia Sol Piñeiro: para que noten la diferencia.
+
+763
+01:24:05.530 --> 01:24:07.730
+Eugenia Sol Piñeiro: Fíjense, acá. Tenía estos 3 acá
+
+764
+01:24:07.970 --> 01:24:13.370
+Eugenia Sol Piñeiro: pegaditos a mi cuero y tenía este volando ahí por el medio. Y este que estaba un poco más lejos.
+
+765
+01:24:13.660 --> 01:24:23.259
+Eugenia Sol Piñeiro: Ahora, con query expansion. Tengo todos acá, pegados, o sea, me agarró 1 que está más cerca bien. Y este que me quedó por ahí, que seguramente esté relacionado, pero
+
+766
+01:24:23.470 --> 01:24:25.849
+Eugenia Sol Piñeiro: quería un poquito más relacionado. ¿no? Fíjense ahora
+
+767
+01:24:25.960 --> 01:24:30.549
+Eugenia Sol Piñeiro: que con Quadrid expansion, logró conseguir un chank que era más similar.
+
+768
+01:24:30.970 --> 01:24:32.950
+Eugenia Sol Piñeiro: Entonces ya me ayudó
+
+769
+01:24:36.500 --> 01:24:37.330
+Eugenia Sol Piñeiro: bien.
+
+770
+01:24:38.120 --> 01:24:43.170
+Eugenia Sol Piñeiro: Ese es Quarty Expansion, haciendo una respuesta artificial.
+
+771
+01:24:43.480 --> 01:24:47.629
+Eugenia Sol Piñeiro: Ahora vamos a hacer al revés. Vamos a parafrasear
+
+772
+01:24:48.030 --> 01:24:53.709
+Eugenia Sol Piñeiro: la query del usuario, haciendo preguntas que sean similares
+
+773
+01:24:54.600 --> 01:24:58.389
+Eugenia Sol Piñeiro: para justamente aumentar. Quizás no sé
+
+774
+01:24:58.570 --> 01:25:04.479
+Eugenia Sol Piñeiro: parafrasear un poco la pregunta o preguntarlo de otra forma, que quizás es lo que está almacenado a mis datos editorial.
+
+775
+01:25:06.020 --> 01:25:09.230
+Eugenia Sol Piñeiro: Entonces acá se expande la cueri.
+
+776
+01:25:10.690 --> 01:25:19.209
+Eugenia Sol Piñeiro: Y lo que se le dice es a otro módulo del Edén. En vez de generar una respuesta, se le dice: generame X, cantidad de preguntas que sean similares a esta.
+
+777
+01:25:20.430 --> 01:25:32.480
+Eugenia Sol Piñeiro: Entonces le dice? Bueno, sugerí 5 adicionales, preguntas que me ayuden a encontrar la información que necesito. Sugerí solo preguntas cortas que sean preguntas completas. Bueno, 1 1 lo va tuneando
+
+778
+01:25:32.640 --> 01:25:34.550
+Eugenia Sol Piñeiro: como quiera.
+
+779
+01:25:34.670 --> 01:25:39.149
+Eugenia Sol Piñeiro: Y acá le dice, por ejemplo, esta es la cuerda original del usuario
+
+780
+01:25:39.380 --> 01:25:50.540
+Eugenia Sol Piñeiro: y acá lo parafraseado. Y dice, bueno, cuáles eran las prioridades, en qué países se identificaron crisis humanitarias que, por ejemplo, acá?
+
+781
+01:25:50.640 --> 01:25:55.840
+Eugenia Sol Piñeiro: No tiene la palabra Countrys, pero Fíjense que en la respuesta estaba
+
+782
+01:25:56.000 --> 01:26:00.230
+Eugenia Sol Piñeiro: entonces. Es probable que este medio me ayude a machear con la respuesta.
+
+783
+01:26:00.570 --> 01:26:07.220
+Eugenia Sol Piñeiro: Bueno, y así no sucesivamente. Generó las preguntas que le dije que genere parafraseandolas.
+
+784
+01:26:09.710 --> 01:26:20.159
+Eugenia Sol Piñeiro: Entonces lo que se hace ahora es concatenar la cuerda original con las 5 quris aumentadas. O sea, voy a tener 6 quaris en total.
+
+785
+01:26:20.890 --> 01:26:37.759
+Eugenia Sol Piñeiro: La ventaja que tiene croma es que me permite manejar todo esto en paralelo. Entonces no es que voy a tener que esperar a que haga el re trival de la primera quare y después el retribal de la otra y demás, sino que directamente en paralelo, me va a generar todas las quarys y me va a traer las top k más similares a cada una de esas quarys.
+
+786
+01:26:38.600 --> 01:26:44.620
+Eugenia Sol Piñeiro: ¿qué puede pasar? Acá No me vean la respuesta. ¿qué puede pasar acá como desventaja.
+
+787
+01:26:44.780 --> 01:26:50.590
+Eugenia Sol Piñeiro: o sea para cada una de las Queris me va a traer 5. Chanks, los top k.
+
+788
+01:26:52.760 --> 01:26:56.459
+JULIETA TECHENSKI: Y puede ser que los los del quinto Chank, que
+
+789
+01:26:56.620 --> 01:27:03.929
+JULIETA TECHENSKI: que coincid que, o sea, si te trae de los 5 por ahí, el último de los 5 o los últimos. No sé, los 3 tienen como
+
+790
+01:27:04.580 --> 01:27:08.480
+JULIETA TECHENSKI: cómo se dice, muy baja, como que coinciden muy poco.
+
+791
+01:27:09.430 --> 01:27:16.430
+Eugenia Sol Piñeiro: Okay. O sea, me puede pasar en alguna cuery que me traiga. Chanz que no me sirven ¿no?
+
+792
+01:27:16.760 --> 01:27:19.669
+Eugenia Sol Piñeiro: Okay. Bien, esa es una. ¿qué más
+
+793
+01:27:20.570 --> 01:27:22.679
+Eugenia Sol Piñeiro: o va vayamos al otro caso.
+
+794
+01:27:26.630 --> 01:27:30.069
+Eugenia Sol Piñeiro: Yo le paso una quory Me trae 5. Changs.
+
+795
+01:27:30.230 --> 01:27:32.769
+Eugenia Sol Piñeiro: Le vas otra Quory. Me trae otros 5 Changs.
+
+796
+01:27:32.990 --> 01:27:35.100
+Eugenia Sol Piñeiro: Voy a tener 30 Changs.
+
+797
+01:27:35.540 --> 01:27:40.100
+Eugenia Sol Piñeiro: Es probable que haya duplicados, no porque encima son quaris muy similares.
+
+798
+01:27:41.280 --> 01:27:45.880
+Eugenia Sol Piñeiro: Se entiende por qué depende de ese caso.
+
+799
+01:27:47.450 --> 01:27:57.909
+Eugenia Sol Piñeiro: O sea, estoy pasando justamente a propósito, le estoy pasando Querys que son similares para machear más en bails, pero de todos esos 30 que me tiene que traer, es muy probable que alguno sea reptido.
+
+800
+01:27:58.710 --> 01:28:11.340
+Eugenia Sol Piñeiro: Entonces hay que tener en cuenta eso se acuerdan que habíamos dicho que una de las técnicas de advance rugb de post re trival era de duplicar los Changs que venían repetidos o eran muy, muy similares. Entonces
+
+801
+01:28:11.990 --> 01:28:15.430
+Eugenia Sol Piñeiro: acá lo que se hace es bueno en este caso, simplemente ponerlo en un set
+
+802
+01:28:15.540 --> 01:28:20.980
+Eugenia Sol Piñeiro: para que no sean repetidos. Hay otras más complejas que lo has que lo que hace es ver
+
+803
+01:28:21.770 --> 01:28:34.349
+Eugenia Sol Piñeiro: si tienen la información muy, muy similar. Se acuerdan que habíamos visto el ejemplo de el C, E, o U, P. N, A, y renunció en tal fecha. Y después me decía, renunció el Co, 2
+
+804
+01:28:34.720 --> 01:28:39.550
+Eugenia Sol Piñeiro: y el ciego por primera vez, renunció a ver, renunció el ciego por la edad, y la verdad son Truhanks muy parecidos. Pero 1 me alcanza.
+
+805
+01:28:39.770 --> 01:28:42.199
+Eugenia Sol Piñeiro: entonces también se puede hacer ese tipo de técnicas.
+
+806
+01:28:42.360 --> 01:28:45.120
+Eugenia Sol Piñeiro: Esta simplemente me duplica la información
+
+807
+01:28:46.160 --> 01:28:49.630
+Eugenia Sol Piñeiro: y me saca los emails que estén repetidos.
+
+808
+01:28:51.560 --> 01:29:00.749
+Eugenia Sol Piñeiro: entonces lo que tengo que hacer es generar justamente el emmading para cada una de las quartis, las 5 generadas de forma artificial, más la cuerda del usuario.
+
+809
+01:29:00.960 --> 01:29:04.099
+Eugenia Sol Piñeiro: Y eso es lo que voy a ir a buscar a chroma.
+
+810
+01:29:04.270 --> 01:29:07.439
+Eugenia Sol Piñeiro: Y fíjense que me queda así. Esta era la cuerda original.
+
+811
+01:29:08.020 --> 01:29:15.389
+Eugenia Sol Piñeiro: las que están en rojo, claro o rosa, son las cuales generadas artificialmente. Entonces fíjense que acá
+
+812
+01:29:16.420 --> 01:29:26.390
+Eugenia Sol Piñeiro: estas me machearon con esto, que ya los habíamos conseguido. Pero se acuerdan que teníamos 1 volando por acá. Fíjense que macho con alguna de estas cuerys.
+
+813
+01:29:26.720 --> 01:29:38.320
+Eugenia Sol Piñeiro: o sea, seguramente sea similar, o sea, me servía. Simplemente tenía que parafrasear. La cuery. No es que me había traído una una cosa totalmente loca. Tenía sentido.
+
+814
+01:29:40.300 --> 01:29:44.050
+Eugenia Sol Piñeiro: Y acá. Bueno, fijense que tengo todos estos chanks ¿no? Ahora que me van a servir.
+
+815
+01:29:45.470 --> 01:29:52.599
+Eugenia Sol Piñeiro: Entonces, Ahora, claro, tengo 30 chanks, un montón tengo que de duplicar
+
+816
+01:29:53.080 --> 01:29:58.390
+Eugenia Sol Piñeiro: y además tengo que comprimirlos de alguna forma o priorizarlos de alguna forma.
+
+817
+01:29:59.260 --> 01:30:04.920
+Eugenia Sol Piñeiro: Entonces, hasta acá tenemos query expansion del lado de la Query.
+
+818
+01:30:05.240 --> 01:30:07.390
+Eugenia Sol Piñeiro: Ya vimos el del lado de la respuesta.
+
+819
+01:30:07.920 --> 01:30:13.550
+Eugenia Sol Piñeiro: Voy a generar mis 30 chance que los voy a traer. Los voy a deduplicar.
+
+820
+01:30:13.740 --> 01:30:19.290
+Eugenia Sol Piñeiro: Y ahora lo que quiero hacer es priorizar los más similares de todos los que me trajo
+
+821
+01:30:19.630 --> 01:30:25.109
+Eugenia Sol Piñeiro: para justamente no comer toda mi ventana de contexto con mis 30 Changs.
+
+822
+01:30:26.170 --> 01:30:28.739
+Eugenia Sol Piñeiro: Entonces acá. Es cuando entra en juego. El renck
+
+823
+01:30:30.620 --> 01:30:37.960
+Eugenia Sol Piñeiro: quiere decir que sí o sí, para hacer un ranking Tengo que haber hecho que expansion, no pueden ser independientes y hacer 1 o el otro o combinarlos.
+
+824
+01:30:38.180 --> 01:30:45.640
+Eugenia Sol Piñeiro: Pero el ranker lo que hacía se acuerdan que habíamos visto un gráfico, La clase pasada que
+
+825
+01:30:45.800 --> 01:30:51.989
+Eugenia Sol Piñeiro: iba a tener un montón de Chanks que me iba a traer en este caso, supóngase que le digo Okay tráeme 15,
+
+826
+01:30:52.810 --> 01:30:54.970
+Eugenia Sol Piñeiro: y de esos 15 que me trajiste.
+
+827
+01:30:55.110 --> 01:30:58.449
+Eugenia Sol Piñeiro: prioriza los más similares de los más similares.
+
+828
+01:30:59.580 --> 01:31:03.810
+Eugenia Sol Piñeiro: Entonces acá yo aplico el renker que esto
+
+829
+01:31:04.970 --> 01:31:11.550
+Eugenia Sol Piñeiro: para el que quiera profundizar. Se llama Crossingcoder. Y en este caso usa Vert para reordenar.
+
+830
+01:31:12.160 --> 01:31:15.910
+Eugenia Sol Piñeiro: para ir a profundizar bienvenido.
+
+831
+01:31:16.020 --> 01:31:26.880
+Eugenia Sol Piñeiro: No nos metemos tanto porque porque ya nos metemos en un rid hall de técnicas y técnicas, pero lo pueden buscar así como Crosssen, Coder. Y en este caso está usando 1 que se basa en Verd para reordenar
+
+832
+01:31:27.590 --> 01:31:33.719
+Eugenia Sol Piñeiro: los envains. Hay otros que se basan en árboles, por ejemplo, otros en heurísticas. En este caso usamos otro transformer
+
+833
+01:31:34.730 --> 01:31:38.820
+Eugenia Sol Piñeiro: y lo que va a hacer es para cada par
+
+834
+01:31:38.930 --> 01:31:49.010
+Eugenia Sol Piñeiro: quary documento, generamos un score con este Ranger. En este caso, Verd va a generar un score de similitud para cada Park quory documento.
+
+835
+01:31:50.280 --> 01:31:53.040
+Eugenia Sol Piñeiro: entonces me va a dar todos estos scores.
+
+836
+01:31:53.400 --> 01:31:58.480
+Eugenia Sol Piñeiro: y Fíjense que el orden de similitud
+
+837
+01:31:58.800 --> 01:32:03.340
+Eugenia Sol Piñeiro: va a ser este. Esta va a ser la salida del Ranker. ¿te va a decir, bueno.
+
+838
+01:32:03.590 --> 01:32:09.119
+Eugenia Sol Piñeiro: de los Quince, que me trajiste al final. El más importante era el número 2,
+
+839
+01:32:09.850 --> 01:32:12.279
+Eugenia Sol Piñeiro: después, el primero, después el quinto
+
+840
+01:32:12.530 --> 01:32:19.040
+Eugenia Sol Piñeiro: y después el décimo. Si yo hubiese elegido los Top k igual a 5, este jamás lo hubiese conseguido.
+
+841
+01:32:19.160 --> 01:32:28.479
+Eugenia Sol Piñeiro: ¿no? Y el 8 tampoco. Entonces, al final, los 5 más importantes eran por ahí estaban el 10, el 8. De hecho, el 5 no entraba y empezó de 0.
+
+842
+01:32:28.690 --> 01:32:45.670
+Eugenia Sol Piñeiro: Entonces fíjense que terminé descartando estos que no eran tan importantes como si quizás lo era el décimo. ¿por qué? Por esa búsqueda aproximada que va a ser la base de datos medictorial. A veces me conviene agrandar el ca y reordenar los escorts con otro transformer En este caso, con Berth
+
+843
+01:32:45.820 --> 01:32:48.320
+Eugenia Sol Piñeiro: que me ordene los documentos.
+
+844
+01:32:50.280 --> 01:32:53.519
+Eugenia Sol Piñeiro: Y bueno, por ejemplo, acá este es el 5
+
+845
+01:32:55.170 --> 01:33:02.079
+Eugenia Sol Piñeiro: perdón. Esta es la reclase. También. Este es el cuarto que fíjense que me quedo acá que lo terminé descartando al final
+
+846
+01:33:02.730 --> 01:33:03.900
+Eugenia Sol Piñeiro: y
+
+847
+01:33:04.440 --> 01:33:14.720
+Eugenia Sol Piñeiro: y hablaba, bueno de la organización del 20 23 que se aprendió en la crisis gro global, O sea, no tenía la respuesta de los planes humanitarios Al final.
+
+848
+01:33:14.840 --> 01:33:24.290
+Eugenia Sol Piñeiro: y yo lo había traído como 1 de los Changs que eran relevantes Bien, hasta acá la demos resumen.
+
+849
+01:33:24.630 --> 01:33:37.849
+Eugenia Sol Piñeiro: tenemos Quality Expansion, puedo generar una respuesta de forma artificial puedo generar preguntas parafraseadas de forma artificial, o me puedo reordenar los changs.
+
+850
+01:33:37.960 --> 01:33:53.640
+Eugenia Sol Piñeiro: los puedo comprimir, los puedo de duplicar Entonces, así con todas estas técnicas extra que les voy agregando de post y pre re trival, o mejorar justamente la performance del modelo y aplicar estas técnicas de Rag más avanzadas.
+
+851
+01:33:58.070 --> 01:33:59.990
+Eugenia Sol Piñeiro: Bien, ¿qué más?
+
+852
+01:34:00.600 --> 01:34:03.220
+Eugenia Sol Piñeiro: De nuevo, el Rabi Hall y un montón de cosas más.
+
+853
+01:34:03.350 --> 01:34:07.250
+Eugenia Sol Piñeiro: Pero para el que quiera profundizar, hay un montón de modelos de chat
+
+854
+01:34:07.450 --> 01:34:20.040
+Eugenia Sol Piñeiro: en en Lanchain. Te permite mantener la conversación en un buffer, como si fuese una calle, por ejemplo, para que sea más rápido? Bueno, los prompt templates lo vimos. Pueden investigar un poco más de las change o como parcial el output.
+
+855
+01:34:20.740 --> 01:34:34.360
+Eugenia Sol Piñeiro: Después les recomiendo poitring Si no lo usan para manejo manejo de dependencia, ya lo deben conocer seguro. ¿por qué, Porque cada vez escalamos más y más. Tenemos un montón de módulos. Así que está bueno que tengan un dependencia manager
+
+856
+01:34:34.490 --> 01:34:42.750
+Eugenia Sol Piñeiro: y acá les anoté la de pobres que no la vemos porque justamente pobres. Pero bueno, se le puede agregar esta extensión vectorial para que puedan manejar vectores también.
+
+857
+01:34:44.050 --> 01:34:48.809
+Eugenia Sol Piñeiro: Bien, acá. Para finalizar, les dejo esta demo
+
+858
+01:34:49.610 --> 01:34:51.360
+Eugenia Sol Piñeiro: para que la vean ustedes tranquilos.
+
+859
+01:34:51.550 --> 01:34:53.310
+Eugenia Sol Piñeiro: que va a ser un pantallazo general.
+
+860
+01:35:00.570 --> 01:35:09.690
+Eugenia Sol Piñeiro: Está bueno que la lean, por lo menos porque son consideraciones de test splitting que les puede llegar a pasar problemas que pueden llegar a tener que están solucionados. Acá.
+
+861
+01:35:10.120 --> 01:35:15.919
+Eugenia Sol Piñeiro: Así que ojo léanla ejemplo. Te puede quedar, por ejemplo, un Chanc con un punto.
+
+862
+01:35:15.950 --> 01:35:17.880
+Eugenia Sol Piñeiro: o sea, un chanque, solo un punto.
+
+863
+01:35:17.910 --> 01:35:28.399
+Eugenia Sol Piñeiro: Pero tu spliting hizo eso. Y acá. Está todo explicado, bien detallado. ¿por qué puede llegar a pasar eso? Bueno, consideraciones que quizás 1 pasa por alto y en realidad tiene que tener en cuenta
+
+864
+01:35:28.400 --> 01:35:38.100
+Eugenia Sol Piñeiro: lo mismo. Cómo usar metadata, cómo ver la distribución de mis Chanks no es lo mismo. Si me quedan todos los chanks de igual longitud o no, tienen acá un poco ese análisis
+
+865
+01:35:38.110 --> 01:35:42.399
+Eugenia Sol Piñeiro: en y realmente todos deberían tener una longitud similar.
+
+866
+01:35:42.690 --> 01:35:50.120
+Eugenia Sol Piñeiro: Y ese tipo de consideraciones de texto splitting no la vemos porque son muy detalladas, pero está bueno, que profundicen en eso
+
+867
+01:35:53.050 --> 01:35:55.990
+Eugenia Sol Piñeiro: hasta acá dudas de Aduan trai ya casi termino.
+
+868
+01:35:57.030 --> 01:36:02.430
+Eugenia Sol Piñeiro: Pero claro, la demo ya los perdí o siguen siguen despiertos.
+
+869
+01:36:05.350 --> 01:36:11.379
+Eugenia Sol Piñeiro: Okay. Tok. ¿quién Perfecto. Esta véanla?
+
+870
+01:36:12.320 --> 01:36:13.880
+Eugenia Sol Piñeiro: ¿qué más tenemos?
+
+871
+01:36:14.470 --> 01:36:28.689
+Eugenia Sol Piñeiro: Otro frameworseapis, un poco. Ya lo conté Hugginface que lo vimos bastante hoy. Fíjense que me ofrece versiones gratuitas de modelos, algunos modelos destilados. Esto lo vimos en Oblish Desplation, por ejemplo, de Stillbert the Five es para
+
+872
+01:36:29.110 --> 01:36:33.460
+Eugenia Sol Piñeiro: para también audio para Speech, que les puede servir.
+
+873
+01:36:34.120 --> 01:36:40.219
+Eugenia Sol Piñeiro: Después están los típicos Frameworks de Blearning, que esto lo voy a pasar miedo por arriba, que también lo vemos un poco en silla, Pero.
+
+874
+01:36:40.730 --> 01:36:46.460
+Eugenia Sol Piñeiro: y ya lo vieron también en el T, P, Uno, no de densor Froy partors estanqueras.
+
+875
+01:36:46.560 --> 01:36:51.590
+Eugenia Sol Piñeiro: Después. Lo que vamos a ver, la clase que viene es un poco más de Cloud Computing.
+
+876
+01:36:52.740 --> 01:36:54.629
+Eugenia Sol Piñeiro: no en general de
+
+877
+01:36:55.920 --> 01:37:04.260
+Eugenia Sol Piñeiro: de cómo exployarlo, pero sí hacerlo más teórico. Y vamos a a armar un diagrama más de arquitectura de qué pasaría si lo tuviéramos que poner en producción
+
+878
+01:37:04.740 --> 01:37:09.330
+Eugenia Sol Piñeiro: como Esclaimer no es que lo van a tener que poner en producción, Pero para que lo tengan en cuenta.
+
+879
+01:37:09.570 --> 01:37:21.270
+Eugenia Sol Piñeiro: y les dejo la bibliografía. Acá. Ah, bueno, este está. Bueno, voy a mencionar que otro similar a Umap es Disney, que es este de acá también lo pueden usar.
+
+880
+01:37:21.460 --> 01:37:26.700
+Eugenia Sol Piñeiro: Y tienen acá. Un poco cómo funciona. Está yumap y y profundizar en la proyección.
+
+881
+01:37:28.050 --> 01:37:29.519
+Eugenia Sol Piñeiro: Y bueno, y todas las demás
+
+882
+01:37:29.650 --> 01:37:33.769
+Eugenia Sol Piñeiro: hasta acá la clase antes que se me vayan. Voy al enunciado, pero hasta acá dudas.
+

@@ -1,0 +1,590 @@
+WEBVTT
+
+1
+00:00:04.550 --> 00:00:10.220
+Eugenia Sol Piñeiro: Bien, T. P: Tres, vamos a implementar
+
+2
+00:00:10.580 --> 00:00:29.649
+Eugenia Sol Piñeiro: también transformer, pero con un rag. Ahora, en realidad, en la parte del Ere Len. La idea es que hagan una aplicación con Raid que la aplicación la definen ustedes. Recomiendo que sea lo que les guste, que les interese resolver, que esté relacionado con algún caso de uso que tengan por ahí, dando vueltas
+
+3
+00:00:30.160 --> 00:00:32.860
+Eugenia Sol Piñeiro: o no totalmente opcional. Pero
+
+4
+00:00:33.160 --> 00:00:46.439
+Eugenia Sol Piñeiro: es bastante abierto el el enunciado, si bien tiene algunas limitaciones, pero la idea es que también tengan esa capacidad de cómo definir un problema que se adapte. Rag, digamos, a ser parte de la la de la evaluación, como definen el problema
+
+5
+00:00:47.450 --> 00:00:48.390
+Eugenia Sol Piñeiro: acá.
+
+6
+00:00:48.940 --> 00:00:51.389
+Eugenia Sol Piñeiro: La idea es que salgan un poquito de
+
+7
+00:00:51.790 --> 00:00:56.819
+Eugenia Sol Piñeiro: texto o chat woot en realidad o un Kivanei, y que hagan otro tipo de aplicaciones.
+
+8
+00:00:57.010 --> 00:01:03.529
+Eugenia Sol Piñeiro: es decir, lo que vimos hoy del chat bot, ya lo vimos. Ya vieron que sencillo implementar.
+
+9
+00:01:03.850 --> 00:01:07.919
+Eugenia Sol Piñeiro: No hagan un Kivaney. De hecho, no pueden hacer Kivaney, que es lo que vimos hoy.
+
+10
+00:01:08.090 --> 00:01:10.719
+Eugenia Sol Piñeiro: Primero, porque ya lo vimos. Y segundo, que es muy básico.
+
+11
+00:01:10.920 --> 00:01:13.000
+Eugenia Sol Piñeiro: Entonces
+
+12
+00:01:13.200 --> 00:01:20.550
+Eugenia Sol Piñeiro: quiero que se animen también a usar otro tipo de inputs, como imágenes o audios que vamos a tener una clase específica de imágenes o audios. Pero los
+
+13
+00:01:20.860 --> 00:01:33.549
+Eugenia Sol Piñeiro: lo que tienen que tener en en la cabeza, digamos, es si tengo una imagen, hay formas de pasarlo a texto, y lo mismo con el audio. Entonces, una vez que tengo texto, va a ser muy similar a todo lo que ya tenía a todo lo que vimos hoy
+
+14
+00:01:33.860 --> 00:01:39.030
+Eugenia Sol Piñeiro: y si no, no paso texto. O sea, hay formas de pasarlo. Maden directamente, entonces
+
+15
+00:01:40.280 --> 00:01:44.619
+Eugenia Sol Piñeiro: sean creativos. Y anímense a usar también otro tipo de de inputs.
+
+16
+00:01:44.900 --> 00:01:46.129
+Eugenia Sol Piñeiro: ¿qué es lo que tienen que hacer?
+
+17
+00:01:46.230 --> 00:01:51.099
+Eugenia Sol Piñeiro: Primero, el primer ejercicio tienen que definir el problema. Nada más
+
+18
+00:01:51.490 --> 00:01:54.290
+Eugenia Sol Piñeiro: pensar la idea: debatir entre ustedes
+
+19
+00:01:54.530 --> 00:02:01.019
+Eugenia Sol Piñeiro: tienen que describirnos el problema. Proponernos el proyecto, ¿Cuál va a ser el input y Out de la aplicación
+
+20
+00:02:01.360 --> 00:02:07.560
+Eugenia Sol Piñeiro: importante? ¿de dónde van a sacar los datos, en qué formato van a estar.
+
+21
+00:02:07.770 --> 00:02:10.189
+Eugenia Sol Piñeiro: qué van a persistir en la base de datos vectorial.
+
+22
+00:02:10.229 --> 00:02:28.189
+Eugenia Sol Piñeiro: cuál va a ser su alcance inicial. ¿y qué desafíos ven en el en el proyecto y tienen que presentar un pequeño diagrama de arquitectura, así como el que vimos en clase, el el de rack típico, pero poniendo, no sé, voy a tener ante Voy a tener imágenes. Voy a tener, voy a usar pinecome ¿Qué es lo que van a usar?
+
+23
+00:02:29.230 --> 00:02:36.869
+Eugenia Sol Piñeiro: Después puede variar. Quizás probaron con baimbon, no les gustó y quieren cambiar a croma si está justificado. Ok. Por eso preliminar.
+
+24
+00:02:37.230 --> 00:02:43.889
+Eugenia Sol Piñeiro: Pero la idea es que bajen el proyecto más a tierra con esta entrega y que lo podamos debatir.
+
+25
+00:02:45.520 --> 00:02:52.210
+Eugenia Sol Piñeiro: Es difícil definir el alcance del proyecto. Por eso se los tenemos que aprobar antes de que se pongan a desarrollar.
+
+26
+00:02:53.280 --> 00:02:57.460
+Eugenia Sol Piñeiro: Por eso va a haber una instancia, qué es oral, O sea.
+
+27
+00:02:57.510 --> 00:03:04.660
+Eugenia Sol Piñeiro: tienen que entregar esto, básicamente en una, una, 2 hojas explicado
+
+28
+00:03:04.660 --> 00:03:21.550
+Eugenia Sol Piñeiro: y después contarnos a nosotras que lo que van a hacer Íbamos tirando ahí. Es oral, porque es más fácil que hacerlo por mail nada más. Pero no es que va a tener una nota específica, sino que va a estar considerado dentro de la rúbrica. Va a ser una sola nota del T. P. No, y va a valer un porcentaje de la nota. Va a ser, como definen el problema.
+
+29
+00:03:22.790 --> 00:03:25.570
+Eugenia Sol Piñeiro: Bien, alcance.
+
+30
+00:03:26.520 --> 00:03:34.240
+Eugenia Sol Piñeiro: Cuidado con cómo lo definen. Tiene que haber cierta complejidad. O sea, no vale definir. Bueno, voy a hacer un kiva nai. Voy a hacer un chat bot.
+
+31
+00:03:34.290 --> 00:03:50.050
+Eugenia Sol Piñeiro: y voy a tener solo texto plano, o sea, alguna complejidad extra. Tiene que haber o está del lado de como parcial la data. No se hacen webscaping. Tienen imágenes o tienen audio o tienen data tagular alguna complejidad. Tiene que haber del lado de la data.
+
+32
+00:03:50.110 --> 00:03:59.050
+Eugenia Sol Piñeiro: y quizás está más del lado del retibal la complejidad. Quizás quieren agregar más técnicas de aumentation que
+
+33
+00:03:59.190 --> 00:04:00.709
+Eugenia Sol Piñeiro: o de Advanz Drag.
+
+34
+00:04:01.360 --> 00:04:04.320
+Eugenia Sol Piñeiro: Entonces fíjense ahí para definirlo. Bien.
+
+35
+00:04:04.720 --> 00:04:07.200
+Eugenia Sol Piñeiro: acá les puse un par de ejemplos de
+
+36
+00:04:07.930 --> 00:04:11.049
+Eugenia Sol Piñeiro: que no es un Kivanei o sea, no pueden presentar un kivanai
+
+37
+00:04:11.800 --> 00:04:20.890
+Eugenia Sol Piñeiro: se entiende que es un piano. Es lo que hicimos hoy, no de hacer una pregunta, de que me da una respuesta y fin el texto plano, o sea, tener muchos txts y cargarlos, y fin que sea un bot.
+
+38
+00:04:23.050 --> 00:04:25.850
+Eugenia Sol Piñeiro: Ejemplo. Lo que vimos hoy.
+
+39
+00:04:27.750 --> 00:04:34.040
+Eugenia Sol Piñeiro: no de un The Bot, que es el aprendizaje automático. ¿en qué consiste el T P, Uno en quienes el profesor de la materia es bastante sencillo.
+
+40
+00:04:35.600 --> 00:04:38.500
+Eugenia Sol Piñeiro: Otro ejemplo es, no sé, por ejemplo, para una empresa
+
+41
+00:04:38.620 --> 00:04:42.409
+Eugenia Sol Piñeiro: que iba a tener la misión, visión y valores de la empresa.
+
+42
+00:04:42.620 --> 00:04:46.820
+Eugenia Sol Piñeiro: Es bastante sencillo hacer ese tipo de cuestionar Anstering. Entonces
+
+43
+00:04:46.990 --> 00:04:50.140
+Eugenia Sol Piñeiro: la idea es que generen algo un poquito más complejo.
+
+44
+00:04:52.550 --> 00:04:56.120
+Eugenia Sol Piñeiro: Es algo que mire un genoma
+
+45
+00:04:56.320 --> 00:04:58.430
+Eugenia Sol Piñeiro: y haga algo sobre eso. O sea.
+
+46
+00:04:59.230 --> 00:05:06.630
+Eugenia Sol Piñeiro: puede ser. No me lo definas un poco mejor, pero sí podes hacer algo con genomas, por ejemplo, en
+
+47
+00:05:07.950 --> 00:05:17.100
+Eugenia Sol Piñeiro: para definir la idea, recomiendo que se basen en los 3 desafíos que vimos: información actualizada.
+
+48
+00:05:17.280 --> 00:05:25.950
+Eugenia Sol Piñeiro: personalizada, fácil de actualizar, mitigar alucinaciones. Ese tipo de cosas es lo que tiene que resolver su aplicación.
+
+49
+00:05:26.420 --> 00:05:27.280
+Eugenia Sol Piñeiro: Sí,
+
+50
+00:05:27.990 --> 00:05:42.679
+Eugenia Sol Piñeiro: ahí es donde tiene que estar el foco como para definirla mejor. Acá Tienen algunos ejemplos que presentaron cuatrimestres anteriores que no son Ribaney ejemplo. Habían hecho un generador de United Solidity, que es un lenguaje que es bastante
+
+51
+00:05:42.760 --> 00:05:55.270
+Eugenia Sol Piñeiro: de nicho, por así decirlo, no de cripto, que quizás hay algunos modelos que ni siquiera lo consideran entonces. Era bastante personalizado a Solidity y le empezaban a dar lineamientos específicos de la cátedra de cripto.
+
+52
+00:05:55.720 --> 00:06:00.779
+Eugenia Sol Piñeiro: entonces fíjense que tienen personalización y encima información actualizada con Solidity.
+
+53
+00:06:01.590 --> 00:06:12.920
+Eugenia Sol Piñeiro: Después tenían, por ejemplo, similitud entre logos de empresas para evitar falsificaciones o plagio, acá tenían imágenes. Entonces manejaban todas las imágenes con los logos. Ahí estaba la complejidad.
+
+54
+00:06:13.490 --> 00:06:18.389
+Eugenia Sol Piñeiro: Otro tenía recomendación de vídeos en base a requerimientos de aprendizaje del usuario.
+
+55
+00:06:19.150 --> 00:06:22.750
+Eugenia Sol Piñeiro: por ejemplo, Acá agarraban un montón de vídeos de Youtube.
+
+56
+00:06:22.950 --> 00:06:30.300
+Eugenia Sol Piñeiro: y los parceaban. Puedes agarrar o el texto o los vídeos intentar agarrar los captions, por ejemplo.
+
+57
+00:06:30.490 --> 00:06:42.439
+Eugenia Sol Piñeiro: y intentar ver qué qué duración tenían el nivel de dificultad. Por ejemplo, si el estudiante está haciendo un doctorado no es lo mismo que si es un estudiante de grado que complejidad en ese video. Bueno, así lo personalizaban.
+
+58
+00:06:43.250 --> 00:06:52.260
+Eugenia Sol Piñeiro: ¿qué más autocompletado formularios para aplicaciones de trabajo acá. La complejidad estaba que tenía más data tabular, no más de de formulario.
+
+59
+00:06:52.460 --> 00:06:58.829
+Eugenia Sol Piñeiro: y y cada trabajo te pide cosas distintas, entonces hay que también personalización según el trabajo.
+
+60
+00:06:59.500 --> 00:07:10.780
+Eugenia Sol Piñeiro: Después tenían de código. H, T. M. L. Eso tienen que parte de una codease se generó acá. Ya metían Html, angular Riact, o sea, metían otro tipo de lenguaje para parcial.
+
+61
+00:07:11.330 --> 00:07:13.730
+Eugenia Sol Piñeiro: Hay muchísimas aplicaciones.
+
+62
+00:07:14.580 --> 00:07:17.850
+Eugenia Sol Piñeiro: Tampoco se tiene que quedar en estas 5. No. O sea, hay un montón.
+
+63
+00:07:18.230 --> 00:07:25.229
+Eugenia Sol Piñeiro: son simplemente disparadores de ideas como para que vean que se puso a la imagen en código audio, texto, lo que quieran.
+
+64
+00:07:25.370 --> 00:07:29.410
+Eugenia Sol Piñeiro: y hay de todo para que salgan un poco de hacer un bot.
+
+65
+00:07:31.150 --> 00:07:40.259
+Eugenia Sol Piñeiro: ¿qué más vamos a evaluar cómo integran el index invivencia. En general, todo el indexy.
+
+66
+00:07:41.860 --> 00:07:45.730
+Eugenia Sol Piñeiro: La base de datos vectorial que la justifiquen, que sepan usar.
+
+67
+00:07:45.940 --> 00:07:48.640
+Eugenia Sol Piñeiro: o sea, el foco va a estar en los módulos del rap.
+
+68
+00:07:48.860 --> 00:07:59.199
+Eugenia Sol Piñeiro: así como el T. P. Uno, el foco del transformer, acá el Tp. Uno va a ser el foco de bueno que usaste como Spleting. ¿por qué qué algoritmo en bang usaste y lo variaste, y por qué definiste esa dimensión de
+
+69
+00:07:59.510 --> 00:08:06.960
+Eugenia Sol Piñeiro: y qué base de datos editorial tenés y cómo hiciste el Rey Trivalli ¿Por qué definiste caigo a las 5. Y no caigo a la 10. Ese tipo de cosas las tienen que probar
+
+70
+00:08:07.150 --> 00:08:08.260
+Eugenia Sol Piñeiro: y
+
+71
+00:08:09.740 --> 00:08:19.450
+Eugenia Sol Piñeiro: técnicas de procesamiento van a tener que implementar distintos métodos dependiendo qué data tengan. Quizás tengan que manejar imágenes o audios.
+
+72
+00:08:20.910 --> 00:08:29.949
+Eugenia Sol Piñeiro: texto también pueden tener data estructurada no estructurada. Entonces es difícil, quizás pre procesarla. Pueden tener. P. D, F, Si tienen que extraer texto de un Pdf. Bueno.
+
+73
+00:08:30.470 --> 00:08:33.299
+Eugenia Sol Piñeiro: pondré muchas cosas como crear el data zeta
+
+74
+00:08:34.210 --> 00:08:40.759
+Eugenia Sol Piñeiro: si es multimodal o no. Algunos, incluso en otros cuatrimestres convidaron la data que tenían texto, imágenes, todo mezclado.
+
+75
+00:08:41.309 --> 00:08:46.179
+Eugenia Sol Piñeiro: ¿cómo definen las métricas, vamos a tener una clase específica de métricas.
+
+76
+00:08:46.360 --> 00:08:47.720
+Eugenia Sol Piñeiro: Así que eso por ahora
+
+77
+00:08:47.840 --> 00:08:51.760
+Eugenia Sol Piñeiro: no le den muchas vueltas, pero ya vamos a ver cómo se evalúa todo esto
+
+78
+00:08:52.160 --> 00:08:55.189
+Eugenia Sol Piñeiro: y después es el típico estudio de ablación que venimos viendo.
+
+79
+00:08:55.820 --> 00:09:01.790
+Eugenia Sol Piñeiro: Ya antes, decía vimos el D P. Uno y demás. La idea es que hagan estos cambios incrementales.
+
+80
+00:09:02.040 --> 00:09:13.360
+Eugenia Sol Piñeiro: No sé, por ejemplo, cambio el Shangsize, cambio. El K. Cambio, el algoritmo en Meding. Y funciona así: le agrego advance rugg y mejora la métrica. Ese tipo de cosas.
+
+81
+00:09:13.740 --> 00:09:19.530
+Eugenia Sol Piñeiro: Y tienen que aplicar al menos una técnica de avanzar pueden aplicar más, pero al menos una
+
+82
+00:09:20.030 --> 00:09:23.060
+Eugenia Sol Piñeiro: y bienvenidos a investigar también, no
+
+83
+00:09:23.170 --> 00:09:24.899
+Eugenia Sol Piñeiro: por fuera de lo que vimos
+
+84
+00:09:25.350 --> 00:09:28.270
+Eugenia Sol Piñeiro: que ya es más como extra
+
+85
+00:09:28.780 --> 00:09:34.249
+Eugenia Sol Piñeiro: que agreguen, por ejemplo, monitoreo esto antes discreimer. Tienen que tener todo el país line terminado
+
+86
+00:09:34.370 --> 00:09:37.179
+Eugenia Sol Piñeiro: y funcional antes de empezar a agregar extras
+
+87
+00:09:37.420 --> 00:09:45.160
+Eugenia Sol Piñeiro: lo mismo. Recomiendo también para Aduan Ray. Primero hagan el Paveland sin nada. Adwanstrid y después se van incorporando
+
+88
+00:09:45.920 --> 00:09:56.799
+Eugenia Sol Piñeiro: entonces pueden interar Lunchmidt para monitorear, analizar el costo computacional por ahí está. Bueno, el uso de Tokens. Quizás hay algún modelo que te consume más o menos. Tokens
+
+89
+00:09:56.990 --> 00:10:01.740
+Eugenia Sol Piñeiro: pueden meterle una ayubai. Siempre está bueno. Y ahora, con los covenegations. Es bastante sencillo.
+
+90
+00:10:02.110 --> 00:10:07.120
+Eugenia Sol Piñeiro: O bienvenidos a investigar algo extra que esté relacionado a su proyecto.
+
+91
+00:10:07.290 --> 00:10:12.540
+Eugenia Sol Piñeiro: o sea, tienen esa libertad también que está bueno que la exploren.
+
+92
+00:10:13.230 --> 00:10:19.239
+Eugenia Sol Piñeiro: Bueno, esto es un poco lo que dije, de que tienen que priorizar el papel básico y después iterar sobre lo extra
+
+93
+00:10:20.370 --> 00:10:24.149
+Eugenia Sol Piñeiro: que va a ser una presentación oral que va a tener que
+
+94
+00:10:24.320 --> 00:10:30.399
+Eugenia Sol Piñeiro: tener explicación del problema. Los desafíos que encontraron decisiones de implementación, resultados y conclusiones.
+
+95
+00:10:31.730 --> 00:10:36.949
+Eugenia Sol Piñeiro: ¡Qué más haga otro ejercicio, esta ya es la parte 2 del tpé.
+
+96
+00:10:37.520 --> 00:10:39.770
+Eugenia Sol Piñeiro: Lo que vimos antes. En la parte 1
+
+97
+00:10:40.040 --> 00:10:45.219
+Eugenia Sol Piñeiro: parte. Dos: vamos a tener que definir, Primero, consideraciones
+
+98
+00:10:45.500 --> 00:10:53.119
+Eugenia Sol Piñeiro: para asegurar que el modelo cumpla con responsabilidad. Esto lo vamos a ver un poquito más adelante y estrategias para ponerlo en producción
+
+99
+00:10:53.570 --> 00:10:57.620
+Eugenia Sol Piñeiro: no lo tienen que implementar. Es más teórico.
+
+100
+00:10:57.810 --> 00:11:05.590
+Eugenia Sol Piñeiro: ¿por qué? Porque no, no se van a poner a deployarlo en adolescentes. Por ejemplo, no es parte de la materia. Es más que entiendan la teoría por atrás.
+
+101
+00:11:05.950 --> 00:11:06.910
+Eugenia Sol Piñeiro: ¿
+
+102
+00:11:07.260 --> 00:11:18.699
+Eugenia Sol Piñeiro: Pero sí que se lleven esa herramienta de Bueno, si lo tuviera, que diployar que tendría que tener en cuenta cómo cómo se combina todo esto. Después, para deplojar que vamos a tener una clase de eso. Así que por ahora no se preocupen
+
+103
+00:11:19.220 --> 00:11:21.749
+Eugenia Sol Piñeiro: y después va a haber
+
+104
+00:11:22.090 --> 00:11:29.270
+Eugenia Sol Piñeiro: una entrega adicional donde van a tener que identificar alguna limitación de su proyecto y mejorarla.
+
+105
+00:11:29.680 --> 00:11:41.070
+Eugenia Sol Piñeiro: que siempre hay siempre o se quedan cortos de tiempo o se quedaron con las ganas de probar algo o agregar más técnicas de avanzar y ver cómo soluciona algún problema que tienen.
+
+106
+00:11:41.500 --> 00:11:46.080
+Eugenia Sol Piñeiro: Es como una versión, 2 de su arquitectura que básicamente es este proyecto.
+
+107
+00:11:46.880 --> 00:11:48.619
+Eugenia Sol Piñeiro: Y estas son las entregas.
+
+108
+00:11:49.880 --> 00:11:58.550
+Eugenia Sol Piñeiro: Parecen un montón, pero es que en realidad la entrega importante, digamos, es la del 4 de noviembre, o sea, tienen más de un mes
+
+109
+00:11:58.700 --> 00:12:01.869
+Eugenia Sol Piñeiro: para desarrollarla. Entonces, por eso hay como entregas parciales.
+
+110
+00:12:02.790 --> 00:12:06.369
+Eugenia Sol Piñeiro: Entonces va a tener que entregar la idea ahora, en 2 semanas
+
+111
+00:12:06.540 --> 00:12:10.369
+Eugenia Sol Piñeiro: donde van a tener que entregar el informe
+
+112
+00:12:10.890 --> 00:12:29.249
+Eugenia Sol Piñeiro: muy breves para que quede escrito simplemente lo que vamos a charlar oral y no no va a ser una instancia de evaluación formal, sino que la idea es que nos cuenten un poco la idea. Y tenemos sobre eso para darles el Okay Dale aprobado implementar.
+
+113
+00:12:29.650 --> 00:12:34.219
+Eugenia Sol Piñeiro: Sí, se va a tener en cuenta cómo lo definen después para la nota final.
+
+114
+00:12:34.370 --> 00:12:38.359
+Eugenia Sol Piñeiro: Así que metale digamos al informe
+
+115
+00:12:38.610 --> 00:12:41.250
+Eugenia Sol Piñeiro: para que quede definido lo más posible.
+
+116
+00:12:41.830 --> 00:13:00.189
+Eugenia Sol Piñeiro: no quiere decir que esté escrito en pri en piedra, no después. Quizás no sé. Definieron que van a usar pancon y al final quieren probar con croma o lo que sea. Eso puede pasar. O dijeron que iban a sacar la la data de tal Api. Después, no sé, pusieron la Api privada y la pueden conseguir? Bueno, puede variar.
+
+117
+00:13:01.130 --> 00:13:02.330
+Eugenia Sol Piñeiro: Bueno.
+
+118
+00:13:03.800 --> 00:13:20.690
+Eugenia Sol Piñeiro: bien, después tiene que entregar el ejercicio 2, el 4 del 11 que va a ser la instancia oral, donde esta sí es la presentación con horario por grupo donde tienen que exponer todo lo que vimos del ejercicio. Dos, y después está la parte 2, que es Dos semanas después
+
+119
+00:13:20.850 --> 00:13:27.700
+Eugenia Sol Piñeiro: de la parte 1, que es esta iteración extra más todo lo teórico de comprarlo en producción ejercicios 3 y 4
+
+120
+00:13:28.920 --> 00:13:37.690
+Eugenia Sol Piñeiro: y ojo. Con esto, con las entregas puntuales bien dudas, el enunciado C. T, P.
+
+121
+00:13:45.620 --> 00:13:47.780
+JULIETA TECHENSKI: Una mentira, o sea, como que
+
+122
+00:13:48.660 --> 00:13:54.520
+JULIETA TECHENSKI: podemos de alguna forma, acercarles la la idea básica, o sea, ese es el ejercicio 1,
+
+123
+00:13:54.940 --> 00:14:03.780
+JULIETA TECHENSKI: pero como por ahí, planteárselo la semana que viene como en clase. El la idea que tenemos como para que nos digan si es posible o no es posible.
+
+124
+00:14:03.780 --> 00:14:10.739
+Eugenia Sol Piñeiro: Claro es que esa es la idea de esta especie de oral informal de.
+
+125
+00:14:10.740 --> 00:14:11.360
+JULIETA TECHENSKI: Sí.
+
+126
+00:14:11.600 --> 00:14:16.070
+Eugenia Sol Piñeiro: De la clase cuat comes 4, 7, 7 del 10.
+
+127
+00:14:16.470 --> 00:14:17.010
+JULIETA TECHENSKI: No.
+
+128
+00:14:17.340 --> 00:14:23.830
+Eugenia Sol Piñeiro: O sea, esa va a ser la distancia donde podes integrar, o sea, no es que vas a desaprobar el T. P. Siguen presentarse a lo que te digo, no presentar otra casa.
+
+129
+00:14:24.220 --> 00:14:25.500
+Eugenia Sol Piñeiro: sí,
+
+130
+00:14:25.620 --> 00:14:35.639
+Eugenia Sol Piñeiro: o sea, esa es la distancia, y por eso la hacemos oral antes. De hecho, lo hacíamos por Mail, pero era más difícil literar. Por lo general hay que iterar, y lo tenemos en cuenta. Pero
+
+131
+00:14:36.240 --> 00:14:46.169
+Eugenia Sol Piñeiro: una cosa es que tengan algo y que les digamos, che bueno, complejicémoslos de esta forma. O hagamos, bajemos el alcance porque te pasaste o lo que sea. Y otra cosa es que
+
+132
+00:14:46.380 --> 00:14:48.479
+Eugenia Sol Piñeiro: ni siquiera sea un casuso de rap.
+
+133
+00:14:49.300 --> 00:14:54.310
+Eugenia Sol Piñeiro: Claro, los extremos es un poco esa la instancia.
+
+134
+00:14:54.440 --> 00:15:03.330
+Eugenia Sol Piñeiro: Cuando digo que se va a evaluar, me refiero a que la nota final va a tener, digamos, así como hicimos en el Tepe. Cada ejercicio va a tener su puntaje y va a influir ahí,
+
+135
+00:15:03.460 --> 00:15:07.400
+Eugenia Sol Piñeiro: pero es que van a tener ahora una nota de que definieron bien o mal el problema.
+
+136
+00:15:08.440 --> 00:15:09.990
+JULIETA TECHENSKI: Mhm Mhm.
+
+137
+00:15:09.990 --> 00:15:11.809
+Eugenia Sol Piñeiro: Tenemos, aparte, o sea.
+
+138
+00:15:12.080 --> 00:15:19.850
+Eugenia Sol Piñeiro: es informal de ideas que queremos justamente lo que decías vos de presentarnos luego y charlar sobre que es lo que van a implementar nada más. Esta es
+
+139
+00:15:20.950 --> 00:15:22.750
+Eugenia Sol Piñeiro: tranqui se te andrea
+
+140
+00:15:30.890 --> 00:15:32.310
+Eugenia Sol Piñeiro: bien más dudas.
+
+141
+00:15:43.230 --> 00:15:48.049
+Eugenia Sol Piñeiro: Igual De nuevo, hay como un mes y medio para resolverlo.
+
+142
+00:15:49.140 --> 00:15:54.459
+Eugenia Sol Piñeiro: En todas las clases siempre hay espacio de consultas. Así que aprovechen, Vamos iterando también
+
+143
+00:16:01.820 --> 00:16:05.919
+Eugenia Sol Piñeiro: de paso. Aprovecho para mostrarles que estoy grabando. Acá
+
+144
+00:16:06.150 --> 00:16:18.599
+Eugenia Sol Piñeiro: subí la entrega del T. P 2, que no es una entrega, es simplemente entrega falsa. Pongan el No sé el link al pa, al al Paper o el nombre del Paper. Así les podemos poner la nota nada más. Es para que aparezca la entrega en campus.
+
+145
+00:16:20.830 --> 00:16:22.720
+Eugenia Sol Piñeiro: No tienen que tragar P, P, T, ni nada.
+
+146
+00:16:23.610 --> 00:16:25.220
+Eugenia Sol Piñeiro: Y acá ya que estamos habilitamos esto
+
+147
+00:16:28.670 --> 00:16:36.739
+Eugenia Sol Piñeiro: bien hasta acá la clase están liberados gracias a los que se quedaron hasta las 9.
+

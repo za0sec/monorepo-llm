@@ -1,0 +1,3422 @@
+WEBVTT
+
+1
+00:00:03.710 --> 00:00:10.600
+Eugenia Sol Piñeiro: Bien, la idea de la clase de hoy, entonces es ver retrival aumenta Ist Generation. Esto es R A, G, para los amigos.
+
+2
+00:00:10.850 --> 00:00:29.290
+Eugenia Sol Piñeiro: qué es lo que vamos a ver? ¿qué es esta arquitectura. Vamos a ver un poquito de base de datos vectoriales, y después vamos a empezar a ir aumentando y construyendo sobre esa arquitectura. Y vamos a llegar a ver. Demos de código, pero eso más la clase que viene. Pero para que tengan en cuenta también que vamos a implementarlo todo este sistema.
+
+3
+00:00:29.440 --> 00:00:37.969
+Eugenia Sol Piñeiro: Así que, por lo pronto, tranquilos hoy. Va a ser la la parte, quizás un poco más teórica. Pero también la idea es que haya un ida y vuelta con ustedes, así que aprovechen espacio.
+
+4
+00:00:38.650 --> 00:00:50.099
+Eugenia Sol Piñeiro: Así que antes de entrar en la teoría más pesada, quizás vamos a ver un poquito de las desventajas o desafíos Si se quiere que tienen los el ems, ya que sabemos que no es todo color de rosas.
+
+5
+00:00:50.670 --> 00:00:57.240
+Eugenia Sol Piñeiro: entonces vamos a ver cuáles son las 3 desventajas principales. Primero.
+
+6
+00:00:57.390 --> 00:01:00.370
+Eugenia Sol Piñeiro: el problema de la información desactualizada.
+
+7
+00:01:01.340 --> 00:01:06.169
+Eugenia Sol Piñeiro: Este, por ejemplo, es es simplemente un ejemplo donde
+
+8
+00:01:06.940 --> 00:01:25.670
+Eugenia Sol Piñeiro: esto ya fue hace un tiempo donde yo le decía: bueno, cuándo fue que renunció Sama Almalman, o lo echaron. Y bueno, fíjense que agradecida. Bueno, hice la búsqueda en 3 sitios, y el C E, o de opera, y lo sacaron de su posición en noviembre de 20, 23.
+
+9
+00:01:26.010 --> 00:01:30.130
+Eugenia Sol Piñeiro: Pero en realidad, en esa época el modelo había estado entrenado
+
+10
+00:01:30.770 --> 00:01:42.950
+Eugenia Sol Piñeiro: hasta mayo de 2 023. Es decir, no tenía información sobre ese tema, entonces acá no es que el modelo está entrenado con toda esa data, sino que ya hace uso de herramientas externas. En este caso un buscador
+
+11
+00:01:43.240 --> 00:01:56.689
+Eugenia Sol Piñeiro: para complementar esa información, porque en realidad, el modelo no está entrenado hasta el día de hoy, sino que tiene informaciones actualizadas, y a veces no. Ni siquiera la puede encontrar con tulviews, por ejemplo, no con herramientas externas.
+
+12
+00:01:56.720 --> 00:02:03.509
+Eugenia Sol Piñeiro: ves fíjense, que acá dice My Training Data tiene información hasta 20 21,
+
+13
+00:02:03.560 --> 00:02:10.490
+Eugenia Sol Piñeiro: o sea, ya y estábamos en 20 23, hace bastante, pero entrenaban Ahora salen modelos cada tanto con más y más
+
+14
+00:02:10.800 --> 00:02:16.070
+Eugenia Sol Piñeiro: herramientas externas. Pero el modelo en general no es algo que se entrene todos los días.
+
+15
+00:02:16.490 --> 00:02:18.390
+Eugenia Sol Piñeiro: porque es muy costoso entrenar.
+
+16
+00:02:18.980 --> 00:02:22.970
+Eugenia Sol Piñeiro: Y a esto me refería con que, bueno.
+
+17
+00:02:23.100 --> 00:02:31.530
+Eugenia Sol Piñeiro: fíjense que complementó su información con data externa de otro lugar donde en este caso buscó en Bing.
+
+18
+00:02:31.680 --> 00:02:38.669
+Eugenia Sol Piñeiro: Buscó el Yahoo respuestas. Y, bueno, está Business School. No sé que habrán publicado en artículos de operate
+
+19
+00:02:40.270 --> 00:02:44.300
+Eugenia Sol Piñeiro: y acá. Lo que le digo es, por favor, no uses yahoo como fuente.
+
+20
+00:02:44.560 --> 00:02:51.370
+Eugenia Sol Piñeiro: Me parece una mala fuente. No sé ándate a la fuente original. No queremos la información lo más actualizada y curada posible.
+
+21
+00:02:51.660 --> 00:02:59.449
+Eugenia Sol Piñeiro: Claro, Yahoo! Entonces, acá fíjense que por lo menos fue agarrar el sitio de open aguile.
+
+22
+00:02:59.710 --> 00:03:04.070
+Eugenia Sol Piñeiro: Entonces acá ya entran
+
+23
+00:03:04.340 --> 00:03:14.890
+Eugenia Sol Piñeiro: en cuestión varias cosas. ¿no? Primero, información desactualizada ¿de dónde es que es la fuente? ¿de dónde sacó esa información es información curada, irreal, o es información falsa.
+
+24
+00:03:15.000 --> 00:03:17.500
+Eugenia Sol Piñeiro: entonces hay que tener un poco más cuidado con eso.
+
+25
+00:03:17.900 --> 00:03:19.809
+Eugenia Sol Piñeiro: Entonces de la mano con eso.
+
+26
+00:03:20.020 --> 00:03:22.570
+Eugenia Sol Piñeiro: Otra desventaja es la información falsa
+
+27
+00:03:23.060 --> 00:03:26.550
+Eugenia Sol Piñeiro: que acá. Es cuando entran las alucinaciones del modelo.
+
+28
+00:03:27.020 --> 00:03:34.669
+Eugenia Sol Piñeiro: Entonces, acá. Por ejemplo, le dije, resumí el Paper de Ian Lecant, que es el enfer Not The Future
+
+29
+00:03:35.120 --> 00:03:36.380
+Eugenia Sol Piñeiro: y dame la cita.
+
+30
+00:03:36.830 --> 00:03:50.140
+Eugenia Sol Piñeiro: Y me dice: bueno, este es el paper, examina los el Emms y sus limitaciones dicen que no alcanza s. Y acá me da la cita. No le dan 20 24 y el título y dónde lo publicó.
+
+31
+00:03:50.410 --> 00:04:09.190
+Eugenia Sol Piñeiro: No existe. Ese Paper lo inventé. Se lo mandé para ver que me decía si sabía que este señor muy conocido. Había hablado sobre esto, pero no es que publicó un Paper y y menos en este Journal Cualquier cosa me dijo
+
+32
+00:04:09.700 --> 00:04:25.530
+Eugenia Sol Piñeiro: cuestión que había ido a buscar esta información, porque esto me dejaba ir al supuesto paper y me daba un post de Linkedin y una bio de de Ian de Cane que no tenía nada que ver.
+
+33
+00:04:26.330 --> 00:04:35.930
+Eugenia Sol Piñeiro: Lo conocen a este señor tan conocido del padre del deep Learning: ¿no? Okay.
+
+34
+00:04:36.150 --> 00:04:37.230
+Eugenia Sol Piñeiro: ¿alguien?
+
+35
+00:04:39.480 --> 00:04:46.219
+Eugenia Sol Piñeiro: Yo lo menciono como si fuese sí. Okay. Juan, queréis contar
+
+36
+00:04:47.740 --> 00:04:49.830
+Eugenia Sol Piñeiro: que, sabés o de donde no sé
+
+37
+00:05:01.580 --> 00:05:05.669
+Eugenia Sol Piñeiro: bien cuál es contra los elementos, sí
+
+38
+00:05:09.220 --> 00:05:13.460
+Eugenia Sol Piñeiro: que un poco es esta, no de de que dice que no son el futuro.
+
+39
+00:05:15.150 --> 00:05:22.350
+Eugenia Sol Piñeiro: Es como una una postura más le cunista. Yo le llamo, dice que el mundo tiene estados e infi
+
+40
+00:05:22.530 --> 00:05:28.690
+Eugenia Sol Piñeiro: infinitos, y es parcialmente observable. Entonces necesitas War Models, Gepa.
+
+41
+00:05:30.140 --> 00:05:36.769
+Eugenia Sol Piñeiro: Bien, o sea, lleva es 1 de sus modelos jepa para el que le interese show intermediens. Lo vamos a ver al final de la materia
+
+42
+00:05:37.570 --> 00:05:43.429
+Eugenia Sol Piñeiro: en el pero sí como que la idea es ir hasta allá. De hecho, un poco, en realidad.
+
+43
+00:05:43.590 --> 00:05:50.170
+Eugenia Sol Piñeiro: Y los serens quizás ya están medio asintoticos, ¿no? O sea, siguen, Van creciendo
+
+44
+00:05:50.350 --> 00:05:55.649
+Eugenia Sol Piñeiro: mucha herramienta externa que se le agrega. En realidad, al modelo. Entonces llega un punto en que ya
+
+45
+00:05:55.870 --> 00:06:05.679
+Eugenia Sol Piñeiro: ¿cuánto más le podés agregar. Entonces quizás hay que derivar un poco la el foco en este caso. Y, bueno. Ian de Kant es 1 de los que dice que va por el lado Shepa.
+
+46
+00:06:06.970 --> 00:06:10.390
+Eugenia Sol Piñeiro: pero bueno, cuestión es muy conocido.
+
+47
+00:06:10.600 --> 00:06:15.140
+Eugenia Sol Piñeiro: Ahora tiene su su propia empresa, que es a M. Ay.
+
+48
+00:06:16.310 --> 00:06:23.000
+Eugenia Sol Piñeiro: para que interese. Pero estuvo mucho tiempo como Shift Style Thyssen, meta, y es profesor de Wagyu
+
+49
+00:06:23.140 --> 00:06:25.970
+Eugenia Sol Piñeiro: y de hecho ganó un Turing por C. N N.
+
+50
+00:06:26.120 --> 00:06:27.610
+Eugenia Sol Piñeiro: Así que es es
+
+51
+00:06:28.080 --> 00:06:37.740
+Eugenia Sol Piñeiro: de los top referentes de deep learning. Pero Bueno, así como ven, hay un montón también, pero bueno, es un ejemplo, simplemente para que se lo lleven. El que lo quiera seguir en Linkedin está bastante activo
+
+52
+00:06:38.120 --> 00:06:50.510
+Eugenia Sol Piñeiro: y bien, seguimos cuestión que seguí tirando con este con este paper. Y este es el que me dio
+
+53
+00:06:50.760 --> 00:06:58.319
+Eugenia Sol Piñeiro: el modelo al final, que es de la misma persona, pero no tiene absolutamente nada que ver, ni siquiera habla de eso. Entonces.
+
+54
+00:06:59.000 --> 00:07:02.119
+Eugenia Sol Piñeiro: aunque como desventaja, está alucinando totalmente
+
+55
+00:07:04.650 --> 00:07:22.289
+Eugenia Sol Piñeiro: después Otra de las desventajas es que no tiene la capacidad de personalizar a un caso uso específico, no Entonces el desafío que acá necesito resolver es cómo usar una data externa para personalizar la respuesta. ¿qué significa esto?
+
+56
+00:07:22.680 --> 00:07:30.799
+Eugenia Sol Piñeiro: Por ejemplo, acá. Se le se le pregunta cuál es el nombre de la película que Cris me mandó por Mail el año pasado.
+
+57
+00:07:30.990 --> 00:07:44.480
+Eugenia Sol Piñeiro: ¿quién es? Cris qué Mail te mandó. ¿de qué película estás hablando. No tiene por qué saber eso. El modelo entonces no está personalizado a el caso de uso de o que revisar los mails y fijarse que es lo que está pasando atrás.
+
+58
+00:07:44.840 --> 00:07:51.519
+Eugenia Sol Piñeiro: entonces acá directamente responde. Lo siento. No tengo información sobre tus mails o puede ser. No sé,
+
+59
+00:07:52.160 --> 00:08:10.650
+Eugenia Sol Piñeiro: por ejemplo, en el programa de la materia de lelens, porque sabría. Está chiquitín, que es lo que damos en la materia si no está publicado en ningún lado. Así que eso es algo, por ejemplo, en donde yo lo puedo personalizar y agregar información externa que le dé esa data.
+
+60
+00:08:11.840 --> 00:08:15.060
+Eugenia Sol Piñeiro: Entonces, por ejemplo, ¿qué es lo que se hace? Se lo conecta con
+
+61
+00:08:15.740 --> 00:08:21.409
+Eugenia Sol Piñeiro: un dataset externo, puede estar persistido en una base de datos y se le suma
+
+62
+00:08:21.520 --> 00:08:27.399
+Eugenia Sol Piñeiro: esa información extra a la información que ya tiene el modelo. Y ahí sí es capaz de responder.
+
+63
+00:08:27.770 --> 00:08:34.820
+Eugenia Sol Piñeiro: entonces desventajas, información falsa, información desactualizada e información no personalizada.
+
+64
+00:08:34.929 --> 00:08:38.439
+Eugenia Sol Piñeiro: Estas 3 desventajas son las que vamos a atacar con R a D.
+
+65
+00:08:38.650 --> 00:08:41.630
+Eugenia Sol Piñeiro: Es donde va a estar el foco principal de
+
+66
+00:08:41.929 --> 00:08:46.899
+Eugenia Sol Piñeiro: en general de todos estos meses del T, P y de lo que hace esta herramienta.
+
+67
+00:08:47.380 --> 00:08:49.409
+Eugenia Sol Piñeiro: Pero bueno, antes de entrar en detalle.
+
+68
+00:08:49.860 --> 00:08:56.580
+Eugenia Sol Piñeiro: vamos a hablar un poco de otro tipo de limitaciones que ya van más
+
+69
+00:08:57.210 --> 00:09:10.200
+Eugenia Sol Piñeiro: alineadas con S hay o en busca de Eijiai. Este es un podcast que está muy bueno donde se habla de Aii con Lex Friedman y Unleng Khan
+
+70
+00:09:10.720 --> 00:09:13.700
+Eugenia Sol Piñeiro: que hablan de estas limitaciones, y acá
+
+71
+00:09:14.150 --> 00:09:20.320
+Eugenia Sol Piñeiro: algunas pueden ser un poco polémicas Así que debátanme, O debatan, lee
+
+72
+00:09:20.540 --> 00:09:25.779
+Eugenia Sol Piñeiro: en general, pero la idea es que se generen como quizás un ida de vuelta. Entonces
+
+73
+00:09:26.350 --> 00:09:33.570
+Eugenia Sol Piñeiro: vamos a ver primero si sé que los Erems no tienen la capacidad de comprender el mundo físico.
+
+74
+00:09:35.930 --> 00:09:41.710
+Eugenia Sol Piñeiro: Cuando escuchan esto, que ¿qué piensan a qué se refiere.
+
+75
+00:09:50.560 --> 00:09:57.189
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Puede ser que no tenga comprensión de cómo verdaderamente funcionan las cosas en un ambiente real.
+
+76
+00:09:57.390 --> 00:10:03.120
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Así que si le digo, si empiezo a hacerlo, un problema de mover cajas, se va a romper.
+
+77
+00:10:05.070 --> 00:10:07.830
+Eugenia Sol Piñeiro: O Okay? ¿a qué te refieres con el problema de mover cajas.
+
+78
+00:10:08.250 --> 00:10:10.999
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, tratar de, por ejemplo, encontrar
+
+79
+00:10:11.880 --> 00:10:17.250
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: no encontrar la forma de meter tantas cajas de tales dimensiones en un lugar, puede ser un problema de matemáticas.
+
+80
+00:10:17.560 --> 00:10:18.710
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: pero.
+
+81
+00:10:24.170 --> 00:10:26.829
+Eugenia Sol Piñeiro: Claro, o sea, co cómo interactúa con el entorno.
+
+82
+00:10:26.970 --> 00:10:34.700
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí que no tiene capacidad de interactuar verdaderamente con un entorno. Todavía no tiene como actuadores. Todavía.
+
+83
+00:10:35.790 --> 00:10:43.469
+Eugenia Sol Piñeiro: Okay, bien que quizás 1 igual se podría ir más a la robótica no y y que las instrucciones del robot
+
+84
+00:10:43.670 --> 00:10:47.069
+Eugenia Sol Piñeiro: estén generadas por un elen, por ejemplo.
+
+85
+00:10:47.600 --> 00:10:56.380
+Eugenia Sol Piñeiro: Entonces quizás ahí es como que, bueno, le aumentas la capacidad del robot en cuanto a sus instrucciones y además, tiene la capacidad de interactuar con el entorno.
+
+86
+00:10:56.910 --> 00:10:58.120
+Eugenia Sol Piñeiro: Pero quizás.
+
+87
+00:10:58.400 --> 00:11:07.400
+Eugenia Sol Piñeiro: de hecho, sin ir tan a la robótica, no, o sea un eredén, Puede manejar imágenes, Puede manejar incluso videos. Entonces puede quizás intentar entender
+
+88
+00:11:07.640 --> 00:11:16.559
+Eugenia Sol Piñeiro: representaciones visuales de lo que está pasando, pero en realidad no es que entiende realmente la física que que que eso conlleva.
+
+89
+00:11:16.670 --> 00:11:20.750
+Eugenia Sol Piñeiro: O sea, si yo ahora me tengo que levantar de mi silla.
+
+90
+00:11:20.960 --> 00:11:28.740
+Eugenia Sol Piñeiro: ¿qué músculos tengo que mover? ¿cómo tengo que girar la silla? Pues estar sillas de gira. Entonces, ¿cómo es que yo interactúo realmente con la física
+
+91
+00:11:28.880 --> 00:11:34.720
+Eugenia Sol Piñeiro: para poder comprender el mundo, el entorno en el que estás interactuando. ¿no?
+
+92
+00:11:34.880 --> 00:11:37.790
+Eugenia Sol Piñeiro: Entonces ahí se quedan totalmente limitados.
+
+93
+00:11:39.320 --> 00:11:45.580
+Eugenia Sol Piñeiro: Y había un ejemplo muy bueno que a ver si lo encuentro que lo tengo por acá.
+
+94
+00:11:48.050 --> 00:11:52.900
+Eugenia Sol Piñeiro: Quería un post. Se los voy a pasar. Miren, lo busqué justo ayer porque me había acordado de esto.
+
+95
+00:11:55.280 --> 00:12:08.629
+Eugenia Sol Piñeiro: Miren este el chico. Le pregunta a Chachi Pity, que cómo es que interactúa este marcador con el entorno.
+
+96
+00:12:09.280 --> 00:12:19.179
+Eugenia Sol Piñeiro: Después vienen, los se los cuento así medio por arriba, pero básicamente tiene el marcador así y le dice, Bueno, ¿qué pasa si lo agarro con 2 manos y saco una de las manos: debería
+
+97
+00:12:19.560 --> 00:12:23.040
+Eugenia Sol Piñeiro: caerse el marcador o debería mantenerse rígido
+
+98
+00:12:23.210 --> 00:12:42.529
+Eugenia Sol Piñeiro: entonces ahí como que Chacho Piti le dice, no es obvio que el marcador se va a doblar. Entonces no está entendiendo realmente la Física, sino que de hecho, este es lo comentó. Ian Lecant, que dijo, supongo que el modelo fue entrenado con 1 de mis podcast o fantuneado
+
+99
+00:12:42.550 --> 00:12:45.849
+Eugenia Sol Piñeiro: donde usé, en vez de un marcador, una hoja de papel.
+
+100
+00:12:46.110 --> 00:12:51.370
+Eugenia Sol Piñeiro: Entonces, claro, con una hoja de papel. Si te pasa eso que tenés una hoja de papel muy larga y soltás Una mano se dobla
+
+101
+00:12:52.030 --> 00:13:02.930
+Eugenia Sol Piñeiro: entonces como que se confunde en ese sentido. Y bueno, este me parece un buen ejemplo para para ver que realmente no está entendiendo el mundo físico, sino que está basándose en su distribución de probabilidades.
+
+102
+00:13:03.030 --> 00:13:11.919
+Eugenia Sol Piñeiro: Entonces lo que lo más probable, porque es lo que él tenía Ya fin tuneado o pre entrenado era que se iba a caer. Se iba a doblar.
+
+103
+00:13:12.060 --> 00:13:16.340
+Eugenia Sol Piñeiro: Entonces, bueno, es un ejemplo muy sencillo, básico, pero
+
+104
+00:13:17.040 --> 00:13:20.119
+Eugenia Sol Piñeiro: después, para el que le interese, puede verlo un poco mejor.
+
+105
+00:13:22.080 --> 00:13:30.390
+Eugenia Sol Piñeiro: Bien, seguimos después Otra cosa que no tienen es capacidad de memorización.
+
+106
+00:13:30.760 --> 00:13:34.500
+Eugenia Sol Piñeiro: ¿qué significa esto? Porque sabemos que tiene memoria, ¿no? Pero
+
+107
+00:13:34.600 --> 00:13:43.130
+Eugenia Sol Piñeiro: tiene memoria acotada a su ventana de contexto, su la cantidad de tokens que puede recordar el modelo, entonces
+
+108
+00:13:43.960 --> 00:13:57.459
+Eugenia Sol Piñeiro: realmente no es que Memoriza y puede recordar información sin depender de esa ventana de contexto. De hecho, puede olvidar rápidamente lo que se dijo en la misma conversación en la que estás porque llenaste la ventana. En fin.
+
+109
+00:14:00.240 --> 00:14:04.280
+Eugenia Sol Piñeiro: esta también es más polémica para Uds. Razonan o no razonan.
+
+110
+00:14:05.640 --> 00:14:07.879
+Eugenia Sol Piñeiro: Esa me interesa. Quizás debatirla un poquito más
+
+111
+00:14:12.990 --> 00:14:17.469
+Eugenia Sol Piñeiro: Okay Strong opinion de no. ¿por qué.
+
+112
+00:14:17.860 --> 00:14:27.740
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, porque en realidad, cuando decimos que razona en realidad como que se da instrucciones a sí mismo, eso no es razonar, no es unir puntos. No es
+
+113
+00:14:28.230 --> 00:14:30.830
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: y usar la cabeza.
+
+114
+00:14:31.740 --> 00:14:34.780
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Vamos que solo repitiendo cosas que, ya saben.
+
+115
+00:14:36.090 --> 00:14:41.870
+Eugenia Sol Piñeiro: Bien está dentro de esa distribución de probabilidad No, perfecto.
+
+116
+00:14:43.220 --> 00:14:49.509
+Eugenia Sol Piñeiro: o sea, es muy debatible. Igual hay muchos que justifican también bueno, depende de que definas cómo razonar.
+
+117
+00:14:49.640 --> 00:14:50.849
+Eugenia Sol Piñeiro: Pero en realidad.
+
+118
+00:14:51.010 --> 00:14:58.829
+Eugenia Sol Piñeiro: o por lo menos quizás mi postura es que no tiene la capacidad del razonamiento humano, sino que intenta imitarlo con esa distribución de probabilidades? ¿no?
+
+119
+00:14:59.110 --> 00:15:04.620
+Eugenia Sol Piñeiro: Pero no es que realmente tiene esta habilidad de razonar como la tenemos nosotros y de hecho.
+
+120
+00:15:04.900 --> 00:15:16.790
+Eugenia Sol Piñeiro: es incluso parte de la razón por la que hay tantas alucinaciones, Así que también es un área que está siendo muy explorada y cada vez hay más debates sobre esto y más investigación también.
+
+121
+00:15:17.140 --> 00:15:23.980
+Eugenia Sol Piñeiro: Así que es bastante interesante y, por último, no tienen capacidad de planificación.
+
+122
+00:15:24.210 --> 00:15:35.599
+Eugenia Sol Piñeiro: ¿qué significa esto? Que no es que piensan su respuesta paso por paso, sino que va escupiendo un Token atrás del otro. Como recién dijo, por ejemplo, Joaquín.
+
+123
+00:15:35.750 --> 00:15:38.540
+Eugenia Sol Piñeiro: sin planear realmente qué es lo que va a decir.
+
+124
+00:15:38.800 --> 00:15:43.830
+Eugenia Sol Piñeiro: o sea, no se sabe realmente cómo hacer esto con inteligencia artificial.
+
+125
+00:15:43.960 --> 00:15:55.289
+Eugenia Sol Piñeiro: a ver, te puede decir los pasos, Sí, si fue entrenado para eso, pero no es que puede planear tanto futuro de qué es lo que va a pasar. No tiene experiencia física en el mundo tampoco.
+
+126
+00:15:55.490 --> 00:15:57.069
+Eugenia Sol Piñeiro: Entonces, bueno.
+
+127
+00:15:57.580 --> 00:16:09.049
+Eugenia Sol Piñeiro: a partir de esto surge el proyecto. Este de Shepa, por ejemplo, que mencionaron por ahí hay otro que es Kiostar. Hay varios, pero en particular.
+
+128
+00:16:09.390 --> 00:16:16.019
+Eugenia Sol Piñeiro: Resumen, los elementos no son de color de rosas. Tienen un montón de limitaciones y problemas entre ellos. Estos.
+
+129
+00:16:17.340 --> 00:16:19.360
+Eugenia Sol Piñeiro: No sé si ahora en el micrófono
+
+130
+00:16:23.770 --> 00:16:31.789
+Eugenia Sol Piñeiro: Okay. Sigo bien. Entonces que sí puede hacer?
+
+131
+00:16:32.310 --> 00:16:33.210
+Eugenia Sol Piñeiro: ¿no?
+
+132
+00:16:33.840 --> 00:16:41.500
+Eugenia Sol Piñeiro: Primero, cuál sería esta este desafío, pero que lo vamos a resolver es, primero, información actualizada
+
+133
+00:16:42.580 --> 00:16:47.369
+Eugenia Sol Piñeiro: el costo computacional, intentar reducirlo lo más posible, mitigar las alucinaciones
+
+134
+00:16:47.690 --> 00:16:59.889
+Eugenia Sol Piñeiro: sur sin transparencia y confianza va todo de la mano de de qué fuente saca la información. Así que vamos a centrarnos en todo esto y vemos cómo solucionarlo.
+
+135
+00:17:00.040 --> 00:17:01.480
+Eugenia Sol Piñeiro: Entonces, ¿qué es lo que vamos a hacer.
+
+136
+00:17:01.660 --> 00:17:03.509
+Eugenia Sol Piñeiro: Primero, vamos a tener
+
+137
+00:17:03.650 --> 00:17:15.800
+Eugenia Sol Piñeiro: la memoria paramétrica y la no paramétrica. La paramétrica es la info con la que yo entrené. El modelo es la que está en los parámetros del modelo. Ya es lo que aprendió mi modelo: los pesos, básicamente la red.
+
+138
+00:17:16.310 --> 00:17:24.390
+Eugenia Sol Piñeiro: la no paramétrica es la memoria externa. Es otro tipo de datos que yo le agrego a Miguel más allá de lo que aprendió en el training set
+
+139
+00:17:24.520 --> 00:17:30.979
+Eugenia Sol Piñeiro: Esto va al al momento de inferencia. Yo le agrego información extra a la memoria paramétrica
+
+140
+00:17:32.610 --> 00:17:38.300
+Eugenia Sol Piñeiro: hasta que hagamos bien, se acuerdan. Esto lo mencionamos en un momento de la memoria paramétrica. ¿se acuerdan.
+
+141
+00:17:38.300 --> 00:17:40.710
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y a qué te referías, con momento de diferencia.
+
+142
+00:17:41.900 --> 00:17:48.399
+Eugenia Sol Piñeiro: Momento diferencia es que ya tenés tu modelo entrenado. Y al momento de diferencia es cuando usas tu modelo cuando viene un dato nuevo, y lo usás.
+
+143
+00:17:49.770 --> 00:17:50.500
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Okay.
+
+144
+00:17:51.500 --> 00:17:54.950
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Entonces esto es información nueva que se accede solo cuando se está usando
+
+145
+00:17:55.540 --> 00:18:00.480
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: en el L. M que no tienes que ir a buscar a Internet.
+
+146
+00:18:00.480 --> 00:18:10.679
+Eugenia Sol Piñeiro: Justamente no está guardada en el, o sea, en el modelo, no está la que está representada dentro de los pesos del modelo es la paramétrica.
+
+147
+00:18:10.810 --> 00:18:15.739
+Eugenia Sol Piñeiro: Después, el resto de la no paramétrica es lo que vos le agregás de fuentes externas. Puede estar en una base de datos.
+
+148
+00:18:19.680 --> 00:18:20.090
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Okay.
+
+149
+00:18:20.090 --> 00:18:21.020
+Eugenia Sol Piñeiro: O sea, tenía esa.
+
+150
+00:18:21.020 --> 00:18:22.240
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Personas que va a buscar Internet.
+
+151
+00:18:22.240 --> 00:18:22.610
+Eugenia Sol Piñeiro: A la.
+
+152
+00:18:23.260 --> 00:18:25.249
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Es esto? No es que busquen en Internet.
+
+153
+00:18:26.190 --> 00:18:31.499
+Eugenia Sol Piñeiro: Puede ser buscarla en Internet, o sea, Internet, es una fuente externa, fuente externa. Google.
+
+154
+00:18:31.500 --> 00:18:32.390
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: okay.
+
+155
+00:18:32.890 --> 00:18:35.600
+Eugenia Sol Piñeiro: Pero no es que el modelo está entrenado y aprendió eso.
+
+156
+00:18:36.570 --> 00:18:39.960
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Okay. Entonces, si buscan Internet está siendo no parametrizado.
+
+157
+00:18:41.420 --> 00:18:46.270
+Eugenia Sol Piñeiro: Claro exactamente, no está dentro de la información de los pesos del modelo.
+
+158
+00:18:50.670 --> 00:18:51.570
+Eugenia Sol Piñeiro: Bien.
+
+159
+00:18:52.200 --> 00:19:04.150
+Eugenia Sol Piñeiro: este paper está buenísimo. Es r a G para N. L, P: De hecho, recomiendo que lo lean para los interesados en en profundizar un poquito más. Se ve mucho de lo que vamos a hablar en esta clase?
+
+160
+00:19:04.320 --> 00:19:06.680
+Eugenia Sol Piñeiro: Nada lo dejo ahí.
+
+161
+00:19:08.130 --> 00:19:13.009
+Eugenia Sol Piñeiro: Bien, ¿qué es raro, entonces? Después de todo esto, y qué es lo que nos va a permitir solucionar.
+
+162
+00:19:13.370 --> 00:19:19.469
+Eugenia Sol Piñeiro: Vamos a tener retrival. Aumentant Generation van a ser 3 partes. Ahora vamos a ver cada una.
+
+163
+00:19:19.730 --> 00:19:32.439
+Eugenia Sol Piñeiro: Pero ¿qué es? Es un modelo de arquitectura que yo le voy a agregar a mirelem como módulos extra alrededor de millem para mejorar justamente todas estas desventajas que tiene. Entonces, por un lado, vamos a tener el retriever
+
+164
+00:19:32.580 --> 00:19:34.409
+Eugenia Sol Piñeiro: que lo que va a hacer es
+
+165
+00:19:34.520 --> 00:19:46.729
+Eugenia Sol Piñeiro: agarrar esa memoria, no paramétrica, o sea, obtener ese contexto como base de conocimiento externa. Esto se lo va a llamar la nobleach base o la colección de documentos
+
+166
+00:19:47.440 --> 00:19:54.870
+Eugenia Sol Piñeiro: que básicamente lo que se encarga es eso obtener información extra de algún otro lado? Ahora vamos a ver de dónde
+
+167
+00:19:55.460 --> 00:20:06.580
+Eugenia Sol Piñeiro: y después tenemos el generator que lo que hace es con esa información que me trajo el retriever. Voy a agregar información a lo que me responde en el Em
+
+168
+00:20:06.880 --> 00:20:09.750
+Eugenia Sol Piñeiro: y generar contexto adicional.
+
+169
+00:20:10.930 --> 00:20:21.989
+Eugenia Sol Piñeiro: Entonces estos son los 2 grandes componentes. Los vamos a ir desglosando a poco. Pero en general, retriever obtengo información generator la genero aumentando la memoria paramétrica del modelo.
+
+170
+00:20:24.990 --> 00:20:27.440
+Eugenia Sol Piñeiro: Entonces, cuáles son los beneficios?
+
+171
+00:20:28.370 --> 00:20:37.440
+Eugenia Sol Piñeiro: Primero, me va a expandir mi conocimiento. No porque voy a poder acceder a múltiples fuentes. El retriever, por ejemplo, puede acceder a información a través de una Api.
+
+172
+00:20:37.820 --> 00:20:55.880
+Eugenia Sol Piñeiro: Puedo acceder a Pdfs, documentos, txtsb. Lo que yo tenga, puedo hacer webs trapping y acceder puedo buscar en Google digamos, por usar algún motor de búsqueda. Puedo tener la persistía en una base de datos. Entonces simplemente hace quaris y le pega la base de datos. Entonces
+
+173
+00:20:56.020 --> 00:20:58.900
+Eugenia Sol Piñeiro: que me da esto acceso a distintas fuentes.
+
+174
+00:20:59.420 --> 00:21:10.289
+Eugenia Sol Piñeiro: Se Se puede actualizar mucho más fácil que volver a reentrenar el modelo, no o sea, hacer un inserto en una base de datos, es mucho menos costoso que re entrenar el elen
+
+175
+00:21:12.310 --> 00:21:15.439
+Eugenia Sol Piñeiro: y súper fácil de actualizar. No, entonces
+
+176
+00:21:16.630 --> 00:21:20.109
+Eugenia Sol Piñeiro: todas estas van a ser beneficios que me va a traer retriever
+
+177
+00:21:20.340 --> 00:21:24.139
+Eugenia Sol Piñeiro: y del lado del generator. Lo que me va a hacer es aumentar la confianza.
+
+178
+00:21:24.690 --> 00:21:37.849
+Eugenia Sol Piñeiro: ¿por qué? Porque va a combinar lo que yo ya tenía de mi memoria paramétrica con la fuente externa. Entonces me va a dar transparencia. ¿por qué? Porque ya sé de dónde viene la fuente.
+
+179
+00:21:37.910 --> 00:21:47.679
+Eugenia Sol Piñeiro: Yo hice el retriever. Yo sé a qué base a qué base de datos le pegué y qué data. Y en esa base de datos se supone que es data, que está curada, que es verdadera
+
+180
+00:21:47.770 --> 00:21:54.900
+Eugenia Sol Piñeiro: y que la necesito. No. Entonces esto ¿a qué me va a ayudar Primero, transparencia en el sentido de que sé cuál es la fuente
+
+181
+00:21:55.050 --> 00:22:08.790
+Eugenia Sol Piñeiro: contexto para dar respuestas más precisas, porque son realmente las respuestas que yo necesito usar. Me va a dar más personalización también porque va a ser data, que me va a servir específicamente para ese caso, uso quizás con una base de datos.
+
+182
+00:22:08.860 --> 00:22:21.809
+Eugenia Sol Piñeiro: y va a reducir las alucinaciones. ¿por qué? Porque ya sabe cómo responder ese tipo de preguntas, porque tiene la información en la base de datos, solo que tiene que procesarla y combinarla con la otra memoria paramétrica que está en el modelo.
+
+183
+00:22:23.550 --> 00:22:30.770
+Eugenia Sol Piñeiro: Si yo tuviera un producto trucho, porque red de propaganda, me encantaría ser una fuente confiable.
+
+184
+00:22:32.660 --> 00:22:35.630
+Eugenia Sol Piñeiro: Okay para aquí, te remeris.
+
+185
+00:22:37.600 --> 00:22:43.150
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y porque me imagino que la gente que programa estos modelos, cuando hace el retriever.
+
+186
+00:22:43.310 --> 00:22:45.870
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: elige con cuidado de dónde hacer
+
+187
+00:22:46.200 --> 00:22:48.780
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: de donde recolectar esa información. ¿no?
+
+188
+00:22:50.660 --> 00:22:53.449
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Programas son los confiados. ¿y qué no.
+
+189
+00:22:56.080 --> 00:23:00.080
+Eugenia Sol Piñeiro: Claro, exactamente, o sea, de hecho, vos lo tenés que usar tu ventaja.
+
+190
+00:23:01.220 --> 00:23:01.980
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Okay.
+
+191
+00:23:02.700 --> 00:23:03.440
+Eugenia Sol Piñeiro: O sea, no.
+
+192
+00:23:03.440 --> 00:23:04.010
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Vale.
+
+193
+00:23:04.460 --> 00:23:08.029
+Eugenia Sol Piñeiro: No promocionar un producto trucho Ahí Ahí no. S: No.
+
+194
+00:23:08.030 --> 00:23:14.430
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Si yo fuera un producto tuyo. Me encantaría meter poner plata para que me consideren fuente fuente confiable.
+
+195
+00:23:14.430 --> 00:23:20.220
+Eugenia Sol Piñeiro: Claro, okay Okay. Pero esto, digamos, sería una fuente, y
+
+196
+00:23:20.720 --> 00:23:28.199
+Eugenia Sol Piñeiro: que vos usás no, o sea como desarrollador decis. Bueno, no sé o es una empresa que contratan a un desarrollador o lo que sea
+
+197
+00:23:28.530 --> 00:23:39.919
+Eugenia Sol Piñeiro: que quiere promocionar ese producto realmente lo tiene que poner en la base de datos. O sea, es algo que usás vos como usuario. No es que no es que lo colgaste en algún lado, y todo el mundo va a ir a usar esa fuente curada
+
+198
+00:23:40.860 --> 00:23:47.199
+Eugenia Sol Piñeiro: para entrenar sus elementos, se entiende. O sea, no es que la idea no es
+
+199
+00:23:48.470 --> 00:23:55.420
+Eugenia Sol Piñeiro: romper la confiabilidad de la fuente, sino hacer confiable el elenco.
+
+200
+00:23:56.560 --> 00:24:00.210
+Eugenia Sol Piñeiro: Ya ha venido el jefe pidiendo que hagamos más plata vendiendo espacios tristes.
+
+201
+00:24:00.910 --> 00:24:02.090
+Eugenia Sol Piñeiro: Okay.
+
+202
+00:24:02.500 --> 00:24:10.820
+Eugenia Sol Piñeiro: Bueno, no le busques la vuelta para hacerlo negativo, o sea, la idea es justamente que sea transparente y que te sirva.
+
+203
+00:24:11.270 --> 00:24:21.549
+Eugenia Sol Piñeiro: O sea, que después vos uses el elemento empresa y que esté personalizado tu empresa, tu caso de uso que la fuente sea confiable que tus usuarios lucen bien, que esté personalizado, etcétera.
+
+204
+00:24:23.890 --> 00:24:27.070
+Eugenia Sol Piñeiro: Bien, más de la arquitectura.
+
+205
+00:24:28.110 --> 00:24:33.250
+Eugenia Sol Piñeiro: Esto lo más importante ahora vamos a desglosar cada una de las partes. Así que acá. Total atención.
+
+206
+00:24:33.830 --> 00:24:36.830
+Eugenia Sol Piñeiro: vamos a tener primero el index in Pipeline.
+
+207
+00:24:37.250 --> 00:24:40.880
+Eugenia Sol Piñeiro: ¿qué es esto? Vamos a tener nuestra colección de documentos.
+
+208
+00:24:42.750 --> 00:24:59.290
+Eugenia Sol Piñeiro: que puede ser un P. D, F, Un documento, ir a buscar con algún acuario? S. Q. L, información en una tabla puede ser. H. T, M. L, Si se web. Scrapping, lo que sea, Pero acá yo tengo mi base de conocimiento, que es mi memoria, no paramétrica.
+
+209
+00:24:59.600 --> 00:25:06.359
+Eugenia Sol Piñeiro: Sí, está curada, está limpia, es verdadera y la necesito para aumentar. Mi contexto.
+
+210
+00:25:07.440 --> 00:25:11.209
+Eugenia Sol Piñeiro: ¿qué se le va a hacer a este conjunto de documentos o nobleach base.
+
+211
+00:25:11.870 --> 00:25:15.320
+Eugenia Sol Piñeiro: Se lo llama Splitter o text splitting.
+
+212
+00:25:15.750 --> 00:25:23.360
+Eugenia Sol Piñeiro: que básicamente me divide el documento en Chanks en pedacitos pedacitos, más chiquitos de mi data.
+
+213
+00:25:23.660 --> 00:25:25.750
+Eugenia Sol Piñeiro: Ahora vamos a ver de qué me sirve hacer eso.
+
+214
+00:25:26.500 --> 00:25:28.430
+Eugenia Sol Piñeiro: pero hasta acá. Voy a tener
+
+215
+00:25:29.100 --> 00:25:33.420
+Eugenia Sol Piñeiro: pedazos más chicos de mi data fin que no son tokens.
+
+216
+00:25:34.380 --> 00:25:37.700
+Eugenia Sol Piñeiro: Si hay un toquemizador, eso pasa en esta parte
+
+217
+00:25:37.870 --> 00:25:43.670
+Eugenia Sol Piñeiro: que acá lo que se hace es convertir cada 1 de los chanks A en Bedding
+
+218
+00:25:44.030 --> 00:25:48.280
+Eugenia Sol Piñeiro: y los Meddings te persisten en una base de datos vectorial.
+
+219
+00:25:49.160 --> 00:26:04.679
+Eugenia Sol Piñeiro: Ahora vamos a ver base de datos vectoriales, pero básicamente están optimizadas justamente para el manejo de vectores. Y como tengo mains, me sirve muchísimo porque encima son vectores densos de alta dimensión. Entonces es difícil también procesarlos. No es es costoso. Entonces están optimizadas para eso.
+
+220
+00:26:06.340 --> 00:26:07.850
+Eugenia Sol Piñeiro: Bien, entonces hasta acá.
+
+221
+00:26:08.030 --> 00:26:16.070
+Eugenia Sol Piñeiro: Es curar mi información y persistirla en una base de datos vectorial. Ahora va a venir El usuario.
+
+222
+00:26:16.570 --> 00:26:17.879
+Eugenia Sol Piñeiro: Va a ser un prompt.
+
+223
+00:26:19.220 --> 00:26:25.499
+Eugenia Sol Piñeiro: el va a generar una respuesta, pero antes vamos a convertir la quory del usuario a Embedy.
+
+224
+00:26:26.050 --> 00:26:32.500
+Eugenia Sol Piñeiro: O sea, el promb del usuario. Lo vamos a convertir a Bady y el retrival se va a encargar de comparar
+
+225
+00:26:32.850 --> 00:26:41.700
+Eugenia Sol Piñeiro: lo que tiene persistido en la base de datos vectorial con el embedding del acuario y el usuario. Y va a decir okay que en Bedding es más similar
+
+226
+00:26:41.810 --> 00:26:46.200
+Eugenia Sol Piñeiro: a el embading de la cueva del usuario para poder responderle su pregunta.
+
+227
+00:26:46.320 --> 00:26:48.150
+Eugenia Sol Piñeiro: Y me va a agarrar los
+
+228
+00:26:48.530 --> 00:26:53.039
+Eugenia Sol Piñeiro: top ene en Beddings más similares y me los va a traer.
+
+229
+00:26:54.150 --> 00:26:59.729
+Eugenia Sol Piñeiro: Y después hay un módulo que va a ser el generador. Acá es cuando entra el generator
+
+230
+00:26:59.900 --> 00:27:10.839
+Eugenia Sol Piñeiro: que va a aumentar la memoria del Elen Osea. La respuesta del Elen la va a combinar con toda la información que le dio el re trival la va a procesar
+
+231
+00:27:11.000 --> 00:27:18.420
+Eugenia Sol Piñeiro: y va a aumentar y generar la respuesta para el usuario, dudas
+
+232
+00:27:19.410 --> 00:27:25.229
+Eugenia Sol Piñeiro: hasta acá. La arquitectura. Ahora vamos a ir módulo por módulo, pero la idea general se entendió.
+
+233
+00:27:26.140 --> 00:27:31.469
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí. La idea del Split es no convertir un documento de 500 páginas en un solo Enmedín.
+
+234
+00:27:32.130 --> 00:27:39.550
+Eugenia Sol Piñeiro: Sí, Sí, Básicamente sí. Ahora vamos a ver por qué te da más precisión, no también. Y es menos costoso.
+
+235
+00:27:41.360 --> 00:27:46.000
+JULIETA TECHENSKI: Duda el retrieval. Qué sería, o sea que es un proceso.
+
+236
+00:27:46.890 --> 00:27:51.560
+Eugenia Sol Piñeiro: Claro: el re trival es un módulo que lo que hace es pegarle a la base de datos vectorial
+
+237
+00:27:52.020 --> 00:28:01.430
+Eugenia Sol Piñeiro: y consultar que en veddings son más similares a el enveding del acuario y el usuario. ¿por qué? Porque me tengo que responder básicamente al usuario.
+
+238
+00:28:02.310 --> 00:28:13.750
+Eugenia Sol Piñeiro: Entonces tengo que ir a buscar dónde está esa información en la base de datos vectorial. Es todo ese proceso de ir a buscar la información a la base, Compararlo con la consulta del usuario y mandárselo al elen lo hace el retrial
+
+239
+00:28:16.030 --> 00:28:19.349
+Eugenia Sol Piñeiro: y después acá el generator. Lo que hace es combinar todo
+
+240
+00:28:19.970 --> 00:28:24.650
+Eugenia Sol Piñeiro: y aumentar la respuesta, y la parte de aumento generation.
+
+241
+00:28:26.010 --> 00:28:33.909
+LUCAS CAMPOLI: Es tipo un algoritmo, así como el token o a un.
+
+242
+00:28:33.910 --> 00:28:36.320
+Eugenia Sol Piñeiro: Sí, Sí, Sí, todo tiene su algoritmo. De hecho.
+
+243
+00:28:36.440 --> 00:28:55.690
+Eugenia Sol Piñeiro: ahora lo vamos a ver 1 por 1, pero yo siempre digo que esto es como un right hole, porque todos estos módulos son intercambiables. Entonces, tenés que definir Okay como genero. Mi noblich base qué algoritmo de spliting? Uso? ¿qué algoritmo de made in uso? Tengo un tokenizer? ¡qué tokenizer tengo qué base de datos editorial uso ¿Qué le leen uso. Entonces
+
+244
+00:28:55.860 --> 00:29:02.209
+Eugenia Sol Piñeiro: vas combinando todo y te entras en un rid hall enorme. Pero bueno, es es como la idea general.
+
+245
+00:29:06.350 --> 00:29:11.759
+MARÍA AGOSTINA SQUILLARI: Perdón. Yo entendí la parte del retrier, pero después no entiendo qué hace el generator, O sea.
+
+246
+00:29:12.830 --> 00:29:17.599
+MARÍA AGOSTINA SQUILLARI: sí como que combina todo y au y aumenta.
+
+247
+00:29:18.160 --> 00:29:18.540
+Eugenia Sol Piñeiro: Sí.
+
+248
+00:29:18.540 --> 00:29:20.099
+MARÍA AGOSTINA SQUILLARI: Respuesta. Creo que dijiste.
+
+249
+00:29:20.100 --> 00:29:20.780
+Eugenia Sol Piñeiro: Mira.
+
+250
+00:29:21.060 --> 00:29:24.290
+MARÍA AGOSTINA SQUILLARI: Pero no, no.
+
+251
+00:29:24.290 --> 00:29:30.320
+Eugenia Sol Piñeiro: En el editor, es es un módulo, O sea, es un proceso en Python. Imagínate no.
+
+252
+00:29:30.320 --> 00:29:34.789
+MARÍA AGOSTINA SQUILLARI: Sí, sí, pero entiendo lo que hace, pero entiendo cuál es el objetivo de lo que hace.
+
+253
+00:29:35.870 --> 00:29:40.089
+MARÍA AGOSTINA SQUILLARI: Entonces, como que, Bueno, entiendo que combina todo. Y y hasta ahí me quedé.
+
+254
+00:29:40.590 --> 00:29:53.319
+Eugenia Sol Piñeiro: Okay. El objetivo es darte la información actualizada, transparente y confiable y personalizada. Digamos Entonces quizás el Belem no sabe esa información de
+
+255
+00:29:53.390 --> 00:30:02.859
+Eugenia Sol Piñeiro: supone de tu empresa o de esta misma materia. Por ejemplo, no sabes información del Itba de que somos la materia. 73, 69 Lelems.
+
+256
+00:30:03.130 --> 00:30:07.319
+Eugenia Sol Piñeiro: ¿por qué tendría que salir el otro chipitín si no está entrenado ni fantuneado para eso.
+
+257
+00:30:07.660 --> 00:30:18.939
+Eugenia Sol Piñeiro: entonces yo, acá mi base de datos vectorial. Me guardo todo el programa de la materia, toda la materia que hay en el Itba, etcétera. Entonces, ¿qué es lo que hace el usuario viene? Y pregunta.
+
+258
+00:30:19.230 --> 00:30:22.040
+Eugenia Sol Piñeiro: ¿cuál es el código de la materia? El Elens.
+
+259
+00:30:23.030 --> 00:30:36.149
+Eugenia Sol Piñeiro: El chipitín no tiene idea. Entonces lo que se hace es convertir ese prompt ambing se lo compara con todo lo que tengo acá persistido en mi base de datos vectorial. Entonces ahora sí me puede responder, Y el código es tanto.
+
+260
+00:30:36.610 --> 00:30:40.220
+Eugenia Sol Piñeiro: ¿por qué? Porque el generator lo que hizo fue combinar
+
+261
+00:30:40.400 --> 00:30:46.060
+Eugenia Sol Piñeiro: todo lo que vino del retriever, combinarlo con la respuesta del el Em y darle una respuesta al usuario.
+
+262
+00:30:46.380 --> 00:30:49.689
+Eugenia Sol Piñeiro: Lo que hace es justamente es aumentar esa respuesta.
+
+263
+00:30:50.340 --> 00:30:51.080
+MARÍA AGOSTINA SQUILLARI: Claro.
+
+264
+00:30:51.420 --> 00:30:53.610
+MARÍA AGOSTINA SQUILLARI: Okay. Perfecto. Gracias.
+
+265
+00:30:53.610 --> 00:30:55.879
+Eugenia Sol Piñeiro: Ahora vamos a ver un ejemplo.
+
+266
+00:30:56.090 --> 00:30:58.759
+Eugenia Sol Piñeiro: Te queda un poquito más caro, más claro. Quizás
+
+267
+00:30:59.910 --> 00:31:04.569
+Eugenia Sol Piñeiro: yo le di un ejemplo al aire. Y me olvidé que acá. Tenía 1. Pero Okey acá tenemos el usuario
+
+268
+00:31:04.850 --> 00:31:11.710
+Eugenia Sol Piñeiro: pregunta. Por ejemplo, volvamos con la misma coli que teníamos antes De: bueno, ¿cómo
+
+269
+00:31:13.150 --> 00:31:17.410
+Eugenia Sol Piñeiro: ¿cómo evalúas que despidieron a Salman del C E, o de Open? Ai.
+
+270
+00:31:18.070 --> 00:31:20.260
+Eugenia Sol Piñeiro: Entonces está quary, Se tiene que convertir en Baby.
+
+271
+00:31:20.820 --> 00:31:31.240
+Eugenia Sol Piñeiro: Ahora, ¿qué es lo que va a hacer yo acá en el index sin pie? Line de forma sincrónica, o sea, yo esto ya lo cargué. Mi base de datos vectorial. No lo voy a hacer a momento de inferencia, Entonces ya lo tengo cargado.
+
+272
+00:31:31.420 --> 00:31:45.029
+Eugenia Sol Piñeiro: Lo que hice fue recolectar, Por ejemplo, no sé todas las noticias de Open y haciendo webscrapping en su web. Me cure toda la información de openega y me la guardé en la base de de la base vectorial en Chancs.
+
+273
+00:31:45.970 --> 00:31:57.609
+Eugenia Sol Piñeiro: Entonces acá. Lo que va a hacer el re trival es combinar el acuario del usuario con los envadings de los Chanks y se va a traer los Topn N en este caso, los top, 3
+
+274
+00:31:57.710 --> 00:32:05.569
+Eugenia Sol Piñeiro: más similares. Y acá fíjense que el retrial Me trajo Sama Alman. Vuelve como sigo
+
+275
+00:32:05.680 --> 00:32:16.160
+Eugenia Sol Piñeiro: claro después, el drama finaliza. Samantham vuelve como si Okey, Este ya es más dramático como, bueno, open ya llega a su fin. Bueno, de más.
+
+276
+00:32:16.390 --> 00:32:22.550
+Eugenia Sol Piñeiro: Entonces me trae todos estos Chanks Okay. Y ahora el generator. El trabajo es justamente.
+
+277
+00:32:23.010 --> 00:32:27.799
+Eugenia Sol Piñeiro: No le vas a responder esto al usuario. Así escupido de Ashanks que quizás
+
+278
+00:32:28.160 --> 00:32:31.290
+Eugenia Sol Piñeiro: necesitas procesarlo, ¿no? Entonces el generator lo que hace es.
+
+279
+00:32:31.670 --> 00:32:33.440
+Eugenia Sol Piñeiro: ¿le va a pasar el prompt
+
+280
+00:32:33.930 --> 00:32:43.939
+Eugenia Sol Piñeiro: a leer el m el mismo promb del usuario. Pero además, le va a decir, por favor, responde la pregunta anterior basándote en la siguiente información.
+
+281
+00:32:44.050 --> 00:32:46.020
+Eugenia Sol Piñeiro: Entonces lo que hace es combinar
+
+282
+00:32:46.330 --> 00:32:50.479
+Eugenia Sol Piñeiro: todo este contexto más el front del usuario. Y ahí le responde.
+
+283
+00:32:50.960 --> 00:32:55.090
+Eugenia Sol Piñeiro: Entonces, sin rap, te hubiese dicho, y la verdad ni idea. ¿qué pasó
+
+284
+00:32:55.190 --> 00:33:03.100
+Eugenia Sol Piñeiro: Conrad? Te dice, Uy mirá pasó todo esto. Mira todas las noticias que hay. La salida está de esta fuente. Pasó todo esto y te responde
+
+285
+00:33:05.780 --> 00:33:11.140
+Eugenia Sol Piñeiro: bien. Ahora, con este ejemplo, estamos mejor Se entendía mejor de arquitectura.
+
+286
+00:33:11.140 --> 00:33:13.330
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, sí se entendía bastante bien.
+
+287
+00:33:13.960 --> 00:33:16.220
+Eugenia Sol Piñeiro: Bien buenísimo, Entonces.
+
+288
+00:33:16.540 --> 00:33:20.370
+Eugenia Sol Piñeiro: básicamente, que van a tener que hacer ustedes, o sea, como Spoiler van a tener que implementar un rag.
+
+289
+00:33:21.680 --> 00:33:27.309
+Eugenia Sol Piñeiro: Y así que ahora vamos a ver, paso por paso. ¿qué es este index? In by Line?
+
+290
+00:33:29.830 --> 00:33:38.110
+Eugenia Sol Piñeiro: Vamos a tener nuestros 4 módulos importantes. Esta es la parte de arriba del diagrama, o todavía no estamos en el generador. Es el index impible.
+
+291
+00:33:38.480 --> 00:33:40.560
+Eugenia Sol Piñeiro: Esto es lo que se hace de forma sincrónica.
+
+292
+00:33:40.790 --> 00:33:42.849
+Eugenia Sol Piñeiro: entonces voy a tener un loder.
+
+293
+00:33:43.080 --> 00:33:52.369
+Eugenia Sol Piñeiro: que es el que va a armar esa nobleach base. Va a tener el Splitter que me va a dividir mis documentos en Chanks.
+
+294
+00:33:52.530 --> 00:33:58.740
+Eugenia Sol Piñeiro: El algoritmo en medio. Esto no lo vamos a ver hoy, porque ya lo vimos en la clase. Dos son los mismos algoritmos en Bein que vimos
+
+295
+00:33:59.480 --> 00:34:03.440
+Eugenia Sol Piñeiro: y después vamos a persistir en una base de datos Vectorial. Entonces nos vamos a enfocar en esto.
+
+296
+00:34:04.640 --> 00:34:07.069
+Eugenia Sol Piñeiro: ¿cómo hago el dataloding? ¿qué tengo que tener en cuenta?
+
+297
+00:34:07.590 --> 00:34:08.420
+Eugenia Sol Piñeiro: Acá
+
+298
+00:34:08.580 --> 00:34:26.560
+Eugenia Sol Piñeiro: El esfuerzo va a caer en construir una buena nabrich base. ¿por qué? Porque la idea era justamente tener data, curada y transparente. Entonces, si yo acá le pifio. En mi base de datos de conocimiento, voy a tener después toda la información mal, o sea, la idea, es justamente invertir un buen tiempo limpiando esta información.
+
+299
+00:34:27.520 --> 00:34:42.709
+Eugenia Sol Piñeiro: Además, puede ser de distintas fuentes, no, O sea, puedo pegarle a una A. P. I puedo hacer webscrapping, acá puedo tener. H, T, M. L, Zas. Quizá no me sirve todo. No me sirve persistir un en Beding de un T, A, G, de H, T, M. L, Quiero persistir solo texto. Entonces lo tengo que limpiar.
+
+300
+00:34:43.340 --> 00:34:53.980
+Eugenia Sol Piñeiro: Por ejemplo, no lo mismo Si tengo formato, Jason o C, C, B, Data tabular. ¿qué pasa si tengo Pdf: ¿Qué pasa si el P. D F tiene Tablas, Si tiene imágenes, ¿cómo es que lo puedo parcear.
+
+301
+00:34:54.560 --> 00:35:07.129
+Eugenia Sol Piñeiro: ¿qué base de datos tengo? ¿qué hay en mi base de datos? ¿cómo lo persisto? ¿cómo lo combino, entonces, no es que escribir hacerlo, sino que tengo que invertir un buen tiempo ahí, justamente hacer transformaciones, parcela, información, limpieza, etcétera.
+
+302
+00:35:08.110 --> 00:35:09.260
+Eugenia Sol Piñeiro: ¿
+
+303
+00:35:11.060 --> 00:35:19.390
+Eugenia Sol Piñeiro: Bien. Entonces acá Loader se va a encargar de combinar toda esta información, curarla y demás y generar mi colección de documentos.
+
+304
+00:35:20.460 --> 00:35:22.410
+Eugenia Sol Piñeiro: Después voy a pasar a Alex Plitter.
+
+305
+00:35:23.060 --> 00:35:28.210
+Eugenia Sol Piñeiro: Una vez que ya cargué mis datos, vamos a dividirlos en partecitas más chiquitas.
+
+306
+00:35:29.050 --> 00:35:31.620
+Eugenia Sol Piñeiro: ¿de qué me sirve? Primero mejora la búsqueda.
+
+307
+00:35:31.860 --> 00:35:48.389
+Eugenia Sol Piñeiro: ¿por qué? Entre más grande es mi documento más voy a tardar en encontrar la información que necesito. De ahí, pusieron un muy buen ejemplo de tengo un libro, 500 hojas. Y por ahí la respuesta estaba en el primer párrafo de la hoja 2.
+
+308
+00:35:48.520 --> 00:36:03.400
+Eugenia Sol Piñeiro: Entonces porque busqué en las 500. Si solo necesitaba ese chanque, ese pedacito donde estaba precisamente mi información. Entonces la idea no es complejizar la búsqueda, sino justamente aprovechar la la base de datos vectorial y
+
+309
+00:36:03.730 --> 00:36:06.870
+Eugenia Sol Piñeiro: convertir esto a App. Textos más chiquitos.
+
+310
+00:36:07.690 --> 00:36:09.030
+Eugenia Sol Piñeiro: Como paréntesis.
+
+311
+00:36:09.220 --> 00:36:15.799
+Eugenia Sol Piñeiro: todo lo que vemos acá va a ser de texto, pero después vamos a ver cómo extenderlo a imágenes y video. No es que solo lo vamos a hacer con texto
+
+312
+00:36:16.960 --> 00:36:20.440
+Eugenia Sol Piñeiro: y en cuestión. Esto mejora la indexación
+
+313
+00:36:20.570 --> 00:36:25.749
+Eugenia Sol Piñeiro: y hace que sea más eficiente. Justamente por eso no voy precisamente a atacar
+
+314
+00:36:25.970 --> 00:36:28.780
+Eugenia Sol Piñeiro: el Chank, que tiene la información que necesita.
+
+315
+00:36:31.880 --> 00:36:38.769
+Eugenia Sol Piñeiro: ¿qué más contexto, esto es por la cantidad limitada de tokens que tienen los celulars No
+
+316
+00:36:39.110 --> 00:36:53.830
+Eugenia Sol Piñeiro: recuerden que está la Context Window. Si yo le paso un documento gigante a leer en primero que lo va a cortar, se supera la Context Window lo corta y y te queda a la mitad el párrafo o lo que sea que le pasaste y no lo va a usar.
+
+317
+00:36:53.940 --> 00:37:00.300
+Eugenia Sol Piñeiro: Y Y segundo, que quizás consumís ese contexto, Window, sin ni siquiera tener la la información que necesitabas.
+
+318
+00:37:00.420 --> 00:37:01.470
+Eugenia Sol Piñeiro: Entonces
+
+319
+00:37:01.610 --> 00:37:09.159
+Eugenia Sol Piñeiro: hay que ve siempre priorizar la cantidad de tokens que puede procesar el elen. Esto va a depender del modelo también.
+
+320
+00:37:10.950 --> 00:37:16.110
+Eugenia Sol Piñeiro: Así que cuidado con eso Hay distintos tipos de speating.
+
+321
+00:37:16.680 --> 00:37:20.270
+Eugenia Sol Piñeiro: Lo más fácil es elegir un carácter
+
+322
+00:37:20.580 --> 00:37:22.769
+Eugenia Sol Piñeiro: y dividir el texto Por un carácter
+
+323
+00:37:24.890 --> 00:37:32.370
+Eugenia Sol Piñeiro: ejemplo, tengo estos párrafos y divido por doble barra. N Dos: Voy a tener el Chanc: 1 y el chang. Dos.
+
+324
+00:37:33.920 --> 00:37:36.250
+Eugenia Sol Piñeiro: ¿Qué más se les ocurre? ¿qué más se puede hacer.
+
+325
+00:37:39.840 --> 00:37:41.399
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Podemos dividir por puntos.
+
+326
+00:37:42.440 --> 00:37:45.640
+Eugenia Sol Piñeiro: Okay y tendrías oraciones. Bien, ¿Qué más.
+
+327
+00:37:46.160 --> 00:37:49.360
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Podemos dividir por instancias de la letra q Si quiero.
+
+328
+00:37:50.500 --> 00:37:52.069
+Eugenia Sol Piñeiro: Pero ¿qué desventaja tenés ahí?
+
+329
+00:37:52.320 --> 00:37:53.490
+Eugenia Sol Piñeiro: O sea.
+
+330
+00:37:54.010 --> 00:37:56.380
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Todas las cosas de tamaño, cualquiera.
+
+331
+00:37:57.750 --> 00:38:02.160
+Eugenia Sol Piñeiro: Okay, y además tenés palabras cortadas. Quizás no.
+
+332
+00:38:02.160 --> 00:38:02.690
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+333
+00:38:03.310 --> 00:38:11.850
+Eugenia Sol Piñeiro: Entonces no me sirve hacer ese tipo de análisis lo mismo si divido por
+
+334
+00:38:12.110 --> 00:38:19.620
+Eugenia Sol Piñeiro: por mayúsculas, Bueno, o por caracteres que quizás no se usan tanto como el apóstrofe o las comillas
+
+335
+00:38:20.290 --> 00:38:23.849
+Eugenia Sol Piñeiro: o un corchete, por ejemplo, porque quisiera vivir. Por eso la idea es
+
+336
+00:38:23.990 --> 00:38:26.800
+Eugenia Sol Piñeiro: incluso el espacio, No, si digo por palabras
+
+337
+00:38:27.460 --> 00:38:41.320
+Eugenia Sol Piñeiro: que voy a tener un Chank por cada palabra, o sea, un en Bedding en mi base de datos vectorial por cada palabra que hacer imposible después machear el en Bedding, que está en la base de datos vectorial que coincida similitud con alguno de los envenenas
+
+338
+00:38:41.560 --> 00:38:43.490
+Eugenia Sol Piñeiro: que me manda el usuario en la pregunta.
+
+339
+00:38:43.860 --> 00:38:49.829
+Eugenia Sol Piñeiro: entonces tiene que tener cierto contexto y cierto criterio a la hora de dividir
+
+340
+00:38:50.080 --> 00:38:53.500
+Eugenia Sol Piñeiro: los chanks. No, la idea es justamente que quede coherente.
+
+341
+00:38:56.880 --> 00:39:06.820
+Eugenia Sol Piñeiro: Hay una, hay una funcionalidad extra que se le agrega que es el overlab. De hecho, esto lo van a ver en todas las librerías que lo que hace es ayudar a mantener la continuidad
+
+342
+00:39:07.090 --> 00:39:12.700
+Eugenia Sol Piñeiro: de del contexto entre los Chanks, lo que se hace es agarrar una partecita.
+
+343
+00:39:12.830 --> 00:39:16.559
+Eugenia Sol Piñeiro: un overrap definido definido en cantidad de caracteres
+
+344
+00:39:16.830 --> 00:39:20.670
+Eugenia Sol Piñeiro: agarra la partecita final, hice la concatena
+
+345
+00:39:21.030 --> 00:39:33.990
+Eugenia Sol Piñeiro: a el principio del siguiente: Chank, no en este caso. Fíjense que dice transformar una secuencia en otra punto, Okay. El El siguiente Chang va a arrancar en transformar una secuencia en otra y sigue con el resto del párrafo.
+
+346
+00:39:34.450 --> 00:39:36.020
+Eugenia Sol Piñeiro: entonces esto ayuda
+
+347
+00:39:36.780 --> 00:39:52.070
+Eugenia Sol Piñeiro: a mejorar. Cómo relacionar cada 1 de los párrafos, en este caso puede ser en oraciones. Entonces, con esta superposición se permite al modelo mejorar justamente el contexto de lo que es lo que está
+
+348
+00:39:52.210 --> 00:39:54.229
+Eugenia Sol Piñeiro: buscando en la base de datos vectorial.
+
+349
+00:39:55.170 --> 00:40:11.880
+Eugenia Sol Piñeiro: Shanksize es el tamaño del Chank Chang Coverlab es justamente el tamaño en el que se overlapean o se solapan los Chanks para generar coherencia, estos 2 parámetros. Son cosas con las que hay que jugar y experimentar todas las librerías lo tienen.
+
+350
+00:40:12.720 --> 00:40:16.940
+Eugenia Sol Piñeiro: Y cuando 1 lo implementa, lo tiene que tener en cuenta. Entonces, ténganlo en cuenta.
+
+351
+00:40:20.120 --> 00:40:25.999
+Eugenia Sol Piñeiro: esto un poco. Ya lo dice Spoiler. Pero ¿qué problema podría provocar? Yo divido por carácter
+
+352
+00:40:27.850 --> 00:40:30.840
+Eugenia Sol Piñeiro: ¿Cómo se elige queso ver la pea, el final.
+
+353
+00:40:31.080 --> 00:40:35.000
+Eugenia Sol Piñeiro: geo ver la Pea y va jugando con qué tanto del final o verlapiaza.
+
+354
+00:40:36.870 --> 00:40:43.909
+Eugenia Sol Piñeiro: O sea, tampoco voy a rapear tanto, porque si no ya tenés el chanque entero embebido en el siguiente, no es como un traidoff es experimental.
+
+355
+00:40:47.890 --> 00:40:52.209
+MARÍA AGOSTINA SQUILLARI: Pero no te puede pasar que lo que lapias no tiene nada que ver con la siguiente frase.
+
+356
+00:40:52.700 --> 00:40:54.179
+Eugenia Sol Piñeiro: Sí te puede pasar.
+
+357
+00:40:55.180 --> 00:40:56.140
+MARÍA AGOSTINA SQUILLARI: Y ahí no pasa nada.
+
+358
+00:40:56.140 --> 00:40:56.950
+Eugenia Sol Piñeiro: Por ejemplo.
+
+359
+00:40:57.460 --> 00:41:00.269
+Eugenia Sol Piñeiro: Por ahí puedes hacer algo más
+
+360
+00:41:01.550 --> 00:41:20.969
+Eugenia Sol Piñeiro: más complejo de elegir. No sé si cambia de capítulo, no haga soverlab si cambia de párrafo o cambia de oración, sí hace overlab una cosa así. O sea, 1 lo puede personalizar según el caso de uso también. Pero sí está demostrado como que hacer el overlab experimentalmente funciona mejor porque le agarra contexto entre los Chancs.
+
+361
+00:41:21.940 --> 00:41:22.670
+MARÍA AGOSTINA SQUILLARI: Okay.
+
+362
+00:41:25.180 --> 00:41:34.839
+Eugenia Sol Piñeiro: Ahí dicen un 1 000 000 de Chanks. Sí, es una ventaja. Estoy convirtiendo un carácter en un embain. Los envains son míos grandes, Exactamente bien y además.
+
+363
+00:41:35.740 --> 00:41:44.050
+Eugenia Sol Piñeiro: pero desde contexto no. O sea, si yo persisto, letras me hace letras electorales que qué hago con eso. O sea, no se entiende nada.
+
+364
+00:41:44.670 --> 00:41:57.390
+Eugenia Sol Piñeiro: Tengo 20 trillones de envenges. Me quedo sin espacio. Bueno, también eso es un tema. Hay técnicas igual, porque a veces, más allá de dividir o no por caracteres podés estar dividiendo por párrafos, y aún así quedarte sin espacio.
+
+365
+00:41:57.530 --> 00:41:58.690
+Eugenia Sol Piñeiro: ¿
+
+366
+00:41:58.980 --> 00:42:01.620
+Eugenia Sol Piñeiro: Las vamos a ver un par de técnicas, pero
+
+367
+00:42:02.250 --> 00:42:04.289
+Eugenia Sol Piñeiro: sí hay que tener cuidado, porque también es costoso.
+
+368
+00:42:06.620 --> 00:42:15.749
+Eugenia Sol Piñeiro: Bien, así como estaban dividir por carácter. Después está el mismo, pero de forma recursiva.
+
+369
+00:42:15.760 --> 00:42:31.919
+Eugenia Sol Piñeiro: Entonces Acá la idea es justamente preservar mejor la relación semántica que hay en todo el texto va un poco de la mano con la pregunta que hicieron recién de cómo elegir el lavarla. Bueno, también puede hacer algo más complejo el el Text Splitter y empezar a dividir el texto de forma recursiva.
+
+370
+00:42:31.960 --> 00:42:34.439
+Eugenia Sol Piñeiro: Entonces yo voy a definir un tamaño de Chank
+
+371
+00:42:34.840 --> 00:42:52.960
+Eugenia Sol Piñeiro: y voy a empezar a dividir por caracteres. Si no encuentro un carácter y ese tamaño de Zhank sigue siendo muy grande recursivamente paso al siguiente carácter que definí para dividir. Entonces, por ahí divido en párrafos, el párrafo me quedo muy grande divido en oraciones, la oración me quedo muy grande, divido por coma.
+
+372
+00:42:52.990 --> 00:42:58.319
+Eugenia Sol Piñeiro: me quedo muy grande, divido por espacio. Y así 1 va reclusivamente iterando
+
+373
+00:42:59.270 --> 00:43:06.070
+Eugenia Sol Piñeiro: traidoff este oversplitting de quizás caer en dividir por palabra. ¿no? Quizás esté
+
+374
+00:43:06.500 --> 00:43:10.009
+Eugenia Sol Piñeiro: sí el carácter espacio lo puedo sacar ni considerar. Y ni
+
+375
+00:43:10.250 --> 00:43:12.819
+Eugenia Sol Piñeiro: mi chank mínimo va a ser una oración.
+
+376
+00:43:13.390 --> 00:43:20.490
+Eugenia Sol Piñeiro: entonces esto ayuda a respetar, como la jerarquía semántica que hay en el texto, no de párrafo oración, palabra
+
+377
+00:43:21.750 --> 00:43:23.010
+Eugenia Sol Piñeiro: ejemplo.
+
+378
+00:43:23.190 --> 00:43:31.389
+Eugenia Sol Piñeiro: Supóngase que tengo todos estos caracteres, no doble Barra N Enter, punto espacio, entonces
+
+379
+00:43:31.530 --> 00:43:35.140
+Eugenia Sol Piñeiro: recursivamente voy a intentar dividir por este separador
+
+380
+00:43:35.290 --> 00:43:42.909
+Eugenia Sol Piñeiro: si lo encuentra en el texto y la longitud del Chanc sigue siendo mayor al Shang Sise. Entonces lo divido por el siguiente
+
+381
+00:43:44.230 --> 00:43:49.100
+Eugenia Sol Piñeiro: entonces supóngase que tengo este párrafo dividido por N.
+
+382
+00:43:49.850 --> 00:43:52.229
+Eugenia Sol Piñeiro: Entonces me van a quedar Chanc: Uno y Chanc, 2,
+
+383
+00:43:52.420 --> 00:43:58.670
+Eugenia Sol Piñeiro: Ambos siguen siendo mayores. En Shankside, el shangshiz lo lo tengo definido.
+
+384
+00:43:58.790 --> 00:44:03.769
+Eugenia Sol Piñeiro: Y y voy a voy a dividir por un barrané
+
+385
+00:44:03.990 --> 00:44:18.970
+Eugenia Sol Piñeiro: en este párrafo no hay barra. N Ok, no puedo dividir, pero en este sí, entonces en este Chank divido por barra. N Ok, paso al siguiente carácter. Este me sigue quedando muy largo o k divido por puntos. Entonces ahí lo tengo dividido en oración.
+
+386
+00:44:19.330 --> 00:44:21.259
+Eugenia Sol Piñeiro: y así recursivamente con todos.
+
+387
+00:44:21.390 --> 00:44:26.280
+Eugenia Sol Piñeiro: Pero más o menos entendió marca y cena
+
+388
+00:44:26.830 --> 00:44:35.300
+Eugenia Sol Piñeiro: un carácter, solo necesidad, mucho contexto, salvo que uses un overlaping grande y juntes varias o así no, no el un carácter solo
+
+389
+00:44:36.480 --> 00:44:42.910
+Eugenia Sol Piñeiro: no te dan nada nada de contexto soberlaping grande.
+
+390
+00:44:43.490 --> 00:44:44.890
+Eugenia Sol Piñeiro: Mhm.
+
+391
+00:44:45.470 --> 00:44:52.000
+Eugenia Sol Piñeiro: Si ahí usas overlab grande, o sea, no tendrías ni overlab se entiende, O sea, es como un solo caracter
+
+392
+00:44:56.800 --> 00:44:59.170
+Eugenia Sol Piñeiro: como, por lo general, o sea, no se suele usar eso.
+
+393
+00:45:01.580 --> 00:45:02.790
+Eugenia Sol Piñeiro: Bien. Perfecto.
+
+394
+00:45:04.050 --> 00:45:07.370
+Eugenia Sol Piñeiro: Genial.
+
+395
+00:45:07.490 --> 00:45:10.030
+Eugenia Sol Piñeiro: Bueno, estos son por caracteres.
+
+396
+00:45:10.500 --> 00:45:15.230
+Eugenia Sol Piñeiro: se pueden ir definiendo más, pero no es lo único. Por ejemplo, ¿qué pasa si tenés código
+
+397
+00:45:15.610 --> 00:45:19.960
+Eugenia Sol Piñeiro: de Stacks de H, T, M, L, ¿O o cómo haces para vivir?
+
+398
+00:45:21.040 --> 00:45:39.369
+Eugenia Sol Piñeiro: Hay muchísimos más. Está el Token Splitter que en vez de ir por caracteres dividido por Tokens. Entonces, primero tengo que aplicar algún token icer, por ejemplo, usar el B P que vimos en en las primeras clases y dividir el carácter, perdón, dividir el texto según algún carácter. Pero
+
+399
+00:45:39.500 --> 00:45:44.269
+Eugenia Sol Piñeiro: en realidad la longitud del Chanc la determina la cantidad de tokens que tenga el Chank.
+
+400
+00:45:45.140 --> 00:45:50.380
+Eugenia Sol Piñeiro: Entonces otra otra opción es, por ejemplo, hacerlo en función de los tokens.
+
+401
+00:45:50.700 --> 00:45:53.850
+Eugenia Sol Piñeiro: Y eso, además te ayuda a
+
+402
+00:45:54.820 --> 00:45:58.589
+Eugenia Sol Piñeiro: más o menos estimar qué tanta context Window vas a utilizar
+
+403
+00:45:59.650 --> 00:46:11.150
+Eugenia Sol Piñeiro: después tenés el context de Splitter, que preserva justamente la estructura del documento a esto me refería. No todos los documentos son párrafos. Así, tan tan hermosos y sencillos como un párrafo textual.
+
+404
+00:46:11.810 --> 00:46:14.229
+Eugenia Sol Piñeiro: Puedo tener, por ejemplo, no sé
+
+405
+00:46:14.830 --> 00:46:21.990
+Eugenia Sol Piñeiro: un Div de H. T. M. L, Lo que sea que tenga acá. De texto y después este no
+
+406
+00:46:22.230 --> 00:46:23.450
+Eugenia Sol Piñeiro: el que cierra.
+
+407
+00:46:24.870 --> 00:46:27.359
+Eugenia Sol Piñeiro: ¿qué pasa si lo divido acá.
+
+408
+00:46:27.940 --> 00:46:36.640
+Eugenia Sol Piñeiro: Me quedó el Tag de H. T. M. L. Separado. No, res no estoy respetando la estructura del H. T, M L, Y no me sirve que haya un chancas. Y
+
+409
+00:46:36.780 --> 00:46:41.750
+Eugenia Sol Piñeiro: lo mismo no sé, por ejemplo, si estoy en Python, no tengo de F
+
+410
+00:46:41.940 --> 00:46:43.769
+Eugenia Sol Piñeiro: Uy, ¿Qué mal que escribí para
+
+411
+00:46:45.080 --> 00:46:49.419
+Eugenia Sol Piñeiro: tengo el D E. F de la función, el nombre de la función?
+
+412
+00:46:50.830 --> 00:46:51.590
+Eugenia Sol Piñeiro: ¿no?
+
+413
+00:46:52.060 --> 00:46:54.199
+Eugenia Sol Piñeiro: ¿qué pasa si divido por acá
+
+414
+00:46:55.380 --> 00:46:58.970
+Eugenia Sol Piñeiro: me falta el nombre de la función. De hecho, no puedo distinguir que esto es una función.
+
+415
+00:46:59.400 --> 00:47:12.739
+Eugenia Sol Piñeiro: entonces hay que respetar la estructura, en este caso de Python, de Java, de lo que sea que tenga de lenguaje lo mismo con Markdown con Látex. Bueno, Markton. Pasa mucho que vieron que cuando usas el hashtag numeral.
+
+416
+00:47:13.190 --> 00:47:15.309
+Eugenia Sol Piñeiro: según cuantos tengas.
+
+417
+00:47:16.710 --> 00:47:23.150
+Eugenia Sol Piñeiro: ya sea la letra más grande o más chica o en negrita o lo que sea. No es lo mismo. Si yo tengo un head así con 1 de los
+
+418
+00:47:23.280 --> 00:47:28.759
+Eugenia Sol Piñeiro: hashtags o 2 o 3 no te va cambiando la letra, entonces depende la estructura.
+
+419
+00:47:29.430 --> 00:47:43.770
+Eugenia Sol Piñeiro: Entonces fíjense que ya empieza a ser un mundo de okay que es plaing, uso y depende de mi caso de uso. Si tengo contenido más estructurado, más desestructurado como es que lo puedo parcear, entonces tengo que tener en cuenta todas estas cosas.
+
+420
+00:47:43.880 --> 00:47:47.929
+Eugenia Sol Piñeiro: A veces no es todo tan sencillo como dividir en palabras.
+
+421
+00:47:50.610 --> 00:47:52.960
+Eugenia Sol Piñeiro: Y lo que yo tengo que tener en cuenta es
+
+422
+00:47:53.650 --> 00:47:59.810
+Eugenia Sol Piñeiro: cuál es la naturaleza del contenido que estoy dividiendo, o sea, si yo hago un split aleatorio
+
+423
+00:47:59.920 --> 00:48:14.859
+Eugenia Sol Piñeiro: así corto. Por No sé si cada 50 caracteres corto quizás pierdo contexto. Puedo estar cortando a la mitad de una palabra y no se entiende que es lo que decía quizás el párrafo, la versión, la línea de Código, o lo que tenía
+
+424
+00:48:15.140 --> 00:48:20.729
+Eugenia Sol Piñeiro: entonces acá pierdo el contexto y empiezo a generar incoherencia en el elen.
+
+425
+00:48:22.050 --> 00:48:25.839
+Eugenia Sol Piñeiro: Después tengo que tener en cuenta cuál es el contexto del modelo.
+
+426
+00:48:26.970 --> 00:48:35.610
+Eugenia Sol Piñeiro: ¿qué pasa si tengo un Shank Size, muy, muy chiquito o sea, muy, muy
+
+427
+00:48:35.840 --> 00:48:41.400
+Eugenia Sol Piñeiro: menor, mucho es menor que la Context Window, que me puede pasar.
+
+428
+00:48:46.610 --> 00:48:49.630
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Para acá? La pregunta es: ¿qué pasa si vos tenés
+
+429
+00:48:49.800 --> 00:48:53.519
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: un Chank size mucho más chiquito que la context Window.
+
+430
+00:48:54.230 --> 00:48:55.760
+Eugenia Sol Piñeiro: Sí, Muy chiquito.
+
+431
+00:48:57.110 --> 00:49:00.640
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y vas a terminar con un montón de medios y se te va a llenar el contexto.
+
+432
+00:49:02.650 --> 00:49:11.770
+Eugenia Sol Piñeiro: Okay, pero puedo agarrar muchos. No puedo agarrar muchos chances de de muy chiquititos, los Chanks
+
+433
+00:49:12.440 --> 00:49:14.869
+Eugenia Sol Piñeiro: y no se me va a llenar la cuenta de su Windows. No.
+
+434
+00:49:15.000 --> 00:49:18.550
+Eugenia Sol Piñeiro: ahora pierdo relación entre los chanks.
+
+435
+00:49:18.810 --> 00:49:20.820
+Eugenia Sol Piñeiro: No, si tengo palabras, por ejemplo.
+
+436
+00:49:20.970 --> 00:49:31.890
+Eugenia Sol Piñeiro: entonces no tiene en cuenta la relación que tengo entre en este caso de sentencias oraciones, código o lo que tenga. Y si me voy al otro extremo. ¿qué pasa si el Changsight es muy grande? No.
+
+437
+00:49:34.140 --> 00:49:35.670
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Están demasiado relacionados.
+
+438
+00:49:38.070 --> 00:49:40.920
+Eugenia Sol Piñeiro: Okay están demasiado relacionados.
+
+439
+00:49:41.030 --> 00:49:44.169
+Eugenia Sol Piñeiro: Ter: No sé si te referís a duplicados, quizás.
+
+440
+00:49:46.330 --> 00:49:47.359
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Uy, ¿Qué perdón.
+
+441
+00:49:48.240 --> 00:49:52.869
+Eugenia Sol Piñeiro: A duplicados. ¿a qué te refieres? Con muy, muy relacionados a los chang, que son distintos?
+
+442
+00:49:53.360 --> 00:50:00.880
+Eugenia Sol Piñeiro: Solo que son muy grandes. Tengo un libro, no sé 100 hojas y mis Chanks son de 90 hojas.
+
+443
+00:50:03.180 --> 00:50:06.670
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y te va a quedar un solo chank para todo el día.
+
+444
+00:50:07.580 --> 00:50:09.220
+Eugenia Sol Piñeiro: Claro, Entonces, ahí
+
+445
+00:50:10.900 --> 00:50:21.710
+Eugenia Sol Piñeiro: tengo nada, información redundante que no necesito para mi respuesta. Entran pocos en la ventana. Vienen ahí en el chat.
+
+446
+00:50:23.210 --> 00:50:42.429
+Eugenia Sol Piñeiro: Entonces lo que va a hacer en realidad encima es si yo supero, mi conte es Window y le paso. Chance le paso. Chance un montón y la supero lo va a truncar directamente. Entonces quizás yo curé toda mi información, hice toda la limpieza, hice un test spliting hermoso por carácter recursivo. Lo todo lo que tenía.
+
+447
+00:50:42.540 --> 00:50:58.209
+Eugenia Sol Piñeiro: Y al final me cortó porque superé la con The Window entonces ahí que introducís, ruido, incoherencia, perdés, precisión, porque tenés que encontrar la respuesta en un chanque gigante. La búsqueda es más lenta entonces es más costoso. Entonces.
+
+448
+00:50:59.170 --> 00:51:04.040
+Eugenia Sol Piñeiro: cuidado, si Chank sal se desmayor al contexto windows, entonces
+
+449
+00:51:04.250 --> 00:51:19.930
+Eugenia Sol Piñeiro: pierdo precisión y es más costoso. Y si es muy chiquito, entonces ni siquiera puedo encontrar mi respuesta. No tengo relación entre las sentencias, entonces hay que jugar bastante con esto experimentalmente, teniendo en cuenta este tipo de situaciones que pueden ocurrir
+
+450
+00:51:21.810 --> 00:51:36.369
+Eugenia Sol Piñeiro: después. Hay que tener en cuenta que es lo que se espera de la complejidad del prompt, el usuario que va a usar mi arquitectura. Rag va a hacer preguntas muy largas y complejas preguntas simples. ¿cómo es que puedo definir ese Chankside
+
+451
+00:51:36.670 --> 00:51:53.780
+Eugenia Sol Piñeiro: que después va a estar relacionado con cómo puedo definir el el Enved In Size, entonces hay que tener en cuenta que yo. Lo que quiero maximizar es la similitud entre el embedding, el chanque y el embedding de la cuerda. Y el usuario entonces tiene que haber cierta relación entre los 2.
+
+452
+00:51:55.640 --> 00:52:06.770
+Eugenia Sol Piñeiro: Y después es este trade off de performance versuscuracy que les decía de si tengo un Chanc muy grande. Pierdo performance y pierdo posición, entonces hay que tener
+
+453
+00:52:06.970 --> 00:52:14.950
+Eugenia Sol Piñeiro: cuidado con eso. Es algo que hay que experimentar y evaluar, Pero en general.
+
+454
+00:52:15.330 --> 00:52:20.189
+Eugenia Sol Piñeiro: Entonces, resumen, ¿qué ventajas y desventajas tiene el test spliting
+
+455
+00:52:20.900 --> 00:52:25.809
+Eugenia Sol Piñeiro: a ver mejorame este documento. El primer de la historia Okay.
+
+456
+00:52:26.060 --> 00:52:31.070
+Eugenia Sol Piñeiro: Sí, tengo Texas Sriting, ventajas.
+
+457
+00:52:31.890 --> 00:52:49.090
+Eugenia Sol Piñeiro: Se mejora la eficiencia del retriever. ¿por qué? Porque va a ser información que busca de forma precisa, va a poner el foco en la similitud y le da flexibilidad porque puedo agarrar Chanks, por ejemplo, de distintas páginas que quizás tienen la información con páginas. Me refiero al ejemplo de si, por ejemplo, teníamos un libro
+
+458
+00:52:49.130 --> 00:52:54.330
+Eugenia Sol Piñeiro: o algo así, pero puede, no sé, pueden ser distintos archivos de
+
+459
+00:52:55.120 --> 00:53:03.920
+Eugenia Sol Piñeiro: una aplicación en Python, no, o sea, te da flexibilidad de poder agarrar distintas partecitas para encontrar la respuesta desventaja
+
+460
+00:53:04.020 --> 00:53:18.290
+Eugenia Sol Piñeiro: agrega el costo computacional, o sea, tenés que armar un algoritmo de Splitter y elegir el tamaño del chanc y el y el overlab es experimental entonces es un poco prueba y error, o ir evaluando métricas, no como medio estudio. De Habla hablación
+
+461
+00:53:18.740 --> 00:53:20.319
+Eugenia Sol Piñeiro: e ir comparando.
+
+462
+00:53:20.810 --> 00:53:27.430
+Eugenia Sol Piñeiro: pero bien, hasta acá todo el módulo del scripting dudas. Vamos a pasar ahora del otro lado del retriar.
+
+463
+00:53:28.220 --> 00:53:30.500
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: En el vos. Dijiste recién que querías que el
+
+464
+00:53:30.740 --> 00:53:34.889
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: el Prom, el envidio del usuario se parezca al embeding que vos tenés.
+
+465
+00:53:35.210 --> 00:53:36.650
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: ¿era así. Lo que dijiste.
+
+466
+00:53:36.820 --> 00:53:38.130
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: ¿por qué.
+
+467
+00:53:39.790 --> 00:53:53.639
+Eugenia Sol Piñeiro: Porque el justamente ahora el retibal lo que va a hacer es ir a buscar a mi base de datos vectorial, cuáles son los emails más similares a mi cuerr y del usuario para poder responder la pregunta y ver qué change Me traigo
+
+468
+00:53:54.310 --> 00:53:57.219
+Eugenia Sol Piñeiro: o sea, esa esa similitud me va a decir
+
+469
+00:53:57.340 --> 00:54:01.660
+Eugenia Sol Piñeiro: cuáles de todos mis Chanks que tengo almacenados. Me tengo que traer dónde está la respuesta.
+
+470
+00:54:01.890 --> 00:54:05.079
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Pero si es muy similar, no me atrevería de vuelta a la pregunta.
+
+471
+00:54:06.730 --> 00:54:10.009
+Eugenia Sol Piñeiro: No bueno es que ahí entra la memoria paramétrica también del Elen. No.
+
+472
+00:54:10.270 --> 00:54:10.860
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: okay.
+
+473
+00:54:10.860 --> 00:54:13.770
+Eugenia Sol Piñeiro: Y la relación semántica que hay entre medias
+
+474
+00:54:18.660 --> 00:54:31.280
+Eugenia Sol Piñeiro: exactamente la pregunta almacenada. ¿vas a tener un score de 1? ¿va a tener el mismo medio, o sea, la similitud te va a dar 100 por 100 de similitud, Te la tiene que traer sí o sí te sirve, no
+
+475
+00:54:31.740 --> 00:54:34.359
+Eugenia Sol Piñeiro: porque es responderle con la pregunta.
+
+476
+00:54:35.510 --> 00:54:38.850
+Eugenia Sol Piñeiro: Entonces, no almacenas ese tipo de cosas en tu base de datos vectorial.
+
+477
+00:54:42.610 --> 00:54:49.319
+LUCAS CAMPOLI: Yo lo que no entiendo es, o sea, estar de chanca en Bering, porque Vos tenés el chan que ponés, un párrafo.
+
+478
+00:54:49.440 --> 00:54:52.899
+LUCAS CAMPOLI: Y después lo pasas en bail y te.
+
+479
+00:54:52.900 --> 00:54:53.240
+Eugenia Sol Piñeiro: Claro.
+
+480
+00:54:53.240 --> 00:54:58.620
+LUCAS CAMPOLI: En Beings. Pero, ¿cómo ¿cómo va a reducirse un chacón en bail que hago tipo un ecoder only
+
+481
+00:54:59.270 --> 00:54:59.860
+LUCAS CAMPOLI: tipo con.
+
+482
+00:54:59.860 --> 00:55:02.320
+Eugenia Sol Piñeiro: Claro, por ejemplo.
+
+483
+00:55:02.320 --> 00:55:03.290
+LUCAS CAMPOLI: Alan Bey.
+
+484
+00:55:04.480 --> 00:55:10.770
+Eugenia Sol Piñeiro: Claro, ahí aplica exactamente lo mismo que vimos en las otras clases o lo que hicieron en el trabajo.
+
+485
+00:55:11.330 --> 00:55:17.949
+Eugenia Sol Piñeiro: Voy a tener. Por ejemplo, ustedes tenían productos, No, cada título va a estar representado por un enviding de título del ítem.
+
+486
+00:55:18.170 --> 00:55:19.120
+Eugenia Sol Piñeiro: un ejemplo.
+
+487
+00:55:19.300 --> 00:55:27.109
+Eugenia Sol Piñeiro: o sea que van a tener, se va a encargar de convertir el chanca en medio, van a tener como una relación 1 1 de chanca en Medio.
+
+488
+00:55:28.020 --> 00:55:30.460
+LUCAS CAMPOLI: Claro, efectivamente, eso sí.
+
+489
+00:55:31.870 --> 00:55:32.480
+Eugenia Sol Piñeiro: Bien.
+
+490
+00:55:36.700 --> 00:55:39.030
+Eugenia Sol Piñeiro: Bueno, re trival.
+
+491
+00:55:39.690 --> 00:55:44.000
+Eugenia Sol Piñeiro: hay que ver la hora. Las 8 vamos. Un ratito más y ya le hacemos un Break.
+
+492
+00:55:44.210 --> 00:55:46.420
+Eugenia Sol Piñeiro: Quiero terminar un festival que es corto.
+
+493
+00:55:47.110 --> 00:55:49.419
+Eugenia Sol Piñeiro: Entonces, ¿qué es lo que tengo que tener en cuenta?
+
+494
+00:55:49.610 --> 00:55:53.629
+Eugenia Sol Piñeiro: Acá Primero, la fuente
+
+495
+00:55:53.830 --> 00:56:10.470
+Eugenia Sol Piñeiro: no es crucial para el rival tener una fuente curada. Entonces el Rac va a depender de esta data externa que ya vimos. Puedo tener data estructurada que puede ser texto, puede ser texto en distintos idiomas. Incluso a veces se puede usar data
+
+496
+00:56:10.600 --> 00:56:20.379
+Eugenia Sol Piñeiro: generada por otro elemento. Entonces te metes en el Delm puede ser otra estructurada. Puede ser de un dominio en específico. Puede ser semiestructurada
+
+497
+00:56:20.920 --> 00:56:26.759
+Eugenia Sol Piñeiro: que después la tengo que convertir. ¿qué puede ser, por ejemplo, tablas en un Pdf, ¿Cómo es que la esparCEO?
+
+498
+00:56:26.970 --> 00:56:31.150
+Eugenia Sol Piñeiro: Y acá es Cuando empezaron a haber distintas implementaciones de
+
+499
+00:56:31.410 --> 00:56:35.510
+Eugenia Sol Piñeiro: Chipi, T por ejemplo, Tablet Chipi T que lo que hace es.
+
+500
+00:56:36.070 --> 00:56:43.239
+Eugenia Sol Piñeiro: se los dejo ahí para que lo lean, ¿no? Pero a grandes rasgos, lo que hace es mejorar como parcial esta información de las tablas.
+
+501
+00:56:43.480 --> 00:56:52.969
+Eugenia Sol Piñeiro: no cuando tengo data semiestructurada. Cuando tengo un C. C. B, por ejemplo, o tengo un T. S B, separado por Taus, o o este en este caso, que lo tiene separado por
+
+502
+00:56:53.200 --> 00:56:57.020
+Eugenia Sol Piñeiro: la barrita, no que es una tabla.
+
+503
+00:56:57.950 --> 00:57:00.919
+Eugenia Sol Piñeiro: entonces tengo que tener en cuenta ese tipo de cosas. Puedo tener data
+
+504
+00:57:01.440 --> 00:57:18.339
+Eugenia Sol Piñeiro: nada estructurada que puede ser listo agarro un web scrapping te tiro, todo eso como lo parCEO. Hay un montón de cosas en un web scrapping, un montón de cosas de Html que no me interesan y las tengo que sacar. Puedo tener grafos. Incluso o sea, no todo es texto plano, No.
+
+505
+00:57:18.720 --> 00:57:23.269
+Eugenia Sol Piñeiro: este está el Nowled City. Justamente lo que hace es
+
+506
+00:57:24.140 --> 00:57:31.270
+Eugenia Sol Piñeiro: mantener en cuenta la información estructural de los grafos que está acá También acá tenían acá.
+
+507
+00:57:31.600 --> 00:57:38.460
+Eugenia Sol Piñeiro: Esta imagen estaba buscando, Ven, por ejemplo, ¿qué pasa si tenés ese tipo de relaciones como para ser osterrafo?
+
+508
+00:57:38.800 --> 00:57:45.579
+Eugenia Sol Piñeiro: ¿cómo no puedo persistir en mi base transvectorial, ¿cómo le puedo decir a mi retiver cómo son estas relaciones? Entonces.
+
+509
+00:57:45.980 --> 00:57:53.230
+Eugenia Sol Piñeiro: se empieza a complejizar cada vez más según la fuente que yo tenga. Y como sea, mi data externa no es todo tan trivial.
+
+510
+00:57:54.130 --> 00:57:55.100
+Eugenia Sol Piñeiro: Entonces
+
+511
+00:57:55.370 --> 00:58:00.620
+Eugenia Sol Piñeiro: el re trial se va a encargar un poco de eso y va a estar este trade off entre
+
+512
+00:58:00.740 --> 00:58:07.370
+Eugenia Sol Piñeiro: la cantidad de detalle que yo le voy a dar a mi re trival y la redundancia.
+
+513
+00:58:07.790 --> 00:58:16.670
+Eugenia Sol Piñeiro: porque tampoco quiero Chanks repetidos. Por ejemplo, ¿qué pasa si va mi retriver y encuentra? Sí, estos son los 3 Chanks más similares.
+
+514
+00:58:16.800 --> 00:58:25.639
+Eugenia Sol Piñeiro: Y el primer Chang, dice el C o udó con ella, y renunció. El segundo. Chanc dice, renunció el c o de Open Day, bueno, está diciendo lo mismo. Dame otra cosa.
+
+515
+00:58:25.680 --> 00:58:37.200
+Eugenia Sol Piñeiro: Yo entendí que renunció la idea es justamente no ser redundante. ¿por qué? Porque quiero optimizar mi ventana de contexto, pero tener el suficiente detalle para poder responder bien la pregunta del usuario
+
+516
+00:58:38.480 --> 00:58:42.400
+Eugenia Sol Piñeiro: en el T. P: Vamos a tener que trabajar sobre la tabla estructurada.
+
+517
+00:58:43.030 --> 00:58:46.760
+Eugenia Sol Piñeiro: ¿Sí? Y no, O sea, el T P. Es abierto.
+
+518
+00:58:47.780 --> 00:58:51.839
+Eugenia Sol Piñeiro: ya lo vamos a ver, Pero la idea es que justamente trabajen en
+
+519
+00:58:52.200 --> 00:58:59.640
+Eugenia Sol Piñeiro: y pongan foco en alguno de los módulos. Una de las complejidades puede ser trabajar con data no estructurado. Trabajar con texto plano es muy sencillo.
+
+520
+00:58:59.920 --> 00:59:04.560
+Eugenia Sol Piñeiro: Entonces sería un Tv muy sencillo que no, no va a estar dentro del foco de la batería.
+
+521
+00:59:07.440 --> 00:59:11.049
+Eugenia Sol Piñeiro: De hecho, pueden trabajar con imágenes con video con audio.
+
+522
+00:59:12.190 --> 00:59:14.539
+Eugenia Sol Piñeiro: Ya vamos a a extenderlo.
+
+523
+00:59:17.950 --> 00:59:23.470
+Eugenia Sol Piñeiro: Y en base de datos vectoriales conocen alguna.
+
+524
+00:59:23.940 --> 00:59:25.959
+Eugenia Sol Piñeiro: Usaron alguna base de datos vectorial.
+
+525
+00:59:29.050 --> 00:59:29.820
+LUCAS CAMPOLI: Yo conozco.
+
+526
+00:59:29.820 --> 00:59:30.440
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Bueno.
+
+527
+00:59:30.440 --> 00:59:32.969
+LUCAS CAMPOLI: Pobre tienen una extensión.
+
+528
+00:59:33.070 --> 00:59:37.319
+LUCAS CAMPOLI: La P: G. B, héctor, Eso es lo único. Lo más cercano.
+
+529
+00:59:38.520 --> 00:59:41.959
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Yo no. No sé si en base de datos 2 vemos, me parece que no.
+
+530
+00:59:43.310 --> 00:59:46.630
+Eugenia Sol Piñeiro: No. En vez de 2 ven, va, no sé ahora B: no relacionales.
+
+531
+00:59:47.520 --> 00:59:48.010
+Eugenia Sol Piñeiro: Sí.
+
+532
+00:59:48.010 --> 00:59:53.310
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Son todas no relacionales, pero no sé si es una victoria metida ahí, pero me parece que no.
+
+533
+00:59:55.040 --> 01:00:07.190
+Eugenia Sol Piñeiro: Okay. Bien, bueno, un buen ejemplo es pobres con Pg vector se puede usar. Pincone. Es otra la clase que viene. Vamos a levantar una distancia de paincon y vamos a cargar una base de datos vector.
+
+534
+01:00:07.380 --> 01:00:12.070
+Eugenia Sol Piñeiro: En hay más.
+
+535
+01:00:12.870 --> 01:00:16.770
+Eugenia Sol Piñeiro: En general, suelen usar relaciones no relacionales. Supongo
+
+536
+01:00:16.780 --> 01:00:34.100
+Eugenia Sol Piñeiro: quizás las bases de datos vectoriales son más específicas, sirven muchísimo para todo este caso. Uso de Beddings, así que se usa muchísimo, y cada Clow Provider ahora tiene la suya. Así que un poco también. La idea es que se lleven eso. No estas estas herramientas, que usan muchísimo para este tipo de
+
+537
+01:00:34.940 --> 01:00:38.260
+Eugenia Sol Piñeiro: de conceptos, como los embages, que la verdad que se usan un montón.
+
+538
+01:00:39.530 --> 01:00:40.610
+Eugenia Sol Piñeiro: Entonces.
+
+539
+01:00:41.750 --> 01:00:52.779
+Eugenia Sol Piñeiro: lo que tienen es, primero, almacenar y manejar data con vectores de alta dimensión, y nosotros que tenemos vectores densos con relaciones semánticas que son los emails, entonces nos viene bárbaro
+
+540
+01:00:52.780 --> 01:01:06.609
+Eugenia Sol Piñeiro: porque vamos a tener que buscar de forma rápida. Acuérdense que estamos en tiempo de inferencia, o sea si al usuario estoy 5 min yendo a buscar a la base de datos vectorial, preguntándole al Edén y todo, o sea, ya se me va a ir el usuario chao.
+
+541
+01:01:06.720 --> 01:01:08.630
+Eugenia Sol Piñeiro: Tengo que hacer algo súper rápido.
+
+542
+01:01:08.830 --> 01:01:15.730
+Eugenia Sol Piñeiro: poco costoso, de forma eficiente y encima en un espacio ldimensional, O sea, acuérdense que los Envains son de
+
+543
+01:01:16.030 --> 01:01:22.309
+Eugenia Sol Piñeiro: gran dimensión. ¿no? 384 024 depende de de que algoritmo tenía o incluso más.
+
+544
+01:01:22.850 --> 01:01:26.349
+Eugenia Sol Piñeiro: Entonces sirven muchísimo.
+
+545
+01:01:26.570 --> 01:01:29.140
+Eugenia Sol Piñeiro: ¿dónde es que entra? ¿vamos a tener acá?
+
+546
+01:01:29.270 --> 01:01:33.760
+Eugenia Sol Piñeiro: Nuestra colección de datos. Convierto a Chanks? Cada chanque es un embveding. Cada embedy
+
+547
+01:01:34.000 --> 01:01:36.199
+Eugenia Sol Piñeiro: va a estar persistiendo. Me va a ser la trayectorial.
+
+548
+01:01:36.560 --> 01:01:39.730
+Eugenia Sol Piñeiro: Y después el retriever va a ir a buscar los
+
+549
+01:01:40.090 --> 01:01:49.190
+Eugenia Sol Piñeiro: va y le pega a la base de datos vectorial. Trae una Api hace una quary y trae los N Chanks más similares al acuario y usuario.
+
+550
+01:01:50.800 --> 01:01:53.979
+Eugenia Sol Piñeiro: ¿qué significa que sean más similares?
+
+551
+01:01:54.980 --> 01:01:59.760
+Eugenia Sol Piñeiro: Acá? Vamos a tener que definir una medida de similitud? Justamente entonces.
+
+552
+01:02:28.450 --> 01:02:30.040
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: El profe, estás ahí.
+
+553
+01:03:10.140 --> 01:03:12.579
+Marina Fuster: No soy solo yo, se cayó que no.
+
+554
+01:03:12.920 --> 01:03:14.309
+LUCAS CAMPOLI: Sí sí se cayó.
+
+555
+01:03:14.310 --> 01:03:14.730
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+556
+01:03:14.730 --> 01:03:18.469
+Marina Fuster: Porque mi Internet no, no me dio mal.
+
+557
+01:03:18.660 --> 01:03:19.260
+Marina Fuster: Es.
+
+558
+01:03:19.260 --> 01:03:19.760
+Eugenia Sol Piñeiro: La y.
+
+559
+01:03:20.320 --> 01:03:23.699
+Marina Fuster: Sí era yo, pero de repente desapareciste.
+
+560
+01:03:23.860 --> 01:03:30.709
+Eugenia Sol Piñeiro: No, Sí, Sí, Hoy me estuvo andando horrible. Ya me conecté del celular, Daba cualquier cosa avísenmes y
+
+561
+01:03:30.980 --> 01:03:33.560
+Eugenia Sol Piñeiro: morí, pero espéreme que me conecte el celular.
+
+562
+01:03:33.960 --> 01:03:37.590
+Eugenia Sol Piñeiro: Bien, ¿hasta dónde llegaron? Voy de nuevo, al ejemplo, igual
+
+563
+01:03:37.980 --> 01:03:40.449
+Eugenia Sol Piñeiro: esto lo habían visto esta esta firma.
+
+564
+01:03:40.450 --> 01:03:45.630
+LUCAS CAMPOLI: Llegaste a digo, estabas empezando a explicar esto y se te cortó.
+
+565
+01:03:46.100 --> 01:03:48.709
+Eugenia Sol Piñeiro: Okay. Bien, vamos de nuevo. Entonces
+
+566
+01:03:49.040 --> 01:03:54.449
+Eugenia Sol Piñeiro: tengo que definir la similitud, suponga. Así que guardé estos en Beis en me hace datos vectorial.
+
+567
+01:03:55.280 --> 01:04:03.959
+Eugenia Sol Piñeiro: Voy a tener el 2. Uno que representa este Chank y el 1 que representa este Chanc, que va a ser Bat Dog y Bat. Ahora.
+
+568
+01:04:05.180 --> 01:04:07.009
+Eugenia Sol Piñeiro: ¿qué es lo que yo quiero representar?
+
+569
+01:04:07.690 --> 01:04:13.369
+Eugenia Sol Piñeiro: Voy a tener, por ejemplo, esta situación donde en mi espacio en Beddings.
+
+570
+01:04:13.660 --> 01:04:17.650
+Eugenia Sol Piñeiro: Me queda cat y do muy cerca.
+
+571
+01:04:17.820 --> 01:04:23.270
+Eugenia Sol Piñeiro: Y tengo opción número 2 que me queda. Cat y Bat, cerca.
+
+572
+01:04:23.800 --> 01:04:28.630
+Eugenia Sol Piñeiro: ¿qué diferencia hay entre cada 1. Y cuál es el que yo realmente quiero representar
+
+573
+01:04:37.070 --> 01:04:38.980
+Eugenia Sol Piñeiro: el 1. ¿por qué?
+
+574
+01:04:45.090 --> 01:04:50.850
+Eugenia Sol Piñeiro: Porque son mascotas, o sea, qué relación hay entre catigo
+
+575
+01:04:54.780 --> 01:04:57.730
+Eugenia Sol Piñeiro: es más semántica, ¿no?
+
+576
+01:04:57.870 --> 01:04:59.979
+Eugenia Sol Piñeiro: Y qué relación entre Cat y Bat.
+
+577
+01:05:03.390 --> 01:05:04.770
+LUCAS CAMPOLI: Que terminan en At.
+
+578
+01:05:05.760 --> 01:05:09.950
+Eugenia Sol Piñeiro: Perfecto, o sea, se parecen. Sí, son similares en cuanto a caracteres.
+
+579
+01:05:10.120 --> 01:05:27.820
+Eugenia Sol Piñeiro: pero yo no quiero que sean similares en cuanto a caracteres, no me interesa. Quiero que sean similares en cuanto a lo que significa. Dentro del contexto, no quiero capturar la relación semántica. Entonces, por eso lo que voy a guardar son algoritmos en Bedding. Y lo que voy a usar son medidas de similitud, entren Beings, que.
+
+580
+01:05:28.750 --> 01:05:43.799
+Eugenia Sol Piñeiro: por ejemplo, pueden ser. No me voy a detener acá. Porque ya las conocen, ¿no? Pero la distancia euclidia, el producto escalar y una. La que más se usa es la similitud coseno, que básicamente me compara la dirección no del vector porque tiene en cuenta el ángulo también. Entonces
+
+581
+01:05:44.460 --> 01:05:54.000
+Eugenia Sol Piñeiro: importante Por lo general, cuando prueben, prueben con distancia coseno y de última, pueden cambiar y variar entre distancias. No es que no se hace. Es experimental, pero la que más usa es la coseno.
+
+582
+01:05:54.570 --> 01:05:56.640
+Eugenia Sol Piñeiro: Entre los envenenas.
+
+583
+01:05:56.830 --> 01:06:02.390
+LUCAS CAMPOLI: Y eso que lo configuras en la base de datos de historial de similitud.
+
+584
+01:06:03.540 --> 01:06:15.680
+Eugenia Sol Piñeiro: Sí van a ver que, de hecho, cuando la levantemos en código, vamos a poner específicamente. Usame la similitud coseno para atraerlos o usame distintos tipos de algoritmos, lo vamos a ver la clase que viene.
+
+585
+01:06:16.930 --> 01:06:18.579
+Eugenia Sol Piñeiro: pero sí lo configuras. Ahí
+
+586
+01:06:18.960 --> 01:06:27.180
+Eugenia Sol Piñeiro: eso se va a encargar la base de datos, no de calcular la similitud entre los chanes y y traértelos los más similares.
+
+587
+01:06:28.300 --> 01:06:34.380
+Eugenia Sol Piñeiro: Y bien, esto es un ejemplo.
+
+588
+01:06:36.140 --> 01:06:41.610
+Eugenia Sol Piñeiro: Cuéntenme Uds. ¿qué ven? Acá. Esto es un paper. Lo sacaron un paper en donde
+
+589
+01:06:42.260 --> 01:06:50.310
+Eugenia Sol Piñeiro: dice que combinan un retrange retriver para conseguir documentos que ven acá.
+
+590
+01:06:58.150 --> 01:07:01.310
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, veo el el incoder de la Cueri.
+
+591
+01:07:01.610 --> 01:07:04.859
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Después está el retriever que va a buscar todos los enmedges.
+
+592
+01:07:05.860 --> 01:07:11.030
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Entiendo qué está haciendo con cada Okay? Hay 2 cuer 3. Cuerrys Acá.
+
+593
+01:07:12.610 --> 01:07:18.830
+Eugenia Sol Piñeiro: Ejemplo, no la cuer y saca, por ejemplo. Fíjense que lo que hace eso que agarro la cuery.
+
+594
+01:07:18.970 --> 01:07:23.139
+Eugenia Sol Piñeiro: el retail que dice no paramétrico. Esto que era.
+
+595
+01:07:28.930 --> 01:07:31.960
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Que no estaba en el modelo entrenar.
+
+596
+01:07:32.150 --> 01:07:44.460
+Eugenia Sol Piñeiro: Bien, no está en el modelo perfecto, o sea, es nuestra memoria, no paramétrica. Lo que vimos exactamente y acá justamente, como bien lo dijiste, acá está el retriever, donde tengo cada chank están los documentos indexados en Chanks.
+
+597
+01:07:44.930 --> 01:07:49.969
+Eugenia Sol Piñeiro: y acá tengo un generator parametric, O sea, básicamente esto es un R A, R,
+
+598
+01:07:50.320 --> 01:08:01.280
+Eugenia Sol Piñeiro: no. O sea, tengo mi memoria paramétrica combinada con la memoria no paramétrica. Donde estoy usando. Todos los changs de mis documentos, O sea, está haciendo burral, básicamente
+
+599
+01:08:01.440 --> 01:08:19.179
+Eugenia Sol Piñeiro: donde fíjense que dice que en este caso usan para cada cuerio. Usamos el producto interno, por ejemplo, acá como medida de similitud, usan el producto interno, que acá es el máximo producto interno en la búsqueda para encontrar los top k documentos, o sea, en este caso.
+
+600
+01:08:20.069 --> 01:08:32.620
+Eugenia Sol Piñeiro: usaban el producto interno. Eso se puede cambiar por si me tu coses no distecnia, lo que sea, pero que es lo que quería traer, acá que fíjense que en este tipo de papers ahora, si se lo llegan a cruzar en algún lado, de hecho, lo tienen. Acá
+
+601
+01:08:33.000 --> 01:08:37.299
+Eugenia Sol Piñeiro: Y es básicamente la arquitectura rap que vimos.
+
+602
+01:08:39.720 --> 01:08:42.880
+Eugenia Sol Piñeiro: que es donde combina la memoria paramétrica con la no paramétrica, ¿no?
+
+603
+01:08:44.260 --> 01:08:49.820
+Eugenia Sol Piñeiro: Entonces ya casi termino. La base de datos. ¿qué es lo que va a hacer
+
+604
+01:08:50.720 --> 01:09:00.469
+Eugenia Sol Piñeiro: la base de datos vectorial ¿Alguno cursó machine learning o por alguna razón conoce K. N, N, Este algoritmo.
+
+605
+01:09:07.930 --> 01:09:09.779
+Eugenia Sol Piñeiro: no, o qué ¿Quién más
+
+606
+01:09:13.359 --> 01:09:14.709
+Eugenia Sol Piñeiro: hay un curso?
+
+607
+01:09:14.920 --> 01:09:17.710
+Eugenia Sol Piñeiro: Yo creo que lo vi okay porque creo.
+
+608
+01:09:17.880 --> 01:09:21.160
+Eugenia Sol Piñeiro: Ohh que te suena okay
+
+609
+01:09:27.920 --> 01:09:32.740
+Eugenia Sol Piñeiro: Okay. Bueno, bueno, bueno, bien, igual Okay. ¿qué hace Kaire? N,
+
+610
+01:09:33.350 --> 01:09:36.049
+Eugenia Sol Piñeiro: Esto es algoritmo de machine learning, que básicamente
+
+611
+01:09:36.460 --> 01:09:40.019
+Eugenia Sol Piñeiro: intenta buscar para una una muestra
+
+612
+01:09:40.270 --> 01:09:44.739
+Eugenia Sol Piñeiro: cuál es su vecino más cercano según alguna medida de similitud.
+
+613
+01:09:45.920 --> 01:09:49.739
+Eugenia Sol Piñeiro: Entonces, por ejemplo, de y los va
+
+614
+01:09:50.000 --> 01:09:58.850
+Eugenia Sol Piñeiro: clusterizando, o sea, lo asigna cada una a un cluster. Entonces, dice. Ok, este punto peso te a qué clase lo asigno.
+
+615
+01:09:58.970 --> 01:10:06.040
+Eugenia Sol Piñeiro: Y mis vecinos más cercanos son estos 2, estos 2, y estos 3 No.
+
+616
+01:10:06.150 --> 01:10:25.849
+Eugenia Sol Piñeiro: Estos son mis vecinos más cercanos, en este caso. K. N, El K es 3, 4, 5, 6, 7, con K, da igual a 7, en este caso. Ok, mis 7 vecinos son estos y 3 son de la clase B. Entonces soy más similar a la clase B, porque la mayoría de mis vecinos son de esa clase.
+
+617
+01:10:26.180 --> 01:10:31.510
+Eugenia Sol Piñeiro: Básicamente, haz eso y empieza a asignarlo. Por ejemplo, no ahora
+
+618
+01:10:31.800 --> 01:10:39.309
+Eugenia Sol Piñeiro: busca los más cercanos. Según una medida de similitud ejemplo, la edad de distancia fría distancia coseno. La distancia que tenga
+
+619
+01:10:39.950 --> 01:10:40.940
+Eugenia Sol Piñeiro: ahora
+
+620
+01:10:41.300 --> 01:10:51.120
+Eugenia Sol Piñeiro: la base de datos vectorial se basa en ese algoritmo, que es un concepto similar. Pero lo que usa en realidad es a N N que es aproximate
+
+621
+01:10:51.170 --> 01:11:02.819
+Eugenia Sol Piñeiro: Nihares Neighwarks, o sea, los vecinos aproximadamente más cercanos. Es decir, no te voy a buscar el más más cercano, sino que te voy a dar a 1 que está muy cercano
+
+622
+01:11:03.290 --> 01:11:04.900
+Eugenia Sol Piñeiro: y que te va a servir.
+
+623
+01:11:05.000 --> 01:11:15.340
+Eugenia Sol Piñeiro: Entonces, juegan con eso para tener más eficiencia, no ser más rápido a la hora de devolverte cuál es el embaling más cercano. Nuestro caso va a ser
+
+624
+01:11:15.660 --> 01:11:33.480
+Eugenia Sol Piñeiro: Okay, cuál es, desde mis vecinos más cercanos. Cuáles son mis Chanks? Los envendings de mis Chanks, más cercanos alemain del acuario de usuario. Y más o menos estos son los más cercanos. ¿sí? Y me da los N aproximadamente más cercanos, que son súper cercanos. Pero calcular
+
+625
+01:11:34.340 --> 01:11:50.010
+Eugenia Sol Piñeiro: esta distancia entre todos los puntos que yo tengo mi base de datos vectorial muy costoso y tarda muchísimo. Entonces juega un poco con esto de Ok, encontrar más o menos más cercanos. Y no se hace exactamente con este algoritmo, sino que
+
+626
+01:11:50.540 --> 01:11:53.350
+Eugenia Sol Piñeiro: si lo buscan, que acá no nos vamos a meter, porque
+
+627
+01:11:53.500 --> 01:12:02.519
+Eugenia Sol Piñeiro: este es un ejemplo de a lo que me refiero con Robbit Hall. Pero hay distintos algoritmos, incluso de a N. N. A veces depende de la base de datos. A veces te deja configurarlo a veces no.
+
+628
+01:12:02.900 --> 01:12:11.660
+Eugenia Sol Piñeiro: Pero, por ejemplo, unos están basados en árboles de decisión. Otros usan algoritmos de Haching. De hecho, el que le interesa puede buscar
+
+629
+01:12:12.430 --> 01:12:18.110
+Eugenia Sol Piñeiro: Cádiz, tris por ejemplo,
+
+630
+01:12:18.410 --> 01:12:27.649
+Eugenia Sol Piñeiro: algunos son heurísticas. No se acuerdan de T. P. Uno decía, pero depende mucho de la base de datos vectorial, el algoritmo que use por dentro. Y cómo lo configuras. Entonces
+
+631
+01:12:27.770 --> 01:12:38.070
+Eugenia Sol Piñeiro: ya ahí me me nos metemos en un look de Ok. Encima que tengo que elegir mi base de datos vectorial. ¿qué algoritmos de similitud, tengo que buscar para aproximar mis chances. Entonces, bueno.
+
+632
+01:12:38.200 --> 01:12:40.950
+Eugenia Sol Piñeiro: es un montón. Por lo pronto, quédense con
+
+633
+01:12:41.050 --> 01:12:45.680
+Eugenia Sol Piñeiro: que va a ser una búsqueda aproximada, pero muy, muy cercana.
+
+634
+01:12:49.890 --> 01:12:53.300
+Eugenia Sol Piñeiro: Bien, un ejemplo va a ser pinecomp. Es muy conocida.
+
+635
+01:12:53.450 --> 01:12:56.529
+Eugenia Sol Piñeiro: La vamos a usar la clase que R para el que la quiera
+
+636
+01:12:56.640 --> 01:13:00.849
+Eugenia Sol Piñeiro: investigar, bienvenido. Pero si no la clase que viene ya la levantamos
+
+637
+01:13:00.970 --> 01:13:05.940
+Eugenia Sol Piñeiro: lo mismo con croma croma Sotra que fíjense cuando 1 entra a la página de croma de B.
+
+638
+01:13:07.190 --> 01:13:13.109
+Eugenia Sol Piñeiro: Si en este diagrama que este diagrama básicamente es la arquitectura rap. No tengo el ele
+
+639
+01:13:13.290 --> 01:13:21.729
+Eugenia Sol Piñeiro: que dice: Pronti Query Re Chive Data. O sea, tiene un retriever, no Okay. Acá. Tengo un re trival y mi retrete Data. Son todos estos chanks.
+
+640
+01:13:21.970 --> 01:13:28.470
+Eugenia Sol Piñeiro: Y esta es la cual entonces básicamente ya directamente en la página. Te ponen r a G así que se usa muchísimo.
+
+641
+01:13:29.110 --> 01:13:36.230
+Eugenia Sol Piñeiro: Y esto lo que tiene que es In Memory es chroma.
+
+642
+01:13:36.520 --> 01:13:39.600
+Eugenia Sol Piñeiro: Ahora le agregaron memoria, ya vamos a ver.
+
+643
+01:13:40.240 --> 01:13:45.140
+Eugenia Sol Piñeiro: pero bueno, es bastante rápida. También son super fáciles de levantar. Vamos a ver ambas.
+
+644
+01:13:45.890 --> 01:13:53.420
+Eugenia Sol Piñeiro: y eso es lo que les decía que después cada claus provider define la suya ejemplo. Tenemos
+
+645
+01:13:53.690 --> 01:14:06.769
+Eugenia Sol Piñeiro: en A. D. S. Fíjense que habla de vector en Beddings and Ruth Okay y que usa Amazon Bedrock, que básicamente es el servicio de a Dbs que te da el Edén Aurora.
+
+646
+01:14:06.950 --> 01:14:22.809
+Eugenia Sol Piñeiro: que va a ser la base de datos que tiene una extensión para hacer la vectorial. Y Lange, que es un framework que vamos a ver. La clase que viene que se usa muchísimo para orquestrar todo este mundo porque, claro, son un montón de módulos. Entonces necesito algo que me facilite todo esto.
+
+647
+01:14:22.990 --> 01:14:27.370
+Eugenia Sol Piñeiro: Entonces, después. Por ejemplo, tenemos en Microsoft, en Ashore.
+
+648
+01:14:28.180 --> 01:14:37.079
+Eugenia Sol Piñeiro: Usa cosmos D. B, que es la base de datos vectorial que se usan R. A G en Ashor. Entonces cada club provider ya acá empieza a mezclar
+
+649
+01:14:37.790 --> 01:14:41.329
+Eugenia Sol Piñeiro: todos los módulos y hasta acá.
+
+650
+01:14:41.520 --> 01:14:47.359
+Eugenia Sol Piñeiro: Y vamos a cortar ahora quién hace hasta y media.
+
+651
+01:14:48.480 --> 01:14:51.170
+Eugenia Sol Piñeiro: Pero por lo pronto dudas
+
+652
+01:14:51.940 --> 01:14:58.319
+Eugenia Sol Piñeiro: me queda un poquito más y ya casi termina la clase prometo terminar tipo, 9 9 y algo, Pero queda un poquito más.
+
+653
+01:15:01.310 --> 01:15:02.929
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No correr. Está todo bien.
+
+654
+01:15:05.250 --> 01:15:06.939
+Eugenia Sol Piñeiro: Okay. Genial.
+
+655
+01:15:08.470 --> 01:15:11.400
+Eugenia Sol Piñeiro: Bueno, hagamos hasta y media y volvemos
+
+656
+01:15:18.570 --> 01:15:19.450
+Eugenia Sol Piñeiro: bien.
+
+657
+01:15:19.750 --> 01:15:21.500
+Eugenia Sol Piñeiro: Esta pregunta es para ustedes.
+
+658
+01:15:22.040 --> 01:15:24.270
+Eugenia Sol Piñeiro: Después de todo lo que vimos de Ral.
+
+659
+01:15:24.880 --> 01:15:30.129
+Eugenia Sol Piñeiro: ¿por qué entonces no aplicamos fin tuning en lugar de R, A. R, que se les ocurre.
+
+660
+01:15:33.410 --> 01:15:35.670
+LUCAS CAMPOLI: Y por qué cae? Crees
+
+661
+01:15:36.260 --> 01:15:42.349
+LUCAS CAMPOLI: un documento no tenés que hacerle fin. Tuning, que es mucho más costoso. Supongo que hacer. Rag
+
+662
+01:15:43.680 --> 01:15:49.469
+LUCAS CAMPOLI: quiere aprender aprender algo nuevo, tener que enseñarlo de vuelta.
+
+663
+01:15:51.810 --> 01:15:55.050
+Eugenia Sol Piñeiro: Bien, es 1 de los puntos, pero
+
+664
+01:15:55.750 --> 01:15:58.600
+Eugenia Sol Piñeiro: ¿por qué no usarlos juntos? Por ejemplo.
+
+665
+01:16:03.970 --> 01:16:08.850
+Eugenia Sol Piñeiro: se les ocurre para qué usarían 1 y además el otro.
+
+666
+01:16:20.310 --> 01:16:25.660
+Eugenia Sol Piñeiro: No sé si los manté con las preguntas y ya es muy tarde, pero.
+
+667
+01:16:25.660 --> 01:16:29.139
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Si me recuerdas rápido que era fa 21, tal vez te puede contestar Bien.
+
+668
+01:16:30.740 --> 01:16:33.480
+Eugenia Sol Piñeiro: Okay. Me gustaría que alguien recuerde que era fin teory
+
+669
+01:16:38.110 --> 01:16:42.990
+Eugenia Sol Piñeiro: ¿quién se acuerda? ¿quién me puede explicar así? No más sencillito
+
+670
+01:16:43.180 --> 01:16:44.550
+Eugenia Sol Piñeiro: Cuando usabas un modelo ya entrenador.
+
+671
+01:16:44.550 --> 01:16:48.240
+LUCAS CAMPOLI: Claro el ring force que vos tenés
+
+672
+01:16:48.670 --> 01:16:52.480
+LUCAS CAMPOLI: tipo, un sistema, la recompensa. El
+
+673
+01:16:52.780 --> 01:17:04.399
+LUCAS CAMPOLI: tú el L. M. Devuelve una respuesta. Y en base a que tan buena es básicamente le das una recompensa, y así lo vas entrenando para que tire para un lado para el otro
+
+674
+01:17:06.690 --> 01:17:07.290
+LUCAS CAMPOLI: Okay.
+
+675
+01:17:07.290 --> 01:17:07.610
+Eugenia Sol Piñeiro: No.
+
+676
+01:17:07.610 --> 01:17:08.670
+LUCAS CAMPOLI: No, no.
+
+677
+01:17:08.670 --> 01:17:18.560
+Eugenia Sol Piñeiro: Bueno, más de reinforme en learning, que es parte del transfer learning. Pero el finturing específico no se.
+
+678
+01:17:18.560 --> 01:17:22.210
+LUCAS CAMPOLI: Lo claro.
+
+679
+01:17:23.260 --> 01:17:23.760
+Eugenia Sol Piñeiro: Vale.
+
+680
+01:17:23.910 --> 01:17:32.349
+MARÍA AGOSTINA SQUILLARI: Era cuando agarras un modelo que ya está entrenado y lo usabas para otra tarea diferente a la o sea, no totalmente diferente, pero sí diferente con
+
+681
+01:17:32.530 --> 01:17:34.950
+MARÍA AGOSTINA SQUILLARI: a la con la que se le había entrenado, digamos.
+
+682
+01:17:36.470 --> 01:17:41.169
+Eugenia Sol Piñeiro: Bien perfecto y ra o sea.
+
+683
+01:17:41.580 --> 01:17:47.609
+Eugenia Sol Piñeiro: entraría, Si veo como mi arquitectura real, entraría como dentro del módulo del elen.
+
+684
+01:17:49.060 --> 01:17:51.230
+Eugenia Sol Piñeiro: no, O sea, sería parte del E E. E
+
+685
+01:17:51.600 --> 01:17:58.940
+Eugenia Sol Piñeiro: Y después le puedo agregar la base de datos vectorial, le agregar speating, el chanking, el retriever llena todo y todo lo que vimos los puedo combinar.
+
+686
+01:18:00.800 --> 01:18:05.290
+Eugenia Sol Piñeiro: Entonces, ¿qué tenemos? Primero? Rag.
+
+687
+01:18:05.660 --> 01:18:21.360
+Eugenia Sol Piñeiro: Sí, está bien. Lo que mencionó, Creo que fue Lucas de que es mucho menos costoso. Si yo agrego nuevo, Chank, es mucho más fácil, no más dinámico, real, time en cambio, si tengo que hacer fin, es más estático. Si yo lo quiero cambiar, requiere re entrenar
+
+688
+01:18:21.480 --> 01:18:22.529
+Eugenia Sol Piñeiro: el modelo
+
+689
+01:18:22.920 --> 01:18:32.609
+Eugenia Sol Piñeiro: refintunear. Si se quiere, no, pero requiere retraining. Entonces Rag es para otro caso. Uso. Es el caso de la quiero personalizar.
+
+690
+01:18:33.520 --> 01:18:41.359
+Eugenia Sol Piñeiro: Quiero que sea fácil de actualizar que la data sea transparente, que la data esté curada, aumentar la memoria paramétrica. Entonces
+
+691
+01:18:41.690 --> 01:18:57.210
+Eugenia Sol Piñeiro: cambio, el el caso de uso, en cambio, el fintuning intenta modificar el comportamiento del modelo. Ejemplo: No sé modifico el tono de Lelen para que hable en un fardo argentino.
+
+692
+01:18:57.460 --> 01:18:59.850
+Eugenia Sol Piñeiro: pero eso no quiere decir que
+
+693
+01:19:00.720 --> 01:19:05.150
+Eugenia Sol Piñeiro: pueda personalizarlo para mi empresa de venta de
+
+694
+01:19:05.490 --> 01:19:11.529
+Eugenia Sol Piñeiro: no sé objetos. No se me ocurre un caso uso, pero una empresa de ventas, No, entonces
+
+695
+01:19:11.710 --> 01:19:19.460
+Eugenia Sol Piñeiro: puedo usar los 2 que hable en un fardo argentino y que, además, tenga conocimiento personalizado sobre mi empresa y combinarlos
+
+696
+01:19:20.380 --> 01:19:34.949
+Eugenia Sol Piñeiro: después recursos. El Rac es menos costoso que volver a entrenar ahora menos entre comillas, porque porque yo puedo empezar a agregar todos estos módulos. Y ya empiezan a a a aparecer los típicos problemas de ingeniería de software, de
+
+697
+01:19:34.950 --> 01:19:49.199
+Eugenia Sol Piñeiro: vulnerabilidades. ¿cuál ¿Cuál es el costo de ir a buscar una base de datos vectorial ¿De dónde es que armo mi colección de documentos? ¿cómo es que hago webscrapping o le pego una base de datos o uso una a P I,
+
+698
+01:19:49.200 --> 01:19:54.559
+Eugenia Sol Piñeiro: entonces puede llegar a escalar, pero por lo general es menos costoso
+
+699
+01:19:55.490 --> 01:20:12.370
+Eugenia Sol Piñeiro: y Bueno, cada 1 tiene sus problemas. No, Ya vimos datapoisoning share Ray Brish Tokens y demás, que son propios del modelo. Pero después si yo agrego Rag, arrancan las vulnerabilidades de, en general del problema de ingeniería de armar una aplicación
+
+700
+01:20:13.340 --> 01:20:15.780
+Eugenia Sol Piñeiro: más. Todo lo que ya tenía el eredem.
+
+701
+01:20:16.320 --> 01:20:21.790
+Eugenia Sol Piñeiro: Entonces se pueden combinar. Puede llegar a escalar y se pueden usar para distintos casos de uso.
+
+702
+01:20:24.100 --> 01:20:29.640
+Eugenia Sol Piñeiro: Ahora no me va a pasar. Acá es la presentación.
+
+703
+01:20:33.030 --> 01:20:37.750
+Eugenia Sol Piñeiro: Vamos a ver Advance Rad, todo lo que vimos hasta ahora
+
+704
+01:20:37.870 --> 01:20:42.879
+Eugenia Sol Piñeiro: encima que vimos un montón de cosas. Se lo llama Nahib Rak o Rak. Básico.
+
+705
+01:20:43.770 --> 01:20:47.149
+Eugenia Sol Piñeiro: Es decir, todavía tenemos problemas con esto que vimos.
+
+706
+01:20:47.360 --> 01:20:52.779
+Eugenia Sol Piñeiro: Y entonces, ¿cuál es el problema?
+
+707
+01:20:54.000 --> 01:21:00.070
+Eugenia Sol Piñeiro: Yo voy a tener. Primero, el re trival me puede llegar a traer chanks que son irrelevantes.
+
+708
+01:21:00.720 --> 01:21:02.700
+Eugenia Sol Piñeiro: Ejemplo.
+
+709
+01:21:03.650 --> 01:21:18.030
+Eugenia Sol Piñeiro: No sé. Tengo Chanks muy grandes, y quizás el siguiente chanque que me trajo no tiene nada que ver con mi respuesta. Eso puede pasar. Puede faltar información importante. Quizás tengo Shanks muy chiquitos. Y no logré capturar toda la información
+
+710
+01:21:19.030 --> 01:21:27.340
+Eugenia Sol Piñeiro: o al revés. Tengo Chanks muy grandes que pude traer solo un chank porque me comí toda la ventana de de contexto y necesitaba completar con información de otro. Chank.
+
+711
+01:21:27.520 --> 01:21:30.259
+Eugenia Sol Piñeiro: Entonces puede llegar a pasar. Eso
+
+712
+01:21:30.690 --> 01:21:39.130
+Eugenia Sol Piñeiro: disminuye la precisión de nuevo también un poco con el tamaño de qué es lo que yo me traigo de del Retriever
+
+713
+01:21:39.700 --> 01:21:46.000
+Eugenia Sol Piñeiro: Aumentation del lado de del outmet. ¿qué puede pasar? Primero, que el out sea incoherente?
+
+714
+01:21:46.200 --> 01:21:52.359
+Eugenia Sol Piñeiro: Le puede pasar que quizás solo repite y no procesa, es decir, así como vienen los Chanks.
+
+715
+01:21:52.470 --> 01:22:07.549
+Eugenia Sol Piñeiro: copia y pega como si escupe los shanks y listo, y no necesito que los resuma o haga la información que sea coherente y que tenga sentido que use la memoria de paramétrica del ere lem. No puede pasar que quizás solo esté usando la no paramétrica.
+
+716
+01:22:08.610 --> 01:22:25.060
+Eugenia Sol Piñeiro: Después me puede pasar que tenga información redundante. Este ejemplo que les decía de un Chanc, dice el C, E, o renunció, y el otro renunció al C E o dicen lo mismo, es redundante. Necesito priorizar solo 1 y optimizar mediantela de contexto. Y después tengo del lado del generador
+
+717
+01:22:25.350 --> 01:22:30.050
+Eugenia Sol Piñeiro: todavía puede tener alucinaciones.
+
+718
+01:22:30.540 --> 01:22:42.660
+Eugenia Sol Piñeiro: si bien se mitigan muchísimo. No es que ella está. Me liberé de todos esos problemas. Listo. Tengo los típicos problemas de que puedo tener una información, varias toxicity y demás, entonces hay que tener cuidado con eso. Entonces, ¿qué es lo que se hace.
+
+719
+01:22:44.050 --> 01:22:47.820
+Eugenia Sol Piñeiro: Este era nuestro pipeline de Rall, como lo vimos hasta ahora.
+
+720
+01:22:48.440 --> 01:22:51.950
+Eugenia Sol Piñeiro: Tengo mi colección de documentos.
+
+721
+01:22:52.770 --> 01:22:58.899
+Eugenia Sol Piñeiro: Voy a hacer el Datasplending. Después voy a hacer el algoritmo. Main lo guardo en mi base de datos vectorial.
+
+722
+01:22:59.320 --> 01:23:04.430
+Eugenia Sol Piñeiro: Eso se hace de forma sincrónica. Terminé mi pipeline listo. Tengo todo guardado mi base de datos vectorial.
+
+723
+01:23:04.710 --> 01:23:16.330
+Eugenia Sol Piñeiro: Bien, el usuario me hace una pregunta convierto: La cuerda y el usuario en el meding con el mismo algoritmo meding, el re trival me va a ir a buscar cuáles son los más similares y el generator va a aumentar
+
+724
+01:23:16.850 --> 01:23:20.639
+Eugenia Sol Piñeiro: lo que me dice, Lem, con lo que me trajo el rey tribal de Michax.
+
+725
+01:23:21.930 --> 01:23:24.449
+Eugenia Sol Piñeiro: Hasta ahí. Lo que ya vimos ahora
+
+726
+01:23:25.040 --> 01:23:35.640
+Eugenia Sol Piñeiro: se agregan módulos extra en Advance Rad. Lo que hace es justamente agregar estrategias pre retrival o post retrival para mejorarlo. Justamente
+
+727
+01:23:36.190 --> 01:23:45.380
+Eugenia Sol Piñeiro: Entonces una es, por ejemplo, agregar antes de generar and Baings metadata a mis chanks y filtros.
+
+728
+01:23:45.600 --> 01:23:50.870
+Eugenia Sol Piñeiro: Vamos a ver un ejemplo, pero podría ser. Le puedo agregar un timestamp
+
+729
+01:23:51.190 --> 01:24:04.380
+Eugenia Sol Piñeiro: o y quizás filtrar antes por fecha. No sé, me interesa solo lo del 20, 26 no lo del 20, 25. Entonces, ¿para qué me voy a recorrer? Todos los Chanks del 20, 25? Si me están haciendo una pregunta de este año.
+
+730
+01:24:04.620 --> 01:24:10.130
+Eugenia Sol Piñeiro: Entonces se empiezan a hacer ese tipo de filtros y módulos extra para mejorar la búsqueda después.
+
+731
+01:24:10.920 --> 01:24:13.830
+Eugenia Sol Piñeiro: Después. Lo que se puede hacer es también
+
+732
+01:24:14.040 --> 01:24:18.880
+Eugenia Sol Piñeiro: antes del elen, o sea, después de que el usuario
+
+733
+01:24:19.410 --> 01:24:26.590
+Eugenia Sol Piñeiro: generó el prompt, mejorar ese contenido de lo que pregunto, puede ser
+
+734
+01:24:26.880 --> 01:24:32.240
+Eugenia Sol Piñeiro: reescribirlo por ahí. Parafrasearlo puede ser
+
+735
+01:24:32.680 --> 01:24:37.290
+Eugenia Sol Piñeiro: esto. Me refiero con reescribirlo. Vamos a ver una técnica.
+
+736
+01:24:37.470 --> 01:24:45.589
+Eugenia Sol Piñeiro: la clase que viene. No les quiero dar todo hoy. Vos demasiado. Pero la clase que viene vamos a aplicar Advance Rug: Lo vamos a implementar en código.
+
+737
+01:24:45.610 --> 01:24:59.119
+Eugenia Sol Piñeiro: y van a ver como mejora. Si yo reescribo parafraseo un poquito la Cueri, e intento hacer algunos algunas técnicas específicas que me ayudan a justamente mejorar la respuesta del Blem
+
+738
+01:24:59.750 --> 01:25:18.019
+Eugenia Sol Piñeiro: y después se tienen técnicas más de post retrival. Es decir, ya tengo mis Chanks y después lo que puedo hacer es primero, comprimirlos, por ejemplo, eliminar duplicados o que son muy similares que están para falseados y no me sirven. Quiero optimizar mi ventana de contexto o hacer un ree ranking
+
+739
+01:25:18.120 --> 01:25:26.659
+Eugenia Sol Piñeiro: que es básicamente acuérdense que mi base de datos electoral me traía los aproximadamente más cercanos. Entonces Quizás
+
+740
+01:25:26.890 --> 01:25:37.590
+Eugenia Sol Piñeiro: lo que puedo hacer es mejorar un poco el orden en que los trae para priorizar solo algunos y mandarles solo los mejores de los mejores al Ere, el Em: Vamos a ver cómo.
+
+741
+01:25:37.800 --> 01:25:43.659
+Eugenia Sol Piñeiro: pero un poco. Esa es la idea no alegar técnicas antes o después del Re Trival o ambas
+
+742
+01:25:43.770 --> 01:25:46.270
+Eugenia Sol Piñeiro: para mejorarlo. Entonces esto sigue escalando.
+
+743
+01:25:47.410 --> 01:25:48.570
+Eugenia Sol Piñeiro: Ejemplo
+
+744
+01:25:49.100 --> 01:25:57.849
+Eugenia Sol Piñeiro: agrego metadata a los chanks. Este lo que hace es justamente limitar donde es que el retrier me va a ir a buscar la información, entonces le puedo pasar el Chank.
+
+745
+01:25:58.210 --> 01:25:59.990
+Eugenia Sol Piñeiro: que solo esto
+
+746
+01:26:00.100 --> 01:26:07.220
+Eugenia Sol Piñeiro: es lo que se convierta en bading. Solo Chank. La información de Trump y después la metadata me ayuda, por ejemplo, para filtrar.
+
+747
+01:26:07.800 --> 01:26:23.399
+Eugenia Sol Piñeiro: puede ser filtrar por Timestamp. En este caso era un documento con muchos muchos autores. Entonces se dice: Ok. Este es el documento de Juan Pérez. Tiene tantas páginas. No sé, por ejemplo, el
+
+748
+01:26:23.830 --> 01:26:29.109
+Eugenia Sol Piñeiro: el usuario está buscando artículos de Juan Pérez que tengan menos de tantas páginas.
+
+749
+01:26:29.370 --> 01:26:41.069
+Eugenia Sol Piñeiro: Entonces ya 1 empieza a filtrar, no nece. No necesito recorrer todos mis Chanks y hago uso de esta técnica que es bastante sencilla. Simplemente agregar metadata agregar datos extra a a mi chank
+
+750
+01:26:41.990 --> 01:26:45.530
+Eugenia Sol Piñeiro: y filtrar antes de ir a recorrer toda mi base de datos.
+
+751
+01:26:46.670 --> 01:26:49.119
+Eugenia Sol Piñeiro: Y este es el re Runker.
+
+752
+01:26:49.690 --> 01:27:01.230
+Eugenia Sol Piñeiro: que no siempre digo que son Ruby Hall: Hay muchos tipos de renquing. Vamos a ver 1. La clase que viene, que es un renker específico. Vamos a ver este algoritmo donde
+
+753
+01:27:01.770 --> 01:27:07.590
+Eugenia Sol Piñeiro: la idea es justamente priorizarla con Text window Entonces, a grandes rasgos lo que hacen los rankers. Es
+
+754
+01:27:07.740 --> 01:27:13.680
+Eugenia Sol Piñeiro: en vez de elegir mi stop. Cinco, Chanks, agrando S. K.
+
+755
+01:27:13.930 --> 01:27:19.620
+Eugenia Sol Piñeiro: Y consigo mis top 25 y de esos 25.
+
+756
+01:27:19.810 --> 01:27:23.419
+Eugenia Sol Piñeiro: Veo cuáles son los más relevantes de los más similares.
+
+757
+01:27:23.690 --> 01:27:27.609
+Eugenia Sol Piñeiro: Entonces, quizás, en vez de pasarle estos 25 de acá
+
+758
+01:27:27.860 --> 01:27:33.850
+Eugenia Sol Piñeiro: y que me comí toda la ventana del contexto. Quizás era más importante este este. Y este.
+
+759
+01:27:34.240 --> 01:27:41.990
+Eugenia Sol Piñeiro: Entonces el Ranker selecciona después cuáles son los mejores de los mejores y priorizó esa ventana de contexto.
+
+760
+01:27:42.190 --> 01:27:55.890
+Eugenia Sol Piñeiro: por ejemplo. ¿qué me puede pasar? Acá Quizás tengo duplicados o los necesito comprimir. Entonces el ronker después me los ordena de cuál es al final, el que más me va a servir y cuál me va a servir menos. Y yo le paso únicamente estos a mi elem. Entonces
+
+761
+01:27:56.440 --> 01:28:00.859
+Eugenia Sol Piñeiro: básicamente es agarrar los mejores de los mejores y empezar a improvisar la ventana de contexto.
+
+762
+01:28:01.370 --> 01:28:05.430
+Eugenia Sol Piñeiro: De nuevo. La idea es que se lleven la idea general y
+
+763
+01:28:06.100 --> 01:28:19.519
+Eugenia Sol Piñeiro: vamos a implementar 1, la clase que viene van a ver como cambia. Entonces, lo que se usa de Advance Rad es justamente para mejorar los resultados. Lo pueden pensar como que ni Rag tengo mi Baise Line.
+
+764
+01:28:19.940 --> 01:28:36.049
+Eugenia Sol Piñeiro: Y después, digo, bueno, esto no me está funcionando tan bien como lo puedo mejorar y po quizás agregando una técnica de pretritival y mejoran las métricas o agrego un re ranker porque me va a ayudar porque tengo justo muchos documentos y hay algunos que son muy similares.
+
+765
+01:28:36.390 --> 01:28:39.280
+Eugenia Sol Piñeiro: Entonces, es jugar un poco con eso también.
+
+766
+01:28:40.280 --> 01:28:46.210
+Eugenia Sol Piñeiro: Y como si fuera poco, no solo existe Advance Rall, sino que dentro de eso
+
+767
+01:28:46.850 --> 01:28:48.650
+Eugenia Sol Piñeiro: está módulo la R a L,
+
+768
+01:28:48.840 --> 01:28:56.450
+Eugenia Sol Piñeiro: que sería como el el tercer nivel del Rall más avanzado donde yo voy a tener mi rall común
+
+769
+01:28:56.830 --> 01:29:01.189
+Eugenia Sol Piñeiro: acá Advance, que es básicamente agregar
+
+770
+01:29:01.590 --> 01:29:08.099
+Eugenia Sol Piñeiro: técnicas de pre y postritrival. Y después ya puedo agregar técnicas de búsqueda.
+
+771
+01:29:08.100 --> 01:29:21.910
+Eugenia Sol Piñeiro: por ejemplo, agregar algún searchense o mejorar el ruteo en el que yo voy a conseguir mis documentos o agregar algún adaptador extra para mejorar mis Tags. Agregar memoria, por ejemplo, agregar una caché, quizás respuestas que
+
+772
+01:29:22.320 --> 01:29:27.420
+Eugenia Sol Piñeiro: son muy frecuentes. Las puedo agregar a Gallé y las tengo ahí y no necesito hacer todo el proceso. Entonces
+
+773
+01:29:28.290 --> 01:29:36.709
+Eugenia Sol Piñeiro: me da mucha flexibilidad. Me permite escalar, pero ya se empieza a complejizar, porque tengo cada vez más y más módulos. Entonces se hace más complejo.
+
+774
+01:29:37.210 --> 01:29:46.919
+Eugenia Sol Piñeiro: pero sí me da versatilidad. ¿no? O sea, puedo empezar a agregar un montón de cosas y mejorar muchísimo mi modelo en general, mi arquitectura.
+
+775
+01:29:47.530 --> 01:29:53.730
+Eugenia Sol Piñeiro: a términos de la materia vamos a llegar hasta, acá pero
+
+776
+01:29:54.040 --> 01:30:05.599
+Eugenia Sol Piñeiro: todo esto también está en el paper y en la bibliografía que les dejamos y lo pueden investigar por su cuenta. O sea, son cosas más de ingeniería de software genérico. Así que por eso nos vamos a enfocar en esta parte.
+
+777
+01:30:05.860 --> 01:30:13.350
+Eugenia Sol Piñeiro: Pero la idea es que se lleven, que no termina, acá sino que 1 puede seguir y seguir escalando y hacerlo tan complejo como quiera.
+
+778
+01:30:14.660 --> 01:30:20.259
+Eugenia Sol Piñeiro: Y estos son algunos ejemplos que, por ejemplo, Oracle. Fíjense que ya proponen los cro proveedores, soluciones
+
+779
+01:30:20.460 --> 01:30:38.979
+Eugenia Sol Piñeiro: en bebidas, digamos, donde ya tiene todo y acá te da por ejemplo. Ella hay Solutions de modular Rag basado en un ser Chanzing. Entonces, acá por ejemplo, ya te ofrece eso en Adolb Este también. No usar una arquitectura modular, flexible para extender tu solución basada en R A. D,
+
+780
+01:30:39.120 --> 01:30:44.449
+Eugenia Sol Piñeiro: Entonces es algo que se usa muchísimo. Ya está implementado en Scrap providers. Entonces tampoco la idea es
+
+781
+01:30:44.770 --> 01:30:51.690
+Eugenia Sol Piñeiro: reinventar la rueda. Pero lo que quiero que se lleven es que se usan mucho y que se puede escalar un montón.
+
+782
+01:30:53.930 --> 01:30:59.660
+Eugenia Sol Piñeiro: y esto también se puede hacer
+
+783
+01:30:59.870 --> 01:31:11.170
+Eugenia Sol Piñeiro: con Hugginface en Hunging face. Se les ofrecen todos estos módulos distintos pueden usar por ejemplo, el Elens, que están en Hugging Face
+
+784
+01:31:11.340 --> 01:31:17.149
+Eugenia Sol Piñeiro: y no necesariamente bajar a Pyth Torch o Densourf Club, como hicieron la clase, la cla el tema pasado.
+
+785
+01:31:17.370 --> 01:31:19.479
+Eugenia Sol Piñeiro: Pueden usar modelos pre entrenados.
+
+786
+01:31:20.540 --> 01:31:29.619
+Eugenia Sol Piñeiro: Pueden usar frameworks de the learning estaqueras, que es más abstracto. Es más de alto nivel no está diseñada como para construir modelos y redes neuronales, pero de forma más sencilla.
+
+787
+01:31:29.720 --> 01:31:31.010
+Eugenia Sol Piñeiro: y
+
+788
+01:31:31.120 --> 01:31:38.169
+Eugenia Sol Piñeiro: ahora es parte, es parte de tensor Flow. Me parece que ya se unieron un poco, pero es como una interfaz más alto nivel y es más fácil de usar.
+
+789
+01:31:38.330 --> 01:31:45.890
+Eugenia Sol Piñeiro: Tiene menos flexibilidad. Entonces después están Pipers y tensor flow, como los frameworks, que se usan mucho más.
+
+790
+01:31:46.150 --> 01:31:47.240
+Eugenia Sol Piñeiro: Y
+
+791
+01:31:47.660 --> 01:31:57.669
+Eugenia Sol Piñeiro: pero en la materia vamos a ver 1 específico que es un framework que se llama Landchain, que me permite explorar
+
+792
+01:31:58.840 --> 01:32:04.179
+Eugenia Sol Piñeiro: todos estos módulos y combinarlos de una forma sencilla como más orquestrador, entonces.
+
+793
+01:32:04.630 --> 01:32:12.330
+Eugenia Sol Piñeiro: Pero entonces un poco, o sea, me refiero, no se pongan a codear la clase que viene. Vamos a a ver toda esa parte de implementación.
+
+794
+01:32:13.250 --> 01:32:18.319
+Eugenia Sol Piñeiro: pero un poco. La idea es esa de lo que se usa después. Se usaba muchísimo un Cloud. Fíjense.
+
+795
+01:32:19.060 --> 01:32:27.200
+Eugenia Sol Piñeiro: bueno, acá. Está el ejemplo de ello. Le doy a W, S, C, C, P: y demás. Cada 1 va a tener su servicio.
+
+796
+01:32:27.590 --> 01:32:30.970
+Eugenia Sol Piñeiro: Entonces, de nuevo, va a depender del club provider de lo que usen
+
+797
+01:32:31.200 --> 01:32:34.309
+Eugenia Sol Piñeiro: a que quiero llegar con esto. Hay muchísimas formas de implementarlo
+
+798
+01:32:34.610 --> 01:32:45.039
+Eugenia Sol Piñeiro: de una sola. Hay un montón de herramientas. La idea es que se lleven algo específico que puedan usar y les quede una aplicación funcional con una arquitectura rara andando y buena con buenos resultados.
+
+799
+01:32:47.290 --> 01:32:51.110
+Eugenia Sol Piñeiro: Bien, ¿qué se sugiere?
+
+800
+01:32:51.380 --> 01:32:54.520
+Eugenia Sol Piñeiro: Está buenísimo este podcast Si lo quieren escuchar, es largo.
+
+801
+01:32:55.050 --> 01:33:00.589
+Eugenia Sol Piñeiro: quizás pueden priorizar únicamente la parte de cuando habla de las limitaciones que dimos hoy.
+
+802
+01:33:00.700 --> 01:33:03.459
+Eugenia Sol Piñeiro: Está bueno, el Paper este de acá
+
+803
+01:33:03.600 --> 01:33:19.959
+Eugenia Sol Piñeiro: habla mucho de lo que vimos hoy, Así que la idea es que sea más sencillo. Fíjense que acá estaba el ejemplo que vimos todo el re trival habla bastante de ruglular para el que le interesó también el medio largo, pero
+
+804
+01:33:20.930 --> 01:33:21.720
+Eugenia Sol Piñeiro: está bueno.
+
+805
+01:33:22.550 --> 01:33:29.380
+Eugenia Sol Piñeiro: Bien, Dejo esta pregunta abierta para la clase que viene, de qué atributos de seguridad debíamos considerar
+
+806
+01:33:29.490 --> 01:33:40.250
+Eugenia Sol Piñeiro: que un poco lo vimos como spoiler, pero para después debatir y creemos la clase que viene. Vamos a implementar una aplicación basada en R a G. ¿vamos a
+
+807
+01:33:40.810 --> 01:33:50.639
+Eugenia Sol Piñeiro: realmente implementar un caso de uso específico. Vamos a levantar Pinecome Croma y vamos a usar linchain.
+
+808
+01:33:50.970 --> 01:33:58.660
+Eugenia Sol Piñeiro: Así que vénganse preparados para ver algo más de código. Lo vamos a relacionar con la teoría también. Y como tienen en el medio, la entrega del Tp, 2,
+
+809
+01:33:58.930 --> 01:34:09.099
+Eugenia Sol Piñeiro: Ah, no, todavía no. La clase que viene no se entrega el tepeás la otra. Pero bueno, vamos a hacer un repaso y demás. Y vemos el enunciado del T. P 3. Así que la clase que viene es importante.
+
+810
+01:34:09.930 --> 01:34:12.120
+Eugenia Sol Piñeiro: Les dejo la bibliografía ¿no?
+
+811
+01:34:12.390 --> 01:34:17.650
+Eugenia Sol Piñeiro: Y eso dudas.
+
+812
+01:34:18.840 --> 01:34:24.229
+Eugenia Sol Piñeiro: Se entendió inquietudes para el año que viene.
+
+813
+01:34:25.330 --> 01:34:36.880
+LUCAS CAMPOLI: Yo tengo una pregunta que a principio de año más o menos, hablé con un profe y le hablé Rac y me dijo que el Racc, como que no estaba tan bien visto.
+
+814
+01:34:37.230 --> 01:34:41.579
+LUCAS CAMPOLI: Es verdad, Eso no nunca entendí por qué me dijo eso.
+
+815
+01:34:43.940 --> 01:34:47.659
+Eugenia Sol Piñeiro: O sea, te diría que no de entrada. Pero, ¿por qué? Cuáles son los argumentos.
+
+816
+01:34:49.160 --> 01:34:56.859
+LUCAS CAMPOLI: No, no sé, pero o sea estado del arte, hay algo que capaz
+
+817
+01:34:57.520 --> 01:35:01.420
+LUCAS CAMPOLI: sea mejor que R A, L, o o sigue siendo como.
+
+818
+01:35:01.980 --> 01:35:21.039
+Eugenia Sol Piñeiro: O sea, son para distintos casos. Se usa mucho rag. De hecho, hay literalmente roles de trabajo que es radio, ingenier y te piden, o el element genier, y te piden saber Rag y saber Lanch y saber levantar un paincon y todo lo que vamos a ver ahora, de hecho, roles, abiertos hoy
+
+819
+01:35:21.100 --> 01:35:27.279
+Eugenia Sol Piñeiro: en empresas grandes y que se usa muchísimo. También es cierto que está toda la parte de Codinations
+
+820
+01:35:27.480 --> 01:35:31.509
+Eugenia Sol Piñeiro: que intenta hacer algo similar. No es lo mismo.
+
+821
+01:35:31.730 --> 01:35:38.769
+Eugenia Sol Piñeiro: pero también se podría usar todo eso para dar un poco de estos beneficios o ventajas alterna.
+
+822
+01:35:40.090 --> 01:35:44.770
+Eugenia Sol Piñeiro: Pero de ahí a que no se usa y que no es el estado del arte. Yo, por lo menos no coincido.
+
+823
+01:35:46.130 --> 01:35:46.920
+LUCAS CAMPOLI: Hoy.
+
+824
+01:35:47.700 --> 01:35:55.850
+LUCAS CAMPOLI: Qué era para saber? Porque te la verdad que me lo dijo buenísimo entonces.
+
+825
+01:35:57.380 --> 01:36:01.550
+Eugenia Sol Piñeiro: Genial. No sé maru ahí. Tenés otra opinión, no tan strong, opinión como.
+
+826
+01:36:01.550 --> 01:36:10.800
+Marina Fuster: Me estoy tratando de imaginar a qué caso de uso por ahí se estaría refiriendo porque
+
+827
+01:36:11.120 --> 01:36:24.479
+Marina Fuster: ponele que decís también tenés lo de los codinations y todo, Pero hay situaciones donde tenés bases muy grandes donde la estructura de radio te sirve igual. Entonces, eso por ahí estoy tratando de imaginarme
+
+828
+01:36:25.490 --> 01:36:31.500
+Marina Fuster: a que se estaría refiriendo con que ya no está bien visto.
+
+829
+01:36:32.490 --> 01:36:37.529
+Marina Fuster: Es una frase como medio rara, No sé porque estaría mal visto de última. No lo usas, pero.
+
+830
+01:36:38.230 --> 01:36:40.300
+LUCAS CAMPOLI: Sí, sí. Por eso no sé.
+
+831
+01:36:40.600 --> 01:36:41.520
+Marina Fuster: Sí.
+
+832
+01:36:42.790 --> 01:36:44.679
+LUCAS CAMPOLI: Pero me quedará la duda.
+
+833
+01:36:44.930 --> 01:36:45.480
+Marina Fuster: Sí.
+
+834
+01:36:45.480 --> 01:36:46.450
+Eugenia Sol Piñeiro: No, pero bueno.
+
+835
+01:36:46.450 --> 01:36:49.039
+Marina Fuster: Bueno, le voy a preguntar y nos decís.
+
+836
+01:36:49.720 --> 01:37:01.160
+LUCAS CAMPOLI: Mucho en qué contexto era. Sé que fue una charla que dio y yo le fui a hablar, pero ya ni me acuerdo que era. Solo me queda eso.
+
+837
+01:37:01.740 --> 01:37:02.530
+LUCAS CAMPOLI: Pero bueno.
+
+838
+01:37:03.370 --> 01:37:18.209
+Eugenia Sol Piñeiro: Está bien. Bueno, nos quedaremos con la intriga. Pero en general, quédense tranquilos, que se rehúsa. De hecho, todo lo que damos en la materia es estado del arte. O sea, estamos como en lo último, intentamos estar en lo último quizás más actualizado.
+
+839
+01:37:18.410 --> 01:37:19.990
+Eugenia Sol Piñeiro: Así que con eso no se preocupe.
+
+840
+01:37:20.270 --> 01:37:21.240
+Eugenia Sol Piñeiro: Pero.
+
+841
+01:37:21.240 --> 01:37:21.560
+Marina Fuster: Sí.
+
+842
+01:37:21.560 --> 01:37:23.430
+Eugenia Sol Piñeiro: Quizás.
+
+843
+01:37:25.440 --> 01:37:27.660
+Marina Fuster: Como aguja perdón. Te interrumpí.
+
+844
+01:37:28.040 --> 01:37:33.770
+Eugenia Sol Piñeiro: No eso que quizás se refería a otro caso de uso que no le servía a Rag en ese contexto.
+
+845
+01:37:34.310 --> 01:37:38.849
+Eugenia Sol Piñeiro: pero que se usan sus De hecho, por ahí también. Lo que pasa ahora es que
+
+846
+01:37:39.160 --> 01:37:52.789
+Eugenia Sol Piñeiro: ya es conocido. Ra Antes no era tan conocido. De hecho, un poco les quise mostrar eso con los crowproviders de que ya te ofrecen quizás la arquitectura implementada, y es más fácil de integrar. Entonces, por ahí Ya no la tenés que hacer tan de 0 como antes.
+
+847
+01:37:53.160 --> 01:38:00.389
+Eugenia Sol Piñeiro: Pero bueno, un poco. También la idea es que se lleven esto de como implementarla. No van a tener que bajar a 0. Cero. De hecho, van a usar librerías.
+
+848
+01:38:00.570 --> 01:38:03.119
+Eugenia Sol Piñeiro: pero que usar se usa.
+
+849
+01:38:09.800 --> 01:38:15.250
+Marina Fuster: Estaba buscando. En qué casos radio está mal visto a ver si me saltaba algo que busque tener sentido
+
+850
+01:38:16.050 --> 01:38:17.330
+Marina Fuster: en.
+
+851
+01:38:17.330 --> 01:38:18.380
+LUCAS CAMPOLI: No dice nada.
+
+852
+01:38:19.060 --> 01:38:20.720
+Marina Fuster: O sea, a ver.
+
+853
+01:38:20.720 --> 01:38:22.600
+LUCAS CAMPOLI: Así es el caso de uso.
+
+854
+01:38:22.960 --> 01:38:24.570
+Marina Fuster: Sí.
+
+855
+01:38:24.570 --> 01:38:27.840
+LUCAS CAMPOLI: En un contexto específico de sí. Seguro que.
+

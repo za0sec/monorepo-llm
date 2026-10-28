@@ -1,8 +1,11 @@
-# Ejercicio 2: primer paso con texto
+# Ejercicio 2: material de referencia y primer audio
 
-Por ahora trabajamos con una sola transcripción de clase. El objetivo de este paso
-es obtener texto con referencias temporales antes de dividirlo en chunks o
-conectarlo a una base vectorial.
+El usuario final cargará el audio de un video y los temas que quiere estudiar.
+El sistema deberá compararlo con los materiales de la materia e informar contenidos
+cubiertos, parciales y sin evidencia, recomendar material y concluir sobre la
+utilidad del video. Estamos preparando las entradas de esa comparación:
+una transcripción de clase y la transcripción automática de un audio de ejemplo.
+Todavía no implementamos recuperación, comparación ni el informe de cobertura.
 
 ## Fuente inicial
 
@@ -58,5 +61,53 @@ localmente para ejecutar el script.
 
 Primero revisar algunos segmentos contra el original, incluidos los que mencionan
 similitud coseno, para comprobar que se conserva el contenido y su ubicación.
-Después agruparemos intervenciones en chunks y revisaremos sus límites antes de
-agregar embeddings y recuperación. La comparación con un video vendrá después.
+Antes de agregar chunks y recuperación, revisaremos el texto del video y
+definiremos un ejemplo manual de cobertura contra el material de clase.
+
+## Transcribir el audio de ejemplo
+
+Este paso convierte el audio del video a texto. El material de la materia se
+mantiene separado: no se envía como parte de la transcripción.
+Usamos Whisper, visto en la clase de imágenes y audio, a través del proxy de la
+cátedra y con las credenciales existentes en `tp3/.env`.
+
+Instalar las dependencias en el entorno de Python que se vaya a utilizar:
+
+```bash
+python3 -m pip install -r tp3/ejercicio2/requirements.txt
+```
+
+Desde la raíz del repositorio:
+
+```bash
+python3 tp3/ejercicio2/transcribir_audio.py \
+  "tp3/ejercicio2/data/audios/¿Qué son los EMBEDDINGS Grandes Modelos de Lenguaje.mp3"
+```
+
+Se generan tres archivos dentro de `tp3/ejercicio2/data/transcripciones/`:
+
+- Un `.respuesta.json` con la respuesta original del servicio, guardada antes de
+  interpretarla para poder revisarla sin repetir la llamada.
+- Un `.vtt` con las palabras reconocidas y sus intervalos temporales.
+- Un `.txt` con tiempos para revisar el resultado de forma cómoda.
+
+La primera solicitud de salida VTT no produjo el formato esperado por el lector.
+Por eso solicitamos `verbose_json` y generamos el VTT localmente con los tiempos de sus
+segmentos. No calculamos tiempos a partir de la longitud del texto.
+
+El script reutiliza el VTT o la respuesta JSON si ya existen para evitar repetir
+la llamada. Si se quiere volver a transcribir, usar `--salida` con otra carpeta. Esta primera
+versión asume audio en español y admite archivos de hasta 25 MB; no aplica
+filtros de audio ni corrige términos técnicos automáticamente. Los intervalos
+provienen de Whisper y son aproximados; no son chunks de recuperación.
+
+Configuración: `OPENAI_API_KEY`, `OPENAI_BASE_URL` y, opcionalmente,
+`OPENAI_TRANSCRIPTION_MODEL` (por defecto `openai/whisper-1`, identificador
+publicado por el proxy). Para la API directa, configurar su URL y `whisper-1`.
+La clave se lee sin imprimirla ni guardarla en los resultados.
+
+Referencia de la llamada: [documentación oficial de transcripción de OpenAI](https://developers.openai.com/api/docs/guides/speech-to-text).
+
+La transcripción automática está pendiente de revisión, especialmente en términos
+como embeddings, nombres de modelos y fórmulas. Generar texto no demuestra aún
+que el video cubra los contenidos de la materia.

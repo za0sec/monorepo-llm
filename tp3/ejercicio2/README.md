@@ -3,9 +3,9 @@
 El usuario final cargará el audio de un video y los temas que quiere estudiar.
 El sistema deberá compararlo con los materiales de la materia e informar contenidos
 cubiertos, parciales y sin evidencia, recomendar material y concluir sobre la
-utilidad del video. Estamos preparando las entradas de esa comparación:
-una transcripción de clase y la transcripción automática de un audio de ejemplo.
-Todavía no implementamos recuperación, comparación ni el informe de cobertura.
+utilidad del video. Ya tenemos una transcripción de clase, la transcripción
+automática de un audio de ejemplo y un primer ejemplo de cobertura revisable.
+Todavía no implementamos la recuperación ni la comparación automática.
 
 ## Fuente inicial
 
@@ -63,6 +63,12 @@ Primero revisar algunos segmentos contra el original, incluidos los que menciona
 similitud coseno, para comprobar que se conserva el contenido y su ubicación.
 Antes de agregar chunks y recuperación, revisaremos el texto del video y
 definiremos un ejemplo manual de cobertura contra el material de clase.
+
+El [caso 01: embeddings](evaluacion/caso_01_embeddings.md) contiene ese primer
+ejemplo: objetivo propuesto, criterios apoyados en la clase, evidencias temporales,
+clasificaciones, recomendaciones y conclusión. Fue elaborado por el asistente a
+partir de las transcripciones y queda pendiente de validación del grupo. Sirve
+para concretar la salida esperada antes de automatizarla.
 
 ## Transcribir el audio de ejemplo
 

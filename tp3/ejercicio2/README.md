@@ -7,6 +7,11 @@ utilidad del video. Ya tenemos una transcripción de clase, la transcripción
 automática de un audio de ejemplo y un primer ejemplo de cobertura revisable.
 Todavía no implementamos la recuperación ni la comparación automática.
 
+La [propuesta de diseño inicial](diseno_rag_inicial.md) reúne las recomendaciones
+encontradas en las clases, los componentes de los notebooks, una configuración
+de partida y el orden de experimentos. Es una propuesta documentada; no agrega
+todavía la implementación del índice ni de la generación.
+
 ## Fuente inicial
 
 Usamos `docs/embeddings_2.VTT`, que incluye embeddings y similitud coseno.

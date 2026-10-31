@@ -6,7 +6,7 @@ Tomamos como referencia el uso de Chroma en
 [Langchain_Virtual_Assitant.ipynb](../../docs/RAG/Langchain_Virtual_Assitant.ipynb)
 y [UN_Report_Advanced_RAG.ipynb](../../docs/RAG/UN_Report_Advanced_RAG.ipynb).
 Esta decisión del 31/10/2026 reemplaza la elección intermedia de Pinecone.
-El resto del diseño es una propuesta para revisar antes de implementar. Sus
+La generación y los experimentos posteriores siguen propuestos. Sus
 parámetros son hipótesis iniciales; todavía no se midió su calidad ni su tiempo
 de ejecución.
 Se mantiene el alcance gradual: un VTT de clase, un audio ya transcripto y un
@@ -83,7 +83,12 @@ decodificarlos como `SentenceTransformersTokenTextSplitter`, para no alterar
 acentos, mayúsculas ni la correspondencia con los tiempos. Esta adaptación está
 apoyada en la [documentación del tokenizer](https://huggingface.co/docs/transformers/v4.57.1/main_classes/tokenizer).
 El baseline produjo 125 chunks de las 415 intervenciones, con máximo de 202
-tokens incluidos los especiales. Todavía no hay embeddings, índice ni retrieval.
+tokens incluidos los especiales. Posteriormente se implementaron MiniLM,
+indexación y recuperación con Chroma persistente. La carga real produjo
+125 embeddings y una repetición reutilizó los 125 sin duplicarlos ni recalcularlos.
+Las consultas iniciales muestran ruido y referencias faltantes; ver
+[revisión de recuperación](evaluacion/revision_retrieval_inicial.md). La generación
+y la comparación automática de cobertura siguen pendientes.
 
 ### Configuración de Chroma y relación con los notebooks
 
@@ -101,7 +106,7 @@ y las celdas 18 a 23 de
   corpus, el splitting y el embedder. Reutilizarla solo si la configuración
   coincide; no mezclar resultados de experimentos incompatibles.
 - **Dimensión y métrica:** los vectores de MiniLM tienen 384 dimensiones.
-  Configuraremos coseno explícitamente al crear la colección, sin asumir que es
+  Configuramos coseno explícitamente al crear la colección, sin asumir que es
   la métrica predeterminada de los ejemplos. Chunks y consultas usarán el mismo
   modelo de embedding.
 - **Contenido persistido:** ID estable, embedding, texto del chunk y metadatos
@@ -110,9 +115,12 @@ y las celdas 18 a 23 de
 - **Recuperación:** búsqueda en Chroma por similitud, inicialmente con `k=4` y
   sin umbral, para medir primero cobertura y ruido.
 
-La carga deberá reutilizar IDs estables para evitar duplicar chunks al repetir
-una indexación. Estas son pautas para la futura implementación: Chroma todavía
-no está integrado en el código ni se creó una colección desde este proyecto.
+La carga implementada reutiliza IDs estables, se reanuda después de una
+interrupción y bloquea consultas a colecciones incompletas. El nombre automático
+deriva del corpus y la configuración, incluidas versiones de bibliotecas; un
+nombre explícito incompatible se rechaza. El manifiesto queda en los metadatos
+de la colección y en las corridas de recuperación. Los embeddings se calculan
+explícitamente con Sentence Transformers; Chroma no selecciona otro embedder.
 
 La [ficha original de MiniLM](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)
 confirma las 384 dimensiones y el truncamiento por defecto por encima de 256
@@ -127,8 +135,8 @@ falla, una comparación disponible en los notebooks es `text-embedding-3-small`.
 
 La [ficha de Qwen](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct)
 documenta el modelo de 1.54B parámetros y soporte de español. Eso no demuestra
-que clasifique correctamente la cobertura de nuestro caso. No se han descargado
-ni ejecutado estos modelos para esta recomendación.
+que clasifique correctamente la cobertura de nuestro caso. MiniLM ya se descargó
+y ejecutó en CPU para indexar y consultar. Qwen todavía no se descargó ni ejecutó.
 
 ### Qué hacemos con el GPT-4.1 nano de la propuesta
 
@@ -175,19 +183,19 @@ informar esa limitación: una falla de retrieval no demuestra una omisión del v
 
 ## Estructura propuesta de archivos
 
-Se conserva lo existente y se agregan piezas pequeñas cuando se implemente cada
-etapa. Los nombres siguientes son una propuesta, no archivos ya implementados.
+Se conserva lo existente y se agregan piezas pequeñas por etapa. Se indica qué
+archivos están implementados y cuáles siguen propuestos.
 
 ```text
 tp3/ejercicio2/
-  config.py                   # Valores del experimento, sin credenciales.
+  config.py                   # Implementado: modelo/revisión y rutas, sin credenciales.
   preparar_transcripcion.py   # Ya implementado: lector de VTT.
   preparar_chunks.py          # Ya implementado: doble splitting y referencias.
   transcribir_audio.py        # Ya implementado: Whisper y caché de respuesta.
-  indexar_material.py         # Construcción del corpus, chunks e índice.
-  recuperar.py                # Objetivo -> referencias y puntajes.
-  evaluar_video.py            # Arma entradas y genera el informe.
-  ejecutar_experimentos.py    # Repite casos guardados con configuraciones.
+  indexar_material.py         # Implementado: JSON de chunks -> embeddings e índice.
+  recuperar.py                # Implementado: objetivo -> referencias, puntajes y registro.
+  evaluar_video.py            # Propuesto: arma entradas y genera el informe.
+  ejecutar_experimentos.py    # Propuesto: repite casos guardados con configuraciones.
   evaluacion/
     caso_01_embeddings.md     # Ejemplo revisable existente.
   data/
@@ -200,7 +208,8 @@ tp3/ejercicio2/
 ```
 
 La colección y el índice vectorial se conservan localmente en `data/chroma/`.
-`config.py` identificará la ruta, el nombre de colección y su configuración.
+`config.py` identifica rutas y modelo/revisión; el nombre automático de colección
+se deriva del manifiesto de corpus/configuración en `indexar_material.py`.
 Esa carpeta queda excluida de Git junto con el resto de `data/`; se podrá
 regenerar a partir de las fuentes y la configuración. Los datos procesados y
 los resultados de las corridas también se guardan localmente para revisión.

@@ -4,19 +4,21 @@ El usuario final cargará el audio de un video y los temas que quiere estudiar.
 El sistema deberá compararlo con los materiales de la materia e informar contenidos
 cubiertos, parciales y sin evidencia, recomendar material y concluir sobre la
 utilidad del video. Ya tenemos una transcripción de clase, la transcripción
-automática de un audio de ejemplo, un caso de cobertura revisado y la preparación
-de chunks para el material académico.
-Todavía no implementamos la recuperación ni la comparación automática.
+automática de un audio de ejemplo, un caso de cobertura revisado, chunks del
+material académico e indexación y recuperación local.
+Todavía no implementamos la generación ni la comparación automática de cobertura.
 
 La base vectorial elegida es **Chroma local con persistencia en `data/chroma/`**.
-Usaremos los embeddings de MiniLM para cargar los chunks y buscar referencias de
+Usamos los embeddings de MiniLM para cargar los chunks y buscar referencias de
 la materia. La elección reemplaza la propuesta intermedia de Pinecone y retoma
-Chroma, presente en los notebooks de la cátedra. Esta etapa aún no está implementada.
+Chroma, presente en los notebooks de la cátedra. El 31/10/2026 se indexaron los
+125 chunks y se probaron búsquedas reales. La recuperación inicial muestra ruido
+y omisiones; no implica que el sistema ya pueda evaluar videos correctamente.
 
 La [propuesta de diseño inicial](diseno_rag_inicial.md) reúne las recomendaciones
 encontradas en las clases, los componentes de los notebooks, una configuración
-de partida y el orden de experimentos. Es una propuesta documentada; no agrega
-todavía la implementación del índice ni de la generación.
+de partida y el orden de experimentos. Distingue las etapas implementadas de la
+generación y los experimentos todavía propuestos.
 
 ## Fuente inicial
 
@@ -70,9 +72,11 @@ localmente para ejecutar el script.
 
 ## Revisión y siguiente paso
 
-El caso manual inicial ya fue revisado por el usuario. Para revisar ahora los
-chunks, cotejar algunos contra el original, incluidos los que mencionan similitud
-coseno, y comprobar que se conserva el contenido y su ubicación.
+El caso manual inicial ya fue revisado por el usuario. Se cotejó el texto de los
+125 chunks persistidos contra sus offsets en el VTT limpio y se revisaron los
+fragmentos de coseno y magnitud. Se conservan texto y referencias, aunque hay
+cortes dentro de palabras e intervenciones. La revisión de recuperación está en
+[validación inicial](evaluacion/revision_retrieval_inicial.md).
 
 El [caso 01: embeddings](evaluacion/caso_01_embeddings.md) contiene ese primer
 ejemplo: objetivo propuesto, criterios apoyados en la clase, evidencias temporales,
@@ -140,9 +144,82 @@ con la clase local `docs/embeddings_2.VTT`:
 python3 -m unittest discover -s tp3/ejercicio2/tests -v
 ```
 
-El siguiente paso es revisar esta vista de chunks y generar embeddings para
-cargarlos en una colección persistente de Chroma. Esta preparación todavía no
-crea ni consulta la base vectorial.
+`preparar_chunks.py` solo prepara el JSON/TXT. La indexación y las búsquedas se
+ejecutan con los comandos siguientes.
+
+## Indexar el material en Chroma
+
+Con el entorno activo y las dependencias instaladas:
+
+```bash
+python3 tp3/ejercicio2/indexar_material.py
+```
+
+Lee `data/chunks/embeddings_2.chunks.json`, genera embeddings con
+`sentence-transformers/all-MiniLM-L6-v2` en CPU y persiste texto, vectores de
+384 dimensiones, IDs y metadatos en `data/chroma/`. Configura explícitamente
+distancia coseno. La transcripción del video no se agrega a esta colección.
+
+La primera ejecución descarga los pesos públicos a `data/modelos/`. No hace
+llamadas de inferencia a OpenAI ni utiliza sus credenciales. Con el modelo en
+caché se puede trabajar sin descargas:
+
+```bash
+python3 tp3/ejercicio2/indexar_material.py --solo-local
+```
+
+El nombre de colección se deriva del hash del JSON de chunks, modelo/revisión,
+métrica y versiones de las bibliotecas. El manifiesto se guarda en sus metadatos.
+Repetir una carga completa reutiliza los IDs sin volver a ejecutar el embedder.
+Una carga interrumpida queda incompleta y puede reanudarse; se bloquean consultas
+hasta completarla. Cambiar corpus, splitting, embedder o versiones produce otra
+colección. Si se fuerza `--coleccion` con una configuración incompatible, falla
+sin reemplazar la colección existente.
+
+Opciones: `entrada` permite seleccionar otro JSON de chunks y `--base` otra
+carpeta de Chroma. Conservar el JSON correspondiente para consultar ese índice.
+Los límites de tokens se comprueban antes de codificar; no se permite truncamiento
+silencioso de los chunks ni del objetivo.
+
+Referencias: notebook `Langchain_Virtual_Assitant.ipynb`, celda 9, y
+`UN_Report_Advanced_RAG.ipynb`, celdas 18-23. La adaptación usa las APIs oficiales
+de [persistencia](https://docs.trychroma.com/reference/python/client),
+[configuración de distancia](https://docs.trychroma.com/docs/collections/configure)
+y [SentenceTransformer](https://www.sbert.net/docs/package_reference/sentence_transformer/model.html).
+
+## Recuperar referencias desde un objetivo de estudio
+
+```bash
+python3 tp3/ejercicio2/recuperar.py \
+  "entender similitud coseno y sus limitaciones" --solo-local
+```
+
+Usa el mismo modelo y revisión que la colección. Busca desde el objetivo del
+usuario, con `k=4` y sin umbral como punto de partida. Muestra texto y tiempos,
+y guarda cada corrida en un JSON nuevo en `data/resultados/`: consulta,
+configuración, IDs, metadatos, textos, distancias y tiempos medidos. No invoca
+al generador ni clasifica cobertura del video.
+
+Chroma devuelve **distancia coseno: menor es mejor**. También guardamos
+`similitud_coseno = 1 - distancia_coseno`; no es probabilidad ni porcentaje de
+cobertura. Puede haber pequeños errores numéricos alrededor de 0 o 1.
+
+Opciones: `--k`, `--chunks`, `--base`, `--coleccion` y `--salida ruta.json`.
+Si `k` supera la cantidad de chunks, se devuelven los disponibles y se registran
+el `k` solicitado y el efectivo. No se introduce un filtro por puntaje todavía:
+una consulta fuera de dominio también devuelve vecinos y requiere revisión.
+
+**Resultado inicial:** la consulta de coseno recuperó la explicación del cálculo
+en el puesto 4, pero omitió el ejemplo sobre magnitud. El objetivo más amplio del
+caso 01 también recuperó material poco pertinente. Ver las corridas, referencias
+y límites en [la revisión inicial](evaluacion/revision_retrieval_inicial.md).
+El siguiente paso es diagnosticar y mejorar esta recuperación antes de usarla
+como contexto para generar el informe.
+
+Las 13 pruebas incluyen integridad de chunks y una integración con Chroma real
+y vectores controlados (persistencia en otro proceso, repetición, reanudación,
+incompatibilidades y trazabilidad). La calidad semántica de MiniLM se revisó
+por separado con las consultas reales; no se infiere de esas pruebas.
 
 ## Transcribir el audio de ejemplo
 

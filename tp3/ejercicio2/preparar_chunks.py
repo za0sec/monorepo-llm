@@ -13,11 +13,10 @@ from huggingface_hub import hf_hub_download
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from transformers import AutoTokenizer
 
+from config import MODELO, REVISION
 from preparar_transcripcion import REPO, leer_vtt
 
 
-MODELO = "sentence-transformers/all-MiniLM-L6-v2"
-REVISION = "c9745ed1d9f207416be6d2e6f8de32d1f16199bf"
 VERSION = 1
 
 

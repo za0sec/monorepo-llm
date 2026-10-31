@@ -9,7 +9,7 @@
 - `tp1/`: predicción de BTR con PyTorch; `experiments/` procesa, entrena y evalúa; `plots/` grafica CSV de `output/`; `data/` contiene splits preparados.
 - `tp2/`: paper, consigna y apuntes de defensa; sin aplicación propia.
 - `tp3/ejercicio1/`: propuesta y diagrama del evaluador de cobertura de videos.
-- `tp3/ejercicio2/`: preparación de VTT/chunks, transcripción y caso manual revisado. **Usaremos Chroma local con persistencia en `data/chroma/`; faltan embeddings, colección, retrieval y generación.** MiniLM y el generador están propuestos; distinguirlos de componentes implementados.
+- `tp3/ejercicio2/`: preparación de VTT/chunks, transcripción, caso manual revisado e indexación/recuperación con **MiniLM y Chroma local persistente en `data/chroma/`**. Hay 125 chunks indexados localmente; las búsquedas iniciales muestran ruido y omisiones (ver `evaluacion/revision_retrieval_inicial.md`). Falta generación y comparación automática de cobertura; el generador sigue propuesto.
 - `docs/`: material local de cátedra, excluido de Git; respetar las minúsculas para portabilidad.
 
 ## Instalación y ejecución

@@ -9,7 +9,7 @@
 - `tp1/`: predicción de BTR con PyTorch; `experiments/` procesa, entrena y evalúa; `plots/` grafica CSV de `output/`; `data/` contiene splits preparados.
 - `tp2/`: paper, consigna y apuntes de defensa; sin aplicación propia.
 - `tp3/ejercicio1/`: propuesta y diagrama del evaluador de cobertura de videos.
-- `tp3/ejercicio2/`: preparación de VTT, transcripción con Whisper y caso manual de evaluación. **El RAG automático todavía no está implementado.** Chroma, MiniLM y los generadores son propuestas/referencias; distinguirlas de dependencias instaladas.
+- `tp3/ejercicio2/`: preparación de VTT/chunks, transcripción y caso manual revisado. **Usaremos Chroma local con persistencia en `data/chroma/`; faltan embeddings, colección, retrieval y generación.** MiniLM y el generador están propuestos; distinguirlos de componentes implementados.
 - `docs/`: material local de cátedra, excluido de Git; respetar las minúsculas para portabilidad.
 
 ## Instalación y ejecución
@@ -32,7 +32,7 @@ Usar español en documentación, comentarios y justificaciones. Seguir Python ex
 
 ## Testing y validación
 
-No hay suite automatizada ni CI configurada. Validar VTT con `python3 tp3/ejercicio2/preparar_transcripcion.py --salida /tmp/tp3-vtt-check` y cotejar segmentos originales. `evaluate_test.py` evalúa el modelo del TP1 y reentrena; no es una suite. Para TP3, validar evidencias y métricas por módulo antes de comparar configuraciones.
+Ejecutar `python3 -m unittest discover -s tp3/ejercicio2/tests -v` para integridad de chunks; requiere tokenizer en caché y VTT local. No hay CI. Validar VTT con `python3 tp3/ejercicio2/preparar_transcripcion.py --salida /tmp/tp3-vtt-check`. `evaluate_test.py` reentrena/evalúa TP1. Validar evidencias y métricas por módulo antes de comparar configuraciones.
 
 ## Commits y pull requests
 

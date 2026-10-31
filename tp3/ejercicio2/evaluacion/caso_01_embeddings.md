@@ -3,13 +3,15 @@
 ## Estado y propósito
 
 Ejemplo de respuesta elaborado por el asistente mediante revisión de las
-transcripciones, pendiente de validación del grupo. Sirve para concretar qué
-queremos que produzca la aplicación y discutir los criterios de cobertura.
-Las etiquetas son provisionales: todavía no constituyen un conjunto de
-evaluación validado ni resultados de un pipeline RAG.
+transcripciones. El 31/10/2026 el usuario confirmó haber revisado el caso como
+primer paso del plan de implementación. Se conserva como referencia manual de
+desarrollo para concretar la salida de la aplicación y comprobar la recuperación.
+No es un resultado de un pipeline RAG ni constituye por sí solo un conjunto de
+evaluación independiente.
 
 Esta revisión utiliza los archivos locales y no requiere llamadas adicionales
-a la API. La revisión directa del audio por parte del grupo sigue pendiente.
+a la API. La confirmación de revisión del caso no documenta una auditoría de la
+transcripción contra el audio original.
 
 ## Entrada del caso
 
@@ -127,8 +129,9 @@ la similitud coseno y qué limitaciones tiene.
 - Los nombres de modelos y las dimensiones mencionadas por el video no forman
   parte de estos criterios. Este análisis de cobertura no verifica todas sus
   afirmaciones técnicas ni su vigencia.
-- El grupo debería revisar el objetivo, los criterios y sus evidencias antes de
-  usar estas etiquetas como referencia. Cualquier corrección debe documentarse.
+- El caso ya fue revisado por el usuario como referencia para el primer paso.
+  Cualquier corrección posterior del objetivo, criterios o evidencias debe
+  documentarse.
 - El próximo paso será intentar recuperar automáticamente los fragmentos de
   clase necesarios para el objetivo y comprobarlos contra estas referencias.
   Este caso servirá para desarrollar y depurar; harán falta otros casos

@@ -1,8 +1,11 @@
 # Diseño inicial del RAG y plan de experimentos
 
-La base vectorial elegida es **Pinecone**, por decisión del grupo para seguir la
-implementación explicada en clase y disponible en
-[Langchain_Pinecone.ipynb](../../docs/RAG/Langchain_Pinecone.ipynb).
+La base vectorial elegida es **Chroma local con persistencia en `data/chroma/`**,
+por decisión del grupo para simplificar la configuración del primer prototipo.
+Tomamos como referencia el uso de Chroma en
+[Langchain_Virtual_Assitant.ipynb](../../docs/RAG/Langchain_Virtual_Assitant.ipynb)
+y [UN_Report_Advanced_RAG.ipynb](../../docs/RAG/UN_Report_Advanced_RAG.ipynb).
+Esta decisión del 31/10/2026 reemplaza la elección intermedia de Pinecone.
 El resto del diseño es una propuesta para revisar antes de implementar. Sus
 parámetros son hipótesis iniciales; todavía no se midió su calidad ni su tiempo
 de ejecución.
@@ -40,8 +43,8 @@ Las celdas se numeran desde 1, contando todas las celdas del archivo.
 
 | Notebook | Implementación observada | Qué tomamos |
 | --- | --- | --- |
-| [Langchain_Pinecone](../../docs/RAG/Langchain_Pinecone.ipynb) | Celda 15: splitter recursivo, 1000 caracteres y 200 de overlap. Celda 19: `all-MiniLM-L6-v2`. Celda 22: `text-embedding-3-small`, con `large` mencionado como alternativa. Celda 26: índice Pinecone de dimensión configurable y métrica coseno. | Referencia principal para conectar MiniLM con Pinecone, crear el índice, cargar chunks y recuperar documentos. La alternativa de embeddings por API queda para una comparación posterior. |
-| [Langchain_Virtual_Assitant](../../docs/RAG/Langchain_Virtual_Assitant.ipynb) | Celda 9: MiniLM en CPU, Chroma y chunks de 2000 caracteres/200 de overlap. Celda 10: bloque API comentado con GPT-4.1 nano, salida de 512 tokens y `k=2`. Celdas 11 y 22: Qwen2.5-1.5B-Instruct local, salida de 128 tokens y `k=2` o `k=3`. | Referencia para el generador local y el armado del contexto. Adaptaremos esa parte al retriever de Pinecone, conservando Chroma solo como ejemplo del notebook. |
+| [Langchain_Pinecone](../../docs/RAG/Langchain_Pinecone.ipynb) | Celda 15: splitter recursivo, 1000 caracteres y 200 de overlap. Celda 19: `all-MiniLM-L6-v2`. Celda 22: `text-embedding-3-small`, con `large` mencionado como alternativa. Celda 26: índice Pinecone de dimensión configurable y métrica coseno. | Referencia complementaria de splitting, embeddings y similitud. Pinecone queda como alternativa del material; no es la base elegida para nuestra implementación inicial. |
+| [Langchain_Virtual_Assitant](../../docs/RAG/Langchain_Virtual_Assitant.ipynb) | Celda 9: MiniLM en CPU, Chroma y chunks de 2000 caracteres/200 de overlap. Celda 10: bloque API comentado con GPT-4.1 nano, salida de 512 tokens y `k=2`. Celdas 11 y 22: Qwen2.5-1.5B-Instruct local, salida de 128 tokens y `k=2` o `k=3`. | Referencia principal para MiniLM + Chroma y para el generador local. Adaptaremos la persistencia y el contexto a nuestro informe de cobertura. |
 | [UN_Report_Advanced_RAG](../../docs/RAG/UN_Report_Advanced_RAG.ipynb) | Celdas 11 y 14: 1000 caracteres/20 de overlap, luego 256 tokens/20 de overlap. Celdas 18-20: Chroma. Celdas posteriores: expansión de consultas y reranking con CrossEncoder. | Splitting en dos pasos; una técnica avanzada para agregar después del baseline. |
 | [RAGAS](../../docs/RAG/RAGAS.ipynb) | Celdas 4-7: faithfulness, answer relevancy, context precision y context recall; GPT-4o mini como juez. | Referencia para una evaluación posterior. Ese juez agrega llamadas y costo; al principio usamos revisión de casos. |
 
@@ -57,9 +60,9 @@ la salida de nuestro sistema debe comparar cobertura, no responder un Q&A genér
 | Corpus | `docs/embeddings_2.VTT` | Permite revisar fuentes y resultados antes de ampliar el material. |
 | Limpieza | La actual, conservando contenido y tiempos | Mantiene trazabilidad y evita correcciones semánticas no verificadas. |
 | Primer splitting | `RecursiveCharacterTextSplitter`, 1000 caracteres, overlap 100 | Se apoya en los ejemplos de clase; buscamos fragmentos legibles antes del límite por tokens. |
-| Segundo splitting | `SentenceTransformersTokenTextSplitter`, modelo MiniLM explícito, 200 tokens de contenido, overlap 20 | Sigue la demo del reporte. Se propone 200, en lugar de sus 256, dejando margen respecto del límite del encoder. |
+| Segundo splitting | Ventanas con el tokenizer de MiniLM, 200 tokens de contenido, overlap 20 | Adapta el splitting por tokens de la demo del reporte mediante offsets para conservar texto y referencias originales. Se usan 200, en lugar de sus 256, dejando margen para los tokens especiales del encoder. |
 | Embeddings | `sentence-transformers/all-MiniLM-L6-v2`, CPU, 384 dimensiones | Está en los notebooks y en la propuesta aprobada. Ejecutado localmente no consume saldo de la API de OpenAI. |
-| Base vectorial | Pinecone, índice remoto de 384 dimensiones con métrica `cosine` | Sigue la celda 26 del notebook de la cátedra y conserva los vectores entre ejecuciones en el servicio. Los embeddings se calculan con MiniLM antes de cargarlos. |
+| Base vectorial | Chroma local persistente en `data/chroma/`, embeddings MiniLM de 384 dimensiones y métrica coseno explícita | Se apoya en los ejemplos de Chroma de la cátedra y permite conservar la colección entre ejecuciones. Los embeddings se calculan con MiniLM; la persistencia es una adaptación de los ejemplos. |
 | Retrieval | Similitud coseno, `k=4`, sin umbral inicial | Valor intermedio para empezar a medir cobertura y ruido. No se supone óptimo. |
 | Consulta | Objetivo de estudio escrito por el usuario, una búsqueda inicial | Permite buscar contenidos esperados aunque el video no los mencione. |
 | Generador del primer pipeline completo | `Qwen/Qwen2.5-1.5B-Instruct` local | Es el generador activo del notebook, pequeño y sin gasto de saldo de OpenAI al ejecutarlo localmente. Su calidad, RAM y latencia deben probarse en el equipo. |
@@ -68,36 +71,48 @@ la salida de nuestro sistema debe comparar cobertura, no responder un Q&A genér
 | Límite de entrada al generador | 6000 tokens, contando plantilla, objetivo, transcripción y referencias | Presupuesto conservador para el caso inicial; debe verificarse al implementar. Si se excede, se informa para ajustar el alcance, sin truncar silenciosamente el audio. |
 | Llamadas de generación | Una por evaluación inicial | Evita introducir desde el comienzo cadenas de llamadas, expansión y jueces automáticos. |
 
-La elección de Pinecone es una decisión del grupo; los límites y demás valores
+La elección de Chroma es una decisión del grupo; los límites y demás valores
 anteriores son recomendaciones del asistente, no valores exigidos por las
 profesoras.
 
-### Configuración de Pinecone según el notebook de la cátedra
+Avance al 31/10/2026: el usuario confirmó la revisión del caso manual y se
+implementó `preparar_chunks.py`. Aplica las dos pasadas de splitting, conserva
+fuente e intervenciones, cuenta tokens con el tokenizer real y exporta JSON/TXT.
+La pasada por tokens toma substrings del texto mediante offsets en lugar de
+decodificarlos como `SentenceTransformersTokenTextSplitter`, para no alterar
+acentos, mayúsculas ni la correspondencia con los tiempos. Esta adaptación está
+apoyada en la [documentación del tokenizer](https://huggingface.co/docs/transformers/v4.57.1/main_classes/tokenizer).
+El baseline produjo 125 chunks de las 415 intervenciones, con máximo de 202
+tokens incluidos los especiales. Todavía no hay embeddings, índice ni retrieval.
 
-Tomamos como referencia las celdas 26 a 31 de
-[Langchain_Pinecone.ipynb](../../docs/RAG/Langchain_Pinecone.ipynb):
+### Configuración de Chroma y relación con los notebooks
 
-- **Cliente y conexión:** `Pinecone` y `PineconeVectorStore`. La credencial
-  `PINECONE_API_KEY` se leerá del entorno o de `tp3/.env`, sin escribirla en el
-  código ni en los resultados.
-- **Índice:** nombre propio del TP3, configurable; no reutilizar el índice de la
-  demo. Como configuración inicial seguimos `ServerlessSpec(cloud='aws',
-  region='us-east-1')` de la celda 26, verificando que esté disponible para la
-  cuenta del grupo. Esa región es un valor del ejemplo, no una exigencia docente.
-- **Dimensión y métrica:** 384 para MiniLM y `cosine`. Antes de reutilizar un índice
-  existente, comprobar que su dimensión, métrica y modelo de embedding coincidan
-  con la configuración de la corrida.
+Tomamos como referencia la celda 9 de
+[Langchain_Virtual_Assitant.ipynb](../../docs/RAG/Langchain_Virtual_Assitant.ipynb)
+y las celdas 18 a 23 de
+[UN_Report_Advanced_RAG.ipynb](../../docs/RAG/UN_Report_Advanced_RAG.ipynb):
+
+- **Cliente y persistencia:** Chroma local con almacenamiento en `data/chroma/`,
+  para recuperar la misma colección al reiniciar. La base local no requiere
+  cuenta, API key ni configuración cloud. La persistencia en disco es un ajuste
+  nuestro respecto de las demos y está descrita en la
+  [documentación de Chroma](https://docs.trychroma.com/reference/python/client).
+- **Colección:** nombre propio del TP3, configurable y asociado a la versión del
+  corpus, el splitting y el embedder. Reutilizarla solo si la configuración
+  coincide; no mezclar resultados de experimentos incompatibles.
+- **Dimensión y métrica:** los vectores de MiniLM tienen 384 dimensiones.
+  Configuraremos coseno explícitamente al crear la colección, sin asumir que es
+  la métrica predeterminada de los ejemplos. Chunks y consultas usarán el mismo
+  modelo de embedding.
 - **Contenido persistido:** ID estable, embedding, texto del chunk y metadatos
   de fuente, intervenciones y tiempos. Los originales y la transcripción del
   video se conservan separados del índice académico.
-- **Recuperación:** `PineconeVectorStore` con el mismo embedder usado al indexar,
-  búsqueda por similitud y `k=4`. La celda 31 muestra una búsqueda con umbral;
-  nuestro baseline comienza sin umbral para medir primero cobertura y ruido.
+- **Recuperación:** búsqueda en Chroma por similitud, inicialmente con `k=4` y
+  sin umbral, para medir primero cobertura y ruido.
 
-Al adaptar la celda 26 usaremos el nombre de índice recibido por la función en
-lugar de depender de la global `INDEX_NAME` que utiliza la demo. La carga deberá
-evitar duplicar chunks al repetir una indexación. Estas son pautas para la futura
-implementación: todavía no se creó ni se cargó un índice desde este proyecto.
+La carga deberá reutilizar IDs estables para evitar duplicar chunks al repetir
+una indexación. Estas son pautas para la futura implementación: Chroma todavía
+no está integrado en el código ni se creó una colección desde este proyecto.
 
 La [ficha original de MiniLM](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)
 confirma las 384 dimensiones y el truncamiento por defecto por encima de 256
@@ -135,14 +150,14 @@ VTT de la clase
   -> lectura y limpieza con referencias temporales
   -> splitting por caracteres y por tokens
   -> embeddings MiniLM
-  -> índice remoto persistente de Pinecone
+  -> colección local persistente de Chroma en data/chroma/
 ```
 
 Evaluación de un video:
 
 ```text
 Audio -> Whisper -> transcripción guardada
-Objetivo del usuario -> embedding MiniLM -> búsqueda en Pinecone
+Objetivo del usuario -> embedding MiniLM -> búsqueda en Chroma
 Objetivo + transcripción + referencias recuperadas
   -> una generación del informe de cobertura
   -> resultado con evidencias y recomendaciones
@@ -167,6 +182,7 @@ etapa. Los nombres siguientes son una propuesta, no archivos ya implementados.
 tp3/ejercicio2/
   config.py                   # Valores del experimento, sin credenciales.
   preparar_transcripcion.py   # Ya implementado: lector de VTT.
+  preparar_chunks.py          # Ya implementado: doble splitting y referencias.
   transcribir_audio.py        # Ya implementado: Whisper y caché de respuesta.
   indexar_material.py         # Construcción del corpus, chunks e índice.
   recuperar.py                # Objetivo -> referencias y puntajes.
@@ -178,20 +194,23 @@ tp3/ejercicio2/
     audios/
     transcripciones/
     procesados/
+    chunks/
+    chroma/
     resultados/
 ```
 
-El índice vectorial se conserva en Pinecone; no requiere una carpeta local
-`data/chroma/`. `config.py` identificará el índice y su configuración, sin incluir
-la API key. Los datos procesados y los resultados de las corridas se guardan
-localmente para revisión.
+La colección y el índice vectorial se conservan localmente en `data/chroma/`.
+`config.py` identificará la ruta, el nombre de colección y su configuración.
+Esa carpeta queda excluida de Git junto con el resto de `data/`; se podrá
+regenerar a partir de las fuentes y la configuración. Los datos procesados y
+los resultados de las corridas también se guardan localmente para revisión.
 
 Cada chunk guardará `chunk_id`, fuente, IDs de intervenciones, inicio y fin en
 milisegundos y versión de configuración. Cada corrida guardará la configuración
 efectiva, IDs recuperados, puntajes, contexto realmente enviado, respuesta,
 tiempos y conteos de tokens. El historial de chat no se agregará a cada evaluación.
 
-Al cambiar el embedder se reconstruye el índice y se usa un índice separado,
+Al cambiar el embedder se reconstruye el índice y se usa una colección separada,
 incluso si el nuevo modelo tiene la misma dimensión. Chunks y consultas deben
 usar el mismo embedder. Al cambiar el splitting también se reconstruye el índice;
 al cambiar solo `k` o el generador se reutiliza.
@@ -214,11 +233,11 @@ Al cambiar el máximo por tokens se debe registrar cuántos chunks efectivos
 cambiaron: la primera pasada por caracteres puede dejar algunos por debajo
 del límite en todas las configuraciones.
 
-Pinecone es la base del primer pipeline completo. La elección busca seguir la
-implementación de clase; no supone que por sí sola mejore la cobertura frente a
-otra base. En los experimentos se mantiene esta base fija para aislar el efecto
-del splitting, `k`, embeddings y generación, registrando también persistencia,
-operación y latencia.
+Chroma es la base del primer pipeline completo. La elección busca simplificar
+el desarrollo local usando componentes vistos en clase; no supone que por sí
+sola mejore la cobertura frente a otra base. En los experimentos se mantiene
+esta base fija para aislar el efecto del splitting, `k`, embeddings y generación,
+registrando también persistencia, operación y latencia.
 
 Para empezar, revisamos pertinencia de los chunks recuperados y cobertura de los
 contenidos de referencia del caso 01. Tras validar etiquetas, podemos calcular
@@ -229,18 +248,16 @@ y midiendo las llamadas de su juez.
 
 ## Control del presupuesto
 
-- Reutilizar la transcripción del audio y los embeddings ya cargados en Pinecone;
-  no reconstruir el índice en cada evaluación de un video.
-- Revisar el splitting localmente y probar la recuperación en Pinecone antes de
+- Reutilizar la transcripción del audio y la colección persistente de Chroma;
+  no reconstruir el índice ni recalcular embeddings en cada evaluación de un video.
+- Revisar el splitting y probar la recuperación local en Chroma antes de
   ejecutar generación.
 - Medir con el tokenizer de cada modelo: los tokens de MiniLM y Qwen no son
   intercambiables. Si se usa una API, registrar también su uso reportado.
 - Separar tokens de entrada y salida, tiempo de ejecución y costo monetario.
   Los embeddings y el generador locales usan recursos del equipo aunque no
-  consuman saldo de OpenAI; Pinecone agrega almacenamiento y llamadas remotas.
-- Verificar límites y costos del plan de Pinecone antes de cargar el corpus y
-  registrar las operaciones de indexación y consulta. No asumir que el servicio
-  remoto es gratuito por ejecutar MiniLM localmente.
+  consuman saldo de OpenAI. Chroma local usa almacenamiento y recursos del equipo;
+  registrar tamaño en disco, memoria y tiempos de indexación y consulta.
 - Registrar el motivo de finalización: si se alcanza el límite de salida y se
   corta el informe, no tratarlo como un resultado completo.
 - Verificar tarifas y disponibilidad del proxy antes de incorporar modelos por

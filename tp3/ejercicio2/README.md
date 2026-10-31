@@ -4,8 +4,14 @@ El usuario final cargará el audio de un video y los temas que quiere estudiar.
 El sistema deberá compararlo con los materiales de la materia e informar contenidos
 cubiertos, parciales y sin evidencia, recomendar material y concluir sobre la
 utilidad del video. Ya tenemos una transcripción de clase, la transcripción
-automática de un audio de ejemplo y un primer ejemplo de cobertura revisable.
+automática de un audio de ejemplo, un caso de cobertura revisado y la preparación
+de chunks para el material académico.
 Todavía no implementamos la recuperación ni la comparación automática.
+
+La base vectorial elegida es **Chroma local con persistencia en `data/chroma/`**.
+Usaremos los embeddings de MiniLM para cargar los chunks y buscar referencias de
+la materia. La elección reemplaza la propuesta intermedia de Pinecone y retoma
+Chroma, presente en los notebooks de la cátedra. Esta etapa aún no está implementada.
 
 La [propuesta de diseño inicial](diseno_rag_inicial.md) reúne las recomendaciones
 encontradas en las clases, los componentes de los notebooks, una configuración
@@ -64,16 +70,79 @@ localmente para ejecutar el script.
 
 ## Revisión y siguiente paso
 
-Primero revisar algunos segmentos contra el original, incluidos los que mencionan
-similitud coseno, para comprobar que se conserva el contenido y su ubicación.
-Antes de agregar chunks y recuperación, revisaremos el texto del video y
-definiremos un ejemplo manual de cobertura contra el material de clase.
+El caso manual inicial ya fue revisado por el usuario. Para revisar ahora los
+chunks, cotejar algunos contra el original, incluidos los que mencionan similitud
+coseno, y comprobar que se conserva el contenido y su ubicación.
 
 El [caso 01: embeddings](evaluacion/caso_01_embeddings.md) contiene ese primer
 ejemplo: objetivo propuesto, criterios apoyados en la clase, evidencias temporales,
 clasificaciones, recomendaciones y conclusión. Fue elaborado por el asistente a
-partir de las transcripciones y queda pendiente de validación del grupo. Sirve
+partir de las transcripciones y el usuario confirmó su revisión el 31/10/2026. Sirve
 para concretar la salida esperada antes de automatizarla.
+
+## Preparar chunks de la clase
+
+Desde la raíz, activar el entorno e instalar las dependencias actualizadas:
+
+```bash
+source .venv/bin/activate
+python3 -m pip install -r tp3/ejercicio2/requirements.txt
+python3 tp3/ejercicio2/preparar_chunks.py
+```
+
+El script reutiliza el lector de VTT. Une las intervenciones con separadores de
+párrafo, aplica `RecursiveCharacterTextSplitter` (1000 caracteres, overlap 100)
+y divide de nuevo por tokens de MiniLM (máximo 200 de contenido, overlap 20).
+Los valores son parámetros iniciales del diseño, no requisitos docentes.
+
+La segunda pasada usa el tokenizer rápido de `all-MiniLM-L6-v2` y sus offsets
+para tomar el texto original: no decodifica tokens, no elimina acentos ni cambia
+mayúsculas. Se adapta así el splitting por tokens del notebook del reporte ONU
+para conservar la trazabilidad. Los límites por tokens pueden cortar palabras
+o intervenciones: conservar todo el texto no garantiza por sí solo que cada
+chunk tenga contexto suficiente; la legibilidad debe revisarse.
+
+Se fija la revisión del tokenizer en el código y se lee el límite de 256 tokens
+de `sentence_bert_config.json`, incluyendo los especiales. Esta etapa solo carga
+tokenizer y configuración, sin pesos de modelos ni GPU. En la primera ejecución
+puede descargar esos archivos de Hugging Face; si ya están en caché:
+
+```bash
+python3 tp3/ejercicio2/preparar_chunks.py --solo-local
+```
+
+Genera `data/chunks/embeddings_2.chunks.json` y `.txt`, ignorados por Git. Cada
+chunk incluye ID estable, texto, fuente, IDs de intervenciones, offsets de
+caracteres, tiempos y conteos de tokens. Los tiempos delimitan las intervenciones
+originales involucradas; no estiman el instante exacto de cada palabra cortada.
+Los offsets corresponden al texto limpio unido con `\n\n`, no al archivo VTT bruto.
+Se guardan hash de la fuente, parámetros y versión de configuración.
+
+Se comprueba que no desaparezca ningún carácter no blanco y que cada chunk
+respete los límites de contenido y del encoder. Los IDs distinguen apariciones
+repetidas y cambian si cambia la fuente o la configuración. Si se genera otra
+configuración en la misma carpeta, se reemplazan los resultados; usar `--salida`
+para conservar experimentos distintos:
+
+```bash
+python3 tp3/ejercicio2/preparar_chunks.py --tokens 128 --overlap-tokens 20 \
+  --salida /tmp/tp3-chunks-128
+```
+
+La ejecución inicial sobre 415 intervenciones produjo **125 chunks**, con máximo
+de **202 tokens incluidos los especiales**. Estos son controles de integridad y
+tamaño; todavía no son métricas de recuperación ni de cobertura del video.
+
+Las pruebas usan el tokenizer real previamente descargado, incluida una prueba
+con la clase local `docs/embeddings_2.VTT`:
+
+```bash
+python3 -m unittest discover -s tp3/ejercicio2/tests -v
+```
+
+El siguiente paso es revisar esta vista de chunks y generar embeddings para
+cargarlos en una colección persistente de Chroma. Esta preparación todavía no
+crea ni consulta la base vectorial.
 
 ## Transcribir el audio de ejemplo
 

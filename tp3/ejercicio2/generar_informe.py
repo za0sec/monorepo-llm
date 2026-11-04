@@ -13,7 +13,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from config import ARCHIVO_CHUNKS, CACHE_MODELOS, K_INICIAL
 from preparar_chunks import formatear_ubicacion
 from preparar_transcripcion import leer_vtt
-from proxy_catedra import completar
+from proxy_catedra import MODELO_PROXY, MODELOS_PROXY, completar
 
 
 MODELO_GENERADOR = "Qwen/Qwen2.5-1.5B-Instruct"
@@ -238,10 +238,10 @@ def renderizar_estudiante(objetivo: str, datos: dict, respuesta: dict) -> str:
 
 
 def generar_proxy(objetivo: str, referencias: list[dict], segmentos_video: list[dict],
-                  prompt: str, subtemas: list[dict] = None) -> dict:
+                  prompt: str, subtemas: list[dict] = None, modelo: str = MODELO_PROXY) -> dict:
     datos = preparar_entrada(objetivo, referencias, segmentos_video, prompt, subtemas)
     resultado = {**datos, **completar(datos["mensajes"], max_tokens=MAX_TOKENS_NUEVOS,
-                                    formato_json=prompt == "estudiante")}
+                                    formato_json=prompt == "estudiante", modelo=modelo)}
     if resultado["finish_reason"] != "stop" or not resultado["respuesta"]:
         resultado["error_validacion"] = "El proxy no completó el informe."
     elif prompt == "estudiante":
@@ -268,6 +268,8 @@ def main() -> None:
     parser.add_argument("--pasaje", type=int, nargs=2, action="append", metavar=("DESDE", "HASTA"))
     parser.add_argument("--prompt", choices=PROMPTS, default="inicial")
     parser.add_argument("--backend", choices=("local", "proxy"), default="local")
+    parser.add_argument("--modelo-proxy", choices=MODELOS_PROXY,
+                        help=f"Modelo para --backend proxy. Por defecto: {MODELO_PROXY}.")
     parser.add_argument("--penalizacion-repeticion", type=float,
                         help="Por defecto se usa el valor de la configuración del modelo.")
     parser.add_argument("--solo-local", action="store_true", help="Usar modelos locales desde caché.")
@@ -279,6 +281,8 @@ def main() -> None:
         parser.error("El prompt estudiante requiere --backend proxy y --recuperacion expandida.")
     if args.backend == "proxy" and args.penalizacion_repeticion is not None:
         parser.error("--penalizacion-repeticion se aplica al backend local.")
+    if args.modelo_proxy and args.backend != "proxy":
+        parser.error("--modelo-proxy requiere --backend proxy.")
     ruta_md = args.salida.with_name(args.salida.name.removesuffix(".json") + ".md")
     for ruta in (args.salida, ruta_md) if args.backend == "proxy" else (args.salida,):
         if ruta.exists():
@@ -306,7 +310,8 @@ def main() -> None:
                                       k=args.k, solo_local=args.solo_local)
             referencias = recuperacion["referencias"]
         if args.backend == "proxy":
-            resultado = generar_proxy(args.objetivo, referencias, segmentos_video, args.prompt, subtemas)
+            resultado = generar_proxy(args.objetivo, referencias, segmentos_video, args.prompt,
+                                       subtemas, modelo=args.modelo_proxy or MODELO_PROXY)
         else:
             torch.set_num_threads(4)
             resultado = generar(args.objetivo, referencias, segmentos_video, args.solo_local,

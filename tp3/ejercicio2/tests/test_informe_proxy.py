@@ -71,7 +71,8 @@ class InformeProxyTest(unittest.TestCase):
                     "fuente": "Apunte.pdf", "pagina_inicio": 3, "pagina_fin": 3,
                 }}],
             }), encoding="utf-8")
-            argv = ["generar_informe.py", objetivo, str(video), "--backend", "proxy",
+            modelo = "openai/gpt-4.1-2025-04-14"
+            argv = ["generar_informe.py", objetivo, str(video), "--backend", "proxy", "--modelo-proxy", modelo,
                     "--prompt", "estudiante", "--recuperacion", str(entrada), "--salida", str(salida)]
             with patch.object(sys, "argv", argv), patch("builtins.print"), \
                  patch.object(generar_informe, "completar", return_value={
@@ -79,6 +80,7 @@ class InformeProxyTest(unittest.TestCase):
                  }) as completar:
                 generar_informe.main()
             self.assertIn("Un ejemplo.", completar.call_args.args[0][1]["content"])
+            self.assertEqual(completar.call_args.kwargs["modelo"], modelo)
             self.assertEqual(json.loads(salida.read_text())["informe_estructurado"], respuesta)
             visible, evidencia = salida.with_suffix(".md").read_text().split("<details>", 1)
             self.assertIn("Apunte · pág. 3", visible)

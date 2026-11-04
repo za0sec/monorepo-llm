@@ -541,7 +541,60 @@ La validación de esta integración se hizo con las respuestas ya guardadas
 y sin consumo adicional de API. Queda repetir la evaluación específica
 desde la CLI cuando corresponda la siguiente corrida.
 
-## 18. Cómo seguiremos actualizando este documento
+## 18. Comparación de GPT-4.1 y GPT-4o en el informe del estudiante — 04/11
+
+Se agregó `--modelo-proxy` a `generar_informe.py` y se ejecutó una
+corrida con `openai/gpt-4.1-2025-04-14`. Se comprobó que el objetivo,
+los mensajes, los cuatro subtemas, los ocho fragmentos y los 99 segmentos
+del video coincidieran con la corrida de GPT-4o. Ambas usaron temperatura
+cero, salida JSON y un límite de 1.000 tokens de salida. Pasaron las 16
+pruebas automatizadas.
+
+| Modelo | Tokens de entrada | Tokens de salida | Costo informado por el proxy |
+| --- | ---: | ---: | ---: |
+| GPT-4o | 3.737 | 446 | US$0,0138025 |
+| GPT-4.1 | 3.737 | 622 | US$0,01245 |
+
+GPT-4.1 conservó las evaluaciones respaldadas de definición y contexto y
+citó segmentos sobre el ejemplo de «banco». En aplicaciones dejó de citar
+`C1`, la lista de referencias. `C2` sí explica un uso, la comparación
+semántica de textos. Los ejemplos de agrupamiento, síntesis y recomendación
+se respaldan en el video, mientras que el material de clase citado solo
+respalda parte de esa fila.
+
+Ambos modelos marcaron entrenamiento como «Parcial» y recomendaron el mismo
+tramo de la clase (31:44.560–32:41.570). El pasaje menciona ajuste de pesos,
+pero se centra en comparar vectores y deja sin desarrollar los métodos que
+recomienda el informe. Para ese criterio correspondía «No se pudo evaluar
+con el material disponible». La prueba deja disponible GPT-4.1 como variante
+y mantiene abierta la revisión de cómo exigir respaldo antes de clasificar.
+
+La salida y la auditoría están en
+`data/resultados/informe_estudiante_gpt41_20261104.41f5UB/`
+del ejercicio 2. El [README](ejercicio2/README.md#repetir-las-pruebas-con-el-proxy)
+registra cómo repetir la comparación.
+
+## 19. Diagnóstico de la subconsulta de entrenamiento — 04/11
+
+Se revisaron las cuatro búsquedas del plan de GPT-4o y se confirmó que los
+informes de GPT-4o y GPT-4.1 recibieron la misma selección guardada de ocho
+fragmentos. La pregunta original sobre entrenamiento ya se había buscado
+en Chroma. Sus ocho candidatos incluían definiciones, menciones generales
+al entrenamiento y un ejemplo de conteo de palabras. El pasaje que explica
+el método de entrenamiento de Word2Vec quedó fuera de esos candidatos.
+
+Se hizo una consulta local de diagnóstico con la misma colección, MiniLM
+y `k=8`. La redacción «cómo se entrena Word2Vec skip-gram con pares
+positivos y negativos» recuperó en los puestos 1 y 2 la explicación del
+método en la transcripción (29:16.470–30:22.040). Se eligieron esos términos
+después de revisar la clase. El resultado comprueba que la evidencia está
+indexada y se puede encontrar con una consulta más específica. Falta
+comprobar si el plan puede generar esa consulta a partir del objetivo.
+El resultado quedó en
+`data/resultados/diagnostico_entrenamiento_20261104.js0weJ/skipgram.json`
+del ejercicio 2.
+
+## 20. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

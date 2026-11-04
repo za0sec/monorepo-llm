@@ -1,4 +1,4 @@
-"""Ejecuta y registra una llamada a GPT-4o por el proxy de la cátedra."""
+"""Ejecuta y registra una llamada de generación por el proxy de la cátedra."""
 
 from pathlib import Path
 from time import perf_counter
@@ -9,10 +9,14 @@ from openai import APIConnectionError, APIStatusError, OpenAI
 
 
 MODELO_PROXY = "openai/gpt-4o-2024-08-06"
+MODELOS_PROXY = (MODELO_PROXY, "openai/gpt-4.1-2025-04-14")
 HOST_PROXY = "sa-llmproxy.it.itba.edu.ar"
 
 
-def completar(mensajes: list[dict], max_tokens: int, formato_json: bool = False) -> dict:
+def completar(mensajes: list[dict], max_tokens: int, formato_json: bool = False,
+              modelo: str = MODELO_PROXY) -> dict:
+    if modelo not in MODELOS_PROXY:
+        raise ValueError("El modelo no está habilitado para estas pruebas.")
     entorno = dotenv_values(Path(__file__).resolve().parents[1] / ".env")
     base = entorno.get("OPENAI_BASE_URL") or f"https://{HOST_PROXY}/"
     url = urlsplit(base)
@@ -26,7 +30,7 @@ def completar(mensajes: list[dict], max_tokens: int, formato_json: bool = False)
     inicio = perf_counter()
     try:
         http = cliente.chat.completions.with_raw_response.create(
-            model=MODELO_PROXY, messages=mensajes, temperature=0, store=False,
+            model=modelo, messages=mensajes, temperature=0, store=False,
             max_completion_tokens=max_tokens, **opciones,
         )
     except APIStatusError as error:
@@ -37,7 +41,7 @@ def completar(mensajes: list[dict], max_tokens: int, formato_json: bool = False)
     respuesta = http.parse()
     opcion = respuesta.choices[0]
     return {
-        "modelo_solicitado": MODELO_PROXY, "modelo": respuesta.model, "mensajes": mensajes,
+        "modelo_solicitado": modelo, "modelo": respuesta.model, "mensajes": mensajes,
         "temperature": 0, "store": False, "max_completion_tokens": max_tokens,
         "response_format": "json_object" if formato_json else "text",
         "finish_reason": opcion.finish_reason, "segundos": perf_counter() - inicio,

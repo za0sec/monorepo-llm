@@ -305,6 +305,10 @@ También se puede usar directamente el `expandida.json` de esa carpeta como
 entrada del generador. Las opciones `--expandir` y `--backend proxy` consumen
 una llamada cada una y leen la configuración de `tp3/.env`.
 
+Para comparar el generador con GPT-4.1, usar el mismo JSON de recuperación
+y agregar `--modelo-proxy openai/gpt-4.1-2025-04-14` al último comando.
+Elegir otro archivo de salida para guardar la segunda corrida.
+
 El informe guarda los mensajes, las referencias, el modelo, los tokens y el
 costo informado por el proxy en el JSON. La vista Markdown se escribe al lado.
 Los comandos para reproducir las primeras pruebas de GPT-4o con

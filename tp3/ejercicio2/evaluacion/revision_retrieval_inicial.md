@@ -95,11 +95,11 @@ Desde la raíz, con el entorno activo y los chunks preparados:
 python3 tp3/ejercicio2/indexar_material.py
 python3 tp3/ejercicio2/indexar_material.py --solo-local
 python3 tp3/ejercicio2/recuperar.py \
-  "entender similitud coseno y sus limitaciones" --solo-local \
+  "entender similitud coseno y sus limitaciones" --solo-local --k 4 \
   --salida tp3/ejercicio2/data/resultados/coseno_k4.json
 python3 tp3/ejercicio2/recuperar.py \
   "entender qué son los embeddings y cómo se compara la similitud entre textos" \
-  --solo-local --salida tp3/ejercicio2/data/resultados/caso01_k4.json
+  --solo-local --k 4 --salida tp3/ejercicio2/data/resultados/caso01_k4.json
 python3 -m unittest discover -s tp3/ejercicio2/tests -v
 ```
 

@@ -1,6 +1,6 @@
 # Presentación: recorrido y decisiones del TP3
 
-Última actualización: **31/10/2026**.
+Última actualización: **04/11/2026**.
 
 Este documento cuenta cómo fuimos construyendo el proyecto: con qué alcance
 empezamos, qué decisiones tomamos, qué implementamos, qué comprobamos y qué
@@ -233,18 +233,50 @@ estas dos consultas no permiten atribuirles la causa del problema.
 | Más clases/videos, PDFs e imágenes | Posibles ampliaciones; todavía no incorporadas al pipeline. |
 | Advanced RAG | Pendiente, después de completar el pipeline básico. |
 
-El próximo avance propuesto es comparar `k=2,4,8` manteniendo fijo el resto y
-registrar si mejora la recuperación de las referencias o solo aumenta el ruido.
-Si hace falta, se estudiarán otras variables de a una. Después continuaremos
-con generación y evaluación del informe. Ampliar el corpus o las modalidades
-deberá quedar registrado como un cambio de alcance con sus propios resultados.
+En ese momento se propuso comparar `k=2,4,8` manteniendo fijo el resto y
+registrar qué referencias útiles y qué ruido se agregaban. La comparación
+quedó registrada en el apartado siguiente. El plan contemplaba estudiar
+otras variables de a una según el resultado y continuar con generación y
+evaluación del informe. Ampliar el corpus o las modalidades deberá quedar
+registrado como un cambio de alcance con sus propios resultados.
+
+## 6. Primera ablación de recuperación — 04/11
+
+Comparamos `k=2,4,8` para los dos objetivos de la revisión inicial. Se
+ejecutaron seis búsquedas locales con los mismos 125 chunks, MiniLM, Chroma
+persistente, distancia coseno y sin umbral. Queríamos comprobar si aumentar
+la cantidad de fragmentos aportaba referencias suficientes para los criterios
+del caso manual. Las corridas de `k=4` reprodujeron las anteriores y se cotejaron
+los IDs y el texto de los fragmentos recuperados.
+
+**Resultado:** para coseno y sus limitaciones, `k=2` respaldó 0 de 2 criterios
+y `k=4` y `k=8` respaldaron 1 de 2. Con ocho fragmentos apareció el cierre
+de un pasaje relacionado con magnitud, pero quedaron fuera la explicación y
+el ejemplo de series. Para el objetivo general, `k=2` y `k=4` respaldaron
+0 de 5 criterios y `k=8` respaldó 1 de 5 al combinar dos fragmentos sobre
+qué es un embedding. Al registrar la comparación se conservó inicialmente `k=4`.
+El [informe de ablación](ejercicio2/evaluacion/ablacion_k.md) detalla el método,
+los fragmentos nuevos y los comandos para reproducirlos.
+
+**Decisión posterior:** adoptamos `k=8` como valor por defecto. Entre los
+valores probados, respaldó más criterios del caso de desarrollo y conservó
+el respaldo para el cálculo del coseno, aunque agregó fragmentos poco útiles.
+Se verificó que la CLI sin `--k` reproduce las ocho referencias de la ablación
+para el objetivo general y que pasan las 13 pruebas del ejercicio 2. Las
+corridas originales se pueden reproducir con `--k 4`.
+
+**Siguiente paso propuesto:** construir el generador del informe básico y
+probarlo con pasajes académicos de referencia y con los resultados reales del
+buscador. Así se puede observar por separado si el informe usa bien las
+fuentes y qué limitaciones arrastra cuando faltan referencias de la clase.
+Para la corrida con búsqueda se fija `k=8`.
 
 Para ejecutar el estado actual, consultar el [README del ejercicio 2](ejercicio2/README.md).
 Los VTT originales bajo `docs/`, los audios, los pesos, Chroma y los resultados
 bajo `data/` están ignorados por Git: un clon no incluye todos esos archivos.
 Este documento y los informes de revisión conservan el recorrido compartible.
 
-## 6. Cómo seguiremos actualizando este documento
+## 7. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

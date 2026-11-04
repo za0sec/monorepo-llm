@@ -198,7 +198,7 @@ python3 tp3/ejercicio2/recuperar.py \
 ```
 
 Usa el mismo modelo y revisión que la colección. Busca desde el objetivo del
-usuario, con `k=4` y sin umbral como punto de partida. Muestra texto y tiempos,
+usuario, con `k=8` por defecto y sin umbral. Muestra texto y tiempos,
 y guarda cada corrida en un JSON nuevo en `data/resultados/`: consulta,
 configuración, IDs, metadatos, textos, distancias y tiempos medidos. No invoca
 al generador ni clasifica cobertura del video.
@@ -216,8 +216,10 @@ una consulta fuera de dominio también devuelve vecinos y requiere revisión.
 en el puesto 4, pero omitió el ejemplo sobre magnitud. El objetivo más amplio del
 caso 01 también recuperó material poco pertinente. Ver las corridas, referencias
 y límites en [la revisión inicial](evaluacion/revision_retrieval_inicial.md).
-El siguiente paso es diagnosticar y mejorar esta recuperación antes de usarla
-como contexto para generar el informe.
+En la [comparación de k](evaluacion/ablacion_k.md), se eligió `k=8` para
+la siguiente etapa porque respaldó un criterio más en el caso 01 y conservó
+la evidencia encontrada en la consulta de coseno. Quedan referencias por
+recuperar. El siguiente paso es integrar el generador del informe.
 
 Las 13 pruebas incluyen integridad de chunks y una integración con Chroma real
 y vectores controlados (persistencia en otro proceso, repetición, reanudación,

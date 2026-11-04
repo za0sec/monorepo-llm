@@ -329,7 +329,24 @@ repetición que usa el notebook de la cátedra, con el prompt de tabla, para
 medir las filas duplicadas y el cierre del informe. Volver a comprobar qué
 criterios aparecen y si las citas sostienen las clasificaciones.
 
-## 9. Cómo seguiremos actualizando este documento
+## 9. Penalización por repetición — 04/11
+
+Probamos `repetition_penalty=1.15`, valor usado en la celda 22 del notebook
+de la cátedra, frente al `1.1` de Qwen. Las dos corridas conservaron el
+prompt de tabla, el contenido de las fuentes, la revisión del modelo, el
+límite de 1.000 tokens y `k=8` en Chroma. Se comprobó la equivalencia de
+entradas y pasaron las 13 pruebas del ejercicio.
+
+**Resultado:** las corridas terminaron en 473 tokens con los pasajes de
+referencia y 197 con Chroma. En Chroma las filas duplicadas bajaron de
+13 a cero, pero quedaron dos filas sin citas del video. Con los pasajes de
+referencia persistieron seis IDs académicos inexistentes y se omitieron
+coseno y magnitud. Se conserva `1.15` como variante experimental. El
+[registro de generación](ejercicio2/evaluacion/generacion_caso01.md#tercera-prueba-con-penalización-por-repetición--0411)
+incluye el detalle. Se propone comparar otro generador primero con los
+pasajes de referencia para evaluar el uso de evidencia disponible.
+
+## 10. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

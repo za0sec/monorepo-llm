@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import math
 import re
 from pathlib import Path
 from time import perf_counter
@@ -80,9 +81,14 @@ def seleccionar_pasajes(ruta: Path, rangos: list[list[int]]) -> list[dict]:
 
 
 def generar(objetivo: str, referencias: list[dict], segmentos_video: list[dict],
-            solo_local: bool, prompt: str = "inicial") -> dict:
+            solo_local: bool, prompt: str = "inicial",
+            penalizacion_repeticion: float = None) -> dict:
     if not objetivo.strip() or not referencias or not segmentos_video:
         raise ValueError("Se necesitan objetivo, material académico y transcripción.")
+    if penalizacion_repeticion is not None and (
+        not math.isfinite(penalizacion_repeticion) or penalizacion_repeticion <= 0
+    ):
+        raise ValueError("La penalización por repetición debe ser un número positivo y finito.")
     citas_clase = {f"C{i}": r for i, r in enumerate(referencias, 1)}
     citas_video = {f"V{i}": s for i, s in enumerate(segmentos_video, 1)}
     # El modelo cita IDs. Los tiempos originales se resuelven después.
@@ -104,11 +110,14 @@ def generar(objetivo: str, referencias: list[dict], segmentos_video: list[dict],
 
     modelo = AutoModelForCausalLM.from_pretrained(MODELO_GENERADOR, dtype=torch.float32, **opciones)
     modelo.eval()
+    if penalizacion_repeticion is None:
+        penalizacion_repeticion = modelo.generation_config.repetition_penalty
     inicio = perf_counter()
     with torch.inference_mode():
         secuencia = modelo.generate(
             **entrada, do_sample=False, max_new_tokens=MAX_TOKENS_NUEVOS,
             temperature=None, top_p=None, top_k=None,
+            repetition_penalty=penalizacion_repeticion,
         )[0, tokens_entrada:]
     segundos_generacion = perf_counter() - inicio
     informe = tokenizer.decode(secuencia, skip_special_tokens=True).strip()
@@ -126,6 +135,7 @@ def generar(objetivo: str, referencias: list[dict], segmentos_video: list[dict],
     return {
         "modelo": MODELO_GENERADOR, "revision": REVISION_GENERADOR,
         "dispositivo": "cpu", "dtype": "float32", "do_sample": False,
+        "repetition_penalty": penalizacion_repeticion,
         "tokens_entrada": tokens_entrada, "tokens_salida": len(secuencia),
         "max_tokens_entrada": MAX_TOKENS_ENTRADA, "max_tokens_nuevos": MAX_TOKENS_NUEVOS,
         "alcanzo_limite_salida": len(secuencia) == MAX_TOKENS_NUEVOS,
@@ -144,6 +154,8 @@ def main() -> None:
     parser.add_argument("--clase-vtt", type=Path, help="VTT para el diagnóstico con pasajes conocidos.")
     parser.add_argument("--pasaje", type=int, nargs=2, action="append", metavar=("DESDE", "HASTA"))
     parser.add_argument("--prompt", choices=PROMPTS, default="inicial")
+    parser.add_argument("--penalizacion-repeticion", type=float,
+                        help="Por defecto se usa el valor de la configuración del modelo.")
     parser.add_argument("--solo-local", action="store_true")
     parser.add_argument("--salida", type=Path, required=True, help="Nuevo archivo JSON del informe.")
     args = parser.parse_args()
@@ -166,7 +178,8 @@ def main() -> None:
             recuperacion = recuperar(args.objetivo, cargar_documento(ARCHIVO_CHUNKS),
                                       k=args.k, solo_local=args.solo_local)
             referencias = recuperacion["referencias"]
-        resultado = generar(args.objetivo, referencias, segmentos_video, args.solo_local, args.prompt)
+        resultado = generar(args.objetivo, referencias, segmentos_video, args.solo_local,
+                            args.prompt, args.penalizacion_repeticion)
         resultado.update(objetivo=args.objetivo, video_vtt=str(args.video_vtt), recuperacion=recuperacion)
         args.salida.parent.mkdir(parents=True, exist_ok=True)
         with args.salida.open("x", encoding="utf-8") as archivo:

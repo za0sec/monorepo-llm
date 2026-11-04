@@ -119,9 +119,11 @@ justificación se revisan por separado.
 | Pasajes de referencia | Inicial | 4.097 | 1.000 (límite) | 0 | 0 |
 | Pasajes de referencia | Tabla | 4.194 | 1.000 (límite) | 19 | 14 |
 | Chroma con `k=8` | Inicial | 4.151 | 608 | 0 | 4 |
-| Chroma con `k=8` | Tabla | 4.248 | 1.000 (límite) | 23 | 0 |
+| Chroma con `k=8` | Tabla | 4.248 | 1.000 (límite) | 22 | 0 |
 
-Las cifras de entrada y salida están en tokens. El conteo de IDs inexistentes
+Las cifras de entrada y salida están en tokens. La fila 23 de Chroma quedó
+incompleta y se excluyó del conteo al revisar la salida para la tercera
+prueba. El conteo de IDs inexistentes
 abarca citas individuales con el formato `[C1]` o `[V1]`. Se revisaron
 aparte los rangos y las citas en la columna equivocada.
 
@@ -155,3 +157,52 @@ Como siguiente prueba, usar el prompt de tabla y variar únicamente
 `1.15` (notebook `Langchain_Virtual_Assitant.ipynb`, celda 22). Medir si reduce las
 filas duplicadas y si logra cerrar el informe, y volver a auditar las citas
 y los criterios.
+
+## Tercera prueba con penalización por repetición — 04/11
+
+Se comparó la salida en tabla con `repetition_penalty=1.1`, valor de la
+configuración de Qwen, frente a `1.15`, usado en la celda 22 de
+`Langchain_Virtual_Assitant.ipynb`. Se usaron las dos entradas de la prueba
+anterior, el mismo Qwen local, generación sin muestreo y un máximo de
+1.000 tokens nuevos. En Chroma se volvió a usar `k=8`.
+
+Para reproducir el valor `1.15`, usar los comandos de la primera prueba
+con `--prompt tabla --penalizacion-repeticion 1.15 --solo-local` y una
+carpeta de salida nueva. El JSON registra el valor efectivo. Para repetir
+el control, indicar `--penalizacion-repeticion 1.1`.
+
+| Material académico | Penalización | Tokens de salida | Filas con cinco celdas | Filas duplicadas | IDs académicos inexistentes en la tabla |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Pasajes de referencia | 1.1 | 1.000 (límite) | 19 | 0 | 14 |
+| Pasajes de referencia | 1.15 | 473 | 8 | 0 | 6 |
+| Chroma con `k=8` | 1.1 | 1.000 (límite) | 22 | 13 | 0 |
+| Chroma con `k=8` | 1.15 | 197 | 2 | 0 | 0 |
+
+Se contaron las filas repetidas con las mismas cinco celdas y los IDs
+inexistentes distintos, incluidos los extremos de rangos. Se revisaron
+también las citas en la columna equivocada y su respaldo en las fuentes.
+En ambas corridas se verificó que los mensajes, los tokens de entrada y las
+citas disponibles coincidieran con el control. Pasaron las 13 pruebas del
+ejercicio.
+
+- **Pasajes de referencia.** Con `1.15` la generación terminó antes del
+  límite. Llegó a una sección titulada «Recomendación», cuyo contenido fue
+  un resumen general sin una sugerencia de material de clase. Inventó
+  `C7` a `C12` dentro de rangos y citó `V13–V14` como referencia de
+  clase para la comparación de frases. Esos segmentos hablan de
+  características usadas para representar personas. La salida omitió el
+  cálculo del coseno y la limitación de magnitud.
+- **Chroma.** La generación dejó de repetir filas y terminó en 197 tokens.
+  Las dos filas quedaron sin cita del video y la única referencia de clase
+  fue `C1`, sobre conteo de palabras. Omitió la comparación de similitud y
+  cerró con una afirmación sobre la falta de detalles de aplicaciones. El
+  video sí describe cómo se usan embeddings para la búsqueda semántica en
+  `V64–V69` (07:25.580–07:50.580).
+
+Los JSON se guardaron en
+`data/resultados/generacion_penalizacion_caso01_20261104.vmhoxw/`.
+El ajuste resolvió el corte por límite en estas corridas, con errores de
+citas y omisiones todavía presentes. `1.15` queda disponible como variante
+experimental. Para el próximo diagnóstico se propone comparar otro
+generador con el mismo prompt y los pasajes académicos seleccionados,
+midiendo criterios respaldados y citas antes de repetir con Chroma.

@@ -364,7 +364,23 @@ propuesta es pasarle a GPT-4o los fragmentos recuperados por Chroma con
 El [registro de generación](ejercicio2/evaluacion/generacion_caso01.md#cuarta-prueba-con-gpt-4o--0411)
 incluye la revisión y los archivos de la corrida.
 
-## 11. Cómo seguiremos actualizando este documento
+## 11. GPT-4o con referencias recuperadas por Chroma — 04/11
+
+Repetimos la prueba con el mismo objetivo, prompt, transcripción y versión
+de GPT-4o. Los seis pasajes de referencia se reemplazaron por los ocho
+resultados guardados de Chroma. Se cotejó cada cita con la fuente a la
+que apuntaba.
+
+**Resultado:** la respuesta terminó en 314 tokens y produjo cuatro filas.
+La definición quedó respaldada. La comparación de similitud se marcó
+como parcial con evidencia del video, pero los pasajes de clase citados
+no explicaban la medida. La respuesta omitió coseno y magnitud y no
+señaló que faltaba respaldo académico. El proxy reportó US$0,0123625.
+El [registro de generación](ejercicio2/evaluacion/generacion_caso01.md#quinta-prueba-con-gpt-4o-y-chroma--0411)
+conserva la comparación. La siguiente revisión puede comprobar si el
+generador reconoce referencias insuficientes antes de asignar etiquetas.
+
+## 12. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

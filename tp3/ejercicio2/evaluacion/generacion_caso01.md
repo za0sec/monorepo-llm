@@ -247,3 +247,43 @@ la respuesta del servicio en `respuesta.json`.
 GPT-4o queda como candidato para la prueba con los fragmentos recuperados
 por Chroma. La contradicción sobre E2 y las omisiones de E4 y E5 quedan
 como puntos de revisión del informe.
+
+## Quinta prueba con GPT-4o y Chroma — 04/11
+
+Se reutilizaron los ocho fragmentos guardados de la búsqueda con `k=8`.
+Se verificó que el objetivo, el prompt de tabla y los 99 segmentos del video
+coincidieran con los de la corrida manual. Se solicitó explícitamente
+`openai/gpt-4o-2024-08-06`, la versión que había devuelto el proxy en la
+prueba anterior. Se conservó temperatura cero, el máximo de 1.000 tokens
+de salida y `store=False`.
+
+| Pasajes académicos | Tokens de entrada | Tokens de salida | Filas | IDs inexistentes | Costo informado |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Selección manual | 3.613 | 346 | 5 | 0 | US$0,0124925 |
+| Chroma | 3.689 | 314 | 4 | 0 | US$0,0123625 |
+
+La salida con Chroma terminó normalmente, con recomendación y conclusión.
+La definición de embeddings (E1) quedó respaldada por `C5` y `C8`, y por
+`V2`, `V18` y `V22` del video. Los problemas restantes se observan en
+la relación entre las citas y las afirmaciones:
+
+- **Comparación entre textos (E3).** La etiqueta «Parcial» coincide con
+  el caso manual y los segmentos `V54` y `V69` muestran la comparación
+  vectorial. Los pasajes de clase citados (`C5` y `C8`) describen la
+  representación y los vectores densos, sin explicar la medida que se
+  esperaba evaluar. Faltó señalar esa ausencia de respaldo académico.
+- **Papel del contexto (E2).** `C6` alude a la incorporación de otros
+  tokens, pero los fragmentos recuperados dejan fuera el contraste de la
+  clase entre representaciones fijas y contextuales. La fila evaluó una
+  versión más general del criterio y la marcó como cubierta.
+- **Cálculo del coseno y magnitud (E4 y E5).** La búsqueda dejó fuera sus
+  pasajes y el informe omitió ambos criterios. Recomendó estudiar la
+  comparación matemática en términos generales, sin señalar un fragmento
+  de clase que el estudiante pudiera consultar.
+
+El modelo nunca usó la etiqueta «Sin respaldo académico» en esta corrida.
+La auditoría distingue la existencia del ID del respaldo que aporta su
+contenido. La respuesta tardó 12,37 s, incluido el tiempo del servicio.
+El texto y la auditoría quedaron en
+`data/resultados/generacion_gpt4o_chroma_caso01_20261104.u04lsidj/`
+como `chroma.md`, `chroma.json` y `respuesta.json`.

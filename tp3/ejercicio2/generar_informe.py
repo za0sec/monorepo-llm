@@ -11,6 +11,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from config import ARCHIVO_CHUNKS, CACHE_MODELOS, K_INICIAL
+from preparar_chunks import formatear_ubicacion
 from preparar_transcripcion import leer_vtt
 
 
@@ -92,7 +93,11 @@ def generar(objetivo: str, referencias: list[dict], segmentos_video: list[dict],
     citas_clase = {f"C{i}": r for i, r in enumerate(referencias, 1)}
     citas_video = {f"V{i}": s for i, s in enumerate(segmentos_video, 1)}
     # El modelo cita IDs. Los tiempos originales se resuelven después.
-    clase = "\n".join(f"[{cita}] {r['texto']}" for cita, r in citas_clase.items())
+    clase = "\n".join(
+        f"[{cita}] " + ("(Apunte de estudio derivado de la clase) "
+                       if r["metadata"].get("apunte_derivado") else "") + r["texto"]
+        for cita, r in citas_clase.items()
+    )
     video = "\n".join(f"[{cita}] {s['texto']}" for cita, s in citas_video.items())
     mensajes = [
         {"role": "system", "content": PROMPTS[prompt]},
@@ -130,7 +135,10 @@ def generar(objetivo: str, referencias: list[dict], segmentos_video: list[dict],
         if cita not in tiempos:
             return coincidencia[0]
         ubicacion = tiempos[cita]
-        return f"[{cita}, {ubicacion['inicio']}–{ubicacion['fin']}]"
+        localizador = formatear_ubicacion(ubicacion)
+        if "pagina_inicio" in ubicacion:
+            localizador = f"{Path(ubicacion['fuente']).stem}, {localizador}"
+        return f"[{cita}, {localizador}]"
 
     return {
         "modelo": MODELO_GENERADOR, "revision": REVISION_GENERADOR,
@@ -151,6 +159,7 @@ def main() -> None:
     parser.add_argument("objetivo")
     parser.add_argument("video_vtt", type=Path)
     parser.add_argument("--k", type=int, default=K_INICIAL)
+    parser.add_argument("--chunks", type=Path, default=ARCHIVO_CHUNKS)
     parser.add_argument("--clase-vtt", type=Path, help="VTT para el diagnóstico con pasajes conocidos.")
     parser.add_argument("--pasaje", type=int, nargs=2, action="append", metavar=("DESDE", "HASTA"))
     parser.add_argument("--prompt", choices=PROMPTS, default="inicial")
@@ -175,7 +184,7 @@ def main() -> None:
             from indexar_material import cargar_documento
             from recuperar import recuperar
 
-            recuperacion = recuperar(args.objetivo, cargar_documento(ARCHIVO_CHUNKS),
+            recuperacion = recuperar(args.objetivo, cargar_documento(args.chunks),
                                       k=args.k, solo_local=args.solo_local)
             referencias = recuperacion["referencias"]
         resultado = generar(args.objetivo, referencias, segmentos_video, args.solo_local,

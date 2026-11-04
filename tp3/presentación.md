@@ -380,7 +380,48 @@ El [registro de generación](ejercicio2/evaluacion/generacion_caso01.md#quinta-p
 conserva la comparación. La siguiente revisión puede comprobar si el
 generador reconoce referencias insuficientes antes de asignar etiquetas.
 
-## 12. Cómo seguiremos actualizando este documento
+## 12. Revisión de los apuntes como fuente — 04/11
+
+Se revisó el texto de las 14 páginas de [LLMs - Apuntes.pdf](<../docs/LLMs - Apuntes.pdf>)
+para evaluar si aportaba referencias al caso 01. El PDF tiene una capa de
+texto y abarca la Unidad 1, Transformers. La página 5 introduce el embedding
+como vector de entrada. La página 6 usa el coseno para la codificación de
+posición, como se confirmó al cotejar la página con el texto extraído.
+Las páginas 7–8 describen el producto escalar de atención. El apunte aporta
+material para objetivos de Transformers, pero deja sin cubrir el cálculo
+de similitud coseno entre embeddings y el ejemplo sobre magnitud que
+buscamos para el caso 01. Se reservó como fuente para un caso de
+Transformers. Para ampliar el caso 01, queda identificar un apunte de
+la unidad de embeddings con esos temas.
+
+## 13. Colección con la clase y el apunte derivado — 04/11
+
+Por pedido del usuario se sumó el apunte de estudio sobre embeddings y
+similitud coseno, elaborado a partir de la clase 2. Se indexó el texto de
+las páginas 3–5 con MiniLM y los parámetros de splitting de la clase.
+Se conservan los números de página y la marca de procedencia derivada.
+La colección mixta `tp3_248fe3ddb4d5588934314f79` contiene 136 chunks
+(125 de la transcripción y 11 del apunte). La colección base se conservó.
+Al repetir la indexación se reutilizaron los 136 chunks. Pasaron las
+13 pruebas existentes del ejercicio 2.
+
+Se repitieron las dos consultas de la ablación con `k=8`. En «entender
+similitud coseno y sus limitaciones», el ejemplo de magnitud del apunte
+apareció en el puesto 3 (página 5) y la fórmula de la transcripción en el
+puesto 6 (31:44.560–32:41.570). En el objetivo general del caso 01,
+el PDF aportó la definición y el contraste entre embeddings estáticos y
+contextuales (página 3, puestos 3 y 5). La fórmula y el ejemplo completo
+de magnitud quedaron fuera, y uno de los resultados fue la lista de
+fuentes del apunte. Los resultados locales quedaron en
+`data/resultados/chroma_con_apunte_20261104.7sqyKv/` del ejercicio 2.
+
+Como el apunte se preparó con los temas del caso ya conocidos, la comparación
+mide el efecto de agregar una síntesis dirigida al caso. Para las próximas
+pruebas queda disponible el corpus mixto mediante `--chunks`. El
+[README](ejercicio2/README.md#usar-la-colección-con-la-transcripción-y-el-apunte)
+registra cómo reconstruirlo y consultarlo.
+
+## 14. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

@@ -228,6 +228,38 @@ y vectores controlados (persistencia en otro proceso, repetición, reanudación,
 incompatibilidades y trazabilidad). La calidad semántica de MiniLM se revisó
 por separado con las consultas reales; no se infiere de esas pruebas.
 
+## Usar la colección con la transcripción y el apunte
+
+El corpus experimental reúne la clase original y el apunte derivado de la
+clase. Los chunks del PDF conservan las páginas y se marcan como material
+derivado. La colección base sigue disponible para las comparaciones.
+
+Para reconstruir el corpus mixto con los chunks de la clase ya preparados,
+usar `pdftotext` de Poppler y ejecutar desde la raíz:
+
+```bash
+python3 tp3/ejercicio2/preparar_chunks.py 'output/pdf/LLMs - Apuntes - Embeddings.pdf' \
+  --paginas 3 5 --apunte-derivado --solo-local
+python3 - <<'PY'
+import json
+from pathlib import Path
+
+carpeta = Path("tp3/ejercicio2/data/chunks")
+fuentes = ("embeddings_2.chunks.json", "LLMs - Apuntes - Embeddings.chunks.json")
+documentos = [json.loads((carpeta / nombre).read_text(encoding="utf-8")) for nombre in fuentes]
+salida = carpeta / "embeddings_2_con_apunte.corpus.json"
+salida.write_text(json.dumps({"documentos": documentos}, ensure_ascii=False, indent=2) + "\n",
+                  encoding="utf-8")
+PY
+corpus=tp3/ejercicio2/data/chunks/embeddings_2_con_apunte.corpus.json
+python3 tp3/ejercicio2/indexar_material.py "$corpus" --solo-local
+python3 tp3/ejercicio2/recuperar.py 'entender similitud coseno y sus limitaciones' \
+  --chunks "$corpus" --k 8 --solo-local
+```
+
+Para usar el corpus mixto desde el generador local, indicar el mismo archivo
+con `generar_informe.py --chunks "$corpus"`.
+
 ## Generar el informe de cobertura
 
 Con los chunks y el índice ya preparados, ejecutar desde la raíz:

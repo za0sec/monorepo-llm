@@ -26,8 +26,8 @@ def cargar_documento(ruta: Path) -> dict:
     return documento
 
 
-def validar_documento(documento: dict) -> None:
-    """Rechaza artefactos incompletos o inconsistentes antes de tocar la base."""
+def validar_fuente(documento: dict) -> None:
+    """Verifica los chunks y su procedencia dentro de una fuente."""
     try:
         config = documento["configuracion"]
         if config["modelo_tokenizer"] != MODELO or config["revision_tokenizer"] != REVISION:
@@ -45,32 +45,65 @@ def validar_documento(documento: dict) -> None:
                     or c["id_configuracion"] != documento["id_configuracion"]):
                 raise ValueError("Un chunk no corresponde a su fuente o configuración.")
             if (not c["texto"].strip() or not c["segmentos_ids"]
-                    or not 0 <= c["inicio_ms"] < c["fin_ms"]
                     or not 0 <= c["inicio_caracter"] < c["fin_caracter"]
                     or len(c["texto"]) != c["fin_caracter"] - c["inicio_caracter"]
                     or not 0 < c["tokens_totales"] <= config["limite_encoder"]):
                 raise ValueError("Un chunk tiene texto, referencias o límites inválidos.")
-            # Campos necesarios para conservar toda la trazabilidad en Chroma.
-            for campo in ("inicio", "fin", "tokens_contenido"):
-                if campo not in c:
-                    raise ValueError(f"Falta el campo {campo} en un chunk.")
+            if config.get("localizador") == "pagina":
+                paginas = [int(id_pagina) for id_pagina in c["segmentos_ids"]]
+                if (paginas != sorted(set(paginas))
+                        or not set(paginas) <= set(config["paginas"])
+                        or paginas[0] != c["pagina_inicio"] or paginas[-1] != c["pagina_fin"]
+                        or c["apunte_derivado"] != config["apunte_derivado"]):
+                    raise ValueError("Un chunk tiene referencias de página inválidas.")
+            elif not (0 <= c["inicio_ms"] < c["fin_ms"] and c["inicio"] and c["fin"]):
+                raise ValueError("Un chunk tiene tiempos inválidos.")
+            if "tokens_contenido" not in c:
+                raise ValueError("Falta el conteo de tokens de contenido.")
     except (KeyError, TypeError, AttributeError) as error:
         raise ValueError("El JSON no tiene el formato de preparar_chunks.py.") from error
 
 
+def chunks_corpus(documento: dict) -> list[dict]:
+    return [chunk for fuente in documento.get("documentos", [documento])
+            for chunk in fuente["chunks"]]
+
+
+def validar_documento(documento: dict) -> None:
+    """Acepta una fuente o un corpus que reúne documentos preparados por separado."""
+    if not isinstance(documento, dict):
+        raise ValueError("El corpus debe ser un objeto JSON.")
+    fuentes = documento.get("documentos", [documento])
+    if not isinstance(fuentes, list) or not fuentes:
+        raise ValueError("Se necesita al menos un documento en el corpus.")
+    for fuente in fuentes:
+        validar_fuente(fuente)
+    chunks = chunks_corpus(documento)
+    if len({chunk["chunk_id"] for chunk in chunks}) != len(chunks):
+        raise ValueError("El corpus contiene chunks duplicados.")
+
+
 def crear_manifiesto(documento: dict) -> dict:
-    return {
+    manifiesto = {
         "version": 1,
         "sha256_documento_chunks": hash_json(documento),
-        "fuente": documento["fuente"], "sha256_fuente": documento["sha256_fuente"],
-        "id_configuracion_chunks": documento["id_configuracion"],
-        "cantidad_chunks": len(documento["chunks"]),
+        "cantidad_chunks": len(chunks_corpus(documento)),
         "embedding": {"modelo": MODELO, "revision": REVISION, "dimension": DIMENSION,
                       "dispositivo": "cpu", "normalizar": False},
         "metrica": "cosine",
         "versiones": {p: version(p) for p in
                       ("chromadb", "sentence-transformers", "torch", "transformers", "tokenizers")},
     }
+    if "documentos" in documento:
+        manifiesto.update(version=2, fuentes=[
+            {"fuente": fuente["fuente"], "sha256_fuente": fuente["sha256_fuente"],
+             "id_configuracion_chunks": fuente["id_configuracion"]}
+            for fuente in documento["documentos"]
+        ])
+    else:
+        manifiesto.update(fuente=documento["fuente"], sha256_fuente=documento["sha256_fuente"],
+                          id_configuracion_chunks=documento["id_configuracion"])
+    return manifiesto
 
 
 def nombre_coleccion(manifiesto: dict) -> str:
@@ -149,10 +182,11 @@ def indexar(documento: dict, ruta: Path = RUTA_CHROMA, nombre: str = None,
         )
     validar_coleccion(coleccion, manifiesto, exigir_completa=False)
     existentes = set(coleccion.get(include=[])["ids"])
-    esperados = {c["chunk_id"] for c in documento["chunks"]}
+    chunks = chunks_corpus(documento)
+    esperados = {c["chunk_id"] for c in chunks}
     if not existentes <= esperados:
         raise ValueError("La colección contiene IDs ajenos al corpus. Usar otra colección.")
-    pendientes = [c for c in documento["chunks"] if c["chunk_id"] not in existentes]
+    pendientes = [c for c in chunks if c["chunk_id"] not in existentes]
     if pendientes:
         coleccion.modify(metadata={**coleccion.metadata, "estado": "incompleta"})
         modelo = cargar_modelo(solo_local)

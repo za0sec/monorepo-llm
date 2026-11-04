@@ -1,4 +1,4 @@
-"""Prepara chunks de una clase VTT conservando texto, intervenciones y tiempos.
+"""Prepara chunks de VTT o PDF conservando el texto y su ubicación.
 
 Referencias: Langchain_Pinecone.ipynb, celda 15, y
 UN_Report_Advanced_RAG.ipynb, celdas 11-14, en docs/RAG.
@@ -7,6 +7,7 @@ UN_Report_Advanced_RAG.ipynb, celdas 11-14, en docs/RAG.
 import argparse
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 from huggingface_hub import hf_hub_download
@@ -50,6 +51,31 @@ def unir_segmentos(segmentos: list[dict]) -> tuple[str, list[tuple]]:
     return "\n\n".join(partes), posiciones
 
 
+def leer_paginas_pdf(ruta: Path, rango: list[int] = None) -> list[dict]:
+    try:
+        extraccion = subprocess.run(
+            ["pdftotext", "-layout", str(ruta), "-"],
+            check=True, capture_output=True, encoding="utf-8",
+        )
+    except FileNotFoundError as error:
+        raise ValueError("Para extraer el PDF se necesita pdftotext (Poppler).") from error
+    except subprocess.CalledProcessError as error:
+        raise ValueError(f"No se pudo extraer el texto de {ruta.name}.") from error
+    paginas = extraccion.stdout.removesuffix("\f").split("\f")
+    primera, ultima = rango or (1, len(paginas))
+    if not 1 <= primera <= ultima <= len(paginas):
+        raise ValueError("El rango de páginas está fuera del PDF.")
+    return [{"id": str(n), "pagina": n, "texto": paginas[n - 1].strip()}
+            for n in range(primera, ultima + 1) if paginas[n - 1].strip()]
+
+
+def formatear_ubicacion(metadata: dict) -> str:
+    if "pagina_inicio" in metadata:
+        inicio, fin = metadata["pagina_inicio"], metadata["pagina_fin"]
+        return f"pág. {inicio}" if inicio == fin else f"págs. {inicio}–{fin}"
+    return f"{metadata['inicio']}–{metadata['fin']}"
+
+
 def ventanas_tokens(texto: str, tokenizer, tamano: int, overlap: int):
     """Corta mediante offsets del tokenizer, sin decodificar ni normalizar texto.
 
@@ -86,6 +112,7 @@ def crear_chunks(
     segmentos: list[dict], fuente: str, sha256_fuente: str, tokenizer,
     limite_encoder: int, caracteres: int = 1000, overlap_caracteres: int = 100,
     tokens: int = 200, overlap_tokens: int = 20, revision: str = REVISION,
+    apunte_derivado: bool = False,
 ) -> dict:
     if caracteres <= 0 or not 0 <= overlap_caracteres < caracteres:
         raise ValueError("El tamaño por caracteres debe ser positivo y superar al overlap.")
@@ -106,6 +133,11 @@ def crear_chunks(
         "limite_encoder": limite_encoder, "tokens_especiales": especiales,
         "separadores": ["\n\n", "\n", ". ", " ", ""],
     }
+    por_paginas = "pagina" in segmentos[0]
+    if por_paginas:
+        configuracion.update(localizador="pagina",
+                             paginas=[s["pagina"] for s in segmentos],
+                             apunte_derivado=apunte_derivado)
     id_configuracion = hash_json(configuracion)
     texto, posiciones = unir_segmentos(segmentos)
     splitter = RecursiveCharacterTextSplitter(
@@ -129,8 +161,15 @@ def crear_chunks(
                 continue
             vistos.add((inicio, fin))
             relacionados = [s for a, b, s in posiciones if a < fin and b > inicio]
-            primero = min(relacionados, key=lambda s: s["inicio_ms"])
-            ultimo = max(relacionados, key=lambda s: s["fin_ms"])
+            if por_paginas:
+                ubicacion = {"pagina_inicio": relacionados[0]["pagina"],
+                             "pagina_fin": relacionados[-1]["pagina"],
+                             "apunte_derivado": apunte_derivado}
+            else:
+                primero = min(relacionados, key=lambda s: s["inicio_ms"])
+                ultimo = max(relacionados, key=lambda s: s["fin_ms"])
+                ubicacion = {"inicio": primero["inicio"], "fin": ultimo["fin"],
+                             "inicio_ms": primero["inicio_ms"], "fin_ms": ultimo["fin_ms"]}
             fragmento = texto[inicio:fin]
             total = len(tokenizer.encode(fragmento, add_special_tokens=True))
             if cantidad > tokens or total > limite_encoder:
@@ -139,8 +178,7 @@ def crear_chunks(
                 "chunk_id": hash_json([fuente, sha256_fuente, id_configuracion, inicio, fin]),
                 "fuente": fuente, "id_configuracion": id_configuracion,
                 "segmentos_ids": [s["id"] for s in relacionados],
-                "inicio": primero["inicio"], "fin": ultimo["fin"],
-                "inicio_ms": primero["inicio_ms"], "fin_ms": ultimo["fin_ms"],
+                **ubicacion,
                 "inicio_caracter": inicio, "fin_caracter": fin,
                 "tokens_contenido": cantidad, "tokens_totales": total,
                 "texto": fragmento,
@@ -168,17 +206,22 @@ def main() -> None:
     parser.add_argument("--overlap-caracteres", type=int, default=100)
     parser.add_argument("--tokens", type=int, default=200)
     parser.add_argument("--overlap-tokens", type=int, default=20)
+    parser.add_argument("--paginas", type=int, nargs=2, metavar=("DESDE", "HASTA"))
+    parser.add_argument("--apunte-derivado", action="store_true")
     parser.add_argument("--solo-local", action="store_true", help="Usar solo archivos de tokenizer en caché.")
     args = parser.parse_args()
     try:
         ruta = args.entrada.resolve()
-        segmentos = leer_vtt(ruta)
+        es_pdf = ruta.suffix.lower() == ".pdf"
+        if not es_pdf and (args.paginas or args.apunte_derivado):
+            raise ValueError("--paginas y --apunte-derivado se aplican a PDFs.")
+        segmentos = leer_paginas_pdf(ruta, args.paginas) if es_pdf else leer_vtt(ruta)
         fuente = str(ruta.relative_to(REPO)) if ruta.is_relative_to(REPO) else str(ruta)
         tokenizer, limite = cargar_tokenizer(solo_local=args.solo_local)
         documento = crear_chunks(
             segmentos, fuente, hashlib.sha256(ruta.read_bytes()).hexdigest(),
             tokenizer, limite, args.caracteres, args.overlap_caracteres,
-            args.tokens, args.overlap_tokens,
+            args.tokens, args.overlap_tokens, apunte_derivado=args.apunte_derivado,
         )
     except (OSError, ValueError) as error:
         parser.exit(1, f"No se pudieron preparar los chunks: {error}\n")
@@ -192,8 +235,9 @@ def main() -> None:
         f"Fuente: {fuente}\nConfiguración: {documento['id_configuracion']}\n\n"
         + "\n\n".join(
             f"Chunk {i}: {c['chunk_id']}\n"
-            f"[{c['inicio']} --> {c['fin']}] Intervenciones: {', '.join(c['segmentos_ids'])}\n"
-            f"Tokens: {c['tokens_contenido']} de contenido, {c['tokens_totales']} con especiales\n"
+            + (f"{formatear_ubicacion(c)}\n" if es_pdf else
+               f"[{c['inicio']} --> {c['fin']}] Intervenciones: {', '.join(c['segmentos_ids'])}\n")
+            + f"Tokens: {c['tokens_contenido']} de contenido, {c['tokens_totales']} con especiales\n"
             f"{c['texto']}"
             for i, c in enumerate(documento["chunks"], 1)
         ) + "\n", encoding="utf-8",

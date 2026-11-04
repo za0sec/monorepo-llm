@@ -13,7 +13,7 @@ from indexar_material import (
     abrir_cliente, cargar_documento, cargar_modelo, codificar, crear_manifiesto,
     nombre_coleccion, validar_coleccion, validar_documento,
 )
-from preparar_chunks import hash_json
+from preparar_chunks import formatear_ubicacion, hash_json
 
 
 def recuperar(objetivo: str, documento: dict, ruta: Path = RUTA_CHROMA,
@@ -84,7 +84,7 @@ def main() -> None:
         parser.exit(1, f"No se pudieron recuperar referencias: {error}\n")
     for r in resultado["referencias"]:
         m = r["metadata"]
-        print(f"\n{r['posicion']}. {m['fuente']} [{m['inicio']} --> {m['fin']}]\n"
+        print(f"\n{r['posicion']}. {m['fuente']} [{formatear_ubicacion(m)}]\n"
               f"ID: {r['chunk_id']}\nDistancia coseno: {r['distancia_coseno']:.4f}; "
               f"similitud (1-distancia): {r['similitud_coseno']:.4f}\n{r['texto']}")
     print(f"\nReferencias: {resultado['k_efectivo']}; resultado guardado en {salida}")

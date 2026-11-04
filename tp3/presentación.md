@@ -346,7 +346,25 @@ coseno y magnitud. Se conserva `1.15` como variante experimental. El
 incluye el detalle. Se propone comparar otro generador primero con los
 pasajes de referencia para evaluar el uso de evidencia disponible.
 
-## 10. Cómo seguiremos actualizando este documento
+## 10. Comparación con GPT-4o — 04/11
+
+Probamos GPT-4o por el proxy de la cátedra con los mismos mensajes, el
+mismo video y los seis pasajes académicos de la corrida manual de Qwen.
+El proxy usó `gpt-4o-2024-08-06`. La generación terminó en 346 tokens,
+con cinco filas, una recomendación, una conclusión y citas con IDs
+existentes. Se revisaron las citas contra ambas fuentes. Coincidieron las
+clasificaciones de E1 y E3, mientras que la respuesta dio dos estados
+incompatibles al tema del contexto y las representaciones estáticas frente
+a las dinámicas. El coseno quedó en la recomendación y faltó evaluar la
+limitación de magnitud.
+
+El proxy reportó US$0,0124925 por la corrida. La próxima comparación
+propuesta es pasarle a GPT-4o los fragmentos recuperados por Chroma con
+`k=8` para ver cómo responde cuando faltan referencias académicas.
+El [registro de generación](ejercicio2/evaluacion/generacion_caso01.md#cuarta-prueba-con-gpt-4o--0411)
+incluye la revisión y los archivos de la corrida.
+
+## 11. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

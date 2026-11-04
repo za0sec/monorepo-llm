@@ -206,3 +206,44 @@ citas y omisiones todavía presentes. `1.15` queda disponible como variante
 experimental. Para el próximo diagnóstico se propone comparar otro
 generador con el mismo prompt y los pasajes académicos seleccionados,
 midiendo criterios respaldados y citas antes de repetir con Chroma.
+
+## Cuarta prueba con GPT-4o — 04/11
+
+Se hizo una corrida de diagnóstico con `openai/gpt-4o` a través del proxy
+de la cátedra. El proxy devolvió `gpt-4o-2024-08-06`. Se enviaron los
+mismos dos mensajes guardados en la corrida de Qwen con los pasajes de
+referencia, incluidos los seis pasajes académicos y los 99 segmentos del
+video. Se usó Chat Completions con temperatura cero, un máximo de 1.000
+tokens de salida y `store=False`. La comparación es entre dos configuraciones
+de generación. Qwen corrió en local con penalización por repetición de
+`1.15` y GPT-4o corrió a través del proxy.
+
+| Generador | Tokens de salida | Filas | IDs de cita inexistentes | Cierre |
+| --- | ---: | ---: | ---: | --- |
+| Qwen local | 473 | 8 | 6, dentro de rangos | Resumen bajo el título de recomendación |
+| GPT-4o | 346 | 5 | 0 | Recomendación con citas de clase y conclusión |
+
+La salida de GPT-4o terminó normalmente y sin filas duplicadas. La
+definición de embeddings (E1) quedó como cubierta y la comparación de
+similitud (E3) como parcial. En E3 citó `V54` y `V69`, que respaldan la
+explicación de que el video habla de similitud y comparación vectorial sin
+detallar una medida. Para E2 produjo dos filas en tensión. Marcó «Contexto
+en embeddings» como cubierto y «Embeddings estáticos vs dinámicos» como
+sin evidencia. El video sí contrasta representaciones fijas y contextuales
+con el ejemplo de «banco» (`V31–V37`, 04:09.580–04:55.580). El cálculo del
+coseno (E4) aparece en la recomendación como tema a revisar, sin una
+clasificación propia. La limitación de magnitud (E5) quedó omitida como
+criterio, aunque uno de los pasajes recomendados la contiene.
+
+El proxy reportó 3.613 tokens de entrada, 346 de salida y un costo de
+US$0,0124925 para la generación. La consulta tardó 5,06 s, incluidos el
+traslado y el tiempo de respuesta del servicio. El valor reportado
+coincide con la [tarifa pública de GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o)
+aplicada a esos tokens. Las salidas quedaron en
+`data/resultados/generacion_gpt4o_caso01_20261104.x9nkytp5/`, con el
+texto legible en `manual.md`, los datos de auditoría en `manual.json` y
+la respuesta del servicio en `respuesta.json`.
+
+GPT-4o queda como candidato para la prueba con los fragmentos recuperados
+por Chroma. La contradicción sobre E2 y las omisiones de E4 y E5 quedan
+como puntos de revisión del informe.

@@ -421,7 +421,81 @@ pruebas queda disponible el corpus mixto mediante `--chunks`. El
 [README](ejercicio2/README.md#usar-la-colección-con-la-transcripción-y-el-apunte)
 registra cómo reconstruirlo y consultarlo.
 
-## 14. Cómo seguiremos actualizando este documento
+## 14. Búsqueda por subtemas del objetivo — 04/11
+
+Comparamos la consulta directa «quiero estudiar embeddings» con una expansión
+por subtemas, inspirada en `UN_Report_Advanced_RAG.ipynb`, celdas 48–51.
+Se mantuvieron MiniLM, distancia coseno y la colección mixta de 136 chunks.
+Ambas variantes devolvieron ocho referencias finales. Para la expansión se
+hizo una llamada a GPT-4o con el objetivo y la instrucción de proponer hasta
+cuatro subtemas introductorios, cada uno con una pregunta en español.
+El caso manual se usó para revisar el resultado después de buscar.
+
+GPT-4o propuso concepto, tipos, entrenamiento y aplicaciones. Cada
+pregunta recuperó ocho candidatos. Los 32 resultados contenían 15 IDs
+distintos. Para elegir los ocho finales, se recorrieron los resultados
+por puesto dentro de cada subconsulta y en orden de subtemas, omitiendo
+los IDs ya incorporados.
+
+| Referencia esperada | Consulta directa | Expansión |
+| --- | --- | --- |
+| Definición de embeddings (E1) | Puesto 3, página 3 | Puesto 2, página 3 |
+| Contraste entre estáticos y contextuales (E2) | Menciones al contexto, sin el ejemplo completo | Puesto 5, página 3, con el ejemplo de «banco» |
+| Fórmula del coseno (E4) | Una lista de fuentes remite al cálculo | Puesto 3, entrada 222 del VTT, 31:55.350–32:14.820 |
+| Limitación de magnitud con ejemplo (E5) | Apareció la regla sin el ejemplo completo | Apareció la regla sin el ejemplo completo |
+
+La expansión recuperó la fórmula mediante la pregunta de aplicaciones.
+El plan dejó fuera la comparación de vectores como subtema explícito.
+Quedó pendiente recuperar un pasaje que explique de forma directa el
+procedimiento general de comparación de textos (E3). La lista de fuentes
+de la página 5 quedó primera en ambas variantes. Estos resultados
+corresponden a un solo objetivo sobre un corpus que incluye el apunte
+preparado para este caso.
+
+El proxy reportó 108 tokens de entrada, 150 de salida y US$0,00177.
+La búsqueda se ejecutó localmente. El prompt, las consultas, los candidatos
+y la selección quedaron en `data/resultados/expansion_subtemas_20261104.zQ1Iz1/`
+del ejercicio 2, en `plan.json`, `directa.json` y `expandida.json`.
+La próxima variante propuesta es pedir que el plan considere cómo se aplica
+o se mide el concepto y qué limitaciones conviene entender, cuando sean
+pertinentes al objetivo. Se puede comparar con la misma colección y el
+mismo presupuesto final de ocho fragmentos.
+
+## 15. Revisión de la recuperación según el objetivo — 04/11
+
+Se revisaron las dos búsquedas guardadas para «quiero estudiar embeddings»
+con criterios introductorios. Se consideró que un criterio tenía respaldo
+cuando los fragmentos finales aportaban una definición vectorial del
+texto, un uso explicado con un ejemplo, o un contraste entre embeddings
+estáticos y contextuales. Fue una revisión retrospectiva de la misma
+prueba con el objetivo literal como referencia.
+
+| Criterio introductorio | Consulta directa | Expansión |
+| --- | --- | --- |
+| Qué es un embedding de texto | Respaldado, puesto 3 | Respaldado, puesto 2 |
+| Para qué sirve | Respaldado por el ejemplo de textos con significados parecidos, puesto 3 | Mismo pasaje, puesto 2 |
+| Cómo cambia con el contexto | Parcial: menciona el contexto sin desarrollar el contraste | Respaldado por el contraste y el ejemplo de «banco», puesto 5 |
+
+Ambas variantes recuperaron la definición y un uso concreto. La expansión
+agregó respaldo completo para el papel del contexto. La fórmula se
+reservó como criterio para objetivos que pidan el cálculo. Con la misma
+colección, MiniLM y `k=8`, se probaron estas consultas locales:
+
+| Consulta sobre el cálculo | Evidencia en los primeros ocho |
+| --- | --- |
+| «cómo se calcula la similitud coseno» | Fragmentos relacionados, sin el cálculo completo |
+| «cómo calcular la similitud coseno entre dos embeddings» | Fórmula con producto escalar y normas en el puesto 3, página 4 del apunte |
+
+Las dos redacciones apuntan al cálculo y dieron resultados distintos.
+El segundo caso recuperó la fórmula, pero el ejemplo numérico completo
+quedó fuera. Los resultados se guardaron en
+`data/resultados/expansion_subtemas_20261104.zQ1Iz1/` como
+`calculo_coseno_k8.json` y `calculo_coseno_embeddings_k8.json`.
+La revisión y las dos búsquedas fueron locales. Para una próxima prueba
+del informe introductorio se pueden usar los ocho pasajes de la expansión
+y revisar definición, uso y contexto.
+
+## 16. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

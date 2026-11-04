@@ -495,7 +495,53 @@ La revisión y las dos búsquedas fueron locales. Para una próxima prueba
 del informe introductorio se pueden usar los ocho pasajes de la expansión
 y revisar definición, uso y contexto.
 
-## 16. Cómo seguiremos actualizando este documento
+## 16. Primer informe en el formato para el estudiante — 04/11
+
+Se generó un informe para «quiero estudiar embeddings» con
+`gpt-4o-2024-08-06` a través del proxy de la cátedra. Se reutilizaron los
+cuatro subtemas del plan, los ocho resultados finales de la búsqueda
+expandida y los 99 segmentos del video. El modelo devolvió una evaluación
+por subtema, recomendaciones y conclusión. La vista legible muestra las
+referencias de la materia en las recomendaciones y guarda los tiempos
+del video bajo «Ver evidencia». La llamada usó 3.737 tokens de entrada y
+446 de salida. El proxy informó US$0,0138025.
+
+Se verificaron las cuatro filas, los estados y la existencia de los IDs
+citados. El cotejo manual confirmó que el apunte y el video respaldan la
+definición y el papel del contexto. La transcripción del video respalda
+las aplicaciones mencionadas, pero el modelo citó como respaldo académico
+`C1`, que es una lista de referencias del apunte. Para entrenamiento
+asignó «Parcial» y recomendó `C3` (31:44.560–32:41.570 de la clase).
+Ese tramo contiene una mención al ajuste de pesos y se centra en comparar
+vectores. El audio citado solo menciona que hubo entrenamiento. El
+criterio quedó sin respaldo suficiente de la materia y la recomendación
+requiere corrección.
+
+La vista de la respuesta del modelo y su auditoría quedaron en
+`data/resultados/informe_estudiante_embeddings_20261104.4x6c1gtg/`
+del ejercicio 2, como `informe.md` y `auditoria.json`. La prueba
+muestra el formato acordado y deja pendiente mejorar la decisión sobre
+cuándo un pasaje permite evaluar el subtema y recomendar material.
+
+## 17. Incorporación de las llamadas de prueba al código — 04/11
+
+Las llamadas al proxy de las primeras corridas se hicieron desde comandos
+exploratorios. Se incorporaron al repo para que las pruebas puedan repetirse.
+`recuperar.py` contiene el prompt de expansión, la selección de referencias
+y la opción de reutilizar un plan guardado. `generar_informe.py` contiene
+los prompts del informe, incluido `estudiante`, y acepta una recuperación
+guardada. Ambos registran las llamadas a través de `proxy_catedra.py`.
+El README y el registro del caso 01 conservan los comandos.
+
+Se cotejaron los cuatro mensajes completos de las llamadas históricas
+(expansión, dos informes de tabla y un informe del estudiante). Se
+reprodujeron los ocho fragmentos de Chroma reutilizando el plan guardado.
+Pasaron 16 pruebas automatizadas, con respuestas simuladas para el proxy.
+La validación de esta integración se hizo con las respuestas ya guardadas
+y sin consumo adicional de API. Queda repetir la evaluación específica
+desde la CLI cuando corresponda la siguiente corrida.
+
+## 18. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

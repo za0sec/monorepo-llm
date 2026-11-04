@@ -278,6 +278,39 @@ fragmentos enviados y las citas con IDs inexistentes. Ver la [prueba de
 generación](evaluacion/generacion_caso01.md) para comparar con una selección de
 pasajes de referencia.
 
+## Repetir las pruebas con el proxy
+
+`recuperar.py --expandir` hace una llamada a GPT-4o para proponer subtemas
+y guarda el plan con el nombre `*.plan.json`. Cada subconsulta se busca
+en Chroma y las referencias se reúnen por puesto, omitiendo IDs repetidos.
+`--plan` permite repetir ese paso localmente con un plan guardado.
+
+```bash
+corpus=tp3/ejercicio2/data/chunks/embeddings_2_con_apunte.corpus.json
+objetivo='quiero estudiar embeddings'
+video='tp3/ejercicio2/data/transcripciones/¿Qué son los EMBEDDINGS Grandes Modelos de Lenguaje.vtt'
+resultados=$(mktemp -d tp3/ejercicio2/data/resultados/reproduccion.XXXXXX)
+python3 tp3/ejercicio2/recuperar.py "$objetivo" --chunks "$corpus" \
+  --k 8 --solo-local --salida "$resultados/directa.json"
+python3 tp3/ejercicio2/recuperar.py "$objetivo" --chunks "$corpus" \
+  --k 8 --solo-local --expandir --salida "$resultados/expandida.json"
+python3 tp3/ejercicio2/generar_informe.py "$objetivo" "$video" \
+  --backend proxy --prompt estudiante --recuperacion "$resultados/expandida.json" \
+  --salida "$resultados/informe.json"
+```
+
+Para reutilizar el plan histórico, reemplazar `--expandir` en el segundo
+comando por `--plan tp3/ejercicio2/data/resultados/expansion_subtemas_20261104.zQ1Iz1/plan.json`.
+También se puede usar directamente el `expandida.json` de esa carpeta como
+entrada del generador. Las opciones `--expandir` y `--backend proxy` consumen
+una llamada cada una y leen la configuración de `tp3/.env`.
+
+El informe guarda los mensajes, las referencias, el modelo, los tokens y el
+costo informado por el proxy en el JSON. La vista Markdown se escribe al lado.
+Los comandos para reproducir las primeras pruebas de GPT-4o con
+`--prompt tabla` están en el [registro del caso 01](evaluacion/generacion_caso01.md#reproducción-con-los-comandos-del-repositorio).
+Las pruebas automatizadas del proxy usan respuestas simuladas.
+
 ## Transcribir el audio de ejemplo
 
 Este paso convierte el audio del video a texto. El material de la materia se

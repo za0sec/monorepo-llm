@@ -287,3 +287,29 @@ contenido. La respuesta tardó 12,37 s, incluido el tiempo del servicio.
 El texto y la auditoría quedaron en
 `data/resultados/generacion_gpt4o_chroma_caso01_20261104.u04lsidj/`
 como `chroma.md`, `chroma.json` y `respuesta.json`.
+
+## Reproducción con los comandos del repositorio
+
+Las corridas originales de GPT-4o se ejecutaron con comandos exploratorios
+fuera de los scripts del repo. El código actual construye los mismos mensajes
+y permite repetirlas con los pasajes seleccionados a mano o con la recuperación
+guardada. Desde la raíz y con el entorno virtual activo:
+
+```bash
+objetivo='entender qué son los embeddings y cómo se compara la similitud entre textos'
+video='tp3/ejercicio2/data/transcripciones/¿Qué son los EMBEDDINGS Grandes Modelos de Lenguaje.vtt'
+resultados=$(mktemp -d tp3/ejercicio2/data/resultados/reproduccion_gpt4o.XXXXXX)
+python3 tp3/ejercicio2/generar_informe.py "$objetivo" "$video" \
+  --backend proxy --prompt tabla --clase-vtt docs/embeddings_2.VTT \
+  --pasaje 123 123 --pasaje 137 139 --pasaje 181 181 --pasaje 182 188 \
+  --pasaje 191 197 --pasaje 222 222 --salida "$resultados/manual.json"
+python3 tp3/ejercicio2/generar_informe.py "$objetivo" "$video" \
+  --backend proxy --prompt tabla \
+  --recuperacion tp3/ejercicio2/data/resultados/ablacion_k_20261104.oaCc7k/caso01_k8.json \
+  --salida "$resultados/chroma.json"
+```
+
+Cada comando hace una llamada. Se fija `openai/gpt-4o-2024-08-06`, la versión
+que resolvió el proxy en la corrida manual cuando se pidió el alias
+`openai/gpt-4o`. Para reproducir la expansión y el informe en la vista del
+estudiante, usar los [comandos del README](../README.md#repetir-las-pruebas-con-el-proxy).

@@ -63,8 +63,8 @@ que recupere bien material en español.
 
 Para la generación, el diseño posterior propuso **Qwen2.5-1.5B-Instruct local**,
 presente en el notebook de la cátedra, dejando por verificar la disponibilidad
-del modelo por API de la propuesta original. **Todavía no implementamos ni
-probamos un generador.** La justificación y las referencias están en el
+del modelo por API de la propuesta original. La implementación se registra
+en el apartado 7. La justificación y las referencias están en el
 [diseño inicial](ejercicio2/diseno_rag_inicial.md).
 
 ### Flujo elegido
@@ -79,13 +79,12 @@ VTT de una clase
   -> colección persistente en Chroma
 ```
 
-Flujo previsto para evaluar un video, todavía incompleto:
+Flujo previsto para evaluar un video:
 
 ```text
 Objetivo de estudio -> búsqueda en Chroma -> referencias académicas
 Audio del video -> Whisper -> transcripción guardada
 Objetivo + referencias + transcripción -> generador -> informe de cobertura
-                                        [pendiente]
 ```
 
 La búsqueda parte del objetivo de estudio para poder encontrar contenidos que
@@ -276,7 +275,61 @@ Los VTT originales bajo `docs/`, los audios, los pesos, Chroma y los resultados
 bajo `data/` están ignorados por Git: un clon no incluye todos esos archivos.
 Este documento y los informes de revisión conservan el recorrido compartible.
 
-## 7. Cómo seguiremos actualizando este documento
+## 7. Implementación del generador y prueba del caso 01 — 04/11
+
+Implementamos [generar_informe.py](ejercicio2/generar_informe.py) con el
+Qwen2.5-1.5B-Instruct local del notebook de la cátedra. El comando recibe un
+objetivo y un VTT de video. Por defecto busca material académico con
+`k=8` y admite pasajes conocidos para el diagnóstico. El informe usa IDs
+distintos para la clase y el video. El script resuelve sus tiempos a partir
+de los originales y registra los IDs citados que no existen.
+
+Se prepararon dos entradas con el mismo objetivo, las mismas instrucciones
+y los 99 segmentos del video. El diagnóstico contiene seis pasajes del caso
+manual y usa 4.097 tokens. La corrida con Chroma contiene ocho fragmentos y
+usa 4.151 tokens. Ambos conteos se verificaron con el tokenizer real sin
+recortar las fuentes. La comparación y los comandos de reproducción están
+en el [registro de generación](ejercicio2/evaluacion/generacion_caso01.md).
+
+Pasaron las 13 pruebas del ejercicio 2. Con una salida controlada se
+comprobaron el mapeo de tiempos y la detección de citas inexistentes.
+Se completó la inferencia real de ambas entradas con Qwen local.
+
+**Resultado:** con los pasajes de referencia, Qwen copió material de la clase
+hasta el límite de 1.000 tokens y no clasificó los criterios. Con Chroma
+terminó en 608 tokens, declaró el objetivo cubierto y citó cuatro referencias
+académicas inexistentes. Algunas citas del video también respaldaban un tema
+distinto del que afirmó. La primera corrida muestra un problema de generación
+aun con respaldo académico disponible. En la segunda se suma el faltante de
+referencias ya medido en la recuperación.
+
+**Siguiente paso propuesto:** probar una instrucción con salida más
+estructurada, manteniendo fijos Qwen, las fuentes y `k=8`, y revisar
+clasificaciones y citas con el mismo caso de desarrollo.
+
+## 8. Comparación de prompts para el informe — 04/11
+
+Probamos una instrucción que pide empezar por una tabla con una fila por
+criterio y columnas separadas para citas de clase y video. Se conservaron
+Qwen, el objetivo, el texto y los IDs de ambas fuentes, y `k=8` en Chroma.
+Se verificaron los datos enviados contra las corridas anteriores. Pasaron
+las 13 pruebas del ejercicio 2.
+
+**Resultado:** las dos salidas empezaron con la tabla y se cortaron en
+1.000 tokens. Con los pasajes de referencia aparecieron 14 IDs académicos
+inexistentes. Con Chroma se repitieron filas y se usó una cita de video como
+referencia académica. En ninguno de los dos informes las clasificaciones y
+citas alcanzaron para una evaluación utilizable. La tabla queda disponible
+con `--prompt tabla` para reproducir la prueba. El
+[registro de generación](ejercicio2/evaluacion/generacion_caso01.md#segunda-prueba-con-una-tabla-por-criterio--0411)
+contiene los resultados y ejemplos.
+
+**Siguiente paso propuesto:** comparar el efecto de la penalización por
+repetición que usa el notebook de la cátedra, con el prompt de tabla, para
+medir las filas duplicadas y el cierre del informe. Volver a comprobar qué
+criterios aparecen y si las citas sostienen las clasificaciones.
+
+## 9. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

@@ -9,7 +9,9 @@ cubiertos, parciales y sin evidencia, recomendar material y concluir sobre la
 utilidad del video. Ya tenemos una transcripción de clase, la transcripción
 automática de un audio de ejemplo, un caso de cobertura revisado, chunks del
 material académico e indexación y recuperación local.
-Todavía no implementamos la generación ni la comparación automática de cobertura.
+El primer generador local recibe el material de la materia y el audio
+transcripto, y guarda su salida con las referencias que recibió. En la primera
+prueba produjo resultados que requieren corrección.
 
 La base vectorial elegida es **Chroma local con persistencia en `data/chroma/`**.
 Usamos los embeddings de MiniLM para cargar los chunks y buscar referencias de
@@ -225,6 +227,24 @@ Las 13 pruebas incluyen integridad de chunks y una integración con Chroma real
 y vectores controlados (persistencia en otro proceso, repetición, reanudación,
 incompatibilidades y trazabilidad). La calidad semántica de MiniLM se revisó
 por separado con las consultas reales; no se infiere de esas pruebas.
+
+## Generar el informe de cobertura
+
+Con los chunks y el índice ya preparados, ejecutar desde la raíz:
+
+```bash
+video="tp3/ejercicio2/data/transcripciones/¿Qué son los EMBEDDINGS Grandes Modelos de Lenguaje.vtt"
+python3 tp3/ejercicio2/generar_informe.py \
+  "entender qué son los embeddings y cómo se compara la similitud entre textos" \
+  "$video" --salida tp3/ejercicio2/data/resultados/informe_caso01.json
+```
+
+La primera ejecución descarga Qwen2.5-1.5B-Instruct al caché local.
+Con los modelos ya guardados se puede agregar `--solo-local`.
+El JSON conserva el texto del informe, las citas con tiempos originales, los
+fragmentos enviados y las citas con IDs inexistentes. Ver la [prueba de
+generación](evaluacion/generacion_caso01.md) para comparar con una selección de
+pasajes de referencia.
 
 ## Transcribir el audio de ejemplo
 

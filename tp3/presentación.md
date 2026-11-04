@@ -630,7 +630,36 @@ identifican explícitamente GPT-4o cuando corresponde a una corrida previa.
 Pasaron las 17 pruebas automatizadas. La validación de la configuración
 usó respuestas simuladas del proxy.
 
-## 22. Cómo seguiremos actualizando este documento
+## 22. Planificación de subtemas con GPT-4.1 — 04/11
+
+Se comparó GPT-4.1 con el plan histórico de GPT-4o para «quiero estudiar
+embeddings». Se verificó que los mensajes del prompt inicial, temperatura,
+límite de 200 tokens y formato de respuesta coincidieran. Ambas corridas
+buscaron en la misma colección con MiniLM, ocho candidatos por consulta y
+ocho fragmentos finales seleccionados por rondas.
+
+| Aspecto revisado | GPT-4o | GPT-4.1 |
+| --- | --- | --- |
+| Definición y uso introductorio | Puesto 2, página 3 del apunte | Mismo pasaje, puesto 2 |
+| Contexto y ejemplo de «banco» | Puesto 5, página 3 | Mismo pasaje, puesto 1 |
+| Explicación de un método de entrenamiento | Fuera de los candidatos | Fuera de los candidatos |
+| Candidatos únicos antes de seleccionar ocho | 15 | 20 |
+| Costo informado por el proxy | US$0,00177 | US$0,001456 |
+
+GPT-4.1 propuso concepto, representación vectorial, métodos de generación
+y aplicaciones. Para métodos preguntó «¿Cuáles son los métodos más
+utilizados para crear embeddings de palabras?». El pasaje sobre pares
+positivos y negativos de Word2Vec (29:16.470–30:22.040) quedó fuera de
+las cuatro búsquedas. La comparación confirma que ambos planes respaldan
+los tres criterios introductorios y dejan el método sin respaldo en esta
+corrida. GPT-4.1 usó 108 tokens de entrada y 155 de salida en una sola
+llamada. El plan y la recuperación quedaron en
+`data/resultados/expansion_gpt41_20261104.umOHA2/` del ejercicio 2.
+Esta prueba evaluó la recuperación. El siguiente diagnóstico es comprobar
+si el informe distingue entre ausencia de respaldo y ausencia de evidencia
+en el audio usando entradas con y sin el pasaje de entrenamiento.
+
+## 23. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

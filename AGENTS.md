@@ -40,4 +40,6 @@ El historial usa mensajes breves, mayormente en español; no impone Conventional
 
 ## Instrucciones para agentes
 
+Actualizar [tp3/presentación.md](tp3/presentación.md) en cada avance significativo del TP3: registrar en orden cronológico el cambio, su motivo, alcance/configuración, pruebas realizadas, resultados y siguiente paso. Conservar decisiones anteriores y sus reemplazos; distinguir implementaciones, resultados manuales y propuestas pendientes. Es la bitácora compartida para ponerse al día con el proyecto.
+
 Preservar cambios ajenos y originales docentes. Citar páginas, tiempos o celdas; separar obligaciones, ejemplos y propuestas. Justificar decisiones; avisar antes de incorporar técnicas ajenas al material. Completar el pipeline básico antes de Advanced RAG y extras. No presentar el caso manual como resultado automático. La guía bajo `docs/` requiere inclusión explícita para compartirse por Git.

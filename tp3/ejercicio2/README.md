@@ -1,5 +1,8 @@
 # Ejercicio 2: material de referencia y primer audio
 
+Para ponerse al día con el proyecto, leer la [presentación y recorrido del TP3](../presentación.md):
+alcance inicial, decisiones, pasos realizados y resultados de las pruebas.
+
 El usuario final cargará el audio de un video y los temas que quiere estudiar.
 El sistema deberá compararlo con los materiales de la materia e informar contenidos
 cubiertos, parciales y sin evidencia, recomendar material y concluir sobre la

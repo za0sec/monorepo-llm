@@ -20,7 +20,7 @@ class InformeProxyTest(unittest.TestCase):
         mensajes = [{"role": "user", "content": "Objetivo de prueba"}]
         entorno = {"OPENAI_API_KEY": "clave-de-prueba"}
         respuesta = SimpleNamespace(
-            model="gpt-4o-2024-08-06", usage=None,
+            model="gpt-4.1-2025-04-14", usage=None,
             choices=[SimpleNamespace(finish_reason="stop", message=SimpleNamespace(content="{}"))],
         )
         http = SimpleNamespace(parse=lambda: respuesta,
@@ -31,11 +31,18 @@ class InformeProxyTest(unittest.TestCase):
             crear.return_value = http
             auditoria = proxy_catedra.completar(mensajes, max_tokens=200, formato_json=True)
         crear.assert_called_once_with(
-            model=proxy_catedra.MODELO_PROXY, messages=mensajes, temperature=0, store=False,
+            model="openai/gpt-4.1-2025-04-14", messages=mensajes, temperature=0, store=False,
             max_completion_tokens=200, response_format={"type": "json_object"},
         )
         self.assertEqual(auditoria["mensajes"], mensajes)
         self.assertEqual(auditoria["costo_reportado_proxy"], "0.001")
+
+    def test_planificacion_usa_prompt_inicial_y_gpt41(self):
+        with patch.object(recuperar, "completar", return_value={}) as completar:
+            plan = recuperar.planificar_subtemas("Objetivo de prueba")
+        self.assertEqual(plan["prompt_expansion"], "inicial")
+        self.assertEqual(completar.call_args.args[0][0]["content"], recuperar.INSTRUCCIONES_EXPANSION)
+        self.assertEqual(completar.call_args.kwargs["modelo"], "openai/gpt-4.1-2025-04-14")
 
     def test_expansion_deduplica_por_puesto_y_conserva_subtema(self):
         objetivo = "Objetivo de prueba"
@@ -72,7 +79,7 @@ class InformeProxyTest(unittest.TestCase):
                 }}],
             }), encoding="utf-8")
             modelo = "openai/gpt-4.1-2025-04-14"
-            argv = ["generar_informe.py", objetivo, str(video), "--backend", "proxy", "--modelo-proxy", modelo,
+            argv = ["generar_informe.py", objetivo, str(video), "--backend", "proxy",
                     "--prompt", "estudiante", "--recuperacion", str(entrada), "--salida", str(salida)]
             with patch.object(sys, "argv", argv), patch("builtins.print"), \
                  patch.object(generar_informe, "completar", return_value={

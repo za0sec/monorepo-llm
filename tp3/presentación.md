@@ -621,7 +621,16 @@ entrada y 142 de salida. El proxy informó US$0,0018325. Pasaron las
 16 pruebas automatizadas. Los resultados quedaron en
 `data/resultados/expansion_concreta_20261104.1098T9/` del ejercicio 2.
 
-## 21. Cómo seguiremos actualizando este documento
+## 21. Configuración para las próximas pruebas — 04/11
+
+Se eligió el prompt inicial de expansión y GPT-4.1
+(`openai/gpt-4.1-2025-04-14`) como modelo predeterminado del proxy para
+planificar subtemas y generar informes. Los comandos de reproducción
+identifican explícitamente GPT-4o cuando corresponde a una corrida previa.
+Pasaron las 17 pruebas automatizadas. La validación de la configuración
+usó respuestas simuladas del proxy.
+
+## 22. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

@@ -300,11 +300,12 @@ objetivo='entender qué son los embeddings y cómo se compara la similitud entre
 video='tp3/ejercicio2/data/transcripciones/¿Qué son los EMBEDDINGS Grandes Modelos de Lenguaje.vtt'
 resultados=$(mktemp -d tp3/ejercicio2/data/resultados/reproduccion_gpt4o.XXXXXX)
 python3 tp3/ejercicio2/generar_informe.py "$objetivo" "$video" \
-  --backend proxy --prompt tabla --clase-vtt docs/embeddings_2.VTT \
+  --backend proxy --modelo-proxy openai/gpt-4o-2024-08-06 \
+  --prompt tabla --clase-vtt docs/embeddings_2.VTT \
   --pasaje 123 123 --pasaje 137 139 --pasaje 181 181 --pasaje 182 188 \
   --pasaje 191 197 --pasaje 222 222 --salida "$resultados/manual.json"
 python3 tp3/ejercicio2/generar_informe.py "$objetivo" "$video" \
-  --backend proxy --prompt tabla \
+  --backend proxy --modelo-proxy openai/gpt-4o-2024-08-06 --prompt tabla \
   --recuperacion tp3/ejercicio2/data/resultados/ablacion_k_20261104.oaCc7k/caso01_k8.json \
   --salida "$resultados/chroma.json"
 ```

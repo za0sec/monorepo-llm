@@ -8,8 +8,8 @@ from dotenv import dotenv_values
 from openai import APIConnectionError, APIStatusError, OpenAI
 
 
-MODELO_PROXY = "openai/gpt-4o-2024-08-06"
-MODELOS_PROXY = (MODELO_PROXY, "openai/gpt-4.1-2025-04-14")
+MODELO_PROXY = "openai/gpt-4.1-2025-04-14"
+MODELOS_PROXY = (MODELO_PROXY, "openai/gpt-4o-2024-08-06")
 HOST_PROXY = "sa-llmproxy.it.itba.edu.ar"
 
 

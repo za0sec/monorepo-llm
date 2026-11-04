@@ -15,7 +15,7 @@ from indexar_material import (
     nombre_coleccion, validar_coleccion, validar_documento,
 )
 from preparar_chunks import formatear_ubicacion, hash_json
-from proxy_catedra import completar
+from proxy_catedra import MODELO_PROXY, MODELOS_PROXY, completar
 
 
 INSTRUCCIONES_EXPANSION = (
@@ -38,10 +38,10 @@ PROMPTS_EXPANSION = {
 }
 
 
-def planificar_subtemas(objetivo: str, prompt: str = "inicial") -> dict:
+def planificar_subtemas(objetivo: str, prompt: str = "inicial", modelo: str = MODELO_PROXY) -> dict:
     mensajes = [{"role": "system", "content": PROMPTS_EXPANSION[prompt]},
                 {"role": "user", "content": objetivo}]
-    plan = completar(mensajes, max_tokens=200, formato_json=True)
+    plan = completar(mensajes, max_tokens=200, formato_json=True, modelo=modelo)
     return {**plan, "prompt_expansion": prompt}
 
 
@@ -147,10 +147,14 @@ def main() -> None:
     expansion.add_argument("--plan", type=Path, help="Reutilizar el JSON de un plan de subtemas.")
     parser.add_argument("--prompt-expansion", choices=PROMPTS_EXPANSION,
                         help="Variante del prompt para --expandir. Por defecto: inicial.")
+    parser.add_argument("--modelo-proxy", choices=MODELOS_PROXY,
+                        help=f"Modelo para --expandir. Por defecto: {MODELO_PROXY}.")
     parser.add_argument("--salida", type=Path, help="Archivo JSON; por defecto guarda una corrida nueva en data/resultados/.")
     args = parser.parse_args()
     if args.prompt_expansion and not args.expandir:
         parser.error("--prompt-expansion requiere --expandir.")
+    if args.modelo_proxy and not args.expandir:
+        parser.error("--modelo-proxy requiere --expandir.")
     try:
         objetivo = args.objetivo.strip()
         if not objetivo or args.k <= 0:
@@ -168,7 +172,8 @@ def main() -> None:
                 ruta_plan = salida.with_name(salida.stem + ".plan.json")
                 with ruta_plan.open("x", encoding="utf-8") as archivo:
                     try:
-                        plan = planificar_subtemas(objetivo, args.prompt_expansion or "inicial")
+                        plan = planificar_subtemas(objetivo, args.prompt_expansion or "inicial",
+                                                   modelo=args.modelo_proxy or MODELO_PROXY)
                     except (OSError, ValueError, RuntimeError):
                         ruta_plan.unlink()
                         raise

@@ -280,8 +280,8 @@ pasajes de referencia.
 
 ## Repetir las pruebas con el proxy
 
-`recuperar.py --expandir` hace una llamada a GPT-4o para proponer subtemas
-y guarda el plan con el nombre `*.plan.json`. Cada subconsulta se busca
+`recuperar.py --expandir` usa GPT-4.1 y el prompt inicial para proponer
+subtemas y guarda el plan con el nombre `*.plan.json`. Cada subconsulta se busca
 en Chroma y las referencias se reúnen por puesto, omitiendo IDs repetidos.
 `--plan` permite repetir ese paso localmente con un plan guardado.
 Para probar preguntas que pidan un método o uso concreto, agregar
@@ -307,9 +307,10 @@ También se puede usar directamente el `expandida.json` de esa carpeta como
 entrada del generador. Las opciones `--expandir` y `--backend proxy` consumen
 una llamada cada una y leen la configuración de `tp3/.env`.
 
-Para comparar el generador con GPT-4.1, usar el mismo JSON de recuperación
-y agregar `--modelo-proxy openai/gpt-4.1-2025-04-14` al último comando.
-Elegir otro archivo de salida para guardar la segunda corrida.
+GPT-4.1 es también el modelo predeterminado para `generar_informe.py --backend proxy`.
+Para repetir una corrida histórica con GPT-4o, usar el mismo objetivo, prompt
+y archivos de entrada, agregar `--modelo-proxy openai/gpt-4o-2024-08-06`
+al comando correspondiente y elegir otro archivo de salida.
 
 El informe guarda los mensajes, las referencias, el modelo, los tokens y el
 costo informado por el proxy en el JSON. La vista Markdown se escribe al lado.

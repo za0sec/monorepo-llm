@@ -27,11 +27,22 @@ INSTRUCCIONES_EXPANSION = (
     "con las claves tema y consulta. No respondas las preguntas."
 )
 
+PROMPTS_EXPANSION = {
+    "inicial": INSTRUCCIONES_EXPANSION,
+    "concreto": INSTRUCCIONES_EXPANSION + (
+        " Cuando el subtema trate de un proceso, mencioná en la pregunta un método "
+        "representativo por su nombre y preguntá cómo funciona con un ejemplo. "
+        "Para los usos, elegí una aplicación concreta. Mantené las preguntas cortas "
+        "y elegí términos técnicos pertinentes para el objetivo."
+    ),
+}
 
-def planificar_subtemas(objetivo: str) -> dict:
-    mensajes = [{"role": "system", "content": INSTRUCCIONES_EXPANSION},
+
+def planificar_subtemas(objetivo: str, prompt: str = "inicial") -> dict:
+    mensajes = [{"role": "system", "content": PROMPTS_EXPANSION[prompt]},
                 {"role": "user", "content": objetivo}]
-    return completar(mensajes, max_tokens=200, formato_json=True)
+    plan = completar(mensajes, max_tokens=200, formato_json=True)
+    return {**plan, "prompt_expansion": prompt}
 
 
 def leer_subtemas(plan: dict, objetivo: str) -> list[dict]:
@@ -134,8 +145,12 @@ def main() -> None:
     expansion = parser.add_mutually_exclusive_group()
     expansion.add_argument("--expandir", action="store_true", help="Generar subtemas por el proxy.")
     expansion.add_argument("--plan", type=Path, help="Reutilizar el JSON de un plan de subtemas.")
+    parser.add_argument("--prompt-expansion", choices=PROMPTS_EXPANSION,
+                        help="Variante del prompt para --expandir. Por defecto: inicial.")
     parser.add_argument("--salida", type=Path, help="Archivo JSON; por defecto guarda una corrida nueva en data/resultados/.")
     args = parser.parse_args()
+    if args.prompt_expansion and not args.expandir:
+        parser.error("--prompt-expansion requiere --expandir.")
     try:
         objetivo = args.objetivo.strip()
         if not objetivo or args.k <= 0:
@@ -153,7 +168,7 @@ def main() -> None:
                 ruta_plan = salida.with_name(salida.stem + ".plan.json")
                 with ruta_plan.open("x", encoding="utf-8") as archivo:
                     try:
-                        plan = planificar_subtemas(objetivo)
+                        plan = planificar_subtemas(objetivo, args.prompt_expansion or "inicial")
                     except (OSError, ValueError, RuntimeError):
                         ruta_plan.unlink()
                         raise

@@ -594,7 +594,34 @@ El resultado quedó en
 `data/resultados/diagnostico_entrenamiento_20261104.js0weJ/skipgram.json`
 del ejercicio 2.
 
-## 20. Cómo seguiremos actualizando este documento
+## 20. Expansión con preguntas más concretas — 04/11
+
+Se probó `--expandir --prompt-expansion concreto` con el objetivo «quiero
+estudiar embeddings». La variante pide nombrar un método cuando el
+subtema describe un proceso y elegir un caso concreto cuando describe
+un uso. Se conservaron GPT-4o, la colección mixta, MiniLM, ocho candidatos
+por consulta y ocho fragmentos finales seleccionados por rondas. El prompt
+no contenía el nombre de Word2Vec ni los términos de la consulta de diagnóstico.
+
+GPT-4o propuso concepto, representación vectorial, Word2Vec y
+clasificación de texto. La pregunta «¿Cómo funciona el método Word2Vec
+para generar embeddings con un ejemplo?» no recuperó entre sus ocho
+candidatos el tramo que explica los pares positivos y negativos
+(29:16.470–30:22.040). La transcripción escribe variantes como «world to Beck»
+y «Skidcrum». La consulta manual anterior, que también describía los pares
+positivos y negativos, sí había recuperado el pasaje. Esta comparación
+muestra que nombrar el método por sí solo fue insuficiente en esta corrida.
+
+La búsqueda produjo 32 candidatos, 17 únicos y ocho finales. Entre los
+finales se conservaron definición y un uso introductorio, pero se perdió
+el pasaje sobre embeddings estáticos y contextuales. La variante inicial
+respaldaba los tres criterios introductorios, por lo que se conserva
+como configuración de referencia. La llamada consumió 165 tokens de
+entrada y 142 de salida. El proxy informó US$0,0018325. Pasaron las
+16 pruebas automatizadas. Los resultados quedaron en
+`data/resultados/expansion_concreta_20261104.1098T9/` del ejercicio 2.
+
+## 21. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

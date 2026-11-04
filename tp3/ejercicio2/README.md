@@ -284,6 +284,8 @@ pasajes de referencia.
 y guarda el plan con el nombre `*.plan.json`. Cada subconsulta se busca
 en Chroma y las referencias se reúnen por puesto, omitiendo IDs repetidos.
 `--plan` permite repetir ese paso localmente con un plan guardado.
+Para probar preguntas que pidan un método o uso concreto, agregar
+`--prompt-expansion concreto` junto a `--expandir`.
 
 ```bash
 corpus=tp3/ejercicio2/data/chunks/embeddings_2_con_apunte.corpus.json

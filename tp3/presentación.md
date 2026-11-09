@@ -752,7 +752,36 @@ entre unidades y la relevancia se juzgará por el respaldo del pasaje. Esta
 etapa documenta el corpus propuesto. Queda inventariar y preparar las fuentes
 seleccionadas antes de congelar las consultas y construir el índice.
 
-## 28. Cómo seguiremos actualizando este documento
+## 28. Preparación de la muestra de transcripción — 09/11
+
+Se prepararon seis recortes del MP3 del caso 01 para comparar Whisper y
+Wav2Vec2. Las ventanas se distribuyeron a lo largo del audio y se ajustaron
+los bordes a puntos cercanos de baja energía. La escucha humana queda
+pendiente para confirmar los cortes y anotar la referencia literal.
+
+Se verificó que los seis WAV coincidieran con los intervalos seleccionados
+en el audio decodificado y que todos usaran PCM de 16 bits, mono y 16 kHz.
+La muestra suma 179 segundos. El manifiesto conserva hashes, tiempos y
+preparación. Los recortes y la ficha de anotación se prepararon en
+`ejercicio2/data/resultados/asr_caso01_20261109/` y luego se movieron
+a la carpeta de avances.
+
+Todavía no hay inferencias ni métricas para esta muestra. El siguiente paso
+es escuchar y transcribir `ASR01` (00:55.650–01:19.150), revisar dudas y
+completar la referencia antes de ejecutar los modelos.
+
+## 29. Carpeta de avances y migración por módulo — 09/11
+
+Se creó [avances/](avances/README.md) para reunir el trabajo en curso. Se
+movieron el plan y los archivos locales de la comparación de transcripción.
+El plan tiene un enlace desde su ubicación anterior y el README de la raíz
+lleva al nuevo punto de entrada.
+
+El código de ejercicio 2 sigue como base de la migración. Cada módulo se
+trasladará cuando se trabaje en él y se pueda comprobar su ejecución.
+El próximo paso sigue siendo completar la referencia humana de ASR01.
+
+## 30. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

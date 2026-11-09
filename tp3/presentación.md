@@ -1,6 +1,6 @@
 # Presentación: recorrido y decisiones del TP3
 
-Última actualización: **04/11/2026**.
+Última actualización: **09/11/2026**.
 
 Este documento cuenta cómo fuimos construyendo el proyecto: con qué alcance
 empezamos, qué decisiones tomamos, qué implementamos, qué comprobamos y qué
@@ -659,7 +659,100 @@ Esta prueba evaluó la recuperación. El siguiente diagnóstico es comprobar
 si el informe distingue entre ausencia de respaldo y ausencia de evidencia
 en el audio usando entradas con y sin el pasaje de entrenamiento.
 
-## 23. Cómo seguiremos actualizando este documento
+## 23. Prueba de respaldo para métodos de entrenamiento — 04/11
+
+Se hicieron dos corridas desde `generar_informe.py --backend proxy --prompt
+estudiante` con GPT-4.1, el mismo objetivo, los mismos subtemas y la misma
+transcripción del video. El control usó los ocho resultados de la expansión
+de GPT-4.1. En la segunda entrada se reemplazó el quinto fragmento, una
+lista de fuentes del apunte, por las entradas 204–209 de `embeddings_2.VTT`
+(29:16.470–30:22.040), seleccionadas a mano con `seleccionar_pasajes`.
+Ese pasaje explica el entrenamiento con pares positivos y negativos.
+Se verificó que `C5` fuera la única referencia diferente entre las corridas.
+
+| Entrada | Estado asignado a métodos de entrenamiento | Recomendación | Costo informado por el proxy |
+| --- | --- | --- | ---: |
+| Sin el pasaje | Parcial | Cita la lista de fuentes como material para aprender Word2Vec, GloVe y BERT | US$0,012614 |
+| Con el pasaje | Parcial | Cita el tramo de clase que sí explica los pares positivos y negativos | US$0,01332 |
+
+Sin el pasaje correspondía «No se pudo evaluar con el material disponible».
+Con el pasaje hay respaldo para evaluar el método de Word2Vec. El audio
+menciona entrenamiento y describe arquitecturas, pero no explica ese
+método. En ambas corridas el modelo citó `C1` y `C2` al justificar la
+etiqueta. Esos pasajes explican tipos y definición de embeddings. La
+inyección del pasaje mejoró la recomendación sobre Word2Vec, aunque la
+evaluación del subtema siguió usando las mismas citas.
+
+El total informado por el proxy fue US$0,025934. La entrada modificada,
+las auditorías y los informes quedaron en
+`data/resultados/respaldo_entrenamiento_20261104.63FuR6/` del ejercicio 2.
+Para repetir, usar el JSON histórico `expandida.json` de la prueba de
+planificación con GPT-4.1 o el `con_pasaje.json` de esta carpeta con
+`--recuperacion`, y elegir salidas distintas. El resultado permite
+comparar una futura verificación de respaldo académico previa a la
+evaluación del audio.
+
+## 24. Plan de evaluación experimental — 09/11
+
+La devolución de la consulta puso el foco en justificar las decisiones técnicas
+con experimentos y métricas. Revisamos las dos consignas, la clase 11 y su
+notebook, el código de `f4dad33` y los resultados locales del caso 01.
+La evidencia de ese caso permite identificar fallos de recuperación y de
+respaldo en el informe. El plan reserva casos nuevos para comprobar si las
+decisiones se sostienen fuera de ese ejemplo.
+
+El [plan de evaluación](ejercicio2/evaluacion/plan_evaluacion_experimental.md)
+define las cuatro métricas de la clase, los controles y los criterios de cierre
+de cada comparación. WER y CER quedan para audios con referencia humana.
+Este avance documenta el protocolo. Las ablaciones y sus resultados siguen
+pendientes. El siguiente paso es reunir los videos de desarrollo y prueba
+y calibrar la rúbrica de anotación.
+
+## 25. Reordenamiento del plan por arquitectura — 09/11
+
+Se reordenó el [plan experimental](ejercicio2/evaluacion/plan_evaluacion_experimental.md)
+para empezar por indexación y búsqueda con los datos que ya tenemos. La primera
+sesión usará el VTT de la clase, los 125 chunks y las seis búsquedas de la
+ablación de `k`. Se revisarán carga y splitting, modelo de embeddings,
+Chroma y tamaño del contexto con una decisión por contraste.
+
+La expansión queda como técnica avanzada existente. El reranker del notebook
+queda como prueba candidata si se encuentra evidencia dentro de los candidatos
+que no llega al contexto final. Los videos nuevos se reservan para confirmar
+el desempeño del informe una vez medidos los módulos básicos. El siguiente
+paso es localizar los pasajes E1–E5 en los chunks y anotar dónde aparecen en
+los rankings guardados. El cambio es documental y las pruebas siguen pendientes.
+
+## 26. Reconstrucción experimental desde los insumos — 09/11
+
+Se actualizó el [plan experimental](ejercicio2/evaluacion/plan_evaluacion_experimental.md)
+para volver a ejecutar las pruebas con salidas nuevas y conservar las corridas
+anteriores como referencia. El primer contraste compara Whisper con un
+checkpoint de Wav2Vec2 en español sobre los mismos recortes y una transcripción
+humana. El núcleo RAG se reconstruirá sobre transcripciones de clase y apuntes
+guardados como texto, con experimentos separados de chunking, solapamiento,
+embeddings, índice, `k`, expansión, reranking y generación.
+
+La arquitectura textual se medirá de punta a punta antes de contrastarla con
+una variante que incorpore evidencia de pantalla. Este avance define el
+protocolo. El siguiente paso es fijar los recortes del MP3 del caso 01 y anotar
+la referencia humana mientras se inventarían los archivos fuente.
+
+## 27. Corpus académico con varias unidades — 09/11
+
+El [plan experimental](ejercicio2/evaluacion/plan_evaluacion_experimental.md)
+incorpora transcripciones y apuntes o diapositivas de embeddings,
+Transformers, fine-tuning y RAG. La colección común será el control de las
+ablaciones de arquitectura. Se conservarán las colecciones históricas de
+embeddings para reproducir las pruebas y medir cómo cambia el ranking al
+sumar material de otras unidades.
+
+Las consultas se reservarán por unidad. El tema servirá para auditar ruido
+entre unidades y la relevancia se juzgará por el respaldo del pasaje. Esta
+etapa documenta el corpus propuesto. Queda inventariar y preparar las fuentes
+seleccionadas antes de congelar las consultas y construir el índice.
+
+## 28. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

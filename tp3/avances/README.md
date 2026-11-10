@@ -2,8 +2,9 @@
 
 ## En curso
 
-**Transcripción.** El siguiente paso es escuchar y transcribir a mano ASR01. La ficha, el manifiesto y los seis recortes están en `transcripcion/data/asr_caso01_20261109/`. Son archivos locales de la prueba.
+**Transcripción.** Las seis referencias están revisadas. El piloto de ASR01 con Wav2Vec2 ya tiene métricas. El proxy de Whisper respondió HTTP 429 y el contraste sigue pendiente.
 
+- [Piloto de transcripción y comandos](transcripcion/README.md)
 - [Abrir la ficha de referencia](transcripcion/data/asr_caso01_20261109/referencia.md)
 - [Consultar el plan experimental](plan_evaluacion_experimental.md)
 

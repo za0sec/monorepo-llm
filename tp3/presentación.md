@@ -781,7 +781,134 @@ El código de ejercicio 2 sigue como base de la migración. Cada módulo se
 trasladará cuando se trabaje en él y se pueda comprobar su ejecución.
 El próximo paso sigue siendo completar la referencia humana de ASR01.
 
-## 30. Cómo seguiremos actualizando este documento
+## 30. Borradores para revisión de la referencia de audio — 09/11
+
+Se preparó un borrador para cada uno de los seis recortes con el reconocedor
+de voz de macOS en español (`SpeechTranscriber`, `es_ES`). La ficha conserva
+las dudas por recorte y separa el borrador de la referencia verificada.
+El manifiesto registra la herramienta y el hash de la salida bruta.
+
+Se comprobó que los borradores correspondieran a los seis WAV y que los
+intervalos de los segmentos quedaran dentro de cada recorte. La revisión
+humana sigue pendiente. Se empieza por ASR01, en particular por la medida
+de altura y la posible repetición de «queremos». Whisper y Wav2Vec2 quedan
+para la comparación posterior a la revisión.
+
+## 31. Piloto local de Wav2Vec2 en ASR01 — 09/11
+
+La usuaria revisó las seis referencias. Se congelaron en un JSON con el hash
+de la ficha y se comprobaron los hashes de los WAV. Se incorporaron dos
+scripts en `avances/transcripcion/` para transcribir recortes con Wav2Vec2
+y calcular WER y CER. Se verificó la normalización y la alineación con
+ejemplos controlados y se validó el hash del checkpoint descargado.
+
+En ASR01, Wav2Vec2 en CPU con CTC greedy obtuvo WER de 14,55 % (8/55) y CER
+de 5,21 % (16/307). La inferencia duró 0,98 s. Entre las diferencias están
+«comencemospara», «envedings» y la grafía de la medida con palabras frente
+a los dígitos de la referencia. El resultado corresponde a un recorte.
+
+La revisión automática bloqueó el envío al proxy de la cátedra al requerir
+autorización explícita para el destino. El audio no se envió. Falta obtener
+la salida de Whisper para el mismo recorte antes de comparar ambos brazos.
+Los comandos y el resultado local están en el
+[registro del piloto](avances/transcripcion/README.md).
+
+## 32. Intento de Whisper en ASR01 — 09/11
+
+Con autorización de la usuaria se solicitó al proxy de la cátedra que
+transcribiera únicamente ASR01 con `openai/whisper-1`, en español, con
+temperatura 0 y salida `verbose_json`. Se verificaron los hashes del
+recorte y de la referencia para repetir el mismo piloto.
+
+El primer intento y un reintento devolvieron HTTP 429. El diagnóstico
+del reintento corresponde a un límite relacionado con cuota o facturación.
+El proxy no devolvió una transcripción. Quedan pendientes WER y CER de
+Whisper para completar la comparación con Wav2Vec2.
+
+## 33. Verificación de conexión con la guía LiteLLM — 09/11
+
+Se contrastó la guía de la cátedra con la configuración del proyecto. La
+URL HTTPS coincide. La guía guarda la clave en `LLM_API_KEY` y esta
+prueba pasó al SDK la credencial existente en `OPENAI_API_KEY`.
+
+El catálogo autenticado devolvió HTTP 200 y lista `openai/whisper-1`.
+Una consulta de texto sintético con el modelo de la guía
+(`gpt-3.5-turbo`) y con el alias del catálogo
+(`openai/gpt-3.5-turbo`) devolvió HTTP 404 en ambos casos.
+El modelo de texto del proyecto (`openai/gpt-4.1-2025-04-14`) devolvió
+HTTP 429. Se verificó acceso al catálogo con la credencial actual.
+La inferencia queda pendiente y esta prueba no volvió a enviar ASR01.
+
+La consulta de diagnóstico a `/key/info` devolvió HTTP 403 con la clave
+actual. Esa ruta no permitió verificar el presupuesto de la clave o del
+equipo. El 429 es compatible con cuota o facturación del proveedor o
+con un límite de uso aplicado por el proxy. Falta confirmar el origen
+exacto con el registro del servidor.
+
+## 34. Reproducción con el código del ejercicio 2 — 09/11
+
+Se comprobó que `generar_informe.py`, `proxy_catedra.py` y
+`transcribir_audio.py` son idénticos a sus versiones en `f4dad33`.
+Se ejecutó el generador del ejercicio 2 con el prompt `estudiante`,
+el backend proxy y un ejemplo de texto sintético. Tanto
+`openai/gpt-4.1-2025-04-14` como `openai/gpt-4o-2024-08-06` devolvieron
+HTTP 429. La prueba confirma que el error se reproduce con el código
+histórico. El primer intento reciente de Whisper ya había usado el
+script histórico de transcripción y también recibió HTTP 429.
+
+Se verificó localmente que el identificador de LiteLLM informado por
+la usuaria coincide con el SHA-256 de la credencial actual en
+`tp3/.env`. La fecha de modificación que registra el archivo es del
+19/10. La coincidencia identifica la clave usada en las pruebas actuales.
+La identidad de la clave en las corridas históricas queda por confirmar
+con los registros del proxy.
+
+Se adaptó [prueba.py](prueba.py) para ejecutar el ejemplo de la guía con
+`gpt-3.5-turbo` y su mensaje de prueba. El script carga `tp3/.env`,
+prioriza `LLM_API_KEY` y admite `OPENAI_API_KEY`, que es el nombre
+configurado en este equipo. La ejecución manual devolvió HTTP 404.
+
+Después se reemplazó esa adaptación por el bloque exacto de la guía.
+El `.env` local define `LLM_API_KEY` a partir de la credencial existente.
+Con el código de la guía, el proxy volvió a devolver HTTP 404.
+La ejecución manual de la usuaria mostró el detalle del error. El proxy
+reportó que `gpt-3.5-turbo` fue deprecado y que el grupo de ese modelo
+no tiene un fallback configurado. Esto explica el 404 de la guía.
+El origen exacto del 429 de los otros modelos sigue pendiente.
+
+## 35. Detalle del 429 en la prueba manual — 09/11
+
+La usuaria ejecutó el ejemplo de la guía y después repitió la prueba
+cambiando el modelo a `gpt-4.1-mini-2025-04-14`. En esta segunda
+configuración, el proxy devolvió HTTP 429 con una excepción de OpenAI
+que informó «You have no credits remaining». El mensaje aclara el
+rechazo de esa solicitud. Whisper también devolvió HTTP 429 y queda
+pendiente confirmar si su ruta comparte la misma cuenta o el mismo
+límite.
+
+Se repitió el ejemplo del poema cambiando únicamente el modelo a
+`openai/gpt-4o-mini`. El proxy volvió a devolver HTTP 429 con
+«You have no credits remaining» y sin un modelo de respaldo configurado.
+El registro del servidor confirmó que la solicitud quedó asociada al
+equipo `73.69 LLMs - G3`, que el proveedor era OpenAI y que LiteLLM
+reintentó dos veces. El error describe una falta de créditos en la
+ruta de ese modelo. Todavía no se confirmó si Whisper usa la misma
+cuenta del proveedor.
+
+## 36. Cruce de registros del 04/11 y del piloto de Whisper — 09/11
+
+El último registro exitoso del 04/11 coincide en modelo, tokens y costo
+con el informe con pasaje de la prueba de respaldo (`GPT-4.1`, 4.644
+tokens y US$0,01332). Ese registro y el primer intento de Whisper del
+09/11 tienen el mismo identificador de clave virtual y el mismo equipo
+`73.69 LLMs - G3`.
+
+El registro de `openai/whisper-1` confirma que OpenAI devolvió HTTP 429
+con «You have no credits remaining». LiteLLM reintentó dos veces y no
+tenía un modelo de respaldo para esa ruta. El piloto sigue pendiente
+hasta recuperar acceso a la transcripción por el proxy.
+
+## 37. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

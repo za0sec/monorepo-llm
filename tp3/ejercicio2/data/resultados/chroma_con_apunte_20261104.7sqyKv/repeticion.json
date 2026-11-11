@@ -1,0 +1,40 @@
+{
+  "coleccion": "tp3_248fe3ddb4d5588934314f79",
+  "ruta_chroma": "/Users/agostinasquillari/Desktop/LLMS/monorepo-llm/tp3/ejercicio2/data/chroma",
+  "chunks_totales": 136,
+  "chunks_nuevos": 0,
+  "chunks_reutilizados": 136,
+  "segundos": 0.03767275000000003,
+  "manifiesto": {
+    "version": 2,
+    "sha256_documento_chunks": "fbbddd3cf54cf0640e850c4da18c1fe41f7efc3a982a5029dd34a85dafe31271",
+    "cantidad_chunks": 136,
+    "embedding": {
+      "modelo": "sentence-transformers/all-MiniLM-L6-v2",
+      "revision": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+      "dimension": 384,
+      "dispositivo": "cpu",
+      "normalizar": false
+    },
+    "metrica": "cosine",
+    "versiones": {
+      "chromadb": "1.5.9",
+      "sentence-transformers": "5.1.2",
+      "torch": "2.8.0",
+      "transformers": "4.57.1",
+      "tokenizers": "0.22.2"
+    },
+    "fuentes": [
+      {
+        "fuente": "docs/embeddings_2.VTT",
+        "sha256_fuente": "a1fa8324b6d63c7c6d90fd4dc467b65095524aba8e134d806c2118278b24cd18",
+        "id_configuracion_chunks": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd"
+      },
+      {
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "sha256_fuente": "ff2487e368cc59534b2abfa6e711f61cc9f00bc4bf2fe344ed76fcce0262e269",
+        "id_configuracion_chunks": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5"
+      }
+    ]
+  }
+}

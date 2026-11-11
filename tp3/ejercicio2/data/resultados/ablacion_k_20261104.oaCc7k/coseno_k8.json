@@ -1,0 +1,229 @@
+{
+  "fecha_utc": "2026-11-04T18:20:14.592321+00:00",
+  "objetivo": "entender similitud coseno y sus limitaciones",
+  "coleccion": "tp3_c18deda7c17b0e0f81ea5513",
+  "ruta_chroma": "/Users/agostinasquillari/Desktop/LLMS/monorepo-llm/tp3/ejercicio2/data/chroma",
+  "manifiesto": {
+    "version": 1,
+    "sha256_documento_chunks": "00b58f1116024bb51f74aca18ed5c73b491a60d4396d2cda6b7170daa5132a21",
+    "fuente": "docs/embeddings_2.VTT",
+    "sha256_fuente": "a1fa8324b6d63c7c6d90fd4dc467b65095524aba8e134d806c2118278b24cd18",
+    "id_configuracion_chunks": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+    "cantidad_chunks": 125,
+    "embedding": {
+      "modelo": "sentence-transformers/all-MiniLM-L6-v2",
+      "revision": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+      "dimension": 384,
+      "dispositivo": "cpu",
+      "normalizar": false
+    },
+    "metrica": "cosine",
+    "versiones": {
+      "chromadb": "1.5.9",
+      "sentence-transformers": "5.1.2",
+      "torch": "2.8.0",
+      "transformers": "4.57.1",
+      "tokenizers": "0.22.2"
+    }
+  },
+  "k_solicitado": 8,
+  "k_efectivo": 8,
+  "umbral": null,
+  "segundos_embedding_incluida_carga": 0.13272366700000005,
+  "segundos_busqueda": 0.0028042080000001413,
+  "segundos_totales": 0.1356780419999999,
+  "referencias": [
+    {
+      "posicion": 1,
+      "chunk_id": "31e13bc27aae71cca3bf9b160c24616ac062cba031af23e1f23634077edfcff3",
+      "texto": "de atención que si eso me explota, es un problema y por una cuestión de parámetros también. Si entonces.\n\nMarina Fuster: por un lado, si yo eso por ahí no tengo tanto control, no de de hasta dónde el transformer con sus propios parámetros llega a procesar todo, Pero a mí lo que sí me interesa es que el límite",
+      "distancia_coseno": 0.4479760527610779,
+      "similitud_coseno": 0.5520239472389221,
+      "metadata": {
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "tokens_contenido": 100,
+        "fin_caracter": 43987,
+        "tokens_totales": 102,
+        "segmentos_ids": [
+          "338",
+          "339"
+        ],
+        "inicio_ms": 2977400,
+        "fin": "00:50:04.219",
+        "fuente": "docs/embeddings_2.VTT",
+        "inicio_caracter": 43677,
+        "fin_ms": 3004219,
+        "inicio": "00:49:37.400"
+      }
+    },
+    {
+      "posicion": 2,
+      "chunk_id": "753c837681d642b4b4ed85f914474b566063c2670a67a86687534bcdccc4adb1",
+      "texto": "tales tokens están muy lejos, si que no, que prácticamente las que son de cercanía. No les voy a dar mucha bola, sino que están muy lejos. Entonces, un poco la idea de jugar con las frecuencias es eso ir modelando relaciones de distinta distancia.\n\nJOAQUÍN NICOLÁS YULÁN LUCIOLI: Entonces.\n\nMarina Fuster: Pereza.\n\nJOAQUÍN NICOLÁS YULÁN LUCIOLI: Tener el peor dimensión más grande posible.\n\nMarina Fuster: Qué opinas, o sea que.",
+      "distancia_coseno": 0.518800675868988,
+      "similitud_coseno": 0.48119932413101196,
+      "metadata": {
+        "inicio_ms": 3347820,
+        "segmentos_ids": [
+          "379",
+          "380",
+          "381",
+          "382",
+          "383"
+        ],
+        "inicio": "00:55:47.820",
+        "fin_ms": 3377560,
+        "fin_caracter": 49783,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "tokens_totales": 136,
+        "fin": "00:56:17.560",
+        "fuente": "docs/embeddings_2.VTT",
+        "inicio_caracter": 49355,
+        "tokens_contenido": 134
+      }
+    },
+    {
+      "posicion": 3,
+      "chunk_id": "6592f82fe3b32655c80f3bce58684d31b5c1cbc32c392b4662a9604dda370b1a",
+      "texto": "er un vector cada vez más grande, que es, L, ¿Qué es lo que te limita esa idea.\n\nJOAQUÍN NICOLÁS YULÁN LUCIOLI: Y el Transformer.\n\nMarina Fuster: Bien perfecto, o sea el justo, el tamaño de ese vector, y",
+      "distancia_coseno": 0.527981162071228,
+      "similitud_coseno": 0.472018837928772,
+      "metadata": {
+        "inicio": "00:56:35.360",
+        "fuente": "docs/embeddings_2.VTT",
+        "fin_ms": 3421270,
+        "tokens_totales": 64,
+        "tokens_contenido": 62,
+        "inicio_caracter": 50277,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "inicio_ms": 3395360,
+        "fin_caracter": 50480,
+        "fin": "00:57:01.270",
+        "segmentos_ids": [
+          "388",
+          "389",
+          "390"
+        ]
+      }
+    },
+    {
+      "posicion": 4,
+      "chunk_id": "5acf1645d843217205b0d07696cce6f54ae9bf9a36e16ffdb0fb4e907c543cd6",
+      "texto": "Marina Fuster: Entonces lo que voy a hacer es calcular la pérdida de eso y ajustar los pesos\n\nMarina Fuster: de acuerdo a ese error que tuve entonces\n\nMarina Fuster: esquemáticamente lo que empieza a pasar, porque fíjense que el el dot product que yo hago, o sea, este de acá entre el embel y el w output. Ese producto interno también es una métrica de similitud, o sea, la similitud coseno que la definimos así. Fíjense que es el producto dividido en la norma de los vectores.\n\nMarina Fuster: pero el producto en sí que es una operación que hacemos constantemente en todos los modelos. También es una métrica de similitud.\n\nMarina Fuster: ",
+      "distancia_coseno": 0.5457273721694946,
+      "similitud_coseno": 0.45427262783050537,
+      "metadata": {
+        "inicio": "00:31:44.560",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "fin_caracter": 28891,
+        "inicio_ms": 1904560,
+        "inicio_caracter": 28251,
+        "fin": "00:32:41.570",
+        "segmentos_ids": [
+          "220",
+          "221",
+          "222",
+          "223",
+          "224"
+        ],
+        "fin_ms": 1961570,
+        "fuente": "docs/embeddings_2.VTT",
+        "tokens_contenido": 200,
+        "tokens_totales": 202
+      }
+    },
+    {
+      "posicion": 5,
+      "chunk_id": "2c4a6c25c9264305bb647362f2f0e0953ee57653547ca9cf81c084c8719ff7db",
+      "texto": "los modelos. También es una métrica de similitud.\n\nMarina Fuster: Entonces lo que yo estoy haciendo acá en este algoritmo, que es un poco más simple Cuando hago este producto y me fijo estos valores y los trato de ajustar como para que los naranjas se acerquen a 1 lo que estoy haciendo, es decir, Che. Quiero que subas el dot product entre el embelle de la palabra",
+      "distancia_coseno": 0.5527480840682983,
+      "similitud_coseno": 0.44725191593170166,
+      "metadata": {
+        "inicio": "00:32:14.890",
+        "fin_ms": 1961570,
+        "inicio_caracter": 28825,
+        "fuente": "docs/embeddings_2.VTT",
+        "tokens_contenido": 116,
+        "segmentos_ids": [
+          "223",
+          "224"
+        ],
+        "tokens_totales": 118,
+        "inicio_ms": 1934890,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "fin_caracter": 29190,
+        "fin": "00:32:41.570"
+      }
+    },
+    {
+      "posicion": 6,
+      "chunk_id": "9cc37a19e304b84aec8a2d3923b62d1889880bcbcd935303f516577af774c96f",
+      "texto": ": para investigar y que lo chus meen, si les interesa, esto es un poco cómo se buscan definir los tamaños de vocabulario, que siempre fue muy como obscuro. Y esto salió hace un par de años para uniformar un poco. Y por otro lado, nosotros mismos que pasamos a up fake, y después iban marchando los tokens.\n\nMarina Fuster: Bueno, meta sacó una arquitectura donde argumenta que ese proceso de tokenización, que da lugar a muchos problemas",
+      "distancia_coseno": 0.555101752281189,
+      "similitud_coseno": 0.44489824771881104,
+      "metadata": {
+        "fuente": "docs/embeddings_2.VTT",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "tokens_contenido": 144,
+        "inicio": "00:17:53.110",
+        "fin": "00:18:22.379",
+        "tokens_totales": 146,
+        "fin_caracter": 15877,
+        "inicio_caracter": 15441,
+        "segmentos_ids": [
+          "119",
+          "120"
+        ],
+        "inicio_ms": 1073110,
+        "fin_ms": 1102379
+      }
+    },
+    {
+      "posicion": 7,
+      "chunk_id": "4afe1972fcf16e7cd44ba12fa6a7c6fdac8defb8f51e9b6b477da10ec6af6bad",
+      "texto": "riz va a ser súper esparza. O sea, si yo tengo un corpus grande, este tipo de matrices se me queda súper corta, por lo que menciona Juan Ignacio y porque\n\nMarina Fuster: hay palabras que, o sea, muchas cosas, me quedan en 0. Entonces",
+      "distancia_coseno": 0.5597943663597107,
+      "similitud_coseno": 0.4402056336402893,
+      "metadata": {
+        "tokens_contenido": 72,
+        "tokens_totales": 74,
+        "fin_ms": 1502360,
+        "fuente": "docs/embeddings_2.VTT",
+        "fin": "00:25:02.360",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "inicio": "00:24:43.310",
+        "inicio_caracter": 21787,
+        "inicio_ms": 1483310,
+        "segmentos_ids": [
+          "177",
+          "178"
+        ],
+        "fin_caracter": 22020
+      }
+    },
+    {
+      "posicion": 8,
+      "chunk_id": "fb4d20804426f60212809d6560999e5a45fa3d20da8061711b4f0e549b0e1c62",
+      "texto": "Marina Fuster: rojo rojo se usó un montón escarlata, ¿no? Entonces ahí quizás la frecuencia no me importa tanto escarlata. Es un sinónimo de rojo, entonces tienen sus ventajas y desventajas depende de donde las uso, pero nos vamos a conformar con quedarnos con la similitud con 0. Por ahora.\n\nMarina Fuster: entonces tengo 3 tipos de lo que son emerix, los emedis estáticos, los emedis dinámicos y los Leart Emerys. Los L Ert son los que charlamos en la demo. No, Yo tengo una tabla con parámetros a reaccionar, y los entreno junto al modelo. Y si\n\nMarina Fuster: quizás no es una catego",
+      "distancia_coseno": 0.5623351335525513,
+      "similitud_coseno": 0.43766486644744873,
+      "metadata": {
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "inicio_ms": 1618290,
+        "tokens_totales": 202,
+        "fin": "00:27:47.049",
+        "inicio_caracter": 23708,
+        "fin_ms": 1667049,
+        "inicio": "00:26:58.290",
+        "tokens_contenido": 200,
+        "fuente": "docs/embeddings_2.VTT",
+        "fin_caracter": 24295,
+        "segmentos_ids": [
+          "188",
+          "189",
+          "190"
+        ]
+      }
+    }
+  ]
+}

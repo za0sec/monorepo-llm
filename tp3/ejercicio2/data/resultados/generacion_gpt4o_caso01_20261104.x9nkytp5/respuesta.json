@@ -1,0 +1,41 @@
+{
+  "id": "chatcmpl-EgbLUpVhwCeKki6gyTeyJhjlXSr3y",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "| Criterio | Estado | Clase | Video | Justificación |\n| --- | --- | --- | --- | --- |\n| Definición de embeddings | Cubierto | [C3] | [V2], [V18], [V22] | El video y la clase explican que los embeddings son representaciones vectoriales. |\n| Uso de embeddings en modelos de lenguaje | Cubierto | [C3] | [V3], [V60] | Ambos mencionan que los embeddings son utilizados en modelos de lenguaje para tareas de procesamiento. |\n| Comparación de similitud entre textos | Parcial | [C4], [C6] | [V69], [V54] | El video menciona la comparación vectorial para similitud, pero no detalla métricas específicas como la similitud coseno. |\n| Embeddings estáticos vs dinámicos | Sin evidencia en el video | [C5] | — | La clase explica la diferencia entre embeddings estáticos y dinámicos, pero el video no lo menciona. |\n| Contexto en embeddings | Cubierto | [C5] | [V29], [V36] | Ambos explican cómo el contexto afecta a los embeddings, mencionando el uso de redes transformer. |\n\nRecomendación: Para una comprensión completa de cómo se compara la similitud entre textos, sería útil incluir una explicación sobre las métricas específicas como la similitud coseno, que se menciona en [C4] y [C6].\n\nConclusión: El video es útil para entender qué son los embeddings y su uso en modelos de lenguaje, pero no cubre en detalle las métricas específicas para comparar la similitud entre textos.",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null
+      }
+    }
+  ],
+  "created": 1793822040,
+  "model": "gpt-4o-2024-08-06",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": "fp_f89046aead",
+  "usage": {
+    "completion_tokens": 346,
+    "prompt_tokens": 3613,
+    "total_tokens": 3959,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": null,
+      "cached_tokens": 0
+    }
+  }
+}

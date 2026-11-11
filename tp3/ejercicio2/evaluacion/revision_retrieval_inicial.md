@@ -103,8 +103,8 @@ python3 tp3/ejercicio2/recuperar.py \
 python3 -m unittest discover -s tp3/ejercicio2/tests -v
 ```
 
-Los JSON completos, Chroma y pesos son regenerables y están ignorados por Git;
-este informe conserva la configuración y la revisión para compartirlas.
+Los JSON completos de las corridas se incluyen en Git. Chroma y los pesos se
+mantienen como datos locales. Este informe conserva la configuración y la revisión.
 Las latencias y mínimos errores numéricos pueden variar entre equipos.
 
 La operación e integridad están verificadas, pero la recuperación del baseline

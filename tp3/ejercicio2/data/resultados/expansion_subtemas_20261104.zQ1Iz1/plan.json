@@ -1,0 +1,38 @@
+{
+  "modelo_solicitado": "openai/gpt-4o-2024-08-06",
+  "modelo": "gpt-4o-2024-08-06",
+  "mensajes": [
+    {
+      "role": "system",
+      "content": "Descomponé el objetivo de estudio en hasta cuatro subtemas mínimos, distintos y pertinentes para una primera comprensión en una materia de modelos de lenguaje. Por cada subtema, escribí una pregunta breve en español que permita recuperar una explicación en material de clase. Ordená de lo básico a lo específico. Devolvé únicamente un objeto JSON con la clave subtemas y una lista de objetos con las claves tema y consulta. No respondas las preguntas."
+    },
+    {
+      "role": "user",
+      "content": "quiero estudiar embeddings"
+    }
+  ],
+  "max_completion_tokens": 200,
+  "temperature": 0,
+  "store": false,
+  "response_format": "json_object",
+  "finish_reason": "stop",
+  "uso": {
+    "completion_tokens": 150,
+    "prompt_tokens": 108,
+    "total_tokens": 258,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": null,
+      "cached_tokens": 0
+    }
+  },
+  "costo_reportado_proxy": "0.00177",
+  "segundos": 3.997549458,
+  "respuesta": "{\n  \"subtemas\": [\n    {\n      \"tema\": \"Concepto de embeddings\",\n      \"consulta\": \"¿Qué son los embeddings en el contexto de procesamiento de lenguaje natural?\"\n    },\n    {\n      \"tema\": \"Tipos de embeddings\",\n      \"consulta\": \"¿Cuáles son los diferentes tipos de embeddings utilizados en modelos de lenguaje?\"\n    },\n    {\n      \"tema\": \"Métodos de entrenamiento de embeddings\",\n      \"consulta\": \"¿Cómo se entrenan los embeddings para representar palabras en un espacio vectorial?\"\n    },\n    {\n      \"tema\": \"Aplicaciones de embeddings\",\n      \"consulta\": \"¿En qué aplicaciones se utilizan comúnmente los embeddings en el procesamiento de lenguaje natural?\"\n    }\n  ]\n}"
+}

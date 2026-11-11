@@ -1,0 +1,236 @@
+{
+  "fecha_utc": "2026-11-04T20:59:01.396598+00:00",
+  "objetivo": "quiero estudiar embeddings",
+  "coleccion": "tp3_248fe3ddb4d5588934314f79",
+  "ruta_chroma": "/Users/agostinasquillari/Desktop/LLMS/monorepo-llm/tp3/ejercicio2/data/chroma",
+  "manifiesto": {
+    "version": 2,
+    "sha256_documento_chunks": "fbbddd3cf54cf0640e850c4da18c1fe41f7efc3a982a5029dd34a85dafe31271",
+    "cantidad_chunks": 136,
+    "embedding": {
+      "modelo": "sentence-transformers/all-MiniLM-L6-v2",
+      "revision": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+      "dimension": 384,
+      "dispositivo": "cpu",
+      "normalizar": false
+    },
+    "metrica": "cosine",
+    "versiones": {
+      "chromadb": "1.5.9",
+      "sentence-transformers": "5.1.2",
+      "torch": "2.8.0",
+      "transformers": "4.57.1",
+      "tokenizers": "0.22.2"
+    },
+    "fuentes": [
+      {
+        "fuente": "docs/embeddings_2.VTT",
+        "sha256_fuente": "a1fa8324b6d63c7c6d90fd4dc467b65095524aba8e134d806c2118278b24cd18",
+        "id_configuracion_chunks": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd"
+      },
+      {
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "sha256_fuente": "ff2487e368cc59534b2abfa6e711f61cc9f00bc4bf2fe344ed76fcce0262e269",
+        "id_configuracion_chunks": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5"
+      }
+    ]
+  },
+  "k_solicitado": 8,
+  "k_efectivo": 8,
+  "umbral": null,
+  "segundos_embedding_incluida_carga": 0.25901616699999996,
+  "segundos_busqueda": 0.0029475420000002472,
+  "segundos_totales": 0.26209408399999967,
+  "referencias": [
+    {
+      "posicion": 1,
+      "chunk_id": "a951c876e3c25089b032ceb4a728112194305fb3ec89fea45c8a6fe0d0e5802b",
+      "texto": "Transcripción embeddings_2.VTT. 18:32–18:50 y 25:22–25:38, representación. 20:32–21:00 y\n31:55–32:15, similitud y cálculo. 25:38–27:14, magnitud y series. 27:47–28:45, embeddings estáticos y\ncontextuales.\n\n\n\n\n                                                                                                       5",
+      "distancia_coseno": 0.45074033737182617,
+      "similitud_coseno": 0.5492596626281738,
+      "metadata": {
+        "apunte_derivado": true,
+        "inicio_caracter": 4644,
+        "pagina_inicio": 5,
+        "fin_caracter": 4957,
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "segmentos_ids": [
+          "5"
+        ],
+        "tokens_contenido": 93,
+        "tokens_totales": 95,
+        "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+        "pagina_fin": 5
+      }
+    },
+    {
+      "posicion": 2,
+      "chunk_id": "30f035d1677d31b83d24358ac6c10750d539eabad73095f8c93278a0308ccac6",
+      "texto": "coseno conserva la\ndirección y descarta la magnitud.\n\nFuentes de la clase\nClase 2 - Transformación de Texto a Embeddings. Diapositivas 31–35. Definición, similitud coseno y\ntipos de embeddings.",
+      "distancia_coseno": 0.46172070503234863,
+      "similitud_coseno": 0.5382792949676514,
+      "metadata": {
+        "segmentos_ids": [
+          "5"
+        ],
+        "tokens_contenido": 69,
+        "tokens_totales": 71,
+        "pagina_inicio": 5,
+        "apunte_derivado": true,
+        "fin_caracter": 4642,
+        "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+        "pagina_fin": 5,
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "inicio_caracter": 4449
+      }
+    },
+    {
+      "posicion": 3,
+      "chunk_id": "e91847975f712589dd1b06ccee6337d22d7fd1138899bb629208815248bbf655",
+      "texto": "LLMs - Apuntes de estudio                                                      73.69 | 2Q - 2026\n\n\n\n\n                            Unidad 2 - Embeddings\nRepresentación vectorial del texto\nUn embedding es una representación numérica de un elemento, como una palabra, una\noración o un documento. Se expresa como un vector, es decir, una lista ordenada de\nnúmeros. Un modelo transforma los elementos de texto en puntos de un espacio continuo.\nEsa representación permite aplicar operaciones matemáticas al texto y comparar sus\nrepresentaciones.\n\nPor ejemplo, un modelo que representa oraciones puede ubicar «Necesito cambiar mi\npasaje» cerca de «Quiero modificar mi reserva». Si aprendió a captar el significado, podría\nubic",
+      "distancia_coseno": 0.5234516263008118,
+      "similitud_coseno": 0.47654837369918823,
+      "metadata": {
+        "segmentos_ids": [
+          "3"
+        ],
+        "pagina_inicio": 3,
+        "pagina_fin": 3,
+        "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+        "tokens_totales": 202,
+        "inicio_caracter": 0,
+        "apunte_derivado": true,
+        "tokens_contenido": 200,
+        "fin_caracter": 718,
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf"
+      }
+    },
+    {
+      "posicion": 4,
+      "chunk_id": "753c837681d642b4b4ed85f914474b566063c2670a67a86687534bcdccc4adb1",
+      "texto": "tales tokens están muy lejos, si que no, que prácticamente las que son de cercanía. No les voy a dar mucha bola, sino que están muy lejos. Entonces, un poco la idea de jugar con las frecuencias es eso ir modelando relaciones de distinta distancia.\n\nJOAQUÍN NICOLÁS YULÁN LUCIOLI: Entonces.\n\nMarina Fuster: Pereza.\n\nJOAQUÍN NICOLÁS YULÁN LUCIOLI: Tener el peor dimensión más grande posible.\n\nMarina Fuster: Qué opinas, o sea que.",
+      "distancia_coseno": 0.5413457751274109,
+      "similitud_coseno": 0.4586542248725891,
+      "metadata": {
+        "inicio": "00:55:47.820",
+        "tokens_totales": 136,
+        "segmentos_ids": [
+          "379",
+          "380",
+          "381",
+          "382",
+          "383"
+        ],
+        "fuente": "docs/embeddings_2.VTT",
+        "inicio_ms": 3347820,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "inicio_caracter": 49355,
+        "fin": "00:56:17.560",
+        "fin_ms": 3377560,
+        "tokens_contenido": 134,
+        "fin_caracter": 49783
+      }
+    },
+    {
+      "posicion": 5,
+      "chunk_id": "3f665323d077f1e44c2fd1159dff481e43742ca48527db8b8db34ae22ad7f280",
+      "texto": "Marina Fuster: Bien, eso estamos.\n\nMarina Fuster: Es decir.\n\nJOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, Sí.\n\nMarina Fuster: Bien buenísimo, entonces medio que la Id. La idea fundamental trata de capturar esto, que charlábamos de\n\nMarina Fuster: la frase que vos. Vas a conocer el significado de la palabra o el mapeo de la palabra, de acuerdo al contexto. Entonces veamos 1 de los estáticos, que se llama\n\nMarina Fuster: Skidcrum.\n\nMarina Fuster: que es de una familia que se llama world to Beck. Creo que el Paper está al final, si a alguno le interesa. Y la idea muy básica es que yo voy a tener un modelo que lo voy a en",
+      "distancia_coseno": 0.5646195411682129,
+      "similitud_coseno": 0.4353804588317871,
+      "metadata": {
+        "tokens_contenido": 200,
+        "inicio_ms": 1725050,
+        "fin_ms": 1770059,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "inicio_caracter": 25442,
+        "inicio": "00:28:45.050",
+        "segmentos_ids": [
+          "198",
+          "199",
+          "200",
+          "201",
+          "202",
+          "203",
+          "204"
+        ],
+        "tokens_totales": 202,
+        "fin": "00:29:30.059",
+        "fuente": "docs/embeddings_2.VTT",
+        "fin_caracter": 26057
+      }
+    },
+    {
+      "posicion": 6,
+      "chunk_id": "84cfee9a27ccb69b0d61b3572b2218efba041b7ed739323df43a9e3108da7737",
+      "texto": "la secuencia. No fíjate que vos\n\nMarina Fuster: tenés como ese ese embeding que viaja por el residuo stream en el Transformer, al cual vas modificando cuando incorpora atención de otros Tokens cuando pasa por e el M L. P. E incorpora datos",
+      "distancia_coseno": 0.5663536787033081,
+      "similitud_coseno": 0.4336463212966919,
+      "metadata": {
+        "fuente": "docs/embeddings_2.VTT",
+        "fin": "00:52:44.660",
+        "inicio": "00:52:27.320",
+        "tokens_contenido": 81,
+        "tokens_totales": 83,
+        "inicio_caracter": 46255,
+        "fin_ms": 3164660,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "inicio_ms": 3147320,
+        "segmentos_ids": [
+          "357",
+          "358"
+        ],
+        "fin_caracter": 46494
+      }
+    },
+    {
+      "posicion": 7,
+      "chunk_id": "399302fe54dfabef489665f5eb3f586ce400b0d6959087f2cce54134c586b105",
+      "texto": "erva». Si aprendió a captar el significado, podría\nubicar «Hoy llueve» más lejos. La cercanía depende del modelo y de la medida con que se\ncomparen los vectores.\n\n\n\n                      Texto → Modelo de embeddings → Vector",
+      "distancia_coseno": 0.5711419582366943,
+      "similitud_coseno": 0.42885804176330566,
+      "metadata": {
+        "tokens_contenido": 67,
+        "tokens_totales": 69,
+        "pagina_inicio": 3,
+        "pagina_fin": 3,
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+        "inicio_caracter": 663,
+        "apunte_derivado": true,
+        "segmentos_ids": [
+          "3"
+        ],
+        "fin_caracter": 887
+      }
+    },
+    {
+      "posicion": 8,
+      "chunk_id": "2484d0e107ecf087e12bb0b954dc6fdecde4f490935ddaedc255e3a6be0d8729",
+      "texto": "Marina Fuster: no\n\nMarina Fuster: pongámosle Acá Tengo una más, y esto alimento a través del encoder. Al final voy a querer que me diga 1 o lo más cercano a 1. Y la palabra dis en este caso no this viene a reemplazar la másca.\n\nMarina Fuster: pero no siempre quiero ponerla más. No sé si alguno\n\nMarina Fuster: quiere tirarse al lance de por qué tendría el 10 por 100, random 10 por 100 idénticos y no 100 por 100.\n\nJOAQUÍN NICOLÁS YULÁN LUCIOLI: Porque las personas, cuando escriben, se equivocan.\n\nMarina Fuster: Muy bien. Esa es una a favor de cuál.\n\nJOAQUÍN NICOLÁS YULÁN LUCIOLI: Sea a favor de de Random.\n\nMarina Fuster: ",
+      "distancia_coseno": 0.574141263961792,
+      "similitud_coseno": 0.425858736038208,
+      "metadata": {
+        "fin_caracter": 37507,
+        "inicio_ms": 2523110,
+        "fin": "00:42:56.380",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "tokens_totales": 202,
+        "segmentos_ids": [
+          "287",
+          "288",
+          "289",
+          "290",
+          "291",
+          "292",
+          "293",
+          "294"
+        ],
+        "fin_ms": 2576380,
+        "tokens_contenido": 200,
+        "inicio_caracter": 36880,
+        "fuente": "docs/embeddings_2.VTT",
+        "inicio": "00:42:03.110"
+      }
+    }
+  ]
+}

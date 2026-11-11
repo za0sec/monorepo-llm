@@ -27,6 +27,11 @@ generación y los experimentos todavía propuestos.
 
 ## Fuente inicial
 
+El repositorio incluye los chunks, las transcripciones del caso 01 y los
+resultados de los experimentos en JSON y Markdown. Los audios, los archivos
+procesados intermedios, los logs, la caché de modelos y el índice Chroma se
+guardan localmente.
+
 Usamos `docs/embeddings_2.VTT`, que incluye embeddings y similitud coseno.
 `embeddings_1.VTT` se concentra en la demo de implementación del Transformer.
 Conservamos completa la transcripción seleccionada: todavía no filtramos temas,
@@ -120,7 +125,7 @@ puede descargar esos archivos de Hugging Face; si ya están en caché:
 python3 tp3/ejercicio2/preparar_chunks.py --solo-local
 ```
 
-Genera `data/chunks/embeddings_2.chunks.json` y `.txt`, ignorados por Git. Cada
+Genera `data/chunks/embeddings_2.chunks.json` y `.txt`, incluidos en Git. Cada
 chunk incluye ID estable, texto, fuente, IDs de intervenciones, offsets de
 caracteres, tiempos y conteos de tokens. Los tiempos delimitan las intervenciones
 originales involucradas; no estiman el instante exacto de cada palabra cortada.

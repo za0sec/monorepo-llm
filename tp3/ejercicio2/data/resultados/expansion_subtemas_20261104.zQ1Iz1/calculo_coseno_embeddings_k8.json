@@ -1,0 +1,222 @@
+{
+  "fecha_utc": "2026-11-04T21:05:01.181454+00:00",
+  "objetivo": "cómo calcular la similitud coseno entre dos embeddings",
+  "coleccion": "tp3_248fe3ddb4d5588934314f79",
+  "ruta_chroma": "/Users/agostinasquillari/Desktop/LLMS/monorepo-llm/tp3/ejercicio2/data/chroma",
+  "manifiesto": {
+    "version": 2,
+    "sha256_documento_chunks": "fbbddd3cf54cf0640e850c4da18c1fe41f7efc3a982a5029dd34a85dafe31271",
+    "cantidad_chunks": 136,
+    "embedding": {
+      "modelo": "sentence-transformers/all-MiniLM-L6-v2",
+      "revision": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+      "dimension": 384,
+      "dispositivo": "cpu",
+      "normalizar": false
+    },
+    "metrica": "cosine",
+    "versiones": {
+      "chromadb": "1.5.9",
+      "sentence-transformers": "5.1.2",
+      "torch": "2.8.0",
+      "transformers": "4.57.1",
+      "tokenizers": "0.22.2"
+    },
+    "fuentes": [
+      {
+        "fuente": "docs/embeddings_2.VTT",
+        "sha256_fuente": "a1fa8324b6d63c7c6d90fd4dc467b65095524aba8e134d806c2118278b24cd18",
+        "id_configuracion_chunks": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd"
+      },
+      {
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "sha256_fuente": "ff2487e368cc59534b2abfa6e711f61cc9f00bc4bf2fe344ed76fcce0262e269",
+        "id_configuracion_chunks": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5"
+      }
+    ]
+  },
+  "k_solicitado": 8,
+  "k_efectivo": 8,
+  "umbral": null,
+  "segundos_embedding_incluida_carga": 0.1208082909999999,
+  "segundos_busqueda": 0.0016460419999999587,
+  "segundos_totales": 0.12261379100000003,
+  "referencias": [
+    {
+      "posicion": 1,
+      "chunk_id": "30f035d1677d31b83d24358ac6c10750d539eabad73095f8c93278a0308ccac6",
+      "texto": "coseno conserva la\ndirección y descarta la magnitud.\n\nFuentes de la clase\nClase 2 - Transformación de Texto a Embeddings. Diapositivas 31–35. Definición, similitud coseno y\ntipos de embeddings.",
+      "distancia_coseno": 0.3567366600036621,
+      "similitud_coseno": 0.6432633399963379,
+      "metadata": {
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "tokens_totales": 71,
+        "segmentos_ids": [
+          "5"
+        ],
+        "inicio_caracter": 4449,
+        "pagina_fin": 5,
+        "apunte_derivado": true,
+        "fin_caracter": 4642,
+        "tokens_contenido": 69,
+        "pagina_inicio": 5,
+        "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5"
+      }
+    },
+    {
+      "posicion": 2,
+      "chunk_id": "a951c876e3c25089b032ceb4a728112194305fb3ec89fea45c8a6fe0d0e5802b",
+      "texto": "Transcripción embeddings_2.VTT. 18:32–18:50 y 25:22–25:38, representación. 20:32–21:00 y\n31:55–32:15, similitud y cálculo. 25:38–27:14, magnitud y series. 27:47–28:45, embeddings estáticos y\ncontextuales.\n\n\n\n\n                                                                                                       5",
+      "distancia_coseno": 0.4245164394378662,
+      "similitud_coseno": 0.5754835605621338,
+      "metadata": {
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "tokens_totales": 95,
+        "segmentos_ids": [
+          "5"
+        ],
+        "tokens_contenido": 93,
+        "pagina_inicio": 5,
+        "inicio_caracter": 4644,
+        "apunte_derivado": true,
+        "pagina_fin": 5,
+        "fin_caracter": 4957,
+        "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5"
+      }
+    },
+    {
+      "posicion": 3,
+      "chunk_id": "2b8313e4ee58792a02a40bacf1c7630957d67e0cae0f903f5db60c0f3d77b690",
+      "texto": "Similitud coseno\nCómo comparar dos embeddings\nDados dos textos, primero se obtiene un vector para cada uno usando el mismo modelo de\nembeddings. La similitud coseno compara la dirección de los dos vectores mediante el\ncoseno del ángulo que forman. Para calcularla, se divide el producto escalar por el producto\nde las normas euclidianas.\n\n\n\n                   similitud coseno(a, b) = (a · b) / (‖a‖ × ‖b‖)\n\n\nEl producto escalar a · b suma los productos de las componentes correspondientes. La\nnorma ‖a‖ es la raíz cuadrada de la suma de los cuadrados de las componentes de a. El\ncálculo requiere que ambos vectores tengan la misma dimensión y ",
+      "distancia_coseno": 0.4554443359375,
+      "similitud_coseno": 0.5445556640625,
+      "metadata": {
+        "fin_caracter": 2509,
+        "pagina_fin": 4,
+        "tokens_totales": 202,
+        "tokens_contenido": 200,
+        "inicio_caracter": 1865,
+        "apunte_derivado": true,
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+        "pagina_inicio": 4,
+        "segmentos_ids": [
+          "4"
+        ]
+      }
+    },
+    {
+      "posicion": 4,
+      "chunk_id": "e91847975f712589dd1b06ccee6337d22d7fd1138899bb629208815248bbf655",
+      "texto": "LLMs - Apuntes de estudio                                                      73.69 | 2Q - 2026\n\n\n\n\n                            Unidad 2 - Embeddings\nRepresentación vectorial del texto\nUn embedding es una representación numérica de un elemento, como una palabra, una\noración o un documento. Se expresa como un vector, es decir, una lista ordenada de\nnúmeros. Un modelo transforma los elementos de texto en puntos de un espacio continuo.\nEsa representación permite aplicar operaciones matemáticas al texto y comparar sus\nrepresentaciones.\n\nPor ejemplo, un modelo que representa oraciones puede ubicar «Necesito cambiar mi\npasaje» cerca de «Quiero modificar mi reserva». Si aprendió a captar el significado, podría\nubic",
+      "distancia_coseno": 0.46194183826446533,
+      "similitud_coseno": 0.5380581617355347,
+      "metadata": {
+        "tokens_contenido": 200,
+        "inicio_caracter": 0,
+        "fin_caracter": 718,
+        "apunte_derivado": true,
+        "pagina_inicio": 3,
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "pagina_fin": 3,
+        "tokens_totales": 202,
+        "segmentos_ids": [
+          "3"
+        ],
+        "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5"
+      }
+    },
+    {
+      "posicion": 5,
+      "chunk_id": "fb37c4785c8e73a3806181a6589c023c0fd7338518d8158a5ed84f97dafa984c",
+      "texto": "como una especie de representación más comprimida que estas matrices. Es falsas, que son las primeras implementaciones. Si.\n\nMarina Fuster: como mido, la similitud puede usar una métrica como similitud coseno, es la única, no tiene sus ventajas, pero también tiene sus defectos. Por ejemplo, si a mí me importa la magnitud del vector porque me representa algo importante: el medir la similitud coseno me aplana esa",
+      "distancia_coseno": 0.5154386758804321,
+      "similitud_coseno": 0.48456132411956787,
+      "metadata": {
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "tokens_contenido": 130,
+        "fin_ms": 1557289,
+        "fin_caracter": 22916,
+        "inicio_caracter": 22502,
+        "inicio": "00:25:22.170",
+        "segmentos_ids": [
+          "181",
+          "182"
+        ],
+        "inicio_ms": 1522170,
+        "fuente": "docs/embeddings_2.VTT",
+        "fin": "00:25:57.289",
+        "tokens_totales": 132
+      }
+    },
+    {
+      "posicion": 6,
+      "chunk_id": "399302fe54dfabef489665f5eb3f586ce400b0d6959087f2cce54134c586b105",
+      "texto": "erva». Si aprendió a captar el significado, podría\nubicar «Hoy llueve» más lejos. La cercanía depende del modelo y de la medida con que se\ncomparen los vectores.\n\n\n\n                      Texto → Modelo de embeddings → Vector",
+      "distancia_coseno": 0.5161447525024414,
+      "similitud_coseno": 0.4838552474975586,
+      "metadata": {
+        "pagina_fin": 3,
+        "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+        "pagina_inicio": 3,
+        "fin_caracter": 887,
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "inicio_caracter": 663,
+        "segmentos_ids": [
+          "3"
+        ],
+        "tokens_totales": 69,
+        "apunte_derivado": true,
+        "tokens_contenido": 67
+      }
+    },
+    {
+      "posicion": 7,
+      "chunk_id": "84cfee9a27ccb69b0d61b3572b2218efba041b7ed739323df43a9e3108da7737",
+      "texto": "la secuencia. No fíjate que vos\n\nMarina Fuster: tenés como ese ese embeding que viaja por el residuo stream en el Transformer, al cual vas modificando cuando incorpora atención de otros Tokens cuando pasa por e el M L. P. E incorpora datos",
+      "distancia_coseno": 0.5278633832931519,
+      "similitud_coseno": 0.47213661670684814,
+      "metadata": {
+        "fin_caracter": 46494,
+        "tokens_contenido": 81,
+        "fuente": "docs/embeddings_2.VTT",
+        "fin": "00:52:44.660",
+        "inicio_ms": 3147320,
+        "tokens_totales": 83,
+        "segmentos_ids": [
+          "357",
+          "358"
+        ],
+        "inicio_caracter": 46255,
+        "fin_ms": 3164660,
+        "inicio": "00:52:27.320",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd"
+      }
+    },
+    {
+      "posicion": 8,
+      "chunk_id": "bccd4afb2b6090d4f52049b4465805e54d8710be55aecd95a6f82cbe4d96e9e6",
+      "texto": "Marina Fuster: hay palabras que, o sea, muchas cosas, me quedan en 0. Entonces\n\nMarina Fuster: los vectores tienen mucho espacio vacío. La frecuencia sola no te alcanza porque aparece el mismo problema que vimos en la demo como la palabra de tanto en inglés como en español, que van a tener mucha representación.\n\nMarina Fuster: ¿y qué palabras caso con palabras que se usan muy poco. ¿sí?\n\nMarina Fuster: Entonces ahí es donde aparece el tema de los Emedings, que son vectores dimensionales y que ellos suele asociarse a que son vectores densos. No, yo tengo como una especie de representación más comprimida que estas matrices. Es fa",
+      "distancia_coseno": 0.5456812381744385,
+      "similitud_coseno": 0.4543187618255615,
+      "metadata": {
+        "fin": "00:25:37.590",
+        "inicio_caracter": 21942,
+        "inicio_ms": 1496890,
+        "fuente": "docs/embeddings_2.VTT",
+        "tokens_contenido": 200,
+        "tokens_totales": 202,
+        "fin_ms": 1537590,
+        "inicio": "00:24:56.890",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "segmentos_ids": [
+          "178",
+          "179",
+          "180",
+          "181"
+        ],
+        "fin_caracter": 22577
+      }
+    }
+  ]
+}

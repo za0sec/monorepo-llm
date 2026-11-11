@@ -28,10 +28,9 @@ Fuentes utilizadas:
 - [Transcripción de la clase](../../../docs/embeddings_2.VTT).
 - [Transcripción automática del video](../data/transcripciones/¿Qué%20son%20los%20EMBEDDINGS%20Grandes%20Modelos%20de%20Lenguaje.vtt).
 
-Ambas fuentes están excluidas de Git por la configuración del repositorio y
-deben estar disponibles localmente. Los tiempos del video provienen de Whisper
-y los de la clase, del VTT original; permiten localizar la evidencia, pero pueden
-ser aproximados.
+El VTT de la clase se conserva localmente en `docs/`. El VTT del video está
+incluido en Git. Los tiempos del video provienen de Whisper y los de la clase
+del VTT original. Permiten localizar la evidencia y pueden ser aproximados.
 
 ## Criterios de cobertura
 

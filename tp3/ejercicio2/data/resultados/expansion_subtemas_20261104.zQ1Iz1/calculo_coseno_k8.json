@@ -1,0 +1,237 @@
+{
+  "fecha_utc": "2026-11-04T21:04:38.072901+00:00",
+  "objetivo": "cómo se calcula la similitud coseno",
+  "coleccion": "tp3_248fe3ddb4d5588934314f79",
+  "ruta_chroma": "/Users/agostinasquillari/Desktop/LLMS/monorepo-llm/tp3/ejercicio2/data/chroma",
+  "manifiesto": {
+    "version": 2,
+    "sha256_documento_chunks": "fbbddd3cf54cf0640e850c4da18c1fe41f7efc3a982a5029dd34a85dafe31271",
+    "cantidad_chunks": 136,
+    "embedding": {
+      "modelo": "sentence-transformers/all-MiniLM-L6-v2",
+      "revision": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+      "dimension": 384,
+      "dispositivo": "cpu",
+      "normalizar": false
+    },
+    "metrica": "cosine",
+    "versiones": {
+      "chromadb": "1.5.9",
+      "sentence-transformers": "5.1.2",
+      "torch": "2.8.0",
+      "transformers": "4.57.1",
+      "tokenizers": "0.22.2"
+    },
+    "fuentes": [
+      {
+        "fuente": "docs/embeddings_2.VTT",
+        "sha256_fuente": "a1fa8324b6d63c7c6d90fd4dc467b65095524aba8e134d806c2118278b24cd18",
+        "id_configuracion_chunks": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd"
+      },
+      {
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "sha256_fuente": "ff2487e368cc59534b2abfa6e711f61cc9f00bc4bf2fe344ed76fcce0262e269",
+        "id_configuracion_chunks": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5"
+      }
+    ]
+  },
+  "k_solicitado": 8,
+  "k_efectivo": 8,
+  "umbral": null,
+  "segundos_embedding_incluida_carga": 0.24631904100000002,
+  "segundos_busqueda": 0.003433584000000156,
+  "segundos_totales": 0.2498880830000001,
+  "referencias": [
+    {
+      "posicion": 1,
+      "chunk_id": "5aadac4c2e0defc917d67a1e1349bc43b098a972de2346cfb7ef42237e61afb2",
+      "texto": "ro vio algo un poco de cada cosa. Si entonces\n\nMarina Fuster: similitud con seno, se puede usar. Fíjense que en la otra en realidad está. Bueno, porque si yo tengo, no sé una palabra que no se usa mucho como escarlata y",
+      "distancia_coseno": 0.39587634801864624,
+      "similitud_coseno": 0.6041236519813538,
+      "metadata": {
+        "inicio_ms": 1588020,
+        "tokens_contenido": 77,
+        "fin": "00:26:58.289",
+        "fin_caracter": 23706,
+        "fuente": "docs/embeddings_2.VTT",
+        "fin_ms": 1618289,
+        "segmentos_ids": [
+          "186",
+          "187"
+        ],
+        "inicio_caracter": 23487,
+        "tokens_totales": 79,
+        "inicio": "00:26:28.020",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd"
+      }
+    },
+    {
+      "posicion": 2,
+      "chunk_id": "4afe1972fcf16e7cd44ba12fa6a7c6fdac8defb8f51e9b6b477da10ec6af6bad",
+      "texto": "riz va a ser súper esparza. O sea, si yo tengo un corpus grande, este tipo de matrices se me queda súper corta, por lo que menciona Juan Ignacio y porque\n\nMarina Fuster: hay palabras que, o sea, muchas cosas, me quedan en 0. Entonces",
+      "distancia_coseno": 0.4502415060997009,
+      "similitud_coseno": 0.5497584939002991,
+      "metadata": {
+        "inicio": "00:24:43.310",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "fin_ms": 1502360,
+        "fin_caracter": 22020,
+        "inicio_caracter": 21787,
+        "fin": "00:25:02.360",
+        "inicio_ms": 1483310,
+        "tokens_totales": 74,
+        "segmentos_ids": [
+          "177",
+          "178"
+        ],
+        "tokens_contenido": 72,
+        "fuente": "docs/embeddings_2.VTT"
+      }
+    },
+    {
+      "posicion": 3,
+      "chunk_id": "5c1aedd9b131b6d64ae83e907a68103ce540b5846c5ce09a5200be13828233a0",
+      "texto": "Marina Fuster: caracteres, se va haciendo por frecuencia en el corpus.\n\nMarina Fuster: Esto después, cuando yo lo corro en mi data, es común para cosas que significan exactamente lo mismo. Yo voy a tener distintos toques. Si entonces el modelo después tiene que aprender, que esto es lo mismo que esto, que es lo mismo, que esto, que es lo mismo que esto sí cuando aparezca en un contexto, Si yo digo hello\n\nMarina Fuster: Angel, no todo esto cuando yo esté calculando atención y etcétera, etcétera. Tengo que modelar que este token es lo mismo que estos 2,\n\nMarina Fuster: o creo que son 3. En realidad sí que estos ",
+      "distancia_coseno": 0.47119903564453125,
+      "similitud_coseno": 0.5288009643554688,
+      "metadata": {
+        "tokens_contenido": 200,
+        "fin_caracter": 7276,
+        "inicio_ms": 471310,
+        "inicio_caracter": 6659,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "segmentos_ids": [
+          "47",
+          "48",
+          "49",
+          "50"
+        ],
+        "tokens_totales": 202,
+        "fin": "00:08:38.880",
+        "fin_ms": 518880,
+        "inicio": "00:07:51.310",
+        "fuente": "docs/embeddings_2.VTT"
+      }
+    },
+    {
+      "posicion": 4,
+      "chunk_id": "628ab0ea0907be75bb2ded08ec9c2225712c253c1c0b83c9eab714064fd4193d",
+      "texto": "sas y por un lado, además, es el que te empuja efectivamente tener que averiguar cuál es el Token, que está ahí, y el la combinación de 10 por 100, rando al 10 por 100 idéntico es cubrir\n\nMarina Fuster: 1, equivocaciones.",
+      "distancia_coseno": 0.4754214286804199,
+      "similitud_coseno": 0.5245785713195801,
+      "metadata": {
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "fin": "00:44:13.519",
+        "inicio_ms": 2631640,
+        "segmentos_ids": [
+          "300",
+          "301"
+        ],
+        "inicio_caracter": 38393,
+        "inicio": "00:43:51.640",
+        "tokens_contenido": 79,
+        "fin_caracter": 38614,
+        "fin_ms": 2653519,
+        "fuente": "docs/embeddings_2.VTT",
+        "tokens_totales": 81
+      }
+    },
+    {
+      "posicion": 5,
+      "chunk_id": "2c4a6c25c9264305bb647362f2f0e0953ee57653547ca9cf81c084c8719ff7db",
+      "texto": "los modelos. También es una métrica de similitud.\n\nMarina Fuster: Entonces lo que yo estoy haciendo acá en este algoritmo, que es un poco más simple Cuando hago este producto y me fijo estos valores y los trato de ajustar como para que los naranjas se acerquen a 1 lo que estoy haciendo, es decir, Che. Quiero que subas el dot product entre el embelle de la palabra",
+      "distancia_coseno": 0.47592693567276,
+      "similitud_coseno": 0.52407306432724,
+      "metadata": {
+        "inicio_ms": 1934890,
+        "tokens_totales": 118,
+        "fin": "00:32:41.570",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "fin_ms": 1961570,
+        "fuente": "docs/embeddings_2.VTT",
+        "segmentos_ids": [
+          "223",
+          "224"
+        ],
+        "tokens_contenido": 116,
+        "inicio": "00:32:14.890",
+        "inicio_caracter": 28825,
+        "fin_caracter": 29190
+      }
+    },
+    {
+      "posicion": 6,
+      "chunk_id": "f868030552ed865f535ced19f83f276ff3dc0880c83e4661956846e21aaf3a2c",
+      "texto": "Marina Fuster: Y lo que me interesa entrar acá con Cachito es el tema de tipos de tokens. Yo no sé si se ve o quedó muy chiquito.\n\nMarina Fuster: Tenemos los toques básicos que son aquellos que representan. Las unidades del corpus de texto no pueden ser palabras, son palabras, etcétera. Y ahí tenemos los tokens especiales o reservados que del lado del desarrollador o de quien modela el El Lem\n\nMarina Fuster: los usa para cosas especiales. Si, por ejemplo, acá abajo hay un ejemplo de si yo le quiero definir qué cosas son parte del de como el sistema? ¿qué cosas son las que dice el usuario que cosas ",
+      "distancia_coseno": 0.4825209379196167,
+      "similitud_coseno": 0.5174790620803833,
+      "metadata": {
+        "segmentos_ids": [
+          "4",
+          "5",
+          "6"
+        ],
+        "inicio": "00:01:02.930",
+        "fin_caracter": 1585,
+        "inicio_caracter": 980,
+        "fuente": "docs/embeddings_2.VTT",
+        "tokens_contenido": 200,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "fin_ms": 107279,
+        "inicio_ms": 62930,
+        "tokens_totales": 202,
+        "fin": "00:01:47.279"
+      }
+    },
+    {
+      "posicion": 7,
+      "chunk_id": "263311242c93b94db4240a85efc6f52c76826f9033956c3dd45bb5a03aff2773",
+      "texto": "I: Tengo la asociación. Tengo, como tengo 3 campos y solo los puedo asociar de 2. Entonces\n\nJOAQUÍN NICOLÁS YULÁN LUCIOLI: No, la máquina no va a entender que es 1, 2 y 3 va a tener 1, 2, 2 y 3, 1 y 3.\n\nMarina Fuster: No te estoy entendiendo.\n\nMarina Fuster: ¿estás haciendo? Sí.\n\nJOAQUÍN NICOLÁS YULÁN LUCIOLI: Pero si vos tenés una cadena de 3 palabras que estás siempre.",
+      "distancia_coseno": 0.4826802611351013,
+      "similitud_coseno": 0.5173197388648987,
+      "metadata": {
+        "tokens_totales": 134,
+        "inicio_ms": 1301380,
+        "fuente": "docs/embeddings_2.VTT",
+        "inicio_caracter": 19215,
+        "segmentos_ids": [
+          "152",
+          "153",
+          "154",
+          "155",
+          "156"
+        ],
+        "fin": "00:22:09.050",
+        "inicio": "00:21:41.380",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "tokens_contenido": 132,
+        "fin_ms": 1329050,
+        "fin_caracter": 19588
+      }
+    },
+    {
+      "posicion": 8,
+      "chunk_id": "e0bcc25aa5f8643bf1dd63f1b408b5ca0134a951f78dc80e182fb2cba3e4d637",
+      "texto": "la codificación, ésta va a ser la secuencia la del final. Entonces lo que hace este algoritmo es ir fijándose\n\nMarina Fuster: cuáles son las los pares que aparecen más frecuentemente. Si es como que va a barrer esta esta frase o este corpus.\n\nMarina Fuster: la oración, y se va a fijar 72, 11 aparece una vez 100, 11 100, 8, aparece bla, bla, bla. Y por ejemplo, acá como tengo muchos emojis de hamburguesa. La la combinación, 100, 59 141 aparece más que cualquier otra.",
+      "distancia_coseno": 0.4863013029098511,
+      "similitud_coseno": 0.5136986970901489,
+      "metadata": {
+        "inicio": "00:05:05.620",
+        "fin": "00:05:44.910",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "inicio_caracter": 4395,
+        "tokens_totales": 164,
+        "fuente": "docs/embeddings_2.VTT",
+        "inicio_ms": 305620,
+        "fin_ms": 344910,
+        "fin_caracter": 4865,
+        "tokens_contenido": 162,
+        "segmentos_ids": [
+          "25",
+          "26",
+          "27"
+        ]
+      }
+    }
+  ]
+}

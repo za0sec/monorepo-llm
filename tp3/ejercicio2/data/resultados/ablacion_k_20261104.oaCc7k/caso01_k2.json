@@ -1,0 +1,85 @@
+{
+  "fecha_utc": "2026-11-04T18:20:05.362887+00:00",
+  "objetivo": "entender qué son los embeddings y cómo se compara la similitud entre textos",
+  "coleccion": "tp3_c18deda7c17b0e0f81ea5513",
+  "ruta_chroma": "/Users/agostinasquillari/Desktop/LLMS/monorepo-llm/tp3/ejercicio2/data/chroma",
+  "manifiesto": {
+    "version": 1,
+    "sha256_documento_chunks": "00b58f1116024bb51f74aca18ed5c73b491a60d4396d2cda6b7170daa5132a21",
+    "fuente": "docs/embeddings_2.VTT",
+    "sha256_fuente": "a1fa8324b6d63c7c6d90fd4dc467b65095524aba8e134d806c2118278b24cd18",
+    "id_configuracion_chunks": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+    "cantidad_chunks": 125,
+    "embedding": {
+      "modelo": "sentence-transformers/all-MiniLM-L6-v2",
+      "revision": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+      "dimension": 384,
+      "dispositivo": "cpu",
+      "normalizar": false
+    },
+    "metrica": "cosine",
+    "versiones": {
+      "chromadb": "1.5.9",
+      "sentence-transformers": "5.1.2",
+      "torch": "2.8.0",
+      "transformers": "4.57.1",
+      "tokenizers": "0.22.2"
+    }
+  },
+  "k_solicitado": 2,
+  "k_efectivo": 2,
+  "umbral": null,
+  "segundos_embedding_incluida_carga": 0.24032408299999997,
+  "segundos_busqueda": 0.0016167500000001667,
+  "segundos_totales": 0.24209779099999995,
+  "referencias": [
+    {
+      "posicion": 1,
+      "chunk_id": "edab6e7f243e1bc9d2b9c8f47b5697302f5adbe23e77ff78d23512b7dfda5fb6",
+      "texto": ".\n\nMarina Fuster: Pero después teníamos\n\nMarina Fuster: ese. Es como un ejemplo muy pequeñito. Después empezaron a aparecer las primeras implementaciones. Por ejemplo, yo podía querer tener vectores para representar documentos en el espacio, ¿no? Entonces, ¿qué hacía? Me fijaba todas las palabras que estaban en ese documento las contaba. Y esa era la representación de mi documento.",
+      "distancia_coseno": 0.44072943925857544,
+      "similitud_coseno": 0.5592705607414246,
+      "metadata": {
+        "segmentos_ids": [
+          "131",
+          "132",
+          "133"
+        ],
+        "inicio_caracter": 17383,
+        "fuente": "docs/embeddings_2.VTT",
+        "fin_ms": 1215640,
+        "fin": "00:20:15.640",
+        "tokens_contenido": 125,
+        "inicio_ms": 1192630,
+        "tokens_totales": 127,
+        "inicio": "00:19:52.630",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "fin_caracter": 17767
+      }
+    },
+    {
+      "posicion": 2,
+      "chunk_id": "f868030552ed865f535ced19f83f276ff3dc0880c83e4661956846e21aaf3a2c",
+      "texto": "Marina Fuster: Y lo que me interesa entrar acá con Cachito es el tema de tipos de tokens. Yo no sé si se ve o quedó muy chiquito.\n\nMarina Fuster: Tenemos los toques básicos que son aquellos que representan. Las unidades del corpus de texto no pueden ser palabras, son palabras, etcétera. Y ahí tenemos los tokens especiales o reservados que del lado del desarrollador o de quien modela el El Lem\n\nMarina Fuster: los usa para cosas especiales. Si, por ejemplo, acá abajo hay un ejemplo de si yo le quiero definir qué cosas son parte del de como el sistema? ¿qué cosas son las que dice el usuario que cosas ",
+      "distancia_coseno": 0.4575906991958618,
+      "similitud_coseno": 0.5424093008041382,
+      "metadata": {
+        "inicio": "00:01:02.930",
+        "fin_ms": 107279,
+        "inicio_ms": 62930,
+        "tokens_contenido": 200,
+        "fin_caracter": 1585,
+        "inicio_caracter": 980,
+        "fuente": "docs/embeddings_2.VTT",
+        "fin": "00:01:47.279",
+        "segmentos_ids": [
+          "4",
+          "5",
+          "6"
+        ],
+        "tokens_totales": 202,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd"
+      }
+    }
+  ]
+}

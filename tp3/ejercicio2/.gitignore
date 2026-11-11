@@ -1,2 +1,19 @@
-# Resultados regenerables a partir de los VTT originales.
-data/
+# Versionar los artefactos de texto usados para reproducir las corridas.
+/data/*
+!/data/chunks/
+!/data/resultados/
+!/data/transcripciones/
+
+/data/chunks/*
+!/data/chunks/*.json
+!/data/chunks/*.txt
+
+/data/resultados/**
+!/data/resultados/**/
+!/data/resultados/**/*.json
+!/data/resultados/**/*.md
+
+/data/transcripciones/*
+!/data/transcripciones/*.json
+!/data/transcripciones/*.txt
+!/data/transcripciones/*.vtt

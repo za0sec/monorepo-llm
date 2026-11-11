@@ -1,0 +1,921 @@
+{
+  "modelo": "Qwen/Qwen2.5-1.5B-Instruct",
+  "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "dispositivo": "cpu",
+  "dtype": "float32",
+  "do_sample": false,
+  "tokens_entrada": 4194,
+  "tokens_salida": 1000,
+  "max_tokens_entrada": 6000,
+  "max_tokens_nuevos": 1000,
+  "alcanzo_limite_salida": true,
+  "segundos_generacion": 175.25712970799998,
+  "prompt": "tabla",
+  "mensajes": [
+    {
+      "role": "system",
+      "content": "Evaluá en español si el video sirve para el objetivo.\nUsá el material académico para identificar qué se espera aprender y la\ntranscripción del video para verificar qué se explica. Usá solo esas fuentes.\n\nEmpezá directamente con esta tabla. Escribí una fila por criterio pertinente.\n| Criterio | Estado | Clase | Video | Justificación |\n| --- | --- | --- | --- | --- |\n\nEstados permitidos:\n- Cubierto: el video explica el criterio. Citá la clase y el video.\n- Parcial: el video explica una parte. Citá la clase y el video e indicá qué falta.\n- Sin evidencia en el video: el criterio está en la clase, pero la transcripción\n  no aporta evidencia. Citá la clase y poné — en Video.\n- Sin respaldo académico: un aspecto del objetivo no se puede evaluar con la\n  clase disponible. Poné — en Clase y Video.\n\nEjemplo ficticio del formato, solo para ilustrar una fila:\n| Ciclo del agua | Sin respaldo académico | — | — | El material no explica el ciclo. |\n\nEn Clase y Video usá solo IDs individuales existentes, entre corchetes.\nLos IDs C corresponden a la clase y los V al video. Escribí cada cita por\nseparado, sin rangos. Usá justificaciones breves y evitá copiar los pasajes.\nDespués de la tabla, escribí una recomendación con una cita de clase si hay\nmaterial pertinente, y una conclusión breve sobre la utilidad del video."
+    },
+    {
+      "role": "user",
+      "content": "Objetivo: entender qué son los embeddings y cómo se compara la similitud entre textos\n\nMaterial académico:\n[C1] Marina Fuster: Esto ya lo fuimos viendo con la motivación cómo representar el significado de una palabra. Voy a usar palabras como reemplazo de unidad lingüística, Puede ser palabra, documento, su palabra, etcétera, etcétera. Me interesan un montón de cosas que caen bajo un campo que se llama lexical Semántics.\n[C2] Marina Fuster: Y el chiste era que si yo veía estos vectores en el espacio.\nMarina Fuster: el ángulo entre esos vectores. Hablamos de esto como medida de similitud. Me podría decir que\nMarina Fuster: qué palabras por ahí eran parecidas o no. Fíjense acá. Que digital e information las toman como muy parecidas, porque el ángulo es muy chiquito, a pesar de que information aparece muchísimas más veces Por eso la magnitud es más grande.\n[C3] Marina Fuster: Entonces ahí es donde aparece el tema de los Emedings, que son vectores dimensionales y que ellos suele asociarse a que son vectores densos. No, yo tengo como una especie de representación más comprimida que estas matrices. Es falsas, que son las primeras implementaciones. Si.\n[C4] Marina Fuster: como mido, la similitud puede usar una métrica como similitud coseno, es la única, no tiene sus ventajas, pero también tiene sus defectos. Por ejemplo, si a mí me importa la magnitud del vector porque me representa algo importante: el medir la similitud coseno me aplana esa\nMarina Fuster: esa importancia. Por ejemplo, si yo tengo, bueno.\nMarina Fuster: alguien que mira series, y en la X tengo series románticas\nMarina Fuster: y en la I tengo series de terror. Soy, No conozco ninguna serie de terror. Bueno, la persona que mire 100 románticas y 100 de terror va a tener la misma similitud con 0 que la que mira 1 con una, no.\nMarina Fuster: ¿por qué el vector apunta. Pues así, entonces, Fíjense que en este caso yo quizás estoy tratando como iguales 2 puntos en el espacio que son sumamente distintos. Uno es adicto a ver series, y el otro vio algo un poco de cada cosa. Si entonces\nMarina Fuster: similitud con seno, se puede usar. Fíjense que en la otra en realidad está. Bueno, porque si yo tengo, no sé una palabra que no se usa mucho como escarlata y\nMarina Fuster: rojo rojo se usó un montón escarlata, ¿no? Entonces ahí quizás la frecuencia no me importa tanto escarlata. Es un sinónimo de rojo, entonces tienen sus ventajas y desventajas depende de donde las uso, pero nos vamos a conformar con quedarnos con la similitud con 0. Por ahora.\n[C5] Marina Fuster: el estático. La característica principal es que mantiene el valor fijo. O sea, yo tengo una instancia de entrenamiento y de aprender los emails, pero una vez que terminé.\nMarina Fuster: El emeding va a ser siempre el mismo para la palabra. Si, por ejemplo.\nMarina Fuster: yo tengo un algoritmo de estática en Beit, si yo tengo estas 2 frases\nMarina Fuster: que comí pizza o que la pizza era asquerosa. El embelle para pizza va a ser el mismo. Se va a posicionar ahí? Sí,\nMarina Fuster: En cambio, los dinámicos van a cambiar de valor dependiendo del contexto en esta en la instancia particular, entonces el ejemplo sería algo así. No supongamos que el eje X se relaciona con qué tan rico es la comida.\nMarina Fuster: Si yo tengo la frase que la pizza era asquerosa. Bueno, yo esperaría que el impeding no sea el mismo que\nMarina Fuster: la pizza común, que se asocia como que es más rica.\n[C6] Marina Fuster: esquemáticamente lo que empieza a pasar, porque fíjense que el el dot product que yo hago, o sea, este de acá entre el embel y el w output. Ese producto interno también es una métrica de similitud, o sea, la similitud coseno que la definimos así. Fíjense que es el producto dividido en la norma de los vectores.\n\nTranscripción del video:\n[V1] Los grandes modelos de lenguaje como GPT-4 o BART, en realidad no procesan el texto como lo vemos nosotros los seres humanos,\n[V2] y en lugar de ello lo que hacen es transformarlo a una representación numérica que se conoce como Embeddings.\n[V3] Así que internamente estos modelos lo que hacen es procesar y generar Embeddings para posteriormente realizar diferentes tareas de procesamiento del lenguaje natural.\n[V4] Entonces en este video vamos a entender qué son estos Embeddings y cómo se utilizan para desarrollar diferentes tipos de aplicaciones de procesamiento y generación del lenguaje natural usando estos grandes modelos de lenguaje.\n[V5] Pero antes de comenzar los invito a visitar CodificandoBits.com en donde encontrarán la Academia Online con cursos de Inteligencia Artificial, Ciencia de Datos y Machine Learning\n[V6] que les permitirán construir su carrera en estas áreas y todo por una suscripción mensual de tan solo 10 dólares.\n[V7] Además se podrán poner en contacto conmigo si están interesados en asesorías para el desarrollo de proyectos o cursos de formación personalizada.\n[V8] Así que listo, comencemos.\n[V9] Para entender qué son los Embeddings comencemos con un ejemplo sencillo, supongamos que queremos describir la apariencia de dos personas diferentes usando algunas características.\n[V10] Podemos decir por ejemplo que la primera persona tiene una altura de 1,72 cm, el cabello corto y de color negro, su peso es 67 kg y sus ojos son de color café.\n[V11] Y la segunda persona tiene una altura de 1,83 cm, el cabello largo y de color castaño, su peso es 78 kg y sus ojos son de color verde.\n[V12] Así que lo que hemos hecho ha sido tomar el dato original, es decir cada persona, y lo hemos representado a través de cuatro características.\n[V13] Y si organizamos estas cuatro características en un listado, lo que tendremos será un vector de cuatro elementos.\n[V14] Ahora veamos cómo lograríamos hacer algo similar pero usando redes neuronales, que son la base de los grandes modelos de lenguaje.\n[V15] Por ejemplo, si queremos hacer un sistema de verificación de identidad, lo que necesitamos es comparar la imagen del rostro de una persona con imágenes de referencia en una base de datos para determinar si la persona es o no quien dice ser.\n[V16] Pues en estos sistemas realmente no comparamos directamente las imágenes.\n[V17] En lugar de ello, lo que se hace es construir una red convolucional, que es un tipo de red neuronal, que procesa estas imágenes y que a la salida genera una representación vectorial de la imagen de entrada.\n[V18] Y esta representación vectorial, que es simplemente un listado o un arreglo de números, es precisamente lo que se conoce como un embedding.\n[V19] Y la idea es que imágenes con rostros similares tendrán embeddings similares e imágenes con rostros diferentes tendrán embeddings diferentes.\n[V20] Y este principio nos permitirá construir precisamente el sistema de verificación de identidad.\n[V21] Y este mismo principio lo podemos aplicar para el procesamiento y análisis del lenguaje natural.\n[V22] Así que en resumen y para lo que nos interesa en este video, un embedding es una representación vectorial del dato de entrada y que se obtiene tras el entrenamiento de una red neuronal.\n[V23] Como acabamos de ver, el texto también puede ser procesado por algún tipo de red neuronal para generar embeddings y desarrollar aplicaciones como por ejemplo el análisis de sentimientos, la generación de texto o los chatbots.\n[V24] Otro tipo que utilizado hace algunos años era generar embeddings a partir de palabras.\n[V25] Es decir que la idea era tomar cada palabra dentro del texto, generar un token, que es una representación numérica inicial de esa palabra, de esos tokens hablamos anteriormente en algún video,\n[V26] y después tomar ese token y convertirlo precisamente en un embedding o una representación vectorial de esa palabra.\n[V27] Con este tipo de embeddings, usualmente palabras con significados similares, como por ejemplo manzana y pera, tendrán embeddings similares pero que a su vez son diferentes de los embeddings para las palabras perro o gato,\n[V28] que tienen un significado diferente.\n[V29] Sin embargo, en el lenguaje natural las palabras no se encuentran aisladas, sino que se encuentran en un contexto, en una frase por ejemplo,\n[V30] y dependiendo de ese contexto, una palabra determinada podría tener diferentes significados.\n[V31] Por ejemplo, en las frases debo ir al banco a retirar dinero y estoy sentado en el banco,\n[V32] la palabra banco tiene significados completamente diferentes,\n[V33] y ese significado lo establecemos nosotros los humanos a partir precisamente del contexto, leyendo la totalidad de la frase.\n[V34] Esto quiere decir que el uso de embeddings a nivel de palabra no es capaz de capturar la información del contexto\n[V35] y por tanto en las frases anteriores la palabra banco tendría el mismo embedding en ambos casos, lo cual no resulta ideal.\n[V36] Así que como alternativa al uso de embeddings a nivel de palabra, los grandes modelos de lenguaje existentes actualmente,\n[V37] hacen uso de las redes transformer que permiten generar embeddings capaces de capturar la información del contexto, es decir de la totalidad del texto.\n[V38] De estas redes transformer hablo en detalle en un video anterior,\n[V39] pero para resumir la idea principal podemos decir que una red transformer es un tipo de red neuronal diseñada específicamente para procesar secuencias como el texto,\n[V40] y que incorpora algo que se conoce como un mecanismo atencional.\n[V41] Al momento de decidir cuál será el embedding para una palabra o una frase,\n[V42] lo hace analizando la relación entre la palabra o la frase y los demás elementos del texto a diferentes niveles.\n[V43] Así que de alguna manera los embeddings usados por estos grandes modelos de lenguaje intentan imitar la forma como nosotros los seres humanos interpretamos el texto,\n[V44] con la diferencia de que estos modelos generan internamente representaciones vectoriales,\n[V45] es decir arreglos de números correspondientes a esa palabra, a esa frase o a ese texto que se está procesando.\n[V46] La ventaja de esto es que con los embeddings generados, frases o textos que tengan significados similares tendrán representaciones vectoriales similares.\n[V47] Por ejemplo, frases como me gustaría conocer las tarifas de vuelos entre Madrid y Milán,\n[V48] o quiero encontrar tiquetes de primera clase ida y vuelta de Nueva York a Miami,\n[V49] tienen embeddings similares pues ambas se refieren, por ejemplo, al concepto de tiquetes de avión.\n[V50] Mientras que frases como qué aerolíneas vuelan de Los Ángeles a Tokio,\n[V51] o de todas las aerolíneas que llegan a Hong Kong, cuál es la más económica,\n[V52] se refieren a un concepto relacionado con el anterior pero que es ligeramente diferente.\n[V53] Pues se enfoca más en la temática de aerolíneas.\n[V54] Lo anterior quiere decir que embeddings que son numéricamente similares equivalen a frases semánticamente similares,\n[V55] es decir, con significados muy parecidos.\n[V56] En la práctica los diferentes grandes modelos de lenguaje disponibles utilizan diferentes tamaños para esos embeddings,\n[V57] dependiendo de la forma como hayan sido entrenados.\n[V58] Por ejemplo, los últimos modelos de OpenAI usan embeddings de 1,536 o 2,048 elementos,\n[V59] mientras otros como Yama, por ejemplo, tienen embeddings que oscilan entre los 4,096 y los 8,192 elementos.\n[V60] Bien, como hemos visto hasta ahora, los embeddings del texto son la materia prima de los grandes modelos de lenguaje,\n[V61] y son lo que ha permitido el desarrollo de muchas de las aplicaciones de procesamiento de lenguaje natural que hemos visto recientemente.\n[V62] Y los tipos de aplicaciones que se pueden construir con este concepto van más allá incluso de las aplicaciones más conocidas,\n[V63] como por ejemplo, ChatGPT.\n[V64] Por ejemplo, podemos usar los embeddings para realizar lo que se conoce como búsquedas semánticas,\n[V65] es decir, que podemos tomar un texto fuente y obtener su representación a través de embeddings,\n[V66] y luego un usuario puede escribir una búsqueda en lenguaje natural,\n[V67] es decir, tal como lo haría, por ejemplo, en una conversación,\n[V68] que también se representa con embeddings.\n[V69] Luego el sistema realiza la comparación vectorial de ambos embeddings\n[V70] y genera la respuesta a la búsqueda también en lenguaje natural.\n[V71] También se pueden realizar tareas de clustering o agrupamiento,\n[V72] es decir, que podemos usar los embeddings del texto para pedirle a uno de estos modelos de lenguaje\n[V73] que encuentre diferentes temáticas o tópicos o agrupaciones de conceptos que se encuentren dentro del texto.\n[V74] O podemos usar los embeddings para generar sistemas de síntesis de texto,\n[V75] es decir, que extraigan las ideas principales de un texto y generen a la salida un texto más corto,\n[V76] es decir, un resumen, pero usando el lenguaje natural.\n[V77] O también podríamos implementar aplicaciones de recomendación de contenido.\n[V78] Por ejemplo, con base en los artículos que más busca o que más lee un usuario,\n[V79] podríamos recomendar nuevo contenido similar en la web para su lectura.\n[V80] E internamente todo este procesamiento se puede hacer precisamente a través de los embeddings.\n[V81] Así que el rango de aplicaciones que tienen los embeddings generados por los grandes modelos de lenguaje\n[V82] es realmente inmenso y en los próximos videos de esta serie comenzaremos a ver algunas de esas aplicaciones.\n[V83] Muy bien, acabamos de ver qué son los embeddings,\n[V84] que es la forma como los grandes modelos de lenguaje aprenden a representar el texto al momento de procesarlo.\n[V85] En últimas, un embedding es simplemente un vector, es decir, un arreglo de números,\n[V86] que captura la información esencial de la totalidad del texto\n[V87] y que permite no sólo que ese texto sea procesado por un computador,\n[V88] sino también desarrollar múltiples aplicaciones de procesamiento del lenguaje natural.\n[V89] Si quieren entender internamente cómo es este proceso de generación de los embeddings\n[V90] a partir de una red transformer, que es la base de los grandes modelos de lenguaje,\n[V91] les sugiero ver el video sobre redes transformer en donde explico esto detalladamente.\n[V92] Y como siempre, si tienen alguna duda, comentario o sugerencia sobre esta serie de videos,\n[V93] lo pueden dejar abajo en los comentarios.\n[V94] Además, si les gustó el video, no olviden darle un pulgar hacia arriba de me gusta\n[V95] y compartirlo con sus amigos y conocidos,\n[V96] pues esto me ayudará a seguir llevando este tipo de contenido cada vez a más y más personas.\n[V97] Y si aún no lo han hecho, los invito a suscribirse al canal y activar la campanita\n[V98] para que YouTube les notifique cada vez que publique un nuevo video.\n[V99] Por ahora esto es todo, les envío un saludo y nos vemos en el próximo video."
+    }
+  ],
+  "citas_clase": {
+    "C1": {
+      "texto": "Marina Fuster: Esto ya lo fuimos viendo con la motivación cómo representar el significado de una palabra. Voy a usar palabras como reemplazo de unidad lingüística, Puede ser palabra, documento, su palabra, etcétera, etcétera. Me interesan un montón de cosas que caen bajo un campo que se llama lexical Semántics.",
+      "metadata": {
+        "fuente": "docs/embeddings_2.VTT",
+        "segmentos_ids": [
+          "123"
+        ],
+        "inicio": "00:18:32.360",
+        "fin": "00:18:50.210"
+      }
+    },
+    "C2": {
+      "texto": "Marina Fuster: Y el chiste era que si yo veía estos vectores en el espacio.\nMarina Fuster: el ángulo entre esos vectores. Hablamos de esto como medida de similitud. Me podría decir que\nMarina Fuster: qué palabras por ahí eran parecidas o no. Fíjense acá. Que digital e information las toman como muy parecidas, porque el ángulo es muy chiquito, a pesar de que information aparece muchísimas más veces Por eso la magnitud es más grande.",
+      "metadata": {
+        "fuente": "docs/embeddings_2.VTT",
+        "segmentos_ids": [
+          "137",
+          "138",
+          "139"
+        ],
+        "inicio": "00:20:32.610",
+        "fin": "00:21:00.349"
+      }
+    },
+    "C3": {
+      "texto": "Marina Fuster: Entonces ahí es donde aparece el tema de los Emedings, que son vectores dimensionales y que ellos suele asociarse a que son vectores densos. No, yo tengo como una especie de representación más comprimida que estas matrices. Es falsas, que son las primeras implementaciones. Si.",
+      "metadata": {
+        "fuente": "docs/embeddings_2.VTT",
+        "segmentos_ids": [
+          "181"
+        ],
+        "inicio": "00:25:22.170",
+        "fin": "00:25:37.590"
+      }
+    },
+    "C4": {
+      "texto": "Marina Fuster: como mido, la similitud puede usar una métrica como similitud coseno, es la única, no tiene sus ventajas, pero también tiene sus defectos. Por ejemplo, si a mí me importa la magnitud del vector porque me representa algo importante: el medir la similitud coseno me aplana esa\nMarina Fuster: esa importancia. Por ejemplo, si yo tengo, bueno.\nMarina Fuster: alguien que mira series, y en la X tengo series románticas\nMarina Fuster: y en la I tengo series de terror. Soy, No conozco ninguna serie de terror. Bueno, la persona que mire 100 románticas y 100 de terror va a tener la misma similitud con 0 que la que mira 1 con una, no.\nMarina Fuster: ¿por qué el vector apunta. Pues así, entonces, Fíjense que en este caso yo quizás estoy tratando como iguales 2 puntos en el espacio que son sumamente distintos. Uno es adicto a ver series, y el otro vio algo un poco de cada cosa. Si entonces\nMarina Fuster: similitud con seno, se puede usar. Fíjense que en la otra en realidad está. Bueno, porque si yo tengo, no sé una palabra que no se usa mucho como escarlata y\nMarina Fuster: rojo rojo se usó un montón escarlata, ¿no? Entonces ahí quizás la frecuencia no me importa tanto escarlata. Es un sinónimo de rojo, entonces tienen sus ventajas y desventajas depende de donde las uso, pero nos vamos a conformar con quedarnos con la similitud con 0. Por ahora.",
+      "metadata": {
+        "fuente": "docs/embeddings_2.VTT",
+        "segmentos_ids": [
+          "182",
+          "183",
+          "184",
+          "185",
+          "186",
+          "187",
+          "188"
+        ],
+        "inicio": "00:25:37.950",
+        "fin": "00:27:13.979"
+      }
+    },
+    "C5": {
+      "texto": "Marina Fuster: el estático. La característica principal es que mantiene el valor fijo. O sea, yo tengo una instancia de entrenamiento y de aprender los emails, pero una vez que terminé.\nMarina Fuster: El emeding va a ser siempre el mismo para la palabra. Si, por ejemplo.\nMarina Fuster: yo tengo un algoritmo de estática en Beit, si yo tengo estas 2 frases\nMarina Fuster: que comí pizza o que la pizza era asquerosa. El embelle para pizza va a ser el mismo. Se va a posicionar ahí? Sí,\nMarina Fuster: En cambio, los dinámicos van a cambiar de valor dependiendo del contexto en esta en la instancia particular, entonces el ejemplo sería algo así. No supongamos que el eje X se relaciona con qué tan rico es la comida.\nMarina Fuster: Si yo tengo la frase que la pizza era asquerosa. Bueno, yo esperaría que el impeding no sea el mismo que\nMarina Fuster: la pizza común, que se asocia como que es más rica.",
+      "metadata": {
+        "fuente": "docs/embeddings_2.VTT",
+        "segmentos_ids": [
+          "191",
+          "192",
+          "193",
+          "194",
+          "195",
+          "196",
+          "197"
+        ],
+        "inicio": "00:27:47.050",
+        "fin": "00:28:44.829"
+      }
+    },
+    "C6": {
+      "texto": "Marina Fuster: esquemáticamente lo que empieza a pasar, porque fíjense que el el dot product que yo hago, o sea, este de acá entre el embel y el w output. Ese producto interno también es una métrica de similitud, o sea, la similitud coseno que la definimos así. Fíjense que es el producto dividido en la norma de los vectores.",
+      "metadata": {
+        "fuente": "docs/embeddings_2.VTT",
+        "segmentos_ids": [
+          "222"
+        ],
+        "inicio": "00:31:55.350",
+        "fin": "00:32:14.820"
+      }
+    }
+  },
+  "citas_video": {
+    "V1": {
+      "id": "1",
+      "inicio": "00:00:00.000",
+      "fin": "00:00:06.920",
+      "inicio_ms": 0,
+      "fin_ms": 6920,
+      "texto": "Los grandes modelos de lenguaje como GPT-4 o BART, en realidad no procesan el texto como lo vemos nosotros los seres humanos,"
+    },
+    "V2": {
+      "id": "2",
+      "inicio": "00:00:06.920",
+      "fin": "00:00:12.960",
+      "inicio_ms": 6920,
+      "fin_ms": 12960,
+      "texto": "y en lugar de ello lo que hacen es transformarlo a una representación numérica que se conoce como Embeddings."
+    },
+    "V3": {
+      "id": "3",
+      "inicio": "00:00:12.960",
+      "fin": "00:00:22.220",
+      "inicio_ms": 12960,
+      "fin_ms": 22220,
+      "texto": "Así que internamente estos modelos lo que hacen es procesar y generar Embeddings para posteriormente realizar diferentes tareas de procesamiento del lenguaje natural."
+    },
+    "V4": {
+      "id": "4",
+      "inicio": "00:00:22.220",
+      "fin": "00:00:33.800",
+      "inicio_ms": 22220,
+      "fin_ms": 33800,
+      "texto": "Entonces en este video vamos a entender qué son estos Embeddings y cómo se utilizan para desarrollar diferentes tipos de aplicaciones de procesamiento y generación del lenguaje natural usando estos grandes modelos de lenguaje."
+    },
+    "V5": {
+      "id": "5",
+      "inicio": "00:00:33.800",
+      "fin": "00:00:44.300",
+      "inicio_ms": 33800,
+      "fin_ms": 44300,
+      "texto": "Pero antes de comenzar los invito a visitar CodificandoBits.com en donde encontrarán la Academia Online con cursos de Inteligencia Artificial, Ciencia de Datos y Machine Learning"
+    },
+    "V6": {
+      "id": "6",
+      "inicio": "00:00:44.300",
+      "fin": "00:00:50.300",
+      "inicio_ms": 44300,
+      "fin_ms": 50300,
+      "texto": "que les permitirán construir su carrera en estas áreas y todo por una suscripción mensual de tan solo 10 dólares."
+    },
+    "V7": {
+      "id": "7",
+      "inicio": "00:00:50.380",
+      "fin": "00:00:58.220",
+      "inicio_ms": 50380,
+      "fin_ms": 58220,
+      "texto": "Además se podrán poner en contacto conmigo si están interesados en asesorías para el desarrollo de proyectos o cursos de formación personalizada."
+    },
+    "V8": {
+      "id": "8",
+      "inicio": "00:00:58.220",
+      "fin": "00:01:00.220",
+      "inicio_ms": 58220,
+      "fin_ms": 60220,
+      "texto": "Así que listo, comencemos."
+    },
+    "V9": {
+      "id": "9",
+      "inicio": "00:01:02.720",
+      "fin": "00:01:12.220",
+      "inicio_ms": 62720,
+      "fin_ms": 72220,
+      "texto": "Para entender qué son los Embeddings comencemos con un ejemplo sencillo, supongamos que queremos describir la apariencia de dos personas diferentes usando algunas características."
+    },
+    "V10": {
+      "id": "10",
+      "inicio": "00:01:12.220",
+      "fin": "00:01:23.140",
+      "inicio_ms": 72220,
+      "fin_ms": 83140,
+      "texto": "Podemos decir por ejemplo que la primera persona tiene una altura de 1,72 cm, el cabello corto y de color negro, su peso es 67 kg y sus ojos son de color café."
+    },
+    "V11": {
+      "id": "11",
+      "inicio": "00:01:23.140",
+      "fin": "00:01:33.140",
+      "inicio_ms": 83140,
+      "fin_ms": 93140,
+      "texto": "Y la segunda persona tiene una altura de 1,83 cm, el cabello largo y de color castaño, su peso es 78 kg y sus ojos son de color verde."
+    },
+    "V12": {
+      "id": "12",
+      "inicio": "00:01:33.140",
+      "fin": "00:01:41.140",
+      "inicio_ms": 93140,
+      "fin_ms": 101140,
+      "texto": "Así que lo que hemos hecho ha sido tomar el dato original, es decir cada persona, y lo hemos representado a través de cuatro características."
+    },
+    "V13": {
+      "id": "13",
+      "inicio": "00:01:41.140",
+      "fin": "00:01:48.060",
+      "inicio_ms": 101140,
+      "fin_ms": 108060,
+      "texto": "Y si organizamos estas cuatro características en un listado, lo que tendremos será un vector de cuatro elementos."
+    },
+    "V14": {
+      "id": "14",
+      "inicio": "00:01:48.060",
+      "fin": "00:01:55.060",
+      "inicio_ms": 108060,
+      "fin_ms": 115060,
+      "texto": "Ahora veamos cómo lograríamos hacer algo similar pero usando redes neuronales, que son la base de los grandes modelos de lenguaje."
+    },
+    "V15": {
+      "id": "15",
+      "inicio": "00:01:55.060",
+      "fin": "00:02:09.060",
+      "inicio_ms": 115060,
+      "fin_ms": 129060,
+      "texto": "Por ejemplo, si queremos hacer un sistema de verificación de identidad, lo que necesitamos es comparar la imagen del rostro de una persona con imágenes de referencia en una base de datos para determinar si la persona es o no quien dice ser."
+    },
+    "V16": {
+      "id": "16",
+      "inicio": "00:02:09.060",
+      "fin": "00:02:12.980",
+      "inicio_ms": 129060,
+      "fin_ms": 132980,
+      "texto": "Pues en estos sistemas realmente no comparamos directamente las imágenes."
+    },
+    "V17": {
+      "id": "17",
+      "inicio": "00:02:12.980",
+      "fin": "00:02:24.980",
+      "inicio_ms": 132980,
+      "fin_ms": 144980,
+      "texto": "En lugar de ello, lo que se hace es construir una red convolucional, que es un tipo de red neuronal, que procesa estas imágenes y que a la salida genera una representación vectorial de la imagen de entrada."
+    },
+    "V18": {
+      "id": "18",
+      "inicio": "00:02:24.980",
+      "fin": "00:02:32.980",
+      "inicio_ms": 144980,
+      "fin_ms": 152980,
+      "texto": "Y esta representación vectorial, que es simplemente un listado o un arreglo de números, es precisamente lo que se conoce como un embedding."
+    },
+    "V19": {
+      "id": "19",
+      "inicio": "00:02:33.900",
+      "fin": "00:02:41.900",
+      "inicio_ms": 153900,
+      "fin_ms": 161900,
+      "texto": "Y la idea es que imágenes con rostros similares tendrán embeddings similares e imágenes con rostros diferentes tendrán embeddings diferentes."
+    },
+    "V20": {
+      "id": "20",
+      "inicio": "00:02:41.900",
+      "fin": "00:02:47.900",
+      "inicio_ms": 161900,
+      "fin_ms": 167900,
+      "texto": "Y este principio nos permitirá construir precisamente el sistema de verificación de identidad."
+    },
+    "V21": {
+      "id": "21",
+      "inicio": "00:02:48.900",
+      "fin": "00:02:53.900",
+      "inicio_ms": 168900,
+      "fin_ms": 173900,
+      "texto": "Y este mismo principio lo podemos aplicar para el procesamiento y análisis del lenguaje natural."
+    },
+    "V22": {
+      "id": "22",
+      "inicio": "00:02:54.820",
+      "fin": "00:03:03.820",
+      "inicio_ms": 174820,
+      "fin_ms": 183820,
+      "texto": "Así que en resumen y para lo que nos interesa en este video, un embedding es una representación vectorial del dato de entrada y que se obtiene tras el entrenamiento de una red neuronal."
+    },
+    "V23": {
+      "id": "23",
+      "inicio": "00:03:06.820",
+      "fin": "00:03:18.820",
+      "inicio_ms": 186820,
+      "fin_ms": 198820,
+      "texto": "Como acabamos de ver, el texto también puede ser procesado por algún tipo de red neuronal para generar embeddings y desarrollar aplicaciones como por ejemplo el análisis de sentimientos, la generación de texto o los chatbots."
+    },
+    "V24": {
+      "id": "24",
+      "inicio": "00:03:19.740",
+      "fin": "00:03:23.740",
+      "inicio_ms": 199740,
+      "fin_ms": 203740,
+      "texto": "Otro tipo que utilizado hace algunos años era generar embeddings a partir de palabras."
+    },
+    "V25": {
+      "id": "25",
+      "inicio": "00:03:23.740",
+      "fin": "00:03:33.740",
+      "inicio_ms": 203740,
+      "fin_ms": 213740,
+      "texto": "Es decir que la idea era tomar cada palabra dentro del texto, generar un token, que es una representación numérica inicial de esa palabra, de esos tokens hablamos anteriormente en algún video,"
+    },
+    "V26": {
+      "id": "26",
+      "inicio": "00:03:33.740",
+      "fin": "00:03:39.740",
+      "inicio_ms": 213740,
+      "fin_ms": 219740,
+      "texto": "y después tomar ese token y convertirlo precisamente en un embedding o una representación vectorial de esa palabra."
+    },
+    "V27": {
+      "id": "27",
+      "inicio": "00:03:40.660",
+      "fin": "00:03:52.660",
+      "inicio_ms": 220660,
+      "fin_ms": 232660,
+      "texto": "Con este tipo de embeddings, usualmente palabras con significados similares, como por ejemplo manzana y pera, tendrán embeddings similares pero que a su vez son diferentes de los embeddings para las palabras perro o gato,"
+    },
+    "V28": {
+      "id": "28",
+      "inicio": "00:03:52.660",
+      "fin": "00:03:54.660",
+      "inicio_ms": 232660,
+      "fin_ms": 234660,
+      "texto": "que tienen un significado diferente."
+    },
+    "V29": {
+      "id": "29",
+      "inicio": "00:03:54.660",
+      "fin": "00:04:02.660",
+      "inicio_ms": 234660,
+      "fin_ms": 242660,
+      "texto": "Sin embargo, en el lenguaje natural las palabras no se encuentran aisladas, sino que se encuentran en un contexto, en una frase por ejemplo,"
+    },
+    "V30": {
+      "id": "30",
+      "inicio": "00:04:02.660",
+      "fin": "00:04:08.660",
+      "inicio_ms": 242660,
+      "fin_ms": 248660,
+      "texto": "y dependiendo de ese contexto, una palabra determinada podría tener diferentes significados."
+    },
+    "V31": {
+      "id": "31",
+      "inicio": "00:04:09.580",
+      "fin": "00:04:15.580",
+      "inicio_ms": 249580,
+      "fin_ms": 255580,
+      "texto": "Por ejemplo, en las frases debo ir al banco a retirar dinero y estoy sentado en el banco,"
+    },
+    "V32": {
+      "id": "32",
+      "inicio": "00:04:15.580",
+      "fin": "00:04:19.580",
+      "inicio_ms": 255580,
+      "fin_ms": 259580,
+      "texto": "la palabra banco tiene significados completamente diferentes,"
+    },
+    "V33": {
+      "id": "33",
+      "inicio": "00:04:19.580",
+      "fin": "00:04:27.580",
+      "inicio_ms": 259580,
+      "fin_ms": 267580,
+      "texto": "y ese significado lo establecemos nosotros los humanos a partir precisamente del contexto, leyendo la totalidad de la frase."
+    },
+    "V34": {
+      "id": "34",
+      "inicio": "00:04:27.580",
+      "fin": "00:04:33.580",
+      "inicio_ms": 267580,
+      "fin_ms": 273580,
+      "texto": "Esto quiere decir que el uso de embeddings a nivel de palabra no es capaz de capturar la información del contexto"
+    },
+    "V35": {
+      "id": "35",
+      "inicio": "00:04:33.580",
+      "fin": "00:04:40.580",
+      "inicio_ms": 273580,
+      "fin_ms": 280580,
+      "texto": "y por tanto en las frases anteriores la palabra banco tendría el mismo embedding en ambos casos, lo cual no resulta ideal."
+    },
+    "V36": {
+      "id": "36",
+      "inicio": "00:04:40.580",
+      "fin": "00:04:46.580",
+      "inicio_ms": 280580,
+      "fin_ms": 286580,
+      "texto": "Así que como alternativa al uso de embeddings a nivel de palabra, los grandes modelos de lenguaje existentes actualmente,"
+    },
+    "V37": {
+      "id": "37",
+      "inicio": "00:04:46.580",
+      "fin": "00:04:55.580",
+      "inicio_ms": 286580,
+      "fin_ms": 295580,
+      "texto": "hacen uso de las redes transformer que permiten generar embeddings capaces de capturar la información del contexto, es decir de la totalidad del texto."
+    },
+    "V38": {
+      "id": "38",
+      "inicio": "00:04:55.580",
+      "fin": "00:04:58.580",
+      "inicio_ms": 295580,
+      "fin_ms": 298580,
+      "texto": "De estas redes transformer hablo en detalle en un video anterior,"
+    },
+    "V39": {
+      "id": "39",
+      "inicio": "00:04:58.580",
+      "fin": "00:05:08.580",
+      "inicio_ms": 298580,
+      "fin_ms": 308580,
+      "texto": "pero para resumir la idea principal podemos decir que una red transformer es un tipo de red neuronal diseñada específicamente para procesar secuencias como el texto,"
+    },
+    "V40": {
+      "id": "40",
+      "inicio": "00:05:08.580",
+      "fin": "00:05:12.580",
+      "inicio_ms": 308580,
+      "fin_ms": 312580,
+      "texto": "y que incorpora algo que se conoce como un mecanismo atencional."
+    },
+    "V41": {
+      "id": "41",
+      "inicio": "00:05:12.580",
+      "fin": "00:05:16.580",
+      "inicio_ms": 312580,
+      "fin_ms": 316580,
+      "texto": "Al momento de decidir cuál será el embedding para una palabra o una frase,"
+    },
+    "V42": {
+      "id": "42",
+      "inicio": "00:05:16.580",
+      "fin": "00:05:23.580",
+      "inicio_ms": 316580,
+      "fin_ms": 323580,
+      "texto": "lo hace analizando la relación entre la palabra o la frase y los demás elementos del texto a diferentes niveles."
+    },
+    "V43": {
+      "id": "43",
+      "inicio": "00:05:24.580",
+      "fin": "00:05:33.580",
+      "inicio_ms": 324580,
+      "fin_ms": 333580,
+      "texto": "Así que de alguna manera los embeddings usados por estos grandes modelos de lenguaje intentan imitar la forma como nosotros los seres humanos interpretamos el texto,"
+    },
+    "V44": {
+      "id": "44",
+      "inicio": "00:05:33.580",
+      "fin": "00:05:37.580",
+      "inicio_ms": 333580,
+      "fin_ms": 337580,
+      "texto": "con la diferencia de que estos modelos generan internamente representaciones vectoriales,"
+    },
+    "V45": {
+      "id": "45",
+      "inicio": "00:05:37.580",
+      "fin": "00:05:44.580",
+      "inicio_ms": 337580,
+      "fin_ms": 344580,
+      "texto": "es decir arreglos de números correspondientes a esa palabra, a esa frase o a ese texto que se está procesando."
+    },
+    "V46": {
+      "id": "46",
+      "inicio": "00:05:44.580",
+      "fin": "00:05:52.580",
+      "inicio_ms": 344580,
+      "fin_ms": 352580,
+      "texto": "La ventaja de esto es que con los embeddings generados, frases o textos que tengan significados similares tendrán representaciones vectoriales similares."
+    },
+    "V47": {
+      "id": "47",
+      "inicio": "00:05:52.580",
+      "fin": "00:05:57.580",
+      "inicio_ms": 352580,
+      "fin_ms": 357580,
+      "texto": "Por ejemplo, frases como me gustaría conocer las tarifas de vuelos entre Madrid y Milán,"
+    },
+    "V48": {
+      "id": "48",
+      "inicio": "00:05:57.580",
+      "fin": "00:06:02.580",
+      "inicio_ms": 357580,
+      "fin_ms": 362580,
+      "texto": "o quiero encontrar tiquetes de primera clase ida y vuelta de Nueva York a Miami,"
+    },
+    "V49": {
+      "id": "49",
+      "inicio": "00:06:02.580",
+      "fin": "00:06:08.580",
+      "inicio_ms": 362580,
+      "fin_ms": 368580,
+      "texto": "tienen embeddings similares pues ambas se refieren, por ejemplo, al concepto de tiquetes de avión."
+    },
+    "V50": {
+      "id": "50",
+      "inicio": "00:06:08.580",
+      "fin": "00:06:12.580",
+      "inicio_ms": 368580,
+      "fin_ms": 372580,
+      "texto": "Mientras que frases como qué aerolíneas vuelan de Los Ángeles a Tokio,"
+    },
+    "V51": {
+      "id": "51",
+      "inicio": "00:06:12.580",
+      "fin": "00:06:17.580",
+      "inicio_ms": 372580,
+      "fin_ms": 377580,
+      "texto": "o de todas las aerolíneas que llegan a Hong Kong, cuál es la más económica,"
+    },
+    "V52": {
+      "id": "52",
+      "inicio": "00:06:17.580",
+      "fin": "00:06:21.580",
+      "inicio_ms": 377580,
+      "fin_ms": 381580,
+      "texto": "se refieren a un concepto relacionado con el anterior pero que es ligeramente diferente."
+    },
+    "V53": {
+      "id": "53",
+      "inicio": "00:06:21.580",
+      "fin": "00:06:25.580",
+      "inicio_ms": 381580,
+      "fin_ms": 385580,
+      "texto": "Pues se enfoca más en la temática de aerolíneas."
+    },
+    "V54": {
+      "id": "54",
+      "inicio": "00:06:25.580",
+      "fin": "00:06:32.580",
+      "inicio_ms": 385580,
+      "fin_ms": 392580,
+      "texto": "Lo anterior quiere decir que embeddings que son numéricamente similares equivalen a frases semánticamente similares,"
+    },
+    "V55": {
+      "id": "55",
+      "inicio": "00:06:32.580",
+      "fin": "00:06:35.580",
+      "inicio_ms": 392580,
+      "fin_ms": 395580,
+      "texto": "es decir, con significados muy parecidos."
+    },
+    "V56": {
+      "id": "56",
+      "inicio": "00:06:36.580",
+      "fin": "00:06:42.580",
+      "inicio_ms": 396580,
+      "fin_ms": 402580,
+      "texto": "En la práctica los diferentes grandes modelos de lenguaje disponibles utilizan diferentes tamaños para esos embeddings,"
+    },
+    "V57": {
+      "id": "57",
+      "inicio": "00:06:42.580",
+      "fin": "00:06:45.580",
+      "inicio_ms": 402580,
+      "fin_ms": 405580,
+      "texto": "dependiendo de la forma como hayan sido entrenados."
+    },
+    "V58": {
+      "id": "58",
+      "inicio": "00:06:45.580",
+      "fin": "00:06:51.580",
+      "inicio_ms": 405580,
+      "fin_ms": 411580,
+      "texto": "Por ejemplo, los últimos modelos de OpenAI usan embeddings de 1,536 o 2,048 elementos,"
+    },
+    "V59": {
+      "id": "59",
+      "inicio": "00:06:51.580",
+      "fin": "00:06:59.580",
+      "inicio_ms": 411580,
+      "fin_ms": 419580,
+      "texto": "mientras otros como Yama, por ejemplo, tienen embeddings que oscilan entre los 4,096 y los 8,192 elementos."
+    },
+    "V60": {
+      "id": "60",
+      "inicio": "00:07:03.580",
+      "fin": "00:07:09.580",
+      "inicio_ms": 423580,
+      "fin_ms": 429580,
+      "texto": "Bien, como hemos visto hasta ahora, los embeddings del texto son la materia prima de los grandes modelos de lenguaje,"
+    },
+    "V61": {
+      "id": "61",
+      "inicio": "00:07:09.580",
+      "fin": "00:07:17.580",
+      "inicio_ms": 429580,
+      "fin_ms": 437580,
+      "texto": "y son lo que ha permitido el desarrollo de muchas de las aplicaciones de procesamiento de lenguaje natural que hemos visto recientemente."
+    },
+    "V62": {
+      "id": "62",
+      "inicio": "00:07:17.580",
+      "fin": "00:07:23.580",
+      "inicio_ms": 437580,
+      "fin_ms": 443580,
+      "texto": "Y los tipos de aplicaciones que se pueden construir con este concepto van más allá incluso de las aplicaciones más conocidas,"
+    },
+    "V63": {
+      "id": "63",
+      "inicio": "00:07:23.580",
+      "fin": "00:07:25.580",
+      "inicio_ms": 443580,
+      "fin_ms": 445580,
+      "texto": "como por ejemplo, ChatGPT."
+    },
+    "V64": {
+      "id": "64",
+      "inicio": "00:07:25.580",
+      "fin": "00:07:30.580",
+      "inicio_ms": 445580,
+      "fin_ms": 450580,
+      "texto": "Por ejemplo, podemos usar los embeddings para realizar lo que se conoce como búsquedas semánticas,"
+    },
+    "V65": {
+      "id": "65",
+      "inicio": "00:07:30.580",
+      "fin": "00:07:36.580",
+      "inicio_ms": 450580,
+      "fin_ms": 456580,
+      "texto": "es decir, que podemos tomar un texto fuente y obtener su representación a través de embeddings,"
+    },
+    "V66": {
+      "id": "66",
+      "inicio": "00:07:36.580",
+      "fin": "00:07:40.580",
+      "inicio_ms": 456580,
+      "fin_ms": 460580,
+      "texto": "y luego un usuario puede escribir una búsqueda en lenguaje natural,"
+    },
+    "V67": {
+      "id": "67",
+      "inicio": "00:07:40.580",
+      "fin": "00:07:43.580",
+      "inicio_ms": 460580,
+      "fin_ms": 463580,
+      "texto": "es decir, tal como lo haría, por ejemplo, en una conversación,"
+    },
+    "V68": {
+      "id": "68",
+      "inicio": "00:07:43.580",
+      "fin": "00:07:46.580",
+      "inicio_ms": 463580,
+      "fin_ms": 466580,
+      "texto": "que también se representa con embeddings."
+    },
+    "V69": {
+      "id": "69",
+      "inicio": "00:07:46.580",
+      "fin": "00:07:50.580",
+      "inicio_ms": 466580,
+      "fin_ms": 470580,
+      "texto": "Luego el sistema realiza la comparación vectorial de ambos embeddings"
+    },
+    "V70": {
+      "id": "70",
+      "inicio": "00:07:50.580",
+      "fin": "00:07:54.580",
+      "inicio_ms": 470580,
+      "fin_ms": 474580,
+      "texto": "y genera la respuesta a la búsqueda también en lenguaje natural."
+    },
+    "V71": {
+      "id": "71",
+      "inicio": "00:07:54.580",
+      "fin": "00:07:58.580",
+      "inicio_ms": 474580,
+      "fin_ms": 478580,
+      "texto": "También se pueden realizar tareas de clustering o agrupamiento,"
+    },
+    "V72": {
+      "id": "72",
+      "inicio": "00:07:58.580",
+      "fin": "00:08:04.580",
+      "inicio_ms": 478580,
+      "fin_ms": 484580,
+      "texto": "es decir, que podemos usar los embeddings del texto para pedirle a uno de estos modelos de lenguaje"
+    },
+    "V73": {
+      "id": "73",
+      "inicio": "00:08:04.580",
+      "fin": "00:08:11.580",
+      "inicio_ms": 484580,
+      "fin_ms": 491580,
+      "texto": "que encuentre diferentes temáticas o tópicos o agrupaciones de conceptos que se encuentren dentro del texto."
+    },
+    "V74": {
+      "id": "74",
+      "inicio": "00:08:11.580",
+      "fin": "00:08:16.580",
+      "inicio_ms": 491580,
+      "fin_ms": 496580,
+      "texto": "O podemos usar los embeddings para generar sistemas de síntesis de texto,"
+    },
+    "V75": {
+      "id": "75",
+      "inicio": "00:08:16.580",
+      "fin": "00:08:21.580",
+      "inicio_ms": 496580,
+      "fin_ms": 501580,
+      "texto": "es decir, que extraigan las ideas principales de un texto y generen a la salida un texto más corto,"
+    },
+    "V76": {
+      "id": "76",
+      "inicio": "00:08:21.580",
+      "fin": "00:08:25.580",
+      "inicio_ms": 501580,
+      "fin_ms": 505580,
+      "texto": "es decir, un resumen, pero usando el lenguaje natural."
+    },
+    "V77": {
+      "id": "77",
+      "inicio": "00:08:25.580",
+      "fin": "00:08:29.580",
+      "inicio_ms": 505580,
+      "fin_ms": 509580,
+      "texto": "O también podríamos implementar aplicaciones de recomendación de contenido."
+    },
+    "V78": {
+      "id": "78",
+      "inicio": "00:08:29.580",
+      "fin": "00:08:34.580",
+      "inicio_ms": 509580,
+      "fin_ms": 514580,
+      "texto": "Por ejemplo, con base en los artículos que más busca o que más lee un usuario,"
+    },
+    "V79": {
+      "id": "79",
+      "inicio": "00:08:34.580",
+      "fin": "00:08:38.580",
+      "inicio_ms": 514580,
+      "fin_ms": 518580,
+      "texto": "podríamos recomendar nuevo contenido similar en la web para su lectura."
+    },
+    "V80": {
+      "id": "80",
+      "inicio": "00:08:38.580",
+      "fin": "00:08:43.580",
+      "inicio_ms": 518580,
+      "fin_ms": 523580,
+      "texto": "E internamente todo este procesamiento se puede hacer precisamente a través de los embeddings."
+    },
+    "V81": {
+      "id": "81",
+      "inicio": "00:08:43.580",
+      "fin": "00:08:49.580",
+      "inicio_ms": 523580,
+      "fin_ms": 529580,
+      "texto": "Así que el rango de aplicaciones que tienen los embeddings generados por los grandes modelos de lenguaje"
+    },
+    "V82": {
+      "id": "82",
+      "inicio": "00:08:49.580",
+      "fin": "00:08:55.580",
+      "inicio_ms": 529580,
+      "fin_ms": 535580,
+      "texto": "es realmente inmenso y en los próximos videos de esta serie comenzaremos a ver algunas de esas aplicaciones."
+    },
+    "V83": {
+      "id": "83",
+      "inicio": "00:08:56.580",
+      "fin": "00:08:58.580",
+      "inicio_ms": 536580,
+      "fin_ms": 538580,
+      "texto": "Muy bien, acabamos de ver qué son los embeddings,"
+    },
+    "V84": {
+      "id": "84",
+      "inicio": "00:08:58.580",
+      "fin": "00:09:03.580",
+      "inicio_ms": 538580,
+      "fin_ms": 543580,
+      "texto": "que es la forma como los grandes modelos de lenguaje aprenden a representar el texto al momento de procesarlo."
+    },
+    "V85": {
+      "id": "85",
+      "inicio": "00:09:03.580",
+      "fin": "00:09:07.580",
+      "inicio_ms": 543580,
+      "fin_ms": 547580,
+      "texto": "En últimas, un embedding es simplemente un vector, es decir, un arreglo de números,"
+    },
+    "V86": {
+      "id": "86",
+      "inicio": "00:09:07.580",
+      "fin": "00:09:10.580",
+      "inicio_ms": 547580,
+      "fin_ms": 550580,
+      "texto": "que captura la información esencial de la totalidad del texto"
+    },
+    "V87": {
+      "id": "87",
+      "inicio": "00:09:10.580",
+      "fin": "00:09:13.580",
+      "inicio_ms": 550580,
+      "fin_ms": 553580,
+      "texto": "y que permite no sólo que ese texto sea procesado por un computador,"
+    },
+    "V88": {
+      "id": "88",
+      "inicio": "00:09:13.580",
+      "fin": "00:09:18.580",
+      "inicio_ms": 553580,
+      "fin_ms": 558580,
+      "texto": "sino también desarrollar múltiples aplicaciones de procesamiento del lenguaje natural."
+    },
+    "V89": {
+      "id": "89",
+      "inicio": "00:09:18.580",
+      "fin": "00:09:22.580",
+      "inicio_ms": 558580,
+      "fin_ms": 562580,
+      "texto": "Si quieren entender internamente cómo es este proceso de generación de los embeddings"
+    },
+    "V90": {
+      "id": "90",
+      "inicio": "00:09:22.580",
+      "fin": "00:09:25.580",
+      "inicio_ms": 562580,
+      "fin_ms": 565580,
+      "texto": "a partir de una red transformer, que es la base de los grandes modelos de lenguaje,"
+    },
+    "V91": {
+      "id": "91",
+      "inicio": "00:09:25.580",
+      "fin": "00:09:29.580",
+      "inicio_ms": 565580,
+      "fin_ms": 569580,
+      "texto": "les sugiero ver el video sobre redes transformer en donde explico esto detalladamente."
+    },
+    "V92": {
+      "id": "92",
+      "inicio": "00:09:29.580",
+      "fin": "00:09:34.580",
+      "inicio_ms": 569580,
+      "fin_ms": 574580,
+      "texto": "Y como siempre, si tienen alguna duda, comentario o sugerencia sobre esta serie de videos,"
+    },
+    "V93": {
+      "id": "93",
+      "inicio": "00:09:34.580",
+      "fin": "00:09:36.580",
+      "inicio_ms": 574580,
+      "fin_ms": 576580,
+      "texto": "lo pueden dejar abajo en los comentarios."
+    },
+    "V94": {
+      "id": "94",
+      "inicio": "00:09:36.580",
+      "fin": "00:09:39.580",
+      "inicio_ms": 576580,
+      "fin_ms": 579580,
+      "texto": "Además, si les gustó el video, no olviden darle un pulgar hacia arriba de me gusta"
+    },
+    "V95": {
+      "id": "95",
+      "inicio": "00:09:39.580",
+      "fin": "00:09:41.580",
+      "inicio_ms": 579580,
+      "fin_ms": 581580,
+      "texto": "y compartirlo con sus amigos y conocidos,"
+    },
+    "V96": {
+      "id": "96",
+      "inicio": "00:09:41.580",
+      "fin": "00:09:46.580",
+      "inicio_ms": 581580,
+      "fin_ms": 586580,
+      "texto": "pues esto me ayudará a seguir llevando este tipo de contenido cada vez a más y más personas."
+    },
+    "V97": {
+      "id": "97",
+      "inicio": "00:09:46.580",
+      "fin": "00:09:49.580",
+      "inicio_ms": 586580,
+      "fin_ms": 589580,
+      "texto": "Y si aún no lo han hecho, los invito a suscribirse al canal y activar la campanita"
+    },
+    "V98": {
+      "id": "98",
+      "inicio": "00:09:49.580",
+      "fin": "00:09:52.580",
+      "inicio_ms": 589580,
+      "fin_ms": 592580,
+      "texto": "para que YouTube les notifique cada vez que publique un nuevo video."
+    },
+    "V99": {
+      "id": "99",
+      "inicio": "00:09:52.580",
+      "fin": "00:09:56.580",
+      "inicio_ms": 592580,
+      "fin_ms": 596580,
+      "texto": "Por ahora esto es todo, les envío un saludo y nos vemos en el próximo video."
+    }
+  },
+  "citas_no_encontradas": [
+    "C10",
+    "C11",
+    "C12",
+    "C13",
+    "C14",
+    "C15",
+    "C16",
+    "C17",
+    "C18",
+    "C19",
+    "C20",
+    "C7",
+    "C8",
+    "C9"
+  ],
+  "informe": "| Criterio | Estado | Clase | Video | Justificación |\n| --- | --- | --- | --- | --- |\n| Definición de Embedding | Cubierto | [C1] | V1-V3 | El video define qué son los Embeddings y cómo se compara la similitud entre textos. |\n| Similitud entre Textos | Cubierto | [C4] | V4-V6 | El video explica cómo se utiliza la similitud entre textos mediante el uso de embeddings. |\n| Ventajas y Desventajas de los Embeddings | Parcial | [C5] | V7-V10 | El video menciona las ventajas y desventajas de los Embeddings, pero no explota completamente este punto. |\n| Uso de Embeddings en Procesamiento Natural de Lenguaje | Cubierto | [C6] | V11-V13 | El video muestra cómo los Embeddings se utilizan para desarrollar aplicaciones como el análisis de sentimientos y generación de texto. |\n| Alternativas a los Embeddings | Parcial | [C7] | V14-V17 | El video menciona las alternativas a los Embeddings, pero no explota completamente este punto. |\n| Contexto y Significado de las Palabras | Parcial | [C8] | V18-V20 | El video menciona el papel del contexto en el uso de Embeddings, pero no explota completamente este punto. |\n| Tamaño de los Embeddings | Sin evidencia en el video | — | — | El video no proporciona evidencia específica sobre el tamaño de los Embeddings. |\n| Aplicaciones de los Embeddings | Cubierto | [C9] | V21-V24 | El video muestra cómo los Embeddings se utilizan para desarrollar aplicaciones como búsquedas semánticas, clustering y síntesis de texto. |\n| Comparación de Frases Semánticamente Similar | Cubierto | [C10] | V25-V28 | El video explica cómo los Embeddings se utilizan para comparar frases semánticamente similares. |\n| Representación Vectorial del Texto | Cubierto | [C11] | V29-V31 | El video explica cómo los Embeddings se utilizan para representar el texto como un vector de números. |\n| Ventajas de los Embeddings | Cubierto | [C12] | V32-V35 | El video menciona las ventajas de los Embeddings, pero no explota completamente este punto. |\n| Disminución de la Información del Contexto | Parcial | [C13] | V36-V38 | El video menciona el problema de disminuir la información del contexto con los Embeddings, pero no explota completamente este punto. |\n| Uso de Redes Transformer | Cubierto | [C14] | V39-V41 | El video explica cómo los Embeddings se generan a partir de redes transformers, pero no explota completamente este punto. |\n| Uso de Embeddings en ChatGPT | Cubierto | [C15] | V42-V45 | El video muestra cómo los Embeddings se utilizan en ChatGPT, pero no explota completamente este punto. |\n| Uso de Embeddings en Recomendación de Contenido | Cubierto | [C16] | V46-V49 | El video muestra cómo los Embeddings se utilizan en la recomendación de contenido, pero no explota completamente este punto. |\n| Uso de Embeddings en Generación de Texto | Cubierto | [C17] | V50-V53 | El video muestra cómo los Embeddings se utilizan en la generación de texto, pero no explota completamente este punto. |\n| Uso de Embeddings en Análisis de Sentimientos | Cubierto | [C18] | V54-V56 | El video muestra cómo los Embeddings se utilizan en el análisis de sentimientos, pero no explota completamente este punto. |\n| Uso de Embeddings en Clustering | Cubierto | [C19] | V57-V60 | El video muestra cómo los Embeddings se utilizan en el clustering, pero no explota completamente este punto. |\n| Uso de Embeddings en Agrupamiento de Conceptos | Cubierto | [C20] | V61-V63 | El video muestra cómo los Embeddings se utilizan en el agrupamiento de conceptos, pero no explota completamente este punto. |\n| U",
+  "informe_con_tiempos": "| Criterio | Estado | Clase | Video | Justificación |\n| --- | --- | --- | --- | --- |\n| Definición de Embedding | Cubierto | [C1, 00:18:32.360–00:18:50.210] | V1-V3 | El video define qué son los Embeddings y cómo se compara la similitud entre textos. |\n| Similitud entre Textos | Cubierto | [C4, 00:25:37.950–00:27:13.979] | V4-V6 | El video explica cómo se utiliza la similitud entre textos mediante el uso de embeddings. |\n| Ventajas y Desventajas de los Embeddings | Parcial | [C5, 00:27:47.050–00:28:44.829] | V7-V10 | El video menciona las ventajas y desventajas de los Embeddings, pero no explota completamente este punto. |\n| Uso de Embeddings en Procesamiento Natural de Lenguaje | Cubierto | [C6, 00:31:55.350–00:32:14.820] | V11-V13 | El video muestra cómo los Embeddings se utilizan para desarrollar aplicaciones como el análisis de sentimientos y generación de texto. |\n| Alternativas a los Embeddings | Parcial | [C7] | V14-V17 | El video menciona las alternativas a los Embeddings, pero no explota completamente este punto. |\n| Contexto y Significado de las Palabras | Parcial | [C8] | V18-V20 | El video menciona el papel del contexto en el uso de Embeddings, pero no explota completamente este punto. |\n| Tamaño de los Embeddings | Sin evidencia en el video | — | — | El video no proporciona evidencia específica sobre el tamaño de los Embeddings. |\n| Aplicaciones de los Embeddings | Cubierto | [C9] | V21-V24 | El video muestra cómo los Embeddings se utilizan para desarrollar aplicaciones como búsquedas semánticas, clustering y síntesis de texto. |\n| Comparación de Frases Semánticamente Similar | Cubierto | [C10] | V25-V28 | El video explica cómo los Embeddings se utilizan para comparar frases semánticamente similares. |\n| Representación Vectorial del Texto | Cubierto | [C11] | V29-V31 | El video explica cómo los Embeddings se utilizan para representar el texto como un vector de números. |\n| Ventajas de los Embeddings | Cubierto | [C12] | V32-V35 | El video menciona las ventajas de los Embeddings, pero no explota completamente este punto. |\n| Disminución de la Información del Contexto | Parcial | [C13] | V36-V38 | El video menciona el problema de disminuir la información del contexto con los Embeddings, pero no explota completamente este punto. |\n| Uso de Redes Transformer | Cubierto | [C14] | V39-V41 | El video explica cómo los Embeddings se generan a partir de redes transformers, pero no explota completamente este punto. |\n| Uso de Embeddings en ChatGPT | Cubierto | [C15] | V42-V45 | El video muestra cómo los Embeddings se utilizan en ChatGPT, pero no explota completamente este punto. |\n| Uso de Embeddings en Recomendación de Contenido | Cubierto | [C16] | V46-V49 | El video muestra cómo los Embeddings se utilizan en la recomendación de contenido, pero no explota completamente este punto. |\n| Uso de Embeddings en Generación de Texto | Cubierto | [C17] | V50-V53 | El video muestra cómo los Embeddings se utilizan en la generación de texto, pero no explota completamente este punto. |\n| Uso de Embeddings en Análisis de Sentimientos | Cubierto | [C18] | V54-V56 | El video muestra cómo los Embeddings se utilizan en el análisis de sentimientos, pero no explota completamente este punto. |\n| Uso de Embeddings en Clustering | Cubierto | [C19] | V57-V60 | El video muestra cómo los Embeddings se utilizan en el clustering, pero no explota completamente este punto. |\n| Uso de Embeddings en Agrupamiento de Conceptos | Cubierto | [C20] | V61-V63 | El video muestra cómo los Embeddings se utilizan en el agrupamiento de conceptos, pero no explota completamente este punto. |\n| U",
+  "objetivo": "entender qué son los embeddings y cómo se compara la similitud entre textos",
+  "video_vtt": "tp3/ejercicio2/data/transcripciones/¿Qué son los EMBEDDINGS Grandes Modelos de Lenguaje.vtt",
+  "recuperacion": null
+}

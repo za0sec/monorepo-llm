@@ -1,0 +1,1218 @@
+{
+  "objetivo": "quiero estudiar embeddings",
+  "coleccion": "tp3_248fe3ddb4d5588934314f79",
+  "manifiesto": {
+    "version": 2,
+    "sha256_documento_chunks": "fbbddd3cf54cf0640e850c4da18c1fe41f7efc3a982a5029dd34a85dafe31271",
+    "cantidad_chunks": 136,
+    "embedding": {
+      "modelo": "sentence-transformers/all-MiniLM-L6-v2",
+      "revision": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+      "dimension": 384,
+      "dispositivo": "cpu",
+      "normalizar": false
+    },
+    "metrica": "cosine",
+    "versiones": {
+      "chromadb": "1.5.9",
+      "sentence-transformers": "5.1.2",
+      "torch": "2.8.0",
+      "transformers": "4.57.1",
+      "tokenizers": "0.22.2"
+    },
+    "fuentes": [
+      {
+        "fuente": "docs/embeddings_2.VTT",
+        "sha256_fuente": "a1fa8324b6d63c7c6d90fd4dc467b65095524aba8e134d806c2118278b24cd18",
+        "id_configuracion_chunks": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd"
+      },
+      {
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "sha256_fuente": "ff2487e368cc59534b2abfa6e711f61cc9f00bc4bf2fe344ed76fcce0262e269",
+        "id_configuracion_chunks": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5"
+      }
+    ]
+  },
+  "seleccion": "por puesto y orden de subtema, omitiendo IDs repetidos",
+  "k_por_subconsulta": 8,
+  "k_final": 8,
+  "candidatos_totales": 32,
+  "candidatos_unicos": 17,
+  "plan": {
+    "modelo_solicitado": "openai/gpt-4o-2024-08-06",
+    "modelo": "gpt-4o-2024-08-06",
+    "mensajes": [
+      {
+        "role": "system",
+        "content": "Descomponé el objetivo de estudio en hasta cuatro subtemas mínimos, distintos y pertinentes para una primera comprensión en una materia de modelos de lenguaje. Por cada subtema, escribí una pregunta breve en español que permita recuperar una explicación en material de clase. Ordená de lo básico a lo específico. Devolvé únicamente un objeto JSON con la clave subtemas y una lista de objetos con las claves tema y consulta. No respondas las preguntas. Cuando el subtema trate de un proceso, mencioná en la pregunta un método representativo por su nombre y preguntá cómo funciona con un ejemplo. Para los usos, elegí una aplicación concreta. Mantené las preguntas cortas y elegí términos técnicos pertinentes para el objetivo."
+      },
+      {
+        "role": "user",
+        "content": "quiero estudiar embeddings"
+      }
+    ],
+    "temperature": 0,
+    "store": false,
+    "max_completion_tokens": 200,
+    "response_format": "json_object",
+    "finish_reason": "stop",
+    "segundos": 5.11010025,
+    "uso": {
+      "completion_tokens": 142,
+      "prompt_tokens": 165,
+      "total_tokens": 307,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": null,
+        "cached_tokens": 0
+      }
+    },
+    "costo_reportado_proxy": "0.0018325000000000001",
+    "respuesta": "{\n  \"subtemas\": [\n    {\n      \"tema\": \"Concepto de embeddings\",\n      \"consulta\": \"¿Qué son los embeddings en el procesamiento del lenguaje natural?\"\n    },\n    {\n      \"tema\": \"Representación vectorial\",\n      \"consulta\": \"¿Cómo se representa una palabra como un vector en un espacio de embeddings?\"\n    },\n    {\n      \"tema\": \"Método Word2Vec\",\n      \"consulta\": \"¿Cómo funciona el método Word2Vec para generar embeddings con un ejemplo?\"\n    },\n    {\n      \"tema\": \"Aplicaciones de embeddings\",\n      \"consulta\": \"¿Cómo se utilizan los embeddings en la clasificación de texto?\"\n    }\n  ]\n}",
+    "prompt_expansion": "concreto"
+  },
+  "subtemas": [
+    {
+      "tema": "Concepto de embeddings",
+      "consulta": "¿Qué son los embeddings en el procesamiento del lenguaje natural?"
+    },
+    {
+      "tema": "Representación vectorial",
+      "consulta": "¿Cómo se representa una palabra como un vector en un espacio de embeddings?"
+    },
+    {
+      "tema": "Método Word2Vec",
+      "consulta": "¿Cómo funciona el método Word2Vec para generar embeddings con un ejemplo?"
+    },
+    {
+      "tema": "Aplicaciones de embeddings",
+      "consulta": "¿Cómo se utilizan los embeddings en la clasificación de texto?"
+    }
+  ],
+  "busquedas": [
+    {
+      "fecha_utc": "2026-11-04T21:41:25.203195+00:00",
+      "objetivo": "¿Qué son los embeddings en el procesamiento del lenguaje natural?",
+      "coleccion": "tp3_248fe3ddb4d5588934314f79",
+      "ruta_chroma": "/Users/agostinasquillari/Desktop/LLMS/monorepo-llm/tp3/ejercicio2/data/chroma",
+      "manifiesto": {
+        "version": 2,
+        "sha256_documento_chunks": "fbbddd3cf54cf0640e850c4da18c1fe41f7efc3a982a5029dd34a85dafe31271",
+        "cantidad_chunks": 136,
+        "embedding": {
+          "modelo": "sentence-transformers/all-MiniLM-L6-v2",
+          "revision": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+          "dimension": 384,
+          "dispositivo": "cpu",
+          "normalizar": false
+        },
+        "metrica": "cosine",
+        "versiones": {
+          "chromadb": "1.5.9",
+          "sentence-transformers": "5.1.2",
+          "torch": "2.8.0",
+          "transformers": "4.57.1",
+          "tokenizers": "0.22.2"
+        },
+        "fuentes": [
+          {
+            "fuente": "docs/embeddings_2.VTT",
+            "sha256_fuente": "a1fa8324b6d63c7c6d90fd4dc467b65095524aba8e134d806c2118278b24cd18",
+            "id_configuracion_chunks": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd"
+          },
+          {
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "sha256_fuente": "ff2487e368cc59534b2abfa6e711f61cc9f00bc4bf2fe344ed76fcce0262e269",
+            "id_configuracion_chunks": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5"
+          }
+        ]
+      },
+      "k_solicitado": 8,
+      "k_efectivo": 8,
+      "umbral": null,
+      "segundos_embedding_incluida_carga": 0.21715145800000002,
+      "segundos_busqueda": 0.002173457999999684,
+      "segundos_totales": 0.21946883300000053,
+      "referencias": [
+        {
+          "posicion": 1,
+          "chunk_id": "a951c876e3c25089b032ceb4a728112194305fb3ec89fea45c8a6fe0d0e5802b",
+          "texto": "Transcripción embeddings_2.VTT. 18:32–18:50 y 25:22–25:38, representación. 20:32–21:00 y\n31:55–32:15, similitud y cálculo. 25:38–27:14, magnitud y series. 27:47–28:45, embeddings estáticos y\ncontextuales.\n\n\n\n\n                                                                                                       5",
+          "distancia_coseno": 0.422197163105011,
+          "similitud_coseno": 0.577802836894989,
+          "metadata": {
+            "pagina_fin": 5,
+            "tokens_totales": 95,
+            "apunte_derivado": true,
+            "inicio_caracter": 4644,
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "tokens_contenido": 93,
+            "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+            "pagina_inicio": 5,
+            "fin_caracter": 4957,
+            "segmentos_ids": [
+              "5"
+            ]
+          }
+        },
+        {
+          "posicion": 2,
+          "chunk_id": "544ad9b64437514d77369bcf7069ddd1f9ab555eedd65e1cb975f40861fba130",
+          "texto": ", entonces.\n\nMarina Fuster: en codor de cover ya existía atención, mecanismo. Ya existía de todo el resto que los email que sos bla, bla, bla. Todo eso ya existía. Entonces el atention y sol unir viene de que no necesito la parte recurrente, o sea, con atención, posicionar el coding y mi Mp Estoy Jose.\n\nMarina Fuster: Entonces, ¿qué nos interesa de positional en Coding 2 cosas: Uno: ¿cómo declaramos esas posiciones? Y 2,",
+          "distancia_coseno": 0.4247492551803589,
+          "similitud_coseno": 0.5752507448196411,
+          "metadata": {
+            "fin": "00:49:04.670",
+            "inicio": "00:48:22.470",
+            "segmentos_ids": [
+              "330",
+              "331",
+              "332"
+            ],
+            "fin_ms": 2944670,
+            "fin_caracter": 43072,
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+            "tokens_totales": 147,
+            "inicio_caracter": 42648,
+            "inicio_ms": 2902470,
+            "fuente": "docs/embeddings_2.VTT",
+            "tokens_contenido": 145
+          }
+        },
+        {
+          "posicion": 3,
+          "chunk_id": "34b2f3d7742dcbcb2e917e9070583e8daac0559aa8bf054d940abc33d9dfbf2f",
+          "texto": "Marina Fuster: Entonces vamos a charlar un pelín de algunas cosas específicas de lo que son estas 3 etapas, aunque ya medio que fuimos cubriendo lo que es nightsers antes lo repasamos, pero ya espero que a todos les haya quedado claro. El tema que son\n\nMarina Fuster: lo importante es la licencia de vocabulario dividir en las unidades de procesamiento. Y suele estar este estas 3 cosas en cover de Cover y el train a ver si aparece con esa nomenclatura. Pero no es más que las funciones que van de una cosa a la otra. Y el train si bien no es Traindy, un modelo se refiere al proceso mediante el cual se va a def",
+          "distancia_coseno": 0.4550360441207886,
+          "similitud_coseno": 0.5449639558792114,
+          "metadata": {
+            "inicio_caracter": 0,
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+            "fin_ms": 45309,
+            "tokens_totales": 202,
+            "fin_caracter": 613,
+            "segmentos_ids": [
+              "1",
+              "2"
+            ],
+            "inicio_ms": 3410,
+            "inicio": "00:00:03.410",
+            "fuente": "docs/embeddings_2.VTT",
+            "tokens_contenido": 200,
+            "fin": "00:00:45.309"
+          }
+        },
+        {
+          "posicion": 4,
+          "chunk_id": "753c837681d642b4b4ed85f914474b566063c2670a67a86687534bcdccc4adb1",
+          "texto": "tales tokens están muy lejos, si que no, que prácticamente las que son de cercanía. No les voy a dar mucha bola, sino que están muy lejos. Entonces, un poco la idea de jugar con las frecuencias es eso ir modelando relaciones de distinta distancia.\n\nJOAQUÍN NICOLÁS YULÁN LUCIOLI: Entonces.\n\nMarina Fuster: Pereza.\n\nJOAQUÍN NICOLÁS YULÁN LUCIOLI: Tener el peor dimensión más grande posible.\n\nMarina Fuster: Qué opinas, o sea que.",
+          "distancia_coseno": 0.46156245470046997,
+          "similitud_coseno": 0.53843754529953,
+          "metadata": {
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+            "inicio": "00:55:47.820",
+            "inicio_ms": 3347820,
+            "fin_caracter": 49783,
+            "fin": "00:56:17.560",
+            "fuente": "docs/embeddings_2.VTT",
+            "tokens_contenido": 134,
+            "segmentos_ids": [
+              "379",
+              "380",
+              "381",
+              "382",
+              "383"
+            ],
+            "fin_ms": 3377560,
+            "tokens_totales": 136,
+            "inicio_caracter": 49355
+          }
+        },
+        {
+          "posicion": 5,
+          "chunk_id": "fb4d20804426f60212809d6560999e5a45fa3d20da8061711b4f0e549b0e1c62",
+          "texto": "Marina Fuster: rojo rojo se usó un montón escarlata, ¿no? Entonces ahí quizás la frecuencia no me importa tanto escarlata. Es un sinónimo de rojo, entonces tienen sus ventajas y desventajas depende de donde las uso, pero nos vamos a conformar con quedarnos con la similitud con 0. Por ahora.\n\nMarina Fuster: entonces tengo 3 tipos de lo que son emerix, los emedis estáticos, los emedis dinámicos y los Leart Emerys. Los L Ert son los que charlamos en la demo. No, Yo tengo una tabla con parámetros a reaccionar, y los entreno junto al modelo. Y si\n\nMarina Fuster: quizás no es una catego",
+          "distancia_coseno": 0.4619971513748169,
+          "similitud_coseno": 0.5380028486251831,
+          "metadata": {
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+            "fin": "00:27:47.049",
+            "tokens_contenido": 200,
+            "inicio_ms": 1618290,
+            "inicio": "00:26:58.290",
+            "tokens_totales": 202,
+            "fin_ms": 1667049,
+            "fin_caracter": 24295,
+            "fuente": "docs/embeddings_2.VTT",
+            "segmentos_ids": [
+              "188",
+              "189",
+              "190"
+            ],
+            "inicio_caracter": 23708
+          }
+        },
+        {
+          "posicion": 6,
+          "chunk_id": "047025904ae037fa27b6dc47b2246e12379ca5d01bf6c9d8990a764541bec009",
+          "texto": ", un modelo se refiere al proceso mediante el cual se va a definir ese vocabulario que ahí lo vamos a ver.\n\nMarina Fuster: Estos son un ejemplo. Bien, ¿cuál es la diferencia con el medio? Esto también se debería haber quedado más o menos claro. El tokenizer en realidad es partir en unidades más pequeñas. Mientras que el algoritmo de Meding sabemos que es este vector denso que busca capturar cierta representación de interés.",
+          "distancia_coseno": 0.46204960346221924,
+          "similitud_coseno": 0.5379503965377808,
+          "metadata": {
+            "fin": "00:01:02.929",
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+            "inicio_ms": 22280,
+            "segmentos_ids": [
+              "2",
+              "3"
+            ],
+            "fin_ms": 62929,
+            "fin_caracter": 978,
+            "tokens_totales": 143,
+            "fuente": "docs/embeddings_2.VTT",
+            "tokens_contenido": 141,
+            "inicio": "00:00:22.280",
+            "inicio_caracter": 551
+          }
+        },
+        {
+          "posicion": 7,
+          "chunk_id": "30f035d1677d31b83d24358ac6c10750d539eabad73095f8c93278a0308ccac6",
+          "texto": "coseno conserva la\ndirección y descarta la magnitud.\n\nFuentes de la clase\nClase 2 - Transformación de Texto a Embeddings. Diapositivas 31–35. Definición, similitud coseno y\ntipos de embeddings.",
+          "distancia_coseno": 0.46673548221588135,
+          "similitud_coseno": 0.5332645177841187,
+          "metadata": {
+            "fin_caracter": 4642,
+            "pagina_inicio": 5,
+            "segmentos_ids": [
+              "5"
+            ],
+            "pagina_fin": 5,
+            "apunte_derivado": true,
+            "inicio_caracter": 4449,
+            "tokens_totales": 71,
+            "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "tokens_contenido": 69
+          }
+        },
+        {
+          "posicion": 8,
+          "chunk_id": "aa1965864b57499dbb2d37cfd754955b017658d41c8b1f46b9a9d93507560cbb",
+          "texto": "Marina Fuster: Y bueno, y en general, por eso, cuando ustedes le hablan a un agente o algo, suelen funcionar mejor en inglés, todo lo que es código. El El lenguaje predominante es en inglés. Entonces, nada. Esta es la razón por la cual.\n\nMarina Fuster: en esos lenguajes es que funcionan mejor los modelos.\n\nMarina Fuster: porque la toquenización y la forma de manejar las palabras tiene que ver con el dataset de la tokenización.\n\nMarina Fuster: que nunca está muy explícito. Entonces nadie sabe muy bien qué es lo que hay ahí adentro\n\nMarina Fuster: para investigar y que lo chus meen, si les interesa, esto ",
+          "distancia_coseno": 0.4677802324295044,
+          "similitud_coseno": 0.5322197675704956,
+          "metadata": {
+            "fin_caracter": 15501,
+            "tokens_totales": 202,
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+            "fin": "00:18:13.139",
+            "fuente": "docs/embeddings_2.VTT",
+            "tokens_contenido": 200,
+            "inicio_caracter": 14891,
+            "inicio_ms": 1042660,
+            "inicio": "00:17:22.660",
+            "segmentos_ids": [
+              "115",
+              "116",
+              "117",
+              "118",
+              "119"
+            ],
+            "fin_ms": 1093139
+          }
+        }
+      ]
+    },
+    {
+      "fecha_utc": "2026-11-04T21:41:25.244151+00:00",
+      "objetivo": "¿Cómo se representa una palabra como un vector en un espacio de embeddings?",
+      "coleccion": "tp3_248fe3ddb4d5588934314f79",
+      "ruta_chroma": "/Users/agostinasquillari/Desktop/LLMS/monorepo-llm/tp3/ejercicio2/data/chroma",
+      "manifiesto": {
+        "version": 2,
+        "sha256_documento_chunks": "fbbddd3cf54cf0640e850c4da18c1fe41f7efc3a982a5029dd34a85dafe31271",
+        "cantidad_chunks": 136,
+        "embedding": {
+          "modelo": "sentence-transformers/all-MiniLM-L6-v2",
+          "revision": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+          "dimension": 384,
+          "dispositivo": "cpu",
+          "normalizar": false
+        },
+        "metrica": "cosine",
+        "versiones": {
+          "chromadb": "1.5.9",
+          "sentence-transformers": "5.1.2",
+          "torch": "2.8.0",
+          "transformers": "4.57.1",
+          "tokenizers": "0.22.2"
+        },
+        "fuentes": [
+          {
+            "fuente": "docs/embeddings_2.VTT",
+            "sha256_fuente": "a1fa8324b6d63c7c6d90fd4dc467b65095524aba8e134d806c2118278b24cd18",
+            "id_configuracion_chunks": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd"
+          },
+          {
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "sha256_fuente": "ff2487e368cc59534b2abfa6e711f61cc9f00bc4bf2fe344ed76fcce0262e269",
+            "id_configuracion_chunks": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5"
+          }
+        ]
+      },
+      "k_solicitado": 8,
+      "k_efectivo": 8,
+      "umbral": null,
+      "segundos_embedding_incluida_carga": 0.03431012500000019,
+      "segundos_busqueda": 0.0011761669999996727,
+      "segundos_totales": 0.03555966700000024,
+      "referencias": [
+        {
+          "posicion": 1,
+          "chunk_id": "e91847975f712589dd1b06ccee6337d22d7fd1138899bb629208815248bbf655",
+          "texto": "LLMs - Apuntes de estudio                                                      73.69 | 2Q - 2026\n\n\n\n\n                            Unidad 2 - Embeddings\nRepresentación vectorial del texto\nUn embedding es una representación numérica de un elemento, como una palabra, una\noración o un documento. Se expresa como un vector, es decir, una lista ordenada de\nnúmeros. Un modelo transforma los elementos de texto en puntos de un espacio continuo.\nEsa representación permite aplicar operaciones matemáticas al texto y comparar sus\nrepresentaciones.\n\nPor ejemplo, un modelo que representa oraciones puede ubicar «Necesito cambiar mi\npasaje» cerca de «Quiero modificar mi reserva». Si aprendió a captar el significado, podría\nubic",
+          "distancia_coseno": 0.32199573516845703,
+          "similitud_coseno": 0.678004264831543,
+          "metadata": {
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "tokens_contenido": 200,
+            "inicio_caracter": 0,
+            "pagina_fin": 3,
+            "tokens_totales": 202,
+            "pagina_inicio": 3,
+            "fin_caracter": 718,
+            "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+            "segmentos_ids": [
+              "3"
+            ],
+            "apunte_derivado": true
+          }
+        },
+        {
+          "posicion": 2,
+          "chunk_id": "bccd4afb2b6090d4f52049b4465805e54d8710be55aecd95a6f82cbe4d96e9e6",
+          "texto": "Marina Fuster: hay palabras que, o sea, muchas cosas, me quedan en 0. Entonces\n\nMarina Fuster: los vectores tienen mucho espacio vacío. La frecuencia sola no te alcanza porque aparece el mismo problema que vimos en la demo como la palabra de tanto en inglés como en español, que van a tener mucha representación.\n\nMarina Fuster: ¿y qué palabras caso con palabras que se usan muy poco. ¿sí?\n\nMarina Fuster: Entonces ahí es donde aparece el tema de los Emedings, que son vectores dimensionales y que ellos suele asociarse a que son vectores densos. No, yo tengo como una especie de representación más comprimida que estas matrices. Es fa",
+          "distancia_coseno": 0.34694617986679077,
+          "similitud_coseno": 0.6530538201332092,
+          "metadata": {
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+            "fin_ms": 1537590,
+            "fin": "00:25:37.590",
+            "tokens_totales": 202,
+            "fuente": "docs/embeddings_2.VTT",
+            "inicio_caracter": 21942,
+            "fin_caracter": 22577,
+            "inicio_ms": 1496890,
+            "segmentos_ids": [
+              "178",
+              "179",
+              "180",
+              "181"
+            ],
+            "tokens_contenido": 200,
+            "inicio": "00:24:56.890"
+          }
+        },
+        {
+          "posicion": 3,
+          "chunk_id": "fb37c4785c8e73a3806181a6589c023c0fd7338518d8158a5ed84f97dafa984c",
+          "texto": "como una especie de representación más comprimida que estas matrices. Es falsas, que son las primeras implementaciones. Si.\n\nMarina Fuster: como mido, la similitud puede usar una métrica como similitud coseno, es la única, no tiene sus ventajas, pero también tiene sus defectos. Por ejemplo, si a mí me importa la magnitud del vector porque me representa algo importante: el medir la similitud coseno me aplana esa",
+          "distancia_coseno": 0.3560065031051636,
+          "similitud_coseno": 0.6439934968948364,
+          "metadata": {
+            "fin": "00:25:57.289",
+            "fin_caracter": 22916,
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+            "tokens_contenido": 130,
+            "inicio_caracter": 22502,
+            "fuente": "docs/embeddings_2.VTT",
+            "tokens_totales": 132,
+            "inicio": "00:25:22.170",
+            "segmentos_ids": [
+              "181",
+              "182"
+            ],
+            "inicio_ms": 1522170,
+            "fin_ms": 1557289
+          }
+        },
+        {
+          "posicion": 4,
+          "chunk_id": "399302fe54dfabef489665f5eb3f586ce400b0d6959087f2cce54134c586b105",
+          "texto": "erva». Si aprendió a captar el significado, podría\nubicar «Hoy llueve» más lejos. La cercanía depende del modelo y de la medida con que se\ncomparen los vectores.\n\n\n\n                      Texto → Modelo de embeddings → Vector",
+          "distancia_coseno": 0.39765381813049316,
+          "similitud_coseno": 0.6023461818695068,
+          "metadata": {
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "pagina_fin": 3,
+            "fin_caracter": 887,
+            "pagina_inicio": 3,
+            "tokens_totales": 69,
+            "tokens_contenido": 67,
+            "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+            "inicio_caracter": 663,
+            "apunte_derivado": true,
+            "segmentos_ids": [
+              "3"
+            ]
+          }
+        },
+        {
+          "posicion": 5,
+          "chunk_id": "3708230ec5e125fdd8ad2216514a317cee0af4bfa5de7c1e9bb9e0e7b31cbfab",
+          "texto": "Texto → Modelo de embeddings → Vector\n\n\nEmbeddings estáticos y contextuales\nUn embedding estático, como el de una palabra en Word2Vec, conserva el mismo vector\npara esa palabra una vez entrenado. El contexto del corpus ayuda a aprenderlo durante el\nentrenamiento. En cada uso posterior, el modelo consulta el vector fijo.\n\nUn embedding contextual se calcula para una aparición concreta. En «fui al banco a retirar\ndinero» y «me senté en el banco de la plaza», las palabras vecinas permiten construir\nrepresentaciones distintas para «banco». La clase ilustra esta diferencia con un ejemplo de\n«pizza» en dos oraciones.\n\nRefer",
+          "distancia_coseno": 0.40426433086395264,
+          "similitud_coseno": 0.5957356691360474,
+          "metadata": {
+            "pagina_inicio": 3,
+            "tokens_contenido": 200,
+            "pagina_fin": 3,
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+            "fin_caracter": 1474,
+            "tokens_totales": 202,
+            "inicio_caracter": 850,
+            "segmentos_ids": [
+              "3"
+            ],
+            "apunte_derivado": true
+          }
+        },
+        {
+          "posicion": 6,
+          "chunk_id": "edab6e7f243e1bc9d2b9c8f47b5697302f5adbe23e77ff78d23512b7dfda5fb6",
+          "texto": ".\n\nMarina Fuster: Pero después teníamos\n\nMarina Fuster: ese. Es como un ejemplo muy pequeñito. Después empezaron a aparecer las primeras implementaciones. Por ejemplo, yo podía querer tener vectores para representar documentos en el espacio, ¿no? Entonces, ¿qué hacía? Me fijaba todas las palabras que estaban en ese documento las contaba. Y esa era la representación de mi documento.",
+          "distancia_coseno": 0.40994584560394287,
+          "similitud_coseno": 0.5900541543960571,
+          "metadata": {
+            "fin_ms": 1215640,
+            "fin": "00:20:15.640",
+            "inicio": "00:19:52.630",
+            "inicio_caracter": 17383,
+            "tokens_totales": 127,
+            "segmentos_ids": [
+              "131",
+              "132",
+              "133"
+            ],
+            "fuente": "docs/embeddings_2.VTT",
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+            "fin_caracter": 17767,
+            "inicio_ms": 1192630,
+            "tokens_contenido": 125
+          }
+        },
+        {
+          "posicion": 7,
+          "chunk_id": "a951c876e3c25089b032ceb4a728112194305fb3ec89fea45c8a6fe0d0e5802b",
+          "texto": "Transcripción embeddings_2.VTT. 18:32–18:50 y 25:22–25:38, representación. 20:32–21:00 y\n31:55–32:15, similitud y cálculo. 25:38–27:14, magnitud y series. 27:47–28:45, embeddings estáticos y\ncontextuales.\n\n\n\n\n                                                                                                       5",
+          "distancia_coseno": 0.42030203342437744,
+          "similitud_coseno": 0.5796979665756226,
+          "metadata": {
+            "tokens_totales": 95,
+            "segmentos_ids": [
+              "5"
+            ],
+            "pagina_fin": 5,
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "apunte_derivado": true,
+            "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+            "pagina_inicio": 5,
+            "inicio_caracter": 4644,
+            "tokens_contenido": 93,
+            "fin_caracter": 4957
+          }
+        },
+        {
+          "posicion": 8,
+          "chunk_id": "30f035d1677d31b83d24358ac6c10750d539eabad73095f8c93278a0308ccac6",
+          "texto": "coseno conserva la\ndirección y descarta la magnitud.\n\nFuentes de la clase\nClase 2 - Transformación de Texto a Embeddings. Diapositivas 31–35. Definición, similitud coseno y\ntipos de embeddings.",
+          "distancia_coseno": 0.4553467631340027,
+          "similitud_coseno": 0.5446532368659973,
+          "metadata": {
+            "fin_caracter": 4642,
+            "tokens_totales": 71,
+            "inicio_caracter": 4449,
+            "apunte_derivado": true,
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+            "pagina_fin": 5,
+            "tokens_contenido": 69,
+            "segmentos_ids": [
+              "5"
+            ],
+            "pagina_inicio": 5
+          }
+        }
+      ]
+    },
+    {
+      "fecha_utc": "2026-11-04T21:41:25.284260+00:00",
+      "objetivo": "¿Cómo funciona el método Word2Vec para generar embeddings con un ejemplo?",
+      "coleccion": "tp3_248fe3ddb4d5588934314f79",
+      "ruta_chroma": "/Users/agostinasquillari/Desktop/LLMS/monorepo-llm/tp3/ejercicio2/data/chroma",
+      "manifiesto": {
+        "version": 2,
+        "sha256_documento_chunks": "fbbddd3cf54cf0640e850c4da18c1fe41f7efc3a982a5029dd34a85dafe31271",
+        "cantidad_chunks": 136,
+        "embedding": {
+          "modelo": "sentence-transformers/all-MiniLM-L6-v2",
+          "revision": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+          "dimension": 384,
+          "dispositivo": "cpu",
+          "normalizar": false
+        },
+        "metrica": "cosine",
+        "versiones": {
+          "chromadb": "1.5.9",
+          "sentence-transformers": "5.1.2",
+          "torch": "2.8.0",
+          "transformers": "4.57.1",
+          "tokenizers": "0.22.2"
+        },
+        "fuentes": [
+          {
+            "fuente": "docs/embeddings_2.VTT",
+            "sha256_fuente": "a1fa8324b6d63c7c6d90fd4dc467b65095524aba8e134d806c2118278b24cd18",
+            "id_configuracion_chunks": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd"
+          },
+          {
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "sha256_fuente": "ff2487e368cc59534b2abfa6e711f61cc9f00bc4bf2fe344ed76fcce0262e269",
+            "id_configuracion_chunks": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5"
+          }
+        ]
+      },
+      "k_solicitado": 8,
+      "k_efectivo": 8,
+      "umbral": null,
+      "segundos_embedding_incluida_carga": 0.03405108299999959,
+      "segundos_busqueda": 0.0010605000000003528,
+      "segundos_totales": 0.03518045800000014,
+      "referencias": [
+        {
+          "posicion": 1,
+          "chunk_id": "30f035d1677d31b83d24358ac6c10750d539eabad73095f8c93278a0308ccac6",
+          "texto": "coseno conserva la\ndirección y descarta la magnitud.\n\nFuentes de la clase\nClase 2 - Transformación de Texto a Embeddings. Diapositivas 31–35. Definición, similitud coseno y\ntipos de embeddings.",
+          "distancia_coseno": 0.39308297634124756,
+          "similitud_coseno": 0.6069170236587524,
+          "metadata": {
+            "fin_caracter": 4642,
+            "apunte_derivado": true,
+            "inicio_caracter": 4449,
+            "tokens_totales": 71,
+            "pagina_inicio": 5,
+            "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "pagina_fin": 5,
+            "tokens_contenido": 69,
+            "segmentos_ids": [
+              "5"
+            ]
+          }
+        },
+        {
+          "posicion": 2,
+          "chunk_id": "e91847975f712589dd1b06ccee6337d22d7fd1138899bb629208815248bbf655",
+          "texto": "LLMs - Apuntes de estudio                                                      73.69 | 2Q - 2026\n\n\n\n\n                            Unidad 2 - Embeddings\nRepresentación vectorial del texto\nUn embedding es una representación numérica de un elemento, como una palabra, una\noración o un documento. Se expresa como un vector, es decir, una lista ordenada de\nnúmeros. Un modelo transforma los elementos de texto en puntos de un espacio continuo.\nEsa representación permite aplicar operaciones matemáticas al texto y comparar sus\nrepresentaciones.\n\nPor ejemplo, un modelo que representa oraciones puede ubicar «Necesito cambiar mi\npasaje» cerca de «Quiero modificar mi reserva». Si aprendió a captar el significado, podría\nubic",
+          "distancia_coseno": 0.4362427592277527,
+          "similitud_coseno": 0.5637572407722473,
+          "metadata": {
+            "pagina_fin": 3,
+            "tokens_totales": 202,
+            "segmentos_ids": [
+              "3"
+            ],
+            "inicio_caracter": 0,
+            "fin_caracter": 718,
+            "pagina_inicio": 3,
+            "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "tokens_contenido": 200,
+            "apunte_derivado": true
+          }
+        },
+        {
+          "posicion": 3,
+          "chunk_id": "047025904ae037fa27b6dc47b2246e12379ca5d01bf6c9d8990a764541bec009",
+          "texto": ", un modelo se refiere al proceso mediante el cual se va a definir ese vocabulario que ahí lo vamos a ver.\n\nMarina Fuster: Estos son un ejemplo. Bien, ¿cuál es la diferencia con el medio? Esto también se debería haber quedado más o menos claro. El tokenizer en realidad es partir en unidades más pequeñas. Mientras que el algoritmo de Meding sabemos que es este vector denso que busca capturar cierta representación de interés.",
+          "distancia_coseno": 0.47578346729278564,
+          "similitud_coseno": 0.5242165327072144,
+          "metadata": {
+            "tokens_contenido": 141,
+            "fuente": "docs/embeddings_2.VTT",
+            "inicio_ms": 22280,
+            "inicio": "00:00:22.280",
+            "fin_caracter": 978,
+            "inicio_caracter": 551,
+            "fin": "00:01:02.929",
+            "segmentos_ids": [
+              "2",
+              "3"
+            ],
+            "tokens_totales": 143,
+            "fin_ms": 62929,
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd"
+          }
+        },
+        {
+          "posicion": 4,
+          "chunk_id": "edab6e7f243e1bc9d2b9c8f47b5697302f5adbe23e77ff78d23512b7dfda5fb6",
+          "texto": ".\n\nMarina Fuster: Pero después teníamos\n\nMarina Fuster: ese. Es como un ejemplo muy pequeñito. Después empezaron a aparecer las primeras implementaciones. Por ejemplo, yo podía querer tener vectores para representar documentos en el espacio, ¿no? Entonces, ¿qué hacía? Me fijaba todas las palabras que estaban en ese documento las contaba. Y esa era la representación de mi documento.",
+          "distancia_coseno": 0.4799368977546692,
+          "similitud_coseno": 0.5200631022453308,
+          "metadata": {
+            "tokens_totales": 127,
+            "fin_ms": 1215640,
+            "inicio": "00:19:52.630",
+            "inicio_ms": 1192630,
+            "tokens_contenido": 125,
+            "fin_caracter": 17767,
+            "fin": "00:20:15.640",
+            "segmentos_ids": [
+              "131",
+              "132",
+              "133"
+            ],
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+            "fuente": "docs/embeddings_2.VTT",
+            "inicio_caracter": 17383
+          }
+        },
+        {
+          "posicion": 5,
+          "chunk_id": "cbf10d1b9ca21874d69dcfcf31284f64dc27137721990a629deaf6a3d0939884",
+          "texto": "Marina Fuster: Espero útil para que después la parte del Icoder pueda ir generando\n\nMarina Fuster: la frase que yo quiero ir traduciendo. Sí, Ese es un poco el rol en el ejemplo de traducción del Encoder, de la parte izquierda del Encoder\n\nMarina Fuster: que se conecta con el de cover y bla, bla, bla. Pero nada nos impide deshacernos de toda la parte del ecoder y usar el incoder solamente para crear un espacio de medio. Si\n\nMarina Fuster: entonces vamos a mirar un pelín más en detalle Vert, que es el\n\nMarina Fuster: el Encoder. Es un poco como por excelencia tradicional que está basado en Transformers.\n\n",
+          "distancia_coseno": 0.4887070655822754,
+          "similitud_coseno": 0.5112929344177246,
+          "metadata": {
+            "tokens_contenido": 200,
+            "tokens_totales": 202,
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+            "segmentos_ids": [
+              "256",
+              "257",
+              "258",
+              "259",
+              "260"
+            ],
+            "inicio": "00:37:02.460",
+            "inicio_ms": 2222460,
+            "inicio_caracter": 32512,
+            "fin_caracter": 33123,
+            "fin": "00:37:42.160",
+            "fin_ms": 2262160,
+            "fuente": "docs/embeddings_2.VTT"
+          }
+        },
+        {
+          "posicion": 6,
+          "chunk_id": "567321612e8888670b0397f4c317677ff01f9f32a055016d92c922f14858beca",
+          "texto": "Marina Fuster: no es lo mejor y que directamente puedes usar Youtube y face y hacer algo del lado del modelo al que le interesa. Lo pueden cambiar.\n\nMarina Fuster: Bien, ahora vamos a pasar a lo que es emerys.\n\nMarina Fuster: Esto ya lo fuimos viendo con la motivación cómo representar el significado de una palabra. Voy a usar palabras como reemplazo de unidad lingüística, Puede ser palabra, documento, su palabra, etcétera, etcétera. Me interesan un montón de cosas que caen bajo un campo que se llama lexical Semántics.\n\nMarina Fuster: Y lo que es Vectores Matics, que es como este precursor de Mains surge de 2 ideas\n\nMarina Fuster: que la primera sigue ",
+          "distancia_coseno": 0.4908158779144287,
+          "similitud_coseno": 0.5091841220855713,
+          "metadata": {
+            "segmentos_ids": [
+              "121",
+              "122",
+              "123",
+              "124",
+              "125"
+            ],
+            "inicio_ms": 1102460,
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+            "tokens_totales": 202,
+            "inicio_caracter": 15879,
+            "tokens_contenido": 200,
+            "fin_caracter": 16538,
+            "fin_ms": 1148759,
+            "fuente": "docs/embeddings_2.VTT",
+            "inicio": "00:18:22.460",
+            "fin": "00:19:08.759"
+          }
+        },
+        {
+          "posicion": 7,
+          "chunk_id": "a951c876e3c25089b032ceb4a728112194305fb3ec89fea45c8a6fe0d0e5802b",
+          "texto": "Transcripción embeddings_2.VTT. 18:32–18:50 y 25:22–25:38, representación. 20:32–21:00 y\n31:55–32:15, similitud y cálculo. 25:38–27:14, magnitud y series. 27:47–28:45, embeddings estáticos y\ncontextuales.\n\n\n\n\n                                                                                                       5",
+          "distancia_coseno": 0.4934746026992798,
+          "similitud_coseno": 0.5065253973007202,
+          "metadata": {
+            "inicio_caracter": 4644,
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "pagina_fin": 5,
+            "fin_caracter": 4957,
+            "pagina_inicio": 5,
+            "apunte_derivado": true,
+            "segmentos_ids": [
+              "5"
+            ],
+            "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+            "tokens_contenido": 93,
+            "tokens_totales": 95
+          }
+        },
+        {
+          "posicion": 8,
+          "chunk_id": "399302fe54dfabef489665f5eb3f586ce400b0d6959087f2cce54134c586b105",
+          "texto": "erva». Si aprendió a captar el significado, podría\nubicar «Hoy llueve» más lejos. La cercanía depende del modelo y de la medida con que se\ncomparen los vectores.\n\n\n\n                      Texto → Modelo de embeddings → Vector",
+          "distancia_coseno": 0.4966573119163513,
+          "similitud_coseno": 0.5033426880836487,
+          "metadata": {
+            "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+            "pagina_inicio": 3,
+            "tokens_contenido": 67,
+            "fin_caracter": 887,
+            "segmentos_ids": [
+              "3"
+            ],
+            "apunte_derivado": true,
+            "pagina_fin": 3,
+            "tokens_totales": 69,
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "inicio_caracter": 663
+          }
+        }
+      ]
+    },
+    {
+      "fecha_utc": "2026-11-04T21:41:25.329231+00:00",
+      "objetivo": "¿Cómo se utilizan los embeddings en la clasificación de texto?",
+      "coleccion": "tp3_248fe3ddb4d5588934314f79",
+      "ruta_chroma": "/Users/agostinasquillari/Desktop/LLMS/monorepo-llm/tp3/ejercicio2/data/chroma",
+      "manifiesto": {
+        "version": 2,
+        "sha256_documento_chunks": "fbbddd3cf54cf0640e850c4da18c1fe41f7efc3a982a5029dd34a85dafe31271",
+        "cantidad_chunks": 136,
+        "embedding": {
+          "modelo": "sentence-transformers/all-MiniLM-L6-v2",
+          "revision": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+          "dimension": 384,
+          "dispositivo": "cpu",
+          "normalizar": false
+        },
+        "metrica": "cosine",
+        "versiones": {
+          "chromadb": "1.5.9",
+          "sentence-transformers": "5.1.2",
+          "torch": "2.8.0",
+          "transformers": "4.57.1",
+          "tokenizers": "0.22.2"
+        },
+        "fuentes": [
+          {
+            "fuente": "docs/embeddings_2.VTT",
+            "sha256_fuente": "a1fa8324b6d63c7c6d90fd4dc467b65095524aba8e134d806c2118278b24cd18",
+            "id_configuracion_chunks": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd"
+          },
+          {
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "sha256_fuente": "ff2487e368cc59534b2abfa6e711f61cc9f00bc4bf2fe344ed76fcce0262e269",
+            "id_configuracion_chunks": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5"
+          }
+        ]
+      },
+      "k_solicitado": 8,
+      "k_efectivo": 8,
+      "umbral": null,
+      "segundos_embedding_incluida_carga": 0.03853625000000083,
+      "segundos_busqueda": 0.0010896669999995723,
+      "segundos_totales": 0.039713000000000775,
+      "referencias": [
+        {
+          "posicion": 1,
+          "chunk_id": "30f035d1677d31b83d24358ac6c10750d539eabad73095f8c93278a0308ccac6",
+          "texto": "coseno conserva la\ndirección y descarta la magnitud.\n\nFuentes de la clase\nClase 2 - Transformación de Texto a Embeddings. Diapositivas 31–35. Definición, similitud coseno y\ntipos de embeddings.",
+          "distancia_coseno": 0.27725327014923096,
+          "similitud_coseno": 0.722746729850769,
+          "metadata": {
+            "inicio_caracter": 4449,
+            "segmentos_ids": [
+              "5"
+            ],
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "pagina_fin": 5,
+            "pagina_inicio": 5,
+            "apunte_derivado": true,
+            "tokens_totales": 71,
+            "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+            "tokens_contenido": 69,
+            "fin_caracter": 4642
+          }
+        },
+        {
+          "posicion": 2,
+          "chunk_id": "a951c876e3c25089b032ceb4a728112194305fb3ec89fea45c8a6fe0d0e5802b",
+          "texto": "Transcripción embeddings_2.VTT. 18:32–18:50 y 25:22–25:38, representación. 20:32–21:00 y\n31:55–32:15, similitud y cálculo. 25:38–27:14, magnitud y series. 27:47–28:45, embeddings estáticos y\ncontextuales.\n\n\n\n\n                                                                                                       5",
+          "distancia_coseno": 0.3773323893547058,
+          "similitud_coseno": 0.6226676106452942,
+          "metadata": {
+            "segmentos_ids": [
+              "5"
+            ],
+            "inicio_caracter": 4644,
+            "tokens_contenido": 93,
+            "apunte_derivado": true,
+            "pagina_fin": 5,
+            "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+            "fin_caracter": 4957,
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "tokens_totales": 95,
+            "pagina_inicio": 5
+          }
+        },
+        {
+          "posicion": 3,
+          "chunk_id": "e91847975f712589dd1b06ccee6337d22d7fd1138899bb629208815248bbf655",
+          "texto": "LLMs - Apuntes de estudio                                                      73.69 | 2Q - 2026\n\n\n\n\n                            Unidad 2 - Embeddings\nRepresentación vectorial del texto\nUn embedding es una representación numérica de un elemento, como una palabra, una\noración o un documento. Se expresa como un vector, es decir, una lista ordenada de\nnúmeros. Un modelo transforma los elementos de texto en puntos de un espacio continuo.\nEsa representación permite aplicar operaciones matemáticas al texto y comparar sus\nrepresentaciones.\n\nPor ejemplo, un modelo que representa oraciones puede ubicar «Necesito cambiar mi\npasaje» cerca de «Quiero modificar mi reserva». Si aprendió a captar el significado, podría\nubic",
+          "distancia_coseno": 0.3788175582885742,
+          "similitud_coseno": 0.6211824417114258,
+          "metadata": {
+            "segmentos_ids": [
+              "3"
+            ],
+            "fin_caracter": 718,
+            "tokens_totales": 202,
+            "tokens_contenido": 200,
+            "pagina_inicio": 3,
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "pagina_fin": 3,
+            "inicio_caracter": 0,
+            "apunte_derivado": true,
+            "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5"
+          }
+        },
+        {
+          "posicion": 4,
+          "chunk_id": "edab6e7f243e1bc9d2b9c8f47b5697302f5adbe23e77ff78d23512b7dfda5fb6",
+          "texto": ".\n\nMarina Fuster: Pero después teníamos\n\nMarina Fuster: ese. Es como un ejemplo muy pequeñito. Después empezaron a aparecer las primeras implementaciones. Por ejemplo, yo podía querer tener vectores para representar documentos en el espacio, ¿no? Entonces, ¿qué hacía? Me fijaba todas las palabras que estaban en ese documento las contaba. Y esa era la representación de mi documento.",
+          "distancia_coseno": 0.40739911794662476,
+          "similitud_coseno": 0.5926008820533752,
+          "metadata": {
+            "fin": "00:20:15.640",
+            "inicio": "00:19:52.630",
+            "tokens_contenido": 125,
+            "fuente": "docs/embeddings_2.VTT",
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+            "segmentos_ids": [
+              "131",
+              "132",
+              "133"
+            ],
+            "fin_ms": 1215640,
+            "inicio_ms": 1192630,
+            "tokens_totales": 127,
+            "fin_caracter": 17767,
+            "inicio_caracter": 17383
+          }
+        },
+        {
+          "posicion": 5,
+          "chunk_id": "3708230ec5e125fdd8ad2216514a317cee0af4bfa5de7c1e9bb9e0e7b31cbfab",
+          "texto": "Texto → Modelo de embeddings → Vector\n\n\nEmbeddings estáticos y contextuales\nUn embedding estático, como el de una palabra en Word2Vec, conserva el mismo vector\npara esa palabra una vez entrenado. El contexto del corpus ayuda a aprenderlo durante el\nentrenamiento. En cada uso posterior, el modelo consulta el vector fijo.\n\nUn embedding contextual se calcula para una aparición concreta. En «fui al banco a retirar\ndinero» y «me senté en el banco de la plaza», las palabras vecinas permiten construir\nrepresentaciones distintas para «banco». La clase ilustra esta diferencia con un ejemplo de\n«pizza» en dos oraciones.\n\nRefer",
+          "distancia_coseno": 0.41641688346862793,
+          "similitud_coseno": 0.5835831165313721,
+          "metadata": {
+            "pagina_fin": 3,
+            "inicio_caracter": 850,
+            "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+            "tokens_contenido": 200,
+            "tokens_totales": 202,
+            "pagina_inicio": 3,
+            "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+            "segmentos_ids": [
+              "3"
+            ],
+            "apunte_derivado": true,
+            "fin_caracter": 1474
+          }
+        },
+        {
+          "posicion": 6,
+          "chunk_id": "544ad9b64437514d77369bcf7069ddd1f9ab555eedd65e1cb975f40861fba130",
+          "texto": ", entonces.\n\nMarina Fuster: en codor de cover ya existía atención, mecanismo. Ya existía de todo el resto que los email que sos bla, bla, bla. Todo eso ya existía. Entonces el atention y sol unir viene de que no necesito la parte recurrente, o sea, con atención, posicionar el coding y mi Mp Estoy Jose.\n\nMarina Fuster: Entonces, ¿qué nos interesa de positional en Coding 2 cosas: Uno: ¿cómo declaramos esas posiciones? Y 2,",
+          "distancia_coseno": 0.44272375106811523,
+          "similitud_coseno": 0.5572762489318848,
+          "metadata": {
+            "segmentos_ids": [
+              "330",
+              "331",
+              "332"
+            ],
+            "inicio_caracter": 42648,
+            "fin_ms": 2944670,
+            "fin_caracter": 43072,
+            "fin": "00:49:04.670",
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+            "inicio": "00:48:22.470",
+            "inicio_ms": 2902470,
+            "tokens_contenido": 145,
+            "tokens_totales": 147,
+            "fuente": "docs/embeddings_2.VTT"
+          }
+        },
+        {
+          "posicion": 7,
+          "chunk_id": "231d97cba393f889541890242b9b5baad19e5ca75882d5d99a7cf8a0fab3c2f6",
+          "texto": "Marina Fuster: bueno. Yo le presenté lo monta en la clase, 1 que era el clásico, que es absoluto. Pero esta idea de modelar relaciones de corto de corta distancia y de larga distancia es interesante, pero tiene la desventaja de que si yo tengo la frase, el perro azul a\n\nMarina Fuster: al principio de un texto o en el medio de un texto o al final de un texto. El modelo igual tiene que entender cómo se relacionan esas palabras en las distintas partes, porque esto no\n\nMarina Fuster: es absoluto. Cada posición tiene lo suyo. Fin. Entonces lo que vamos a ver un poquito después de cómo general",
+          "distancia_coseno": 0.4477604627609253,
+          "similitud_coseno": 0.5522395372390747,
+          "metadata": {
+            "segmentos_ids": [
+              "405",
+              "406",
+              "407"
+            ],
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+            "fin": "01:00:23.119",
+            "inicio": "00:59:34.730",
+            "fin_ms": 3623119,
+            "tokens_totales": 202,
+            "fuente": "docs/embeddings_2.VTT",
+            "tokens_contenido": 200,
+            "inicio_caracter": 52788,
+            "inicio_ms": 3574730,
+            "fin_caracter": 53382
+          }
+        },
+        {
+          "posicion": 8,
+          "chunk_id": "047025904ae037fa27b6dc47b2246e12379ca5d01bf6c9d8990a764541bec009",
+          "texto": ", un modelo se refiere al proceso mediante el cual se va a definir ese vocabulario que ahí lo vamos a ver.\n\nMarina Fuster: Estos son un ejemplo. Bien, ¿cuál es la diferencia con el medio? Esto también se debería haber quedado más o menos claro. El tokenizer en realidad es partir en unidades más pequeñas. Mientras que el algoritmo de Meding sabemos que es este vector denso que busca capturar cierta representación de interés.",
+          "distancia_coseno": 0.4673435091972351,
+          "similitud_coseno": 0.5326564908027649,
+          "metadata": {
+            "fin": "00:01:02.929",
+            "inicio_caracter": 551,
+            "segmentos_ids": [
+              "2",
+              "3"
+            ],
+            "fin_caracter": 978,
+            "tokens_contenido": 141,
+            "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+            "inicio_ms": 22280,
+            "inicio": "00:00:22.280",
+            "fin_ms": 62929,
+            "tokens_totales": 143,
+            "fuente": "docs/embeddings_2.VTT"
+          }
+        }
+      ]
+    }
+  ],
+  "referencias": [
+    {
+      "posicion": 1,
+      "chunk_id": "a951c876e3c25089b032ceb4a728112194305fb3ec89fea45c8a6fe0d0e5802b",
+      "texto": "Transcripción embeddings_2.VTT. 18:32–18:50 y 25:22–25:38, representación. 20:32–21:00 y\n31:55–32:15, similitud y cálculo. 25:38–27:14, magnitud y series. 27:47–28:45, embeddings estáticos y\ncontextuales.\n\n\n\n\n                                                                                                       5",
+      "distancia_coseno": 0.422197163105011,
+      "similitud_coseno": 0.577802836894989,
+      "metadata": {
+        "pagina_fin": 5,
+        "tokens_totales": 95,
+        "apunte_derivado": true,
+        "inicio_caracter": 4644,
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "tokens_contenido": 93,
+        "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+        "pagina_inicio": 5,
+        "fin_caracter": 4957,
+        "segmentos_ids": [
+          "5"
+        ]
+      },
+      "subtema": "Concepto de embeddings",
+      "consulta": "¿Qué son los embeddings en el procesamiento del lenguaje natural?",
+      "posicion_subconsulta": 1
+    },
+    {
+      "posicion": 2,
+      "chunk_id": "e91847975f712589dd1b06ccee6337d22d7fd1138899bb629208815248bbf655",
+      "texto": "LLMs - Apuntes de estudio                                                      73.69 | 2Q - 2026\n\n\n\n\n                            Unidad 2 - Embeddings\nRepresentación vectorial del texto\nUn embedding es una representación numérica de un elemento, como una palabra, una\noración o un documento. Se expresa como un vector, es decir, una lista ordenada de\nnúmeros. Un modelo transforma los elementos de texto en puntos de un espacio continuo.\nEsa representación permite aplicar operaciones matemáticas al texto y comparar sus\nrepresentaciones.\n\nPor ejemplo, un modelo que representa oraciones puede ubicar «Necesito cambiar mi\npasaje» cerca de «Quiero modificar mi reserva». Si aprendió a captar el significado, podría\nubic",
+      "distancia_coseno": 0.32199573516845703,
+      "similitud_coseno": 0.678004264831543,
+      "metadata": {
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "tokens_contenido": 200,
+        "inicio_caracter": 0,
+        "pagina_fin": 3,
+        "tokens_totales": 202,
+        "pagina_inicio": 3,
+        "fin_caracter": 718,
+        "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+        "segmentos_ids": [
+          "3"
+        ],
+        "apunte_derivado": true
+      },
+      "subtema": "Representación vectorial",
+      "consulta": "¿Cómo se representa una palabra como un vector en un espacio de embeddings?",
+      "posicion_subconsulta": 1
+    },
+    {
+      "posicion": 3,
+      "chunk_id": "30f035d1677d31b83d24358ac6c10750d539eabad73095f8c93278a0308ccac6",
+      "texto": "coseno conserva la\ndirección y descarta la magnitud.\n\nFuentes de la clase\nClase 2 - Transformación de Texto a Embeddings. Diapositivas 31–35. Definición, similitud coseno y\ntipos de embeddings.",
+      "distancia_coseno": 0.39308297634124756,
+      "similitud_coseno": 0.6069170236587524,
+      "metadata": {
+        "fin_caracter": 4642,
+        "apunte_derivado": true,
+        "inicio_caracter": 4449,
+        "tokens_totales": 71,
+        "pagina_inicio": 5,
+        "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "pagina_fin": 5,
+        "tokens_contenido": 69,
+        "segmentos_ids": [
+          "5"
+        ]
+      },
+      "subtema": "Método Word2Vec",
+      "consulta": "¿Cómo funciona el método Word2Vec para generar embeddings con un ejemplo?",
+      "posicion_subconsulta": 1
+    },
+    {
+      "posicion": 4,
+      "chunk_id": "544ad9b64437514d77369bcf7069ddd1f9ab555eedd65e1cb975f40861fba130",
+      "texto": ", entonces.\n\nMarina Fuster: en codor de cover ya existía atención, mecanismo. Ya existía de todo el resto que los email que sos bla, bla, bla. Todo eso ya existía. Entonces el atention y sol unir viene de que no necesito la parte recurrente, o sea, con atención, posicionar el coding y mi Mp Estoy Jose.\n\nMarina Fuster: Entonces, ¿qué nos interesa de positional en Coding 2 cosas: Uno: ¿cómo declaramos esas posiciones? Y 2,",
+      "distancia_coseno": 0.4247492551803589,
+      "similitud_coseno": 0.5752507448196411,
+      "metadata": {
+        "fin": "00:49:04.670",
+        "inicio": "00:48:22.470",
+        "segmentos_ids": [
+          "330",
+          "331",
+          "332"
+        ],
+        "fin_ms": 2944670,
+        "fin_caracter": 43072,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "tokens_totales": 147,
+        "inicio_caracter": 42648,
+        "inicio_ms": 2902470,
+        "fuente": "docs/embeddings_2.VTT",
+        "tokens_contenido": 145
+      },
+      "subtema": "Concepto de embeddings",
+      "consulta": "¿Qué son los embeddings en el procesamiento del lenguaje natural?",
+      "posicion_subconsulta": 2
+    },
+    {
+      "posicion": 5,
+      "chunk_id": "bccd4afb2b6090d4f52049b4465805e54d8710be55aecd95a6f82cbe4d96e9e6",
+      "texto": "Marina Fuster: hay palabras que, o sea, muchas cosas, me quedan en 0. Entonces\n\nMarina Fuster: los vectores tienen mucho espacio vacío. La frecuencia sola no te alcanza porque aparece el mismo problema que vimos en la demo como la palabra de tanto en inglés como en español, que van a tener mucha representación.\n\nMarina Fuster: ¿y qué palabras caso con palabras que se usan muy poco. ¿sí?\n\nMarina Fuster: Entonces ahí es donde aparece el tema de los Emedings, que son vectores dimensionales y que ellos suele asociarse a que son vectores densos. No, yo tengo como una especie de representación más comprimida que estas matrices. Es fa",
+      "distancia_coseno": 0.34694617986679077,
+      "similitud_coseno": 0.6530538201332092,
+      "metadata": {
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "fin_ms": 1537590,
+        "fin": "00:25:37.590",
+        "tokens_totales": 202,
+        "fuente": "docs/embeddings_2.VTT",
+        "inicio_caracter": 21942,
+        "fin_caracter": 22577,
+        "inicio_ms": 1496890,
+        "segmentos_ids": [
+          "178",
+          "179",
+          "180",
+          "181"
+        ],
+        "tokens_contenido": 200,
+        "inicio": "00:24:56.890"
+      },
+      "subtema": "Representación vectorial",
+      "consulta": "¿Cómo se representa una palabra como un vector en un espacio de embeddings?",
+      "posicion_subconsulta": 2
+    },
+    {
+      "posicion": 6,
+      "chunk_id": "34b2f3d7742dcbcb2e917e9070583e8daac0559aa8bf054d940abc33d9dfbf2f",
+      "texto": "Marina Fuster: Entonces vamos a charlar un pelín de algunas cosas específicas de lo que son estas 3 etapas, aunque ya medio que fuimos cubriendo lo que es nightsers antes lo repasamos, pero ya espero que a todos les haya quedado claro. El tema que son\n\nMarina Fuster: lo importante es la licencia de vocabulario dividir en las unidades de procesamiento. Y suele estar este estas 3 cosas en cover de Cover y el train a ver si aparece con esa nomenclatura. Pero no es más que las funciones que van de una cosa a la otra. Y el train si bien no es Traindy, un modelo se refiere al proceso mediante el cual se va a def",
+      "distancia_coseno": 0.4550360441207886,
+      "similitud_coseno": 0.5449639558792114,
+      "metadata": {
+        "inicio_caracter": 0,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "fin_ms": 45309,
+        "tokens_totales": 202,
+        "fin_caracter": 613,
+        "segmentos_ids": [
+          "1",
+          "2"
+        ],
+        "inicio_ms": 3410,
+        "inicio": "00:00:03.410",
+        "fuente": "docs/embeddings_2.VTT",
+        "tokens_contenido": 200,
+        "fin": "00:00:45.309"
+      },
+      "subtema": "Concepto de embeddings",
+      "consulta": "¿Qué son los embeddings en el procesamiento del lenguaje natural?",
+      "posicion_subconsulta": 3
+    },
+    {
+      "posicion": 7,
+      "chunk_id": "fb37c4785c8e73a3806181a6589c023c0fd7338518d8158a5ed84f97dafa984c",
+      "texto": "como una especie de representación más comprimida que estas matrices. Es falsas, que son las primeras implementaciones. Si.\n\nMarina Fuster: como mido, la similitud puede usar una métrica como similitud coseno, es la única, no tiene sus ventajas, pero también tiene sus defectos. Por ejemplo, si a mí me importa la magnitud del vector porque me representa algo importante: el medir la similitud coseno me aplana esa",
+      "distancia_coseno": 0.3560065031051636,
+      "similitud_coseno": 0.6439934968948364,
+      "metadata": {
+        "fin": "00:25:57.289",
+        "fin_caracter": 22916,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "tokens_contenido": 130,
+        "inicio_caracter": 22502,
+        "fuente": "docs/embeddings_2.VTT",
+        "tokens_totales": 132,
+        "inicio": "00:25:22.170",
+        "segmentos_ids": [
+          "181",
+          "182"
+        ],
+        "inicio_ms": 1522170,
+        "fin_ms": 1557289
+      },
+      "subtema": "Representación vectorial",
+      "consulta": "¿Cómo se representa una palabra como un vector en un espacio de embeddings?",
+      "posicion_subconsulta": 3
+    },
+    {
+      "posicion": 8,
+      "chunk_id": "047025904ae037fa27b6dc47b2246e12379ca5d01bf6c9d8990a764541bec009",
+      "texto": ", un modelo se refiere al proceso mediante el cual se va a definir ese vocabulario que ahí lo vamos a ver.\n\nMarina Fuster: Estos son un ejemplo. Bien, ¿cuál es la diferencia con el medio? Esto también se debería haber quedado más o menos claro. El tokenizer en realidad es partir en unidades más pequeñas. Mientras que el algoritmo de Meding sabemos que es este vector denso que busca capturar cierta representación de interés.",
+      "distancia_coseno": 0.47578346729278564,
+      "similitud_coseno": 0.5242165327072144,
+      "metadata": {
+        "tokens_contenido": 141,
+        "fuente": "docs/embeddings_2.VTT",
+        "inicio_ms": 22280,
+        "inicio": "00:00:22.280",
+        "fin_caracter": 978,
+        "inicio_caracter": 551,
+        "fin": "00:01:02.929",
+        "segmentos_ids": [
+          "2",
+          "3"
+        ],
+        "tokens_totales": 143,
+        "fin_ms": 62929,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd"
+      },
+      "subtema": "Método Word2Vec",
+      "consulta": "¿Cómo funciona el método Word2Vec para generar embeddings con un ejemplo?",
+      "posicion_subconsulta": 3
+    }
+  ]
+}

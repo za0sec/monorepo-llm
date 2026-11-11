@@ -1,0 +1,86 @@
+{
+  "fecha_utc": "2026-11-04T18:20:02.137827+00:00",
+  "objetivo": "entender similitud coseno y sus limitaciones",
+  "coleccion": "tp3_c18deda7c17b0e0f81ea5513",
+  "ruta_chroma": "/Users/agostinasquillari/Desktop/LLMS/monorepo-llm/tp3/ejercicio2/data/chroma",
+  "manifiesto": {
+    "version": 1,
+    "sha256_documento_chunks": "00b58f1116024bb51f74aca18ed5c73b491a60d4396d2cda6b7170daa5132a21",
+    "fuente": "docs/embeddings_2.VTT",
+    "sha256_fuente": "a1fa8324b6d63c7c6d90fd4dc467b65095524aba8e134d806c2118278b24cd18",
+    "id_configuracion_chunks": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+    "cantidad_chunks": 125,
+    "embedding": {
+      "modelo": "sentence-transformers/all-MiniLM-L6-v2",
+      "revision": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+      "dimension": 384,
+      "dispositivo": "cpu",
+      "normalizar": false
+    },
+    "metrica": "cosine",
+    "versiones": {
+      "chromadb": "1.5.9",
+      "sentence-transformers": "5.1.2",
+      "torch": "2.8.0",
+      "transformers": "4.57.1",
+      "tokenizers": "0.22.2"
+    }
+  },
+  "k_solicitado": 2,
+  "k_efectivo": 2,
+  "umbral": null,
+  "segundos_embedding_incluida_carga": 0.27352516699999985,
+  "segundos_busqueda": 0.0019037920000002373,
+  "segundos_totales": 0.2755607920000003,
+  "referencias": [
+    {
+      "posicion": 1,
+      "chunk_id": "31e13bc27aae71cca3bf9b160c24616ac062cba031af23e1f23634077edfcff3",
+      "texto": "de atención que si eso me explota, es un problema y por una cuestión de parámetros también. Si entonces.\n\nMarina Fuster: por un lado, si yo eso por ahí no tengo tanto control, no de de hasta dónde el transformer con sus propios parámetros llega a procesar todo, Pero a mí lo que sí me interesa es que el límite",
+      "distancia_coseno": 0.4479760527610779,
+      "similitud_coseno": 0.5520239472389221,
+      "metadata": {
+        "fin_caracter": 43987,
+        "inicio_ms": 2977400,
+        "fuente": "docs/embeddings_2.VTT",
+        "tokens_totales": 102,
+        "inicio": "00:49:37.400",
+        "segmentos_ids": [
+          "338",
+          "339"
+        ],
+        "fin_ms": 3004219,
+        "tokens_contenido": 100,
+        "inicio_caracter": 43677,
+        "fin": "00:50:04.219",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd"
+      }
+    },
+    {
+      "posicion": 2,
+      "chunk_id": "753c837681d642b4b4ed85f914474b566063c2670a67a86687534bcdccc4adb1",
+      "texto": "tales tokens están muy lejos, si que no, que prácticamente las que son de cercanía. No les voy a dar mucha bola, sino que están muy lejos. Entonces, un poco la idea de jugar con las frecuencias es eso ir modelando relaciones de distinta distancia.\n\nJOAQUÍN NICOLÁS YULÁN LUCIOLI: Entonces.\n\nMarina Fuster: Pereza.\n\nJOAQUÍN NICOLÁS YULÁN LUCIOLI: Tener el peor dimensión más grande posible.\n\nMarina Fuster: Qué opinas, o sea que.",
+      "distancia_coseno": 0.518800675868988,
+      "similitud_coseno": 0.48119932413101196,
+      "metadata": {
+        "segmentos_ids": [
+          "379",
+          "380",
+          "381",
+          "382",
+          "383"
+        ],
+        "inicio_ms": 3347820,
+        "fuente": "docs/embeddings_2.VTT",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "inicio_caracter": 49355,
+        "fin_ms": 3377560,
+        "fin": "00:56:17.560",
+        "tokens_totales": 136,
+        "tokens_contenido": 134,
+        "inicio": "00:55:47.820",
+        "fin_caracter": 49783
+      }
+    }
+  ]
+}

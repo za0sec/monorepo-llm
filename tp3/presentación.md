@@ -1056,7 +1056,16 @@ con el ranking original de ocho referencias. El siguiente paso es
 contrastar esa versión con un prompt que exija respaldo académico antes
 de clasificar, y medir ambos brazos con la misma pauta.
 
-## 49. Cómo seguiremos actualizando este documento
+## 49. Artefactos de las corridas en Git — 11/11
+
+Se incorporaron los chunks, las transcripciones del caso 01 y los resultados
+en JSON y Markdown del ejercicio 2 para que el grupo pueda revisar la
+evidencia usada en la presentación. La caché de modelos, Chroma, los audios,
+los logs y los archivos procesados intermedios quedan en el entorno local.
+Se verificaron los tamaños y las reglas de Git antes del commit. La próxima
+iteración puede reutilizar el informe de control y el ranking original.
+
+## 50. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

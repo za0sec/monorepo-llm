@@ -1,0 +1,177 @@
+Fuente: output/pdf/LLMs - Apuntes - Embeddings.pdf
+Configuración: b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5
+
+Chunk 1: e91847975f712589dd1b06ccee6337d22d7fd1138899bb629208815248bbf655
+pág. 3
+Tokens: 200 de contenido, 202 con especiales
+LLMs - Apuntes de estudio                                                      73.69 | 2Q - 2026
+
+
+
+
+                            Unidad 2 - Embeddings
+Representación vectorial del texto
+Un embedding es una representación numérica de un elemento, como una palabra, una
+oración o un documento. Se expresa como un vector, es decir, una lista ordenada de
+números. Un modelo transforma los elementos de texto en puntos de un espacio continuo.
+Esa representación permite aplicar operaciones matemáticas al texto y comparar sus
+representaciones.
+
+Por ejemplo, un modelo que representa oraciones puede ubicar «Necesito cambiar mi
+pasaje» cerca de «Quiero modificar mi reserva». Si aprendió a captar el significado, podría
+ubic
+
+Chunk 2: 399302fe54dfabef489665f5eb3f586ce400b0d6959087f2cce54134c586b105
+pág. 3
+Tokens: 67 de contenido, 69 con especiales
+erva». Si aprendió a captar el significado, podría
+ubicar «Hoy llueve» más lejos. La cercanía depende del modelo y de la medida con que se
+comparen los vectores.
+
+
+
+                      Texto → Modelo de embeddings → Vector
+
+Chunk 3: 3708230ec5e125fdd8ad2216514a317cee0af4bfa5de7c1e9bb9e0e7b31cbfab
+pág. 3
+Tokens: 200 de contenido, 202 con especiales
+Texto → Modelo de embeddings → Vector
+
+
+Embeddings estáticos y contextuales
+Un embedding estático, como el de una palabra en Word2Vec, conserva el mismo vector
+para esa palabra una vez entrenado. El contexto del corpus ayuda a aprenderlo durante el
+entrenamiento. En cada uso posterior, el modelo consulta el vector fijo.
+
+Un embedding contextual se calcula para una aparición concreta. En «fui al banco a retirar
+dinero» y «me senté en el banco de la plaza», las palabras vecinas permiten construir
+representaciones distintas para «banco». La clase ilustra esta diferencia con un ejemplo de
+«pizza» en dos oraciones.
+
+Refer
+
+Chunk 4: 06e9f82c315cb62df459a65d031c10204d166da520adce5227f00b14f86f0056
+págs. 3–4
+Tokens: 94 de contenido, 96 con especiales
+diferencia con un ejemplo de
+«pizza» en dos oraciones.
+
+Referencias de clase. Diapositivas 31 y 33–35. Transcripción, 18:32–18:50 para la motivación y
+27:47–28:45 para la distinción entre representaciones.
+
+
+
+
+                                                                                              3
+
+LLMs - Apuntes de estudio                                                             73.69 | 2Q - 2026
+
+Chunk 5: 2b8313e4ee58792a02a40bacf1c7630957d67e0cae0f903f5db60c0f3d77b690
+pág. 4
+Tokens: 200 de contenido, 202 con especiales
+Similitud coseno
+Cómo comparar dos embeddings
+Dados dos textos, primero se obtiene un vector para cada uno usando el mismo modelo de
+embeddings. La similitud coseno compara la dirección de los dos vectores mediante el
+coseno del ángulo que forman. Para calcularla, se divide el producto escalar por el producto
+de las normas euclidianas.
+
+
+
+                   similitud coseno(a, b) = (a · b) / (‖a‖ × ‖b‖)
+
+
+El producto escalar a · b suma los productos de las componentes correspondientes. La
+norma ‖a‖ es la raíz cuadrada de la suma de los cuadrados de las componentes de a. El
+cálculo requiere que ambos vectores tengan la misma dimensión y 
+
+Chunk 6: eb73b778b674900ad0b210ec350f5c1e4f85ff026328eff3894d1f878e617c12
+pág. 4
+Tokens: 125 de contenido, 127 con especiales
+. El
+cálculo requiere que ambos vectores tengan la misma dimensión y una norma distinta de
+cero.
+Ejemplo de cálculo
+Tomemos a = (3, 4) y b = (4, 3). Su producto escalar es 3 × 4 + 4 × 3 = 24. Las dos normas
+valen √25 = 5. Por lo tanto, la similitud coseno es 24 / (5 × 5) = 0,96. El resultado indica que
+apuntan en direcciones cercanas.
+
+Chunk 7: 05acba3129b31fca99c84751de40abc44fead01b9ffff9eae4aeadb46a2ef2de
+págs. 4–5
+Tokens: 200 de contenido, 202 con especiales
+1                                 0                               −1
+         Misma dirección                   Perpendiculares                 Direcciones opuestas
+
+
+
+Una similitud cercana a 1 indica alineación en el espacio del modelo. En una búsqueda de
+textos, el resultado sirve para ordenar candidatos y revisar qué fragmentos contienen la
+información buscada.
+
+Referencias de clase. Diapositiva 32. Transcripción, 20:32–21:00 y 31:55–32:15.
+
+
+
+
+                                                                                                     4
+
+LLMs - Apuntes de estudio                                                               73.69 | 2Q - 2026
+
+
+
+
+                            Qué pasa con la magnitud
+Vectores con la misma dirección
+La normalización del coseno hace que el resultado sea insensible a un cambio de escala
+positivo. Si multiplicamos todas las componentes de un vector por el mismo número po
+
+Chunk 8: 9fa52ad78a45b8398e2e34044baf6f6e4f192f11c9289d9b022a08aa24c3a9ef
+pág. 5
+Tokens: 39 de contenido, 41 con especiales
+multiplicamos todas las componentes de un vector por el mismo número positivo,
+su dirección se conserva y su longitud cambia.
+
+Chunk 9: 879e8c68419dcad05a5f2fcac05ae5f4dec1d90da01d2c2ddcc31225b77946d2
+pág. 5
+Tokens: 200 de contenido, 202 con especiales
+La clase lo ilustra con dos personas y dos géneros de series. Una vio 1 romántica y 1 de
+terror, y la otra vio 100 románticas y 100 de terror. Los vectores (1, 1) y (100, 100) tienen
+la misma dirección. Su similitud coseno vale 1.
+
+
+
+                                        a = (1, 1)
+                                        b = (100, 100)
+                                        Vectores en la misma dirección. Esquema sin escala.
+
+
+
+
+Si queremos comparar la proporción de preferencias, el coseno refleja que ambas
+personas miran los dos géneros en la misma proporción. Si importa cuántas series vieron,
+el volumen de actividad debe considerarse por separado. La similitud coseno conserva la
+dirección y descarta la magnitud.
+
+
+
+Chunk 10: 30f035d1677d31b83d24358ac6c10750d539eabad73095f8c93278a0308ccac6
+pág. 5
+Tokens: 69 de contenido, 71 con especiales
+coseno conserva la
+dirección y descarta la magnitud.
+
+Fuentes de la clase
+Clase 2 - Transformación de Texto a Embeddings. Diapositivas 31–35. Definición, similitud coseno y
+tipos de embeddings.
+
+Chunk 11: a951c876e3c25089b032ceb4a728112194305fb3ec89fea45c8a6fe0d0e5802b
+pág. 5
+Tokens: 93 de contenido, 95 con especiales
+Transcripción embeddings_2.VTT. 18:32–18:50 y 25:22–25:38, representación. 20:32–21:00 y
+31:55–32:15, similitud y cálculo. 25:38–27:14, magnitud y series. 27:47–28:45, embeddings estáticos y
+contextuales.
+
+
+
+
+                                                                                                       5

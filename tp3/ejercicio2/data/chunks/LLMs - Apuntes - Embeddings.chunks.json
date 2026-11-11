@@ -1,0 +1,211 @@
+{
+  "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+  "sha256_fuente": "ff2487e368cc59534b2abfa6e711f61cc9f00bc4bf2fe344ed76fcce0262e269",
+  "configuracion": {
+    "version": 1,
+    "modelo_tokenizer": "sentence-transformers/all-MiniLM-L6-v2",
+    "revision_tokenizer": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+    "caracteres": 1000,
+    "overlap_caracteres": 100,
+    "tokens": 200,
+    "overlap_tokens": 20,
+    "limite_encoder": 256,
+    "tokens_especiales": 2,
+    "separadores": [
+      "\n\n",
+      "\n",
+      ". ",
+      " ",
+      ""
+    ],
+    "localizador": "pagina",
+    "paginas": [
+      3,
+      4,
+      5
+    ],
+    "apunte_derivado": true
+  },
+  "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+  "cantidad_segmentos": 3,
+  "chunks": [
+    {
+      "chunk_id": "e91847975f712589dd1b06ccee6337d22d7fd1138899bb629208815248bbf655",
+      "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+      "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+      "segmentos_ids": [
+        "3"
+      ],
+      "pagina_inicio": 3,
+      "pagina_fin": 3,
+      "apunte_derivado": true,
+      "inicio_caracter": 0,
+      "fin_caracter": 718,
+      "tokens_contenido": 200,
+      "tokens_totales": 202,
+      "texto": "LLMs - Apuntes de estudio                                                      73.69 | 2Q - 2026\n\n\n\n\n                            Unidad 2 - Embeddings\nRepresentación vectorial del texto\nUn embedding es una representación numérica de un elemento, como una palabra, una\noración o un documento. Se expresa como un vector, es decir, una lista ordenada de\nnúmeros. Un modelo transforma los elementos de texto en puntos de un espacio continuo.\nEsa representación permite aplicar operaciones matemáticas al texto y comparar sus\nrepresentaciones.\n\nPor ejemplo, un modelo que representa oraciones puede ubicar «Necesito cambiar mi\npasaje» cerca de «Quiero modificar mi reserva». Si aprendió a captar el significado, podría\nubic"
+    },
+    {
+      "chunk_id": "399302fe54dfabef489665f5eb3f586ce400b0d6959087f2cce54134c586b105",
+      "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+      "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+      "segmentos_ids": [
+        "3"
+      ],
+      "pagina_inicio": 3,
+      "pagina_fin": 3,
+      "apunte_derivado": true,
+      "inicio_caracter": 663,
+      "fin_caracter": 887,
+      "tokens_contenido": 67,
+      "tokens_totales": 69,
+      "texto": "erva». Si aprendió a captar el significado, podría\nubicar «Hoy llueve» más lejos. La cercanía depende del modelo y de la medida con que se\ncomparen los vectores.\n\n\n\n                      Texto → Modelo de embeddings → Vector"
+    },
+    {
+      "chunk_id": "3708230ec5e125fdd8ad2216514a317cee0af4bfa5de7c1e9bb9e0e7b31cbfab",
+      "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+      "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+      "segmentos_ids": [
+        "3"
+      ],
+      "pagina_inicio": 3,
+      "pagina_fin": 3,
+      "apunte_derivado": true,
+      "inicio_caracter": 850,
+      "fin_caracter": 1474,
+      "tokens_contenido": 200,
+      "tokens_totales": 202,
+      "texto": "Texto → Modelo de embeddings → Vector\n\n\nEmbeddings estáticos y contextuales\nUn embedding estático, como el de una palabra en Word2Vec, conserva el mismo vector\npara esa palabra una vez entrenado. El contexto del corpus ayuda a aprenderlo durante el\nentrenamiento. En cada uso posterior, el modelo consulta el vector fijo.\n\nUn embedding contextual se calcula para una aparición concreta. En «fui al banco a retirar\ndinero» y «me senté en el banco de la plaza», las palabras vecinas permiten construir\nrepresentaciones distintas para «banco». La clase ilustra esta diferencia con un ejemplo de\n«pizza» en dos oraciones.\n\nRefer"
+    },
+    {
+      "chunk_id": "06e9f82c315cb62df459a65d031c10204d166da520adce5227f00b14f86f0056",
+      "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+      "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+      "segmentos_ids": [
+        "3",
+        "4"
+      ],
+      "pagina_inicio": 3,
+      "pagina_fin": 4,
+      "apunte_derivado": true,
+      "inicio_caracter": 1413,
+      "fin_caracter": 1823,
+      "tokens_contenido": 94,
+      "tokens_totales": 96,
+      "texto": "diferencia con un ejemplo de\n«pizza» en dos oraciones.\n\nReferencias de clase. Diapositivas 31 y 33–35. Transcripción, 18:32–18:50 para la motivación y\n27:47–28:45 para la distinción entre representaciones.\n\n\n\n\n                                                                                              3\n\nLLMs - Apuntes de estudio                                                             73.69 | 2Q - 2026"
+    },
+    {
+      "chunk_id": "2b8313e4ee58792a02a40bacf1c7630957d67e0cae0f903f5db60c0f3d77b690",
+      "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+      "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+      "segmentos_ids": [
+        "4"
+      ],
+      "pagina_inicio": 4,
+      "pagina_fin": 4,
+      "apunte_derivado": true,
+      "inicio_caracter": 1865,
+      "fin_caracter": 2509,
+      "tokens_contenido": 200,
+      "tokens_totales": 202,
+      "texto": "Similitud coseno\nCómo comparar dos embeddings\nDados dos textos, primero se obtiene un vector para cada uno usando el mismo modelo de\nembeddings. La similitud coseno compara la dirección de los dos vectores mediante el\ncoseno del ángulo que forman. Para calcularla, se divide el producto escalar por el producto\nde las normas euclidianas.\n\n\n\n                   similitud coseno(a, b) = (a · b) / (‖a‖ × ‖b‖)\n\n\nEl producto escalar a · b suma los productos de las componentes correspondientes. La\nnorma ‖a‖ es la raíz cuadrada de la suma de los cuadrados de las componentes de a. El\ncálculo requiere que ambos vectores tengan la misma dimensión y "
+    },
+    {
+      "chunk_id": "eb73b778b674900ad0b210ec350f5c1e4f85ff026328eff3894d1f878e617c12",
+      "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+      "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+      "segmentos_ids": [
+        "4"
+      ],
+      "pagina_inicio": 4,
+      "pagina_fin": 4,
+      "apunte_derivado": true,
+      "inicio_caracter": 2440,
+      "fin_caracter": 2776,
+      "tokens_contenido": 125,
+      "tokens_totales": 127,
+      "texto": ". El\ncálculo requiere que ambos vectores tengan la misma dimensión y una norma distinta de\ncero.\nEjemplo de cálculo\nTomemos a = (3, 4) y b = (4, 3). Su producto escalar es 3 × 4 + 4 × 3 = 24. Las dos normas\nvalen √25 = 5. Por lo tanto, la similitud coseno es 24 / (5 × 5) = 0,96. El resultado indica que\napuntan en direcciones cercanas."
+    },
+    {
+      "chunk_id": "05acba3129b31fca99c84751de40abc44fead01b9ffff9eae4aeadb46a2ef2de",
+      "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+      "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+      "segmentos_ids": [
+        "4",
+        "5"
+      ],
+      "pagina_inicio": 4,
+      "pagina_fin": 5,
+      "apunte_derivado": true,
+      "inicio_caracter": 2797,
+      "fin_caracter": 3719,
+      "tokens_contenido": 200,
+      "tokens_totales": 202,
+      "texto": "1                                 0                               −1\n         Misma dirección                   Perpendiculares                 Direcciones opuestas\n\n\n\nUna similitud cercana a 1 indica alineación en el espacio del modelo. En una búsqueda de\ntextos, el resultado sirve para ordenar candidatos y revisar qué fragmentos contienen la\ninformación buscada.\n\nReferencias de clase. Diapositiva 32. Transcripción, 20:32–21:00 y 31:55–32:15.\n\n\n\n\n                                                                                                     4\n\nLLMs - Apuntes de estudio                                                               73.69 | 2Q - 2026\n\n\n\n\n                            Qué pasa con la magnitud\nVectores con la misma dirección\nLa normalización del coseno hace que el resultado sea insensible a un cambio de escala\npositivo. Si multiplicamos todas las componentes de un vector por el mismo número po"
+    },
+    {
+      "chunk_id": "9fa52ad78a45b8398e2e34044baf6f6e4f192f11c9289d9b022a08aa24c3a9ef",
+      "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+      "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+      "segmentos_ids": [
+        "5"
+      ],
+      "pagina_inicio": 5,
+      "pagina_fin": 5,
+      "apunte_derivado": true,
+      "inicio_caracter": 3648,
+      "fin_caracter": 3773,
+      "tokens_contenido": 39,
+      "tokens_totales": 41,
+      "texto": "multiplicamos todas las componentes de un vector por el mismo número positivo,\nsu dirección se conserva y su longitud cambia."
+    },
+    {
+      "chunk_id": "879e8c68419dcad05a5f2fcac05ae5f4dec1d90da01d2c2ddcc31225b77946d2",
+      "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+      "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+      "segmentos_ids": [
+        "5"
+      ],
+      "pagina_inicio": 5,
+      "pagina_fin": 5,
+      "apunte_derivado": true,
+      "inicio_caracter": 3775,
+      "fin_caracter": 4503,
+      "tokens_contenido": 200,
+      "tokens_totales": 202,
+      "texto": "La clase lo ilustra con dos personas y dos géneros de series. Una vio 1 romántica y 1 de\nterror, y la otra vio 100 románticas y 100 de terror. Los vectores (1, 1) y (100, 100) tienen\nla misma dirección. Su similitud coseno vale 1.\n\n\n\n                                        a = (1, 1)\n                                        b = (100, 100)\n                                        Vectores en la misma dirección. Esquema sin escala.\n\n\n\n\nSi queremos comparar la proporción de preferencias, el coseno refleja que ambas\npersonas miran los dos géneros en la misma proporción. Si importa cuántas series vieron,\nel volumen de actividad debe considerarse por separado. La similitud coseno conserva la\ndirección y descarta la magnitud.\n\n"
+    },
+    {
+      "chunk_id": "30f035d1677d31b83d24358ac6c10750d539eabad73095f8c93278a0308ccac6",
+      "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+      "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+      "segmentos_ids": [
+        "5"
+      ],
+      "pagina_inicio": 5,
+      "pagina_fin": 5,
+      "apunte_derivado": true,
+      "inicio_caracter": 4449,
+      "fin_caracter": 4642,
+      "tokens_contenido": 69,
+      "tokens_totales": 71,
+      "texto": "coseno conserva la\ndirección y descarta la magnitud.\n\nFuentes de la clase\nClase 2 - Transformación de Texto a Embeddings. Diapositivas 31–35. Definición, similitud coseno y\ntipos de embeddings."
+    },
+    {
+      "chunk_id": "a951c876e3c25089b032ceb4a728112194305fb3ec89fea45c8a6fe0d0e5802b",
+      "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+      "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+      "segmentos_ids": [
+        "5"
+      ],
+      "pagina_inicio": 5,
+      "pagina_fin": 5,
+      "apunte_derivado": true,
+      "inicio_caracter": 4644,
+      "fin_caracter": 4957,
+      "tokens_contenido": 93,
+      "tokens_totales": 95,
+      "texto": "Transcripción embeddings_2.VTT. 18:32–18:50 y 25:22–25:38, representación. 20:32–21:00 y\n31:55–32:15, similitud y cálculo. 25:38–27:14, magnitud y series. 27:47–28:45, embeddings estáticos y\ncontextuales.\n\n\n\n\n                                                                                                       5"
+    }
+  ]
+}

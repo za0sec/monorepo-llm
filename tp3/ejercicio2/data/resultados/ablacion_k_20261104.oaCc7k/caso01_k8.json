@@ -1,0 +1,232 @@
+{
+  "fecha_utc": "2026-11-04T18:20:17.451352+00:00",
+  "objetivo": "entender qué son los embeddings y cómo se compara la similitud entre textos",
+  "coleccion": "tp3_c18deda7c17b0e0f81ea5513",
+  "ruta_chroma": "/Users/agostinasquillari/Desktop/LLMS/monorepo-llm/tp3/ejercicio2/data/chroma",
+  "manifiesto": {
+    "version": 1,
+    "sha256_documento_chunks": "00b58f1116024bb51f74aca18ed5c73b491a60d4396d2cda6b7170daa5132a21",
+    "fuente": "docs/embeddings_2.VTT",
+    "sha256_fuente": "a1fa8324b6d63c7c6d90fd4dc467b65095524aba8e134d806c2118278b24cd18",
+    "id_configuracion_chunks": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+    "cantidad_chunks": 125,
+    "embedding": {
+      "modelo": "sentence-transformers/all-MiniLM-L6-v2",
+      "revision": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+      "dimension": 384,
+      "dispositivo": "cpu",
+      "normalizar": false
+    },
+    "metrica": "cosine",
+    "versiones": {
+      "chromadb": "1.5.9",
+      "sentence-transformers": "5.1.2",
+      "torch": "2.8.0",
+      "transformers": "4.57.1",
+      "tokenizers": "0.22.2"
+    }
+  },
+  "k_solicitado": 8,
+  "k_efectivo": 8,
+  "umbral": null,
+  "segundos_embedding_incluida_carga": 0.12726108400000014,
+  "segundos_busqueda": 0.0020679580000000364,
+  "segundos_totales": 0.1294801670000001,
+  "referencias": [
+    {
+      "posicion": 1,
+      "chunk_id": "edab6e7f243e1bc9d2b9c8f47b5697302f5adbe23e77ff78d23512b7dfda5fb6",
+      "texto": ".\n\nMarina Fuster: Pero después teníamos\n\nMarina Fuster: ese. Es como un ejemplo muy pequeñito. Después empezaron a aparecer las primeras implementaciones. Por ejemplo, yo podía querer tener vectores para representar documentos en el espacio, ¿no? Entonces, ¿qué hacía? Me fijaba todas las palabras que estaban en ese documento las contaba. Y esa era la representación de mi documento.",
+      "distancia_coseno": 0.44072943925857544,
+      "similitud_coseno": 0.5592705607414246,
+      "metadata": {
+        "inicio": "00:19:52.630",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "inicio_ms": 1192630,
+        "segmentos_ids": [
+          "131",
+          "132",
+          "133"
+        ],
+        "tokens_contenido": 125,
+        "fin_ms": 1215640,
+        "tokens_totales": 127,
+        "fin_caracter": 17767,
+        "fin": "00:20:15.640",
+        "inicio_caracter": 17383,
+        "fuente": "docs/embeddings_2.VTT"
+      }
+    },
+    {
+      "posicion": 2,
+      "chunk_id": "f868030552ed865f535ced19f83f276ff3dc0880c83e4661956846e21aaf3a2c",
+      "texto": "Marina Fuster: Y lo que me interesa entrar acá con Cachito es el tema de tipos de tokens. Yo no sé si se ve o quedó muy chiquito.\n\nMarina Fuster: Tenemos los toques básicos que son aquellos que representan. Las unidades del corpus de texto no pueden ser palabras, son palabras, etcétera. Y ahí tenemos los tokens especiales o reservados que del lado del desarrollador o de quien modela el El Lem\n\nMarina Fuster: los usa para cosas especiales. Si, por ejemplo, acá abajo hay un ejemplo de si yo le quiero definir qué cosas son parte del de como el sistema? ¿qué cosas son las que dice el usuario que cosas ",
+      "distancia_coseno": 0.4575906991958618,
+      "similitud_coseno": 0.5424093008041382,
+      "metadata": {
+        "tokens_contenido": 200,
+        "tokens_totales": 202,
+        "fuente": "docs/embeddings_2.VTT",
+        "segmentos_ids": [
+          "4",
+          "5",
+          "6"
+        ],
+        "fin_ms": 107279,
+        "inicio_ms": 62930,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "inicio_caracter": 980,
+        "fin_caracter": 1585,
+        "fin": "00:01:47.279",
+        "inicio": "00:01:02.930"
+      }
+    },
+    {
+      "posicion": 3,
+      "chunk_id": "544ad9b64437514d77369bcf7069ddd1f9ab555eedd65e1cb975f40861fba130",
+      "texto": ", entonces.\n\nMarina Fuster: en codor de cover ya existía atención, mecanismo. Ya existía de todo el resto que los email que sos bla, bla, bla. Todo eso ya existía. Entonces el atention y sol unir viene de que no necesito la parte recurrente, o sea, con atención, posicionar el coding y mi Mp Estoy Jose.\n\nMarina Fuster: Entonces, ¿qué nos interesa de positional en Coding 2 cosas: Uno: ¿cómo declaramos esas posiciones? Y 2,",
+      "distancia_coseno": 0.46263813972473145,
+      "similitud_coseno": 0.5373618602752686,
+      "metadata": {
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "fin": "00:49:04.670",
+        "fin_caracter": 43072,
+        "tokens_totales": 147,
+        "segmentos_ids": [
+          "330",
+          "331",
+          "332"
+        ],
+        "tokens_contenido": 145,
+        "inicio": "00:48:22.470",
+        "fin_ms": 2944670,
+        "inicio_ms": 2902470,
+        "inicio_caracter": 42648,
+        "fuente": "docs/embeddings_2.VTT"
+      }
+    },
+    {
+      "posicion": 4,
+      "chunk_id": "97d111e4cbd191573a684398e7ee5d46579eb632ad908df1020686e2383c1b1a",
+      "texto": "Marina Fuster: son tokens que no se entrenaron tanto, que quizá estaban muy presentes en lo que era la parte del tokenizer. Y eso después no se traduce en lo que es el Corpus de Internet. Si este es un ejemplo, ahí les dejé un link si les interesa chusmear\n\nMarina Fuster: que hay más. Pero bueno, dan como un montón de lugar a situaciones como graciosas, esto pasa cada vez menos.\n\nMarina Fuster: Pero bueno, es algo natural de la tokenización de que vos vas a tener regiones que no están tan exploradas cuando pasas a entrenar con el corpus. Y es parte de la explotación que se usa para lograr que el modelo no se comporte como deber",
+      "distancia_coseno": 0.47549402713775635,
+      "similitud_coseno": 0.5245059728622437,
+      "metadata": {
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "fuente": "docs/embeddings_2.VTT",
+        "tokens_contenido": 200,
+        "tokens_totales": 202,
+        "fin_ms": 952110,
+        "inicio": "00:15:14.610",
+        "fin_caracter": 13690,
+        "fin": "00:15:52.110",
+        "inicio_caracter": 13055,
+        "segmentos_ids": [
+          "103",
+          "104",
+          "105"
+        ],
+        "inicio_ms": 914610
+      }
+    },
+    {
+      "posicion": 5,
+      "chunk_id": "567321612e8888670b0397f4c317677ff01f9f32a055016d92c922f14858beca",
+      "texto": "Marina Fuster: no es lo mejor y que directamente puedes usar Youtube y face y hacer algo del lado del modelo al que le interesa. Lo pueden cambiar.\n\nMarina Fuster: Bien, ahora vamos a pasar a lo que es emerys.\n\nMarina Fuster: Esto ya lo fuimos viendo con la motivación cómo representar el significado de una palabra. Voy a usar palabras como reemplazo de unidad lingüística, Puede ser palabra, documento, su palabra, etcétera, etcétera. Me interesan un montón de cosas que caen bajo un campo que se llama lexical Semántics.\n\nMarina Fuster: Y lo que es Vectores Matics, que es como este precursor de Mains surge de 2 ideas\n\nMarina Fuster: que la primera sigue ",
+      "distancia_coseno": 0.47721052169799805,
+      "similitud_coseno": 0.522789478302002,
+      "metadata": {
+        "fuente": "docs/embeddings_2.VTT",
+        "fin": "00:19:08.759",
+        "tokens_totales": 202,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "tokens_contenido": 200,
+        "inicio_ms": 1102460,
+        "segmentos_ids": [
+          "121",
+          "122",
+          "123",
+          "124",
+          "125"
+        ],
+        "inicio_caracter": 15879,
+        "fin_caracter": 16538,
+        "fin_ms": 1148759,
+        "inicio": "00:18:22.460"
+      }
+    },
+    {
+      "posicion": 6,
+      "chunk_id": "84cfee9a27ccb69b0d61b3572b2218efba041b7ed739323df43a9e3108da7737",
+      "texto": "la secuencia. No fíjate que vos\n\nMarina Fuster: tenés como ese ese embeding que viaja por el residuo stream en el Transformer, al cual vas modificando cuando incorpora atención de otros Tokens cuando pasa por e el M L. P. E incorpora datos",
+      "distancia_coseno": 0.4799606204032898,
+      "similitud_coseno": 0.5200393795967102,
+      "metadata": {
+        "inicio_caracter": 46255,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "fuente": "docs/embeddings_2.VTT",
+        "segmentos_ids": [
+          "357",
+          "358"
+        ],
+        "inicio": "00:52:27.320",
+        "fin": "00:52:44.660",
+        "tokens_totales": 83,
+        "tokens_contenido": 81,
+        "fin_caracter": 46494,
+        "fin_ms": 3164660,
+        "inicio_ms": 3147320
+      }
+    },
+    {
+      "posicion": 7,
+      "chunk_id": "448e01a14529b17b2521785373154799074c25eaa21790db20a95c327e673a00",
+      "texto": "este tipo de en este Squithgram, los parámetros que me quedan son los que uso como embebyns.\n\nMarina Fuster: entonces esquemáticamente un poco como se ve. Este blog está bastante bueno si lo quieren chumbear. Fíjense que mi input al principio tiene un 1\n\nMarina Fuster: con la palabra que yo considero. World, Sí, y voy a tener 2 matrices. La primera, que dice W Input es la que va a tener los envivings como filas, si\n\nMarina Fuster: que se refieren a",
+      "distancia_coseno": 0.48137348890304565,
+      "similitud_coseno": 0.5186265110969543,
+      "metadata": {
+        "segmentos_ids": [
+          "209",
+          "210",
+          "211",
+          "212"
+        ],
+        "fin_caracter": 27335,
+        "fin": "00:30:46.010",
+        "inicio_ms": 1806130,
+        "tokens_contenido": 143,
+        "fuente": "docs/embeddings_2.VTT",
+        "tokens_totales": 145,
+        "inicio": "00:30:06.130",
+        "inicio_caracter": 26883,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "fin_ms": 1846010
+      }
+    },
+    {
+      "posicion": 8,
+      "chunk_id": "bccd4afb2b6090d4f52049b4465805e54d8710be55aecd95a6f82cbe4d96e9e6",
+      "texto": "Marina Fuster: hay palabras que, o sea, muchas cosas, me quedan en 0. Entonces\n\nMarina Fuster: los vectores tienen mucho espacio vacío. La frecuencia sola no te alcanza porque aparece el mismo problema que vimos en la demo como la palabra de tanto en inglés como en español, que van a tener mucha representación.\n\nMarina Fuster: ¿y qué palabras caso con palabras que se usan muy poco. ¿sí?\n\nMarina Fuster: Entonces ahí es donde aparece el tema de los Emedings, que son vectores dimensionales y que ellos suele asociarse a que son vectores densos. No, yo tengo como una especie de representación más comprimida que estas matrices. Es fa",
+      "distancia_coseno": 0.4814388155937195,
+      "similitud_coseno": 0.5185611844062805,
+      "metadata": {
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "inicio_caracter": 21942,
+        "inicio": "00:24:56.890",
+        "fin": "00:25:37.590",
+        "inicio_ms": 1496890,
+        "fin_ms": 1537590,
+        "fuente": "docs/embeddings_2.VTT",
+        "tokens_contenido": 200,
+        "segmentos_ids": [
+          "178",
+          "179",
+          "180",
+          "181"
+        ],
+        "fin_caracter": 22577,
+        "tokens_totales": 202
+      }
+    }
+  ]
+}

@@ -1,0 +1,200 @@
+Audio: ¿Qué son los EMBEDDINGS Grandes Modelos de Lenguaje.mp3
+Transcripción automática, pendiente de revisión.
+
+[00:00:00.000 --> 00:00:06.920] Los grandes modelos de lenguaje como GPT-4 o BART, en realidad no procesan el texto como lo vemos nosotros los seres humanos,
+
+[00:00:06.920 --> 00:00:12.960] y en lugar de ello lo que hacen es transformarlo a una representación numérica que se conoce como Embeddings.
+
+[00:00:12.960 --> 00:00:22.220] Así que internamente estos modelos lo que hacen es procesar y generar Embeddings para posteriormente realizar diferentes tareas de procesamiento del lenguaje natural.
+
+[00:00:22.220 --> 00:00:33.800] Entonces en este video vamos a entender qué son estos Embeddings y cómo se utilizan para desarrollar diferentes tipos de aplicaciones de procesamiento y generación del lenguaje natural usando estos grandes modelos de lenguaje.
+
+[00:00:33.800 --> 00:00:44.300] Pero antes de comenzar los invito a visitar CodificandoBits.com en donde encontrarán la Academia Online con cursos de Inteligencia Artificial, Ciencia de Datos y Machine Learning
+
+[00:00:44.300 --> 00:00:50.300] que les permitirán construir su carrera en estas áreas y todo por una suscripción mensual de tan solo 10 dólares.
+
+[00:00:50.380 --> 00:00:58.220] Además se podrán poner en contacto conmigo si están interesados en asesorías para el desarrollo de proyectos o cursos de formación personalizada.
+
+[00:00:58.220 --> 00:01:00.220] Así que listo, comencemos.
+
+[00:01:02.720 --> 00:01:12.220] Para entender qué son los Embeddings comencemos con un ejemplo sencillo, supongamos que queremos describir la apariencia de dos personas diferentes usando algunas características.
+
+[00:01:12.220 --> 00:01:23.140] Podemos decir por ejemplo que la primera persona tiene una altura de 1,72 cm, el cabello corto y de color negro, su peso es 67 kg y sus ojos son de color café.
+
+[00:01:23.140 --> 00:01:33.140] Y la segunda persona tiene una altura de 1,83 cm, el cabello largo y de color castaño, su peso es 78 kg y sus ojos son de color verde.
+
+[00:01:33.140 --> 00:01:41.140] Así que lo que hemos hecho ha sido tomar el dato original, es decir cada persona, y lo hemos representado a través de cuatro características.
+
+[00:01:41.140 --> 00:01:48.060] Y si organizamos estas cuatro características en un listado, lo que tendremos será un vector de cuatro elementos.
+
+[00:01:48.060 --> 00:01:55.060] Ahora veamos cómo lograríamos hacer algo similar pero usando redes neuronales, que son la base de los grandes modelos de lenguaje.
+
+[00:01:55.060 --> 00:02:09.060] Por ejemplo, si queremos hacer un sistema de verificación de identidad, lo que necesitamos es comparar la imagen del rostro de una persona con imágenes de referencia en una base de datos para determinar si la persona es o no quien dice ser.
+
+[00:02:09.060 --> 00:02:12.980] Pues en estos sistemas realmente no comparamos directamente las imágenes.
+
+[00:02:12.980 --> 00:02:24.980] En lugar de ello, lo que se hace es construir una red convolucional, que es un tipo de red neuronal, que procesa estas imágenes y que a la salida genera una representación vectorial de la imagen de entrada.
+
+[00:02:24.980 --> 00:02:32.980] Y esta representación vectorial, que es simplemente un listado o un arreglo de números, es precisamente lo que se conoce como un embedding.
+
+[00:02:33.900 --> 00:02:41.900] Y la idea es que imágenes con rostros similares tendrán embeddings similares e imágenes con rostros diferentes tendrán embeddings diferentes.
+
+[00:02:41.900 --> 00:02:47.900] Y este principio nos permitirá construir precisamente el sistema de verificación de identidad.
+
+[00:02:48.900 --> 00:02:53.900] Y este mismo principio lo podemos aplicar para el procesamiento y análisis del lenguaje natural.
+
+[00:02:54.820 --> 00:03:03.820] Así que en resumen y para lo que nos interesa en este video, un embedding es una representación vectorial del dato de entrada y que se obtiene tras el entrenamiento de una red neuronal.
+
+[00:03:06.820 --> 00:03:18.820] Como acabamos de ver, el texto también puede ser procesado por algún tipo de red neuronal para generar embeddings y desarrollar aplicaciones como por ejemplo el análisis de sentimientos, la generación de texto o los chatbots.
+
+[00:03:19.740 --> 00:03:23.740] Otro tipo que utilizado hace algunos años era generar embeddings a partir de palabras.
+
+[00:03:23.740 --> 00:03:33.740] Es decir que la idea era tomar cada palabra dentro del texto, generar un token, que es una representación numérica inicial de esa palabra, de esos tokens hablamos anteriormente en algún video,
+
+[00:03:33.740 --> 00:03:39.740] y después tomar ese token y convertirlo precisamente en un embedding o una representación vectorial de esa palabra.
+
+[00:03:40.660 --> 00:03:52.660] Con este tipo de embeddings, usualmente palabras con significados similares, como por ejemplo manzana y pera, tendrán embeddings similares pero que a su vez son diferentes de los embeddings para las palabras perro o gato,
+
+[00:03:52.660 --> 00:03:54.660] que tienen un significado diferente.
+
+[00:03:54.660 --> 00:04:02.660] Sin embargo, en el lenguaje natural las palabras no se encuentran aisladas, sino que se encuentran en un contexto, en una frase por ejemplo,
+
+[00:04:02.660 --> 00:04:08.660] y dependiendo de ese contexto, una palabra determinada podría tener diferentes significados.
+
+[00:04:09.580 --> 00:04:15.580] Por ejemplo, en las frases debo ir al banco a retirar dinero y estoy sentado en el banco,
+
+[00:04:15.580 --> 00:04:19.580] la palabra banco tiene significados completamente diferentes,
+
+[00:04:19.580 --> 00:04:27.580] y ese significado lo establecemos nosotros los humanos a partir precisamente del contexto, leyendo la totalidad de la frase.
+
+[00:04:27.580 --> 00:04:33.580] Esto quiere decir que el uso de embeddings a nivel de palabra no es capaz de capturar la información del contexto
+
+[00:04:33.580 --> 00:04:40.580] y por tanto en las frases anteriores la palabra banco tendría el mismo embedding en ambos casos, lo cual no resulta ideal.
+
+[00:04:40.580 --> 00:04:46.580] Así que como alternativa al uso de embeddings a nivel de palabra, los grandes modelos de lenguaje existentes actualmente,
+
+[00:04:46.580 --> 00:04:55.580] hacen uso de las redes transformer que permiten generar embeddings capaces de capturar la información del contexto, es decir de la totalidad del texto.
+
+[00:04:55.580 --> 00:04:58.580] De estas redes transformer hablo en detalle en un video anterior,
+
+[00:04:58.580 --> 00:05:08.580] pero para resumir la idea principal podemos decir que una red transformer es un tipo de red neuronal diseñada específicamente para procesar secuencias como el texto,
+
+[00:05:08.580 --> 00:05:12.580] y que incorpora algo que se conoce como un mecanismo atencional.
+
+[00:05:12.580 --> 00:05:16.580] Al momento de decidir cuál será el embedding para una palabra o una frase,
+
+[00:05:16.580 --> 00:05:23.580] lo hace analizando la relación entre la palabra o la frase y los demás elementos del texto a diferentes niveles.
+
+[00:05:24.580 --> 00:05:33.580] Así que de alguna manera los embeddings usados por estos grandes modelos de lenguaje intentan imitar la forma como nosotros los seres humanos interpretamos el texto,
+
+[00:05:33.580 --> 00:05:37.580] con la diferencia de que estos modelos generan internamente representaciones vectoriales,
+
+[00:05:37.580 --> 00:05:44.580] es decir arreglos de números correspondientes a esa palabra, a esa frase o a ese texto que se está procesando.
+
+[00:05:44.580 --> 00:05:52.580] La ventaja de esto es que con los embeddings generados, frases o textos que tengan significados similares tendrán representaciones vectoriales similares.
+
+[00:05:52.580 --> 00:05:57.580] Por ejemplo, frases como me gustaría conocer las tarifas de vuelos entre Madrid y Milán,
+
+[00:05:57.580 --> 00:06:02.580] o quiero encontrar tiquetes de primera clase ida y vuelta de Nueva York a Miami,
+
+[00:06:02.580 --> 00:06:08.580] tienen embeddings similares pues ambas se refieren, por ejemplo, al concepto de tiquetes de avión.
+
+[00:06:08.580 --> 00:06:12.580] Mientras que frases como qué aerolíneas vuelan de Los Ángeles a Tokio,
+
+[00:06:12.580 --> 00:06:17.580] o de todas las aerolíneas que llegan a Hong Kong, cuál es la más económica,
+
+[00:06:17.580 --> 00:06:21.580] se refieren a un concepto relacionado con el anterior pero que es ligeramente diferente.
+
+[00:06:21.580 --> 00:06:25.580] Pues se enfoca más en la temática de aerolíneas.
+
+[00:06:25.580 --> 00:06:32.580] Lo anterior quiere decir que embeddings que son numéricamente similares equivalen a frases semánticamente similares,
+
+[00:06:32.580 --> 00:06:35.580] es decir, con significados muy parecidos.
+
+[00:06:36.580 --> 00:06:42.580] En la práctica los diferentes grandes modelos de lenguaje disponibles utilizan diferentes tamaños para esos embeddings,
+
+[00:06:42.580 --> 00:06:45.580] dependiendo de la forma como hayan sido entrenados.
+
+[00:06:45.580 --> 00:06:51.580] Por ejemplo, los últimos modelos de OpenAI usan embeddings de 1,536 o 2,048 elementos,
+
+[00:06:51.580 --> 00:06:59.580] mientras otros como Yama, por ejemplo, tienen embeddings que oscilan entre los 4,096 y los 8,192 elementos.
+
+[00:07:03.580 --> 00:07:09.580] Bien, como hemos visto hasta ahora, los embeddings del texto son la materia prima de los grandes modelos de lenguaje,
+
+[00:07:09.580 --> 00:07:17.580] y son lo que ha permitido el desarrollo de muchas de las aplicaciones de procesamiento de lenguaje natural que hemos visto recientemente.
+
+[00:07:17.580 --> 00:07:23.580] Y los tipos de aplicaciones que se pueden construir con este concepto van más allá incluso de las aplicaciones más conocidas,
+
+[00:07:23.580 --> 00:07:25.580] como por ejemplo, ChatGPT.
+
+[00:07:25.580 --> 00:07:30.580] Por ejemplo, podemos usar los embeddings para realizar lo que se conoce como búsquedas semánticas,
+
+[00:07:30.580 --> 00:07:36.580] es decir, que podemos tomar un texto fuente y obtener su representación a través de embeddings,
+
+[00:07:36.580 --> 00:07:40.580] y luego un usuario puede escribir una búsqueda en lenguaje natural,
+
+[00:07:40.580 --> 00:07:43.580] es decir, tal como lo haría, por ejemplo, en una conversación,
+
+[00:07:43.580 --> 00:07:46.580] que también se representa con embeddings.
+
+[00:07:46.580 --> 00:07:50.580] Luego el sistema realiza la comparación vectorial de ambos embeddings
+
+[00:07:50.580 --> 00:07:54.580] y genera la respuesta a la búsqueda también en lenguaje natural.
+
+[00:07:54.580 --> 00:07:58.580] También se pueden realizar tareas de clustering o agrupamiento,
+
+[00:07:58.580 --> 00:08:04.580] es decir, que podemos usar los embeddings del texto para pedirle a uno de estos modelos de lenguaje
+
+[00:08:04.580 --> 00:08:11.580] que encuentre diferentes temáticas o tópicos o agrupaciones de conceptos que se encuentren dentro del texto.
+
+[00:08:11.580 --> 00:08:16.580] O podemos usar los embeddings para generar sistemas de síntesis de texto,
+
+[00:08:16.580 --> 00:08:21.580] es decir, que extraigan las ideas principales de un texto y generen a la salida un texto más corto,
+
+[00:08:21.580 --> 00:08:25.580] es decir, un resumen, pero usando el lenguaje natural.
+
+[00:08:25.580 --> 00:08:29.580] O también podríamos implementar aplicaciones de recomendación de contenido.
+
+[00:08:29.580 --> 00:08:34.580] Por ejemplo, con base en los artículos que más busca o que más lee un usuario,
+
+[00:08:34.580 --> 00:08:38.580] podríamos recomendar nuevo contenido similar en la web para su lectura.
+
+[00:08:38.580 --> 00:08:43.580] E internamente todo este procesamiento se puede hacer precisamente a través de los embeddings.
+
+[00:08:43.580 --> 00:08:49.580] Así que el rango de aplicaciones que tienen los embeddings generados por los grandes modelos de lenguaje
+
+[00:08:49.580 --> 00:08:55.580] es realmente inmenso y en los próximos videos de esta serie comenzaremos a ver algunas de esas aplicaciones.
+
+[00:08:56.580 --> 00:08:58.580] Muy bien, acabamos de ver qué son los embeddings,
+
+[00:08:58.580 --> 00:09:03.580] que es la forma como los grandes modelos de lenguaje aprenden a representar el texto al momento de procesarlo.
+
+[00:09:03.580 --> 00:09:07.580] En últimas, un embedding es simplemente un vector, es decir, un arreglo de números,
+
+[00:09:07.580 --> 00:09:10.580] que captura la información esencial de la totalidad del texto
+
+[00:09:10.580 --> 00:09:13.580] y que permite no sólo que ese texto sea procesado por un computador,
+
+[00:09:13.580 --> 00:09:18.580] sino también desarrollar múltiples aplicaciones de procesamiento del lenguaje natural.
+
+[00:09:18.580 --> 00:09:22.580] Si quieren entender internamente cómo es este proceso de generación de los embeddings
+
+[00:09:22.580 --> 00:09:25.580] a partir de una red transformer, que es la base de los grandes modelos de lenguaje,
+
+[00:09:25.580 --> 00:09:29.580] les sugiero ver el video sobre redes transformer en donde explico esto detalladamente.
+
+[00:09:29.580 --> 00:09:34.580] Y como siempre, si tienen alguna duda, comentario o sugerencia sobre esta serie de videos,
+
+[00:09:34.580 --> 00:09:36.580] lo pueden dejar abajo en los comentarios.
+
+[00:09:36.580 --> 00:09:39.580] Además, si les gustó el video, no olviden darle un pulgar hacia arriba de me gusta
+
+[00:09:39.580 --> 00:09:41.580] y compartirlo con sus amigos y conocidos,
+
+[00:09:41.580 --> 00:09:46.580] pues esto me ayudará a seguir llevando este tipo de contenido cada vez a más y más personas.
+
+[00:09:46.580 --> 00:09:49.580] Y si aún no lo han hecho, los invito a suscribirse al canal y activar la campanita
+
+[00:09:49.580 --> 00:09:52.580] para que YouTube les notifique cada vez que publique un nuevo video.
+
+[00:09:52.580 --> 00:09:56.580] Por ahora esto es todo, les envío un saludo y nos vemos en el próximo video.

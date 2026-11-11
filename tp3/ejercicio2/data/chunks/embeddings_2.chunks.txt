@@ -1,0 +1,1449 @@
+Fuente: docs/embeddings_2.VTT
+Configuración: 147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd
+
+Chunk 1: 34b2f3d7742dcbcb2e917e9070583e8daac0559aa8bf054d940abc33d9dfbf2f
+[00:00:03.410 --> 00:00:45.309] Intervenciones: 1, 2
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: Entonces vamos a charlar un pelín de algunas cosas específicas de lo que son estas 3 etapas, aunque ya medio que fuimos cubriendo lo que es nightsers antes lo repasamos, pero ya espero que a todos les haya quedado claro. El tema que son
+
+Marina Fuster: lo importante es la licencia de vocabulario dividir en las unidades de procesamiento. Y suele estar este estas 3 cosas en cover de Cover y el train a ver si aparece con esa nomenclatura. Pero no es más que las funciones que van de una cosa a la otra. Y el train si bien no es Traindy, un modelo se refiere al proceso mediante el cual se va a def
+
+Chunk 2: 047025904ae037fa27b6dc47b2246e12379ca5d01bf6c9d8990a764541bec009
+[00:00:22.280 --> 00:01:02.929] Intervenciones: 2, 3
+Tokens: 141 de contenido, 143 con especiales
+, un modelo se refiere al proceso mediante el cual se va a definir ese vocabulario que ahí lo vamos a ver.
+
+Marina Fuster: Estos son un ejemplo. Bien, ¿cuál es la diferencia con el medio? Esto también se debería haber quedado más o menos claro. El tokenizer en realidad es partir en unidades más pequeñas. Mientras que el algoritmo de Meding sabemos que es este vector denso que busca capturar cierta representación de interés.
+
+Chunk 3: f868030552ed865f535ced19f83f276ff3dc0880c83e4661956846e21aaf3a2c
+[00:01:02.930 --> 00:01:47.279] Intervenciones: 4, 5, 6
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: Y lo que me interesa entrar acá con Cachito es el tema de tipos de tokens. Yo no sé si se ve o quedó muy chiquito.
+
+Marina Fuster: Tenemos los toques básicos que son aquellos que representan. Las unidades del corpus de texto no pueden ser palabras, son palabras, etcétera. Y ahí tenemos los tokens especiales o reservados que del lado del desarrollador o de quien modela el El Lem
+
+Marina Fuster: los usa para cosas especiales. Si, por ejemplo, acá abajo hay un ejemplo de si yo le quiero definir qué cosas son parte del de como el sistema? ¿qué cosas son las que dice el usuario que cosas 
+
+Chunk 4: c18f9f266b09b62711fa8a2584bd944b7f62ec7003d932c3fc1b2af2e8b5497e
+[00:01:29.400 --> 00:02:09.799] Intervenciones: 6, 7, 8
+Tokens: 133 de contenido, 135 con especiales
+el sistema? ¿qué cosas son las que dice el usuario que cosas son las que dice el asistente. Este es de 1 de Gpt, 4
+
+Marina Fuster: medio guiejardo. Pero fíjense que tiene el instart de inputness. ¿no? Y tiene Ok, la parte de system tenés Esto la parte de user tenés esto, y así sucesivamente. Ok, que otros tokens les parecen especiales, que son importantes
+
+Marina Fuster: e off en no faena perfecto.
+
+Chunk 5: 3d78412a333c7c09aa2dd608006dfda9c30f980c51fec7a09bd03fa0416c81a1
+[00:02:06.950 --> 00:03:06.019] Intervenciones: 8, 9, 10, 11, 12, 13
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: e off en no faena perfecto.
+
+Marina Fuster: ¿qué otra cosa más la que más se pueden usar.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Puede haber un token que te diga este Prompt tiene un archivo adjunto.
+
+Marina Fuster: Como poder. Podrías, o sea, puedes hacer lo que quieras con los toques especiales, porque lo por qué lo decís, o sea, ¿qué te estás imaginando.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y porque el el archivo también se va a tener que convertir en tokens. De alguna forma tengo que saber dónde empieza y dónde termina.
+
+Marina Fuster: Bien. Fíjate que vos decís el archivo, por por ejemplo, cuando usas ni idea, 
+
+Chunk 6: 860dfb7556c4678a1dc881a047d1e08cd4c904dff852ba6d4bc24aa0a3880c75
+[00:02:51.440 --> 00:03:22.130] Intervenciones: 13, 14
+Tokens: 136 de contenido, 138 con especiales
+decís el archivo, por por ejemplo, cuando usas ni idea, chiquitín, chat y le subís un archivo o cuando usaste, no sé de curso o no lo que venga y le subís un archivo. Y lo
+
+Marina Fuster: bien perfecto. Ese caso eso me interesa, porque todo lo que es tools y cosas que puede ejecutar el agente también tiene que estar delimitado una forma, o sea yo como agente, como como sabe, el programa que de repente tenés que
+
+Chunk 7: 69c3c4a241005bd9d68c15053e3d271213ec144b1c5270e609ebb54225bbd593
+[00:03:22.220 --> 00:04:02.580] Intervenciones: 15, 16, 17, 18
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: ir a llamar una Api de Google y buscar algo o ejecutar un script o leer un documento o etcétera. Si todas esas cosas en lo que es el output
+
+Marina Fuster: del modelo se pueden ir delimitando con cosas especiales que son parte del entrenamiento para que el modelo sepa cuándo las tiene que usar.
+
+Marina Fuster: Sí, Entonces, al principio, los especiales o reservados funcionaban un poco más como esto, separadores Endo File delimitar bien que partes del usuario que partes del asistente que eso, aparte, daba lugar a que se dieran ciertos tipos de ataques.
+
+Marina Fuster: Pero hoy por hoy, el us
+
+Chunk 8: 5d0a3237cb506e562bebfaf798b078e2e6b7d124a51d9daf1bbe01026db646a6
+[00:03:42.290 --> 00:04:28.260] Intervenciones: 17, 18, 19, 20, 21
+Tokens: 145 de contenido, 147 con especiales
+tipos de ataques.
+
+Marina Fuster: Pero hoy por hoy, el uso es bastante más extendido
+
+Marina Fuster: porque los modelos se volvieron también más capaces. Sí, entonces la parte de tokens especiales es importante.
+
+Marina Fuster: ¿cuál es el algoritmo de toquenización
+
+Marina Fuster: como inicial que se usa y el mismo. El de Google tiene la misma idea por detrás, aunque aunque sea un poquito distinto. Se llama Dp E que es By Pair Encoring.
+
+Chunk 9: 35379164f25a604fdad4efabee423472170d55c45e1c6905e2e58154edf314f4
+[00:04:28.490 --> 00:05:14.850] Intervenciones: 22, 23, 24, 25
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: que en la parte de entrenamiento va a tratar de armar nuevos toques de acuerdo a la frecuencia de aparición de esos toques. Entonces.
+
+Marina Fuster: ¿cómo es que funciona? Y después vemos un par de cositas que ocurren? Supóngase que yo tengo un corpus de texto. Mi corpus de texto va a ser esta frase. Hola, hoy tengo mucha hambre. Si
+
+Marina Fuster: lo que termina ocurriendo es que yo esto lo termino pasando a U, T, a Fate, Si, entonces que son del 0 a los 55.
+
+Marina Fuster: Entonces fíjense, esta va a ser la codificación, ésta va a ser la secuencia la del final. Enton
+
+Chunk 10: e0bcc25aa5f8643bf1dd63f1b408b5ca0134a951f78dc80e182fb2cba3e4d637
+[00:05:05.620 --> 00:05:44.910] Intervenciones: 25, 26, 27
+Tokens: 162 de contenido, 164 con especiales
+la codificación, ésta va a ser la secuencia la del final. Entonces lo que hace este algoritmo es ir fijándose
+
+Marina Fuster: cuáles son las los pares que aparecen más frecuentemente. Si es como que va a barrer esta esta frase o este corpus.
+
+Marina Fuster: la oración, y se va a fijar 72, 11 aparece una vez 100, 11 100, 8, aparece bla, bla, bla. Y por ejemplo, acá como tengo muchos emojis de hamburguesa. La la combinación, 100, 59 141 aparece más que cualquier otra.
+
+Chunk 11: 367f08ed471e7a2fd0ab81df630c753f1416494a171fad5335e443384d4ef8ec
+[00:05:45.040 --> 00:06:37.000] Intervenciones: 28, 29, 30, 31, 32
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: No lo conté, pero creo que sí.
+
+Marina Fuster: Entonces lo que va a hacer es merojear esos 2. Sí, entonces 159 141 pasa a convertirse en 1 nuevo, 256. Yo tenía el 0. Al 255 Okay le agregó este nuevo toque a mi vocabulario y lo que
+
+Marina Fuster: es reemplazar
+
+Marina Fuster: en ese corpus, fíjense que me empezaron a aparecer los 256 donde antes, había otros. Y eso es lo que yo voy a hacer repetidas veces, no el mismo procedimiento que hice. Acá
+
+Marina Fuster: lo vuelvo a hacer. Va a ser otro. El par que más veces me aparezca. Es más, lo más probable es que sea 2, 
+
+Chunk 12: 8c008e7e137d7cf5acfcdd934bf640b89c3cf9221d7559951d446858703ee2ae
+[00:06:19.010 --> 00:06:46.180] Intervenciones: 32, 33, 34, 35, 36, 37
+Tokens: 165 de contenido, 167 con especiales
+más veces me aparezca. Es más, lo más probable es que sea 2, 56, 148, Porque, bueno, esto sigue siendo el emoji, y lo vuelvo a reemplazar. Y así sucesivamente. Sí, Entonces, de acuerdo a las frecuencias que yo voy teniendo. En algún momento voy a.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, Sí.
+
+Marina Fuster: Sí.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Cómo pasas del U. T, F, Ocho a los números de abajo de todo.
+
+Marina Fuster: A estos.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+Chunk 13: a12578d10bd656af590c87cc4a2c98f817f85b357755b564212e0cd0767603ee
+[00:06:44.210 --> 00:07:23.799] Intervenciones: 36, 37, 38, 39, 40, 41, 42, 43, 44
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: A estos.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+Marina Fuster: O sea, vos u T, F, Ocho tenés del 0 al 2, 55, no.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: ¿son los números. Sí, Sí, está bien.
+
+Marina Fuster: Sí, Sí, Sí, sí. Lo que pasa es un el índice entre ese rango. Nada más.
+
+Marina Fuster: Bien, entonces esto es lo que yo voy a ir haciendo sucesivas veces hasta que de repente yo. Bueno, basta. Este es mi
+
+Marina Fuster: vocabulario y fin.
+
+Marina Fuster: ¿pero ¿qué pasa.
+
+Marina Fuster: Si bien esto funciona muy bien en la práctica, vamos a abrir esto, trae bas
+
+Chunk 14: afc7de1b4cac6e60654d354f66ca74c481d484782bdaa747e7a98a032c3b6f0b
+[00:07:16.160 --> 00:07:55.650] Intervenciones: 44, 45, 46, 47
+Tokens: 143 de contenido, 145 con especiales
+y bien en la práctica, vamos a abrir esto, trae bastantes
+
+Marina Fuster: cosas e ineficiencias que después se tienen que resolver en el modelo? ¿no? Porque fíjense la palabra. Egg: No
+
+Marina Fuster: que forma un solo, toquen, ¿sí? ¿pero ¿qué pasa cuando yo hago el o hago o hago el es el mismo, si fíjense que, como el merge de distintos
+
+Marina Fuster: caracteres, se va haciendo por frecuencia en el corpus.
+
+Chunk 15: 5c1aedd9b131b6d64ae83e907a68103ce540b5846c5ce09a5200be13828233a0
+[00:07:51.310 --> 00:08:38.880] Intervenciones: 47, 48, 49, 50
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: caracteres, se va haciendo por frecuencia en el corpus.
+
+Marina Fuster: Esto después, cuando yo lo corro en mi data, es común para cosas que significan exactamente lo mismo. Yo voy a tener distintos toques. Si entonces el modelo después tiene que aprender, que esto es lo mismo que esto, que es lo mismo, que esto, que es lo mismo que esto sí cuando aparezca en un contexto, Si yo digo hello
+
+Marina Fuster: Angel, no todo esto cuando yo esté calculando atención y etcétera, etcétera. Tengo que modelar que este token es lo mismo que estos 2,
+
+Marina Fuster: o creo que son 3. En realidad sí que estos 
+
+Chunk 16: 85a104cb7577ce8e24c1ec34490006f6e83f7e01100a94737acee462153ae723
+[00:08:15.580 --> 00:08:56.849] Intervenciones: 49, 50, 51
+Tokens: 132 de contenido, 134 con especiales
+2,
+
+Marina Fuster: o creo que son 3. En realidad sí que estos 3 o que estos 2 de acá y así sucesivamente. Y esto no pasa solamente con esto, sino con un montón de cosas, por ejemplo.
+
+Marina Fuster: si se si se acuerdan, no sé si los llegaron a usar los modelos más viejos, pero todo lo que era programar. Fíjense que si yo hago una función en Python, este es un 2, 3, 4 de, no sé hello
+
+Chunk 17: 18b1afeaf2bb4196d98a4e9cd89d7288e0902003a9d10ca50f4c280ec7ebe055
+[00:08:56.930 --> 00:09:33.099] Intervenciones: 52, 53, 54, 55, 56
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: X, unos nombres buenísimos junto, 3, 4, 5, 6, 7, 8
+
+Marina Fuster: X. Fíjense. Todos los tokens que yo me estoy comiendo para
+
+Marina Fuster: una función de 2 líneas, y todo esto después se tiene que calcular la tensión. Entonces.
+
+Marina Fuster: más allá de lo que venga a ser el aprox de bueno, voy merciando de acuerdo a la frecuencia. También. A medida que avanzaron, se empiezan a tomar decisiones de diseño, como, por ejemplo, todos estos espacios se calculan juntos si empiezan a representar un único toque. Si yo pongo 1 más moderno.
+
+Marina Fuster: creo que este es 
+
+Chunk 18: c1a7792a9a715484d7c0869e16446eb9bb6101b787e3e5b6d78bf67e7ebbc48f
+[00:09:13.390 --> 00:09:59.840] Intervenciones: 55, 56, 57, 58, 59
+Tokens: 137 de contenido, 139 con especiales
+que. Si yo pongo 1 más moderno.
+
+Marina Fuster: creo que este es del 4.
+
+Marina Fuster: No estoy segura. Bueno, fíjense que esto que venía a hacer todos estos espacios, pasó a ser un único token o 2 algo así.
+
+Marina Fuster: Okay. Entonces empiezan a mejorar otros aspectos como lo que son tareas de programación, entonces esta parte es full importante para la performance Downstream de lo que a mí me interesa
+
+Marina Fuster: alguna duda con esto
+
+Chunk 19: 94479b5ebc13f5e249b8ffc32752b76246b6aa27ea3c28edde00473b65503a04
+[00:09:58.310 --> 00:10:44.069] Intervenciones: 59, 60, 61, 62, 63, 64
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: alguna duda con esto
+
+Marina Fuster: más o menos como funciona por atrás.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No.
+
+Marina Fuster: Bien. Perfecto. Entonces, acá. Para que se den una idea de qué es lo que se termina haciendo por atrás.
+
+Marina Fuster: Eso es lo que vimos Recién Esto se los dejo porque son algunas aclaraciones de lo que es el La parte de toquenización. Es lo que estábamos recién que sí te puede pasar, que son muchas variaciones de la misma palabra, y eso después lo tenés que modelar. Entonces estás
+
+Marina Fuster: de alguna forma desperdiciando capacidad. Y por otro lado, algo que sí em
+
+Chunk 20: 760db097606a14e4ec3b8544bb4f0d4872ca1d451ad88b66dbf2421c4c46abc0
+[00:10:32.070 --> 00:11:05.920] Intervenciones: 64, 65, 66, 67, 68
+Tokens: 139 de contenido, 141 con especiales
+perdiciando capacidad. Y por otro lado, algo que sí empezó a aparecer son lo que le llamaron Glitch Tokens que lo que terminaba pasando es que
+
+Marina Fuster: ocasionaban comportamientos raros en el modelo. ¿y
+
+Marina Fuster: qué creen que puede estar pasando acá por detrás? ¿qué les parece que quizás
+
+Marina Fuster: ocurrió, o sea, viendo lo que vimos
+
+Marina Fuster: de cómo es el modelo y cómo es el proceso de tokenización.
+
+Chunk 21: 3acfef58978a921419d16003f18046f295b5e650eef38e3ad4be4cf2542deeeb
+[00:11:02.090 --> 00:11:45.170] Intervenciones: 68, 69, 70, 71, 72, 73, 74
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: de cómo es el modelo y cómo es el proceso de tokenización.
+
+Marina Fuster: Y de paso, Me tomo un mate que se les ocurre.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y son tokens que se mapean a otras cosas del vocabulario. Son palabras que se mapean a palabras del vocabulario que no son.
+
+Marina Fuster: ¿quieres ser un pelín más específico? ¿a qué le llamaste? Se mapeen.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, son palabras del lenguaje natural
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: que después el sistema de gasto que Niza
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: y las convierte en fragmentos de vocabulario que no tienen nada que ver con el significado real de la 
+
+Chunk 22: 1b55889981d7b4194093ef9134d4b168c767446253c93f7daa0bf9f83691f23b
+[00:11:39.710 --> 00:12:02.450] Intervenciones: 74, 75, 76, 77, 78, 79
+Tokens: 108 de contenido, 110 con especiales
+cabulario que no tienen nada que ver con el significado real de la palabra.
+
+Marina Fuster: O sea, vos. Lo que me decís es que, por ejemplo.
+
+Marina Fuster: esto que es solid ball magical que.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No terminan de distribuir, no terminan nada.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Mhm.
+
+Marina Fuster: Vos decís que.
+
+Chunk 23: adbd20bd8cbda5ac7d85fadaec327c4c6371baeb5d821d49dd8d1e93e18877af
+[00:11:59.980 --> 00:12:46.359] Intervenciones: 78, 79, 80, 81, 82, 83, 84, 85, 86
+Tokens: 200 de contenido, 202 con especiales
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Mhm.
+
+Marina Fuster: Vos decís que.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Que se mapean. Una palabra distinta a eso, a la que yo, a la que debería ser.
+
+Marina Fuster: Igual. Hay una salvedad. Ojo que en
+
+Marina Fuster: no es que vos puedas a través del elencoude del tokenizador.
+
+Marina Fuster: No es que vos vayas directamente a mapearlo
+
+Marina Fuster: a 1 que no tiene nada que ver, ¿no? O sea, si yo.
+
+Marina Fuster: por ejemplo, o sea, vos, lo que estás diciendo, porque por ahí no no estoy entendiendo bien a lo que
+
+Marina Fuster: Mhm. Supongo salir de Cold Magic 
+
+Chunk 24: dd0b0bf2f7084a5af3b4abec2ee43b97be0706db2a5aa46c633aba303e47f48e
+[00:12:31.070 --> 00:13:09.450] Intervenciones: 85, 86, 87, 88, 89, 90
+Tokens: 104 de contenido, 106 con especiales
+ndo bien a lo que
+
+Marina Fuster: Mhm. Supongo salir de Cold Magic Card, No, que es que se hace 1 solo.
+
+Marina Fuster: Es un solo toque y se mapea a este token.
+
+Marina Fuster: No es que va a parar otros tokens
+
+Marina Fuster: cuando hago como de texto a Token.
+
+Marina Fuster: Es más, What's discreen, No, así es como se mapea.
+
+Chunk 25: 1666d9757a881cb6800a7a43a6d9d3b526faa28bb62f31364a336b52350f213b
+[00:13:01.720 --> 00:13:46.459] Intervenciones: 90, 91, 92, 93, 94
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: Es más, What's discreen, No, así es como se mapea.
+
+Marina Fuster: como se se asocia ahí. Puso Julieta se termina asociando a tokens que no tienen nada que ver, te referías a esto o te referís a otra cosa.
+
+JULIETA TECHENSKI: O sea, lo que yo pensé que pasaba, es como que
+
+JULIETA TECHENSKI: con esto de bueno, esta palabra signifi es lo mismo que esto. Lo que lo que pensé que estaba pasando. Pero bueno, creo que no por lo que dijiste recién.
+
+JULIETA TECHENSKI: pero lo que terminé pensando es eso de que, por ejemplo, una palabra así erróneamente se termina pensando y estás 
+
+Chunk 26: 255c51a694d0f7319562261d764c1adc7573cc63226872b15f0328107d044bc6
+[00:13:35.140 --> 00:14:06.279] Intervenciones: 94, 95, 96, 97
+Tokens: 150 de contenido, 152 con especiales
+lo, una palabra así erróneamente se termina pensando y estás preguntando, distribute. No sé qué era distribución, no me acuerdo, que era.
+
+Marina Fuster: Distrito, Sí, no importa distribuido todo lo que venga a hacer bien.
+
+Marina Fuster: o sea, va va un poco más por ahí, fíjense que ¿quién es el que termina pensando que esta palabra refiere a eso.
+
+Marina Fuster: El modelo, o sea, el que hace la generación de texto es el que termina procesando este Token.
+
+Chunk 27: cf145f5e18cf5d2cee1973c579fadedff32a8928b02807d2385b58d723f44b85
+[00:14:06.540 --> 00:14:53.319] Intervenciones: 98, 99, 100
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: Soy Gol Magical. No puede ser precisamente que no esté en el set de entrenamiento de que el set de entrenamiento de quién no
+
+Marina Fuster: del modelo. Bien. Y ahí hay algo muy interesante, que es que el token iser no tiene el mismo conjunto de entrenamiento que el modelo Sí, más allá de que, igual esto podría ser un problema igual si el Token estuviera en el modelo, pero ahí está. Pero muy poquito
+
+Marina Fuster: te puede quedar sin entrenar o muy poco entrenado. O sea, suponete que vos en lo que es el tokenizador. Tenés un conjunto que no es tan representativo de lo que es. Después 
+
+Chunk 28: 33312c021c52c4d7bc14a827aebc0027a2bdc89573de4825de547a19d6a9faff
+[00:14:40.400 --> 00:15:14.540] Intervenciones: 100, 101, 102
+Tokens: 131 de contenido, 133 con especiales
+és un conjunto que no es tan representativo de lo que es. Después tu modelo.
+
+Marina Fuster: Esto te va a quedar sin entrenar. Y te va a terminar diciendo cualquier cosa, si es más en lo que es el espacio de
+
+Marina Fuster: de de tokens. Cuando los ves como en medios, hay una región donde hay un montón de tokens que hacen que el modelo dispare para cualquier lado. ¿sí? Porque precisamente pasa esto
+
+Chunk 29: 97d111e4cbd191573a684398e7ee5d46579eb632ad908df1020686e2383c1b1a
+[00:15:14.610 --> 00:15:52.110] Intervenciones: 103, 104, 105
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: son tokens que no se entrenaron tanto, que quizá estaban muy presentes en lo que era la parte del tokenizer. Y eso después no se traduce en lo que es el Corpus de Internet. Si este es un ejemplo, ahí les dejé un link si les interesa chusmear
+
+Marina Fuster: que hay más. Pero bueno, dan como un montón de lugar a situaciones como graciosas, esto pasa cada vez menos.
+
+Marina Fuster: Pero bueno, es algo natural de la tokenización de que vos vas a tener regiones que no están tan exploradas cuando pasas a entrenar con el corpus. Y es parte de la explotación que se usa para lograr que el modelo no se comporte como deber
+
+Chunk 30: 13745791356441c71c26daeecca53903ca11915b7ae5fac512f118fb13f0b0c6
+[00:15:37.530 --> 00:16:15.040] Intervenciones: 105, 106, 107
+Tokens: 118 de contenido, 120 con especiales
+otación que se usa para lograr que el modelo no se comporte como debería
+
+Marina Fuster: bien esto para ver un poquito, cosas que pueden causar problemas. Y esto un poquito para cerrar lo que es organización traídos de lo que viene a ser agrandar el vocabulario en verde es lo que es a favor en rojo. Es lo que viene a ser
+
+Marina Fuster: un poco en contra de agrandarlo. Sí
+
+Chunk 31: 080f32ccb8c9eb7c8ef0f11f55980dd7397cf3d1a782123b2c5893c9fdef84b8
+[00:16:10.470 --> 00:17:06.359] Intervenciones: 107, 108, 109, 110, 111, 112, 113
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: un poco en contra de agrandarlo. Sí
+
+Marina Fuster: medio que esto ya lo tomamos casi todo, excepto el último punto de la parte roja, que es que el modelo tiene menos tiempo para pensar con muchísimas comillas, pero lo retomamos en la clase 4.
+
+Marina Fuster: Creo que es la 4, lo cambiamos. Así que no estoy segura bien.
+
+Marina Fuster: ¿Alguna pregunta de eso? Ah, mira, justo acá como usuario. ¿qué me conviene.
+
+Marina Fuster: ¿Qué les conviene a ustedes más de unos toques.
+
+Marina Fuster: algo que prefieran de más menos tokens.
+
+Marina Fuster: voy a darle a mi modelo 
+
+Chunk 32: 011a7de7018c0c9536b1b11f9f5a71bafcf378e5a4a452789b37e9e830be2e52
+[00:16:52.200 --> 00:17:22.659] Intervenciones: 112, 113, 114
+Tokens: 139 de contenido, 141 con especiales
+de más menos tokens.
+
+Marina Fuster: voy a darle a mi modelo que le dé billones de palabras, un tipo de subcontrata.
+
+Marina Fuster: Bueno, acá para adelantar un poquito, porque se me va la hora, les conviene, o sea, en general, a 1 le conviene menos tokens. Por eso hay muchos quilomas con el tema de cambio de idioma, porque los idiomas que están poco representados consumen muchos tokens Es mucho más caro usarlo.
+
+Chunk 33: aa1965864b57499dbb2d37cfd754955b017658d41c8b1f46b9a9d93507560cbb
+[00:17:22.660 --> 00:18:13.139] Intervenciones: 115, 116, 117, 118, 119
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: Y bueno, y en general, por eso, cuando ustedes le hablan a un agente o algo, suelen funcionar mejor en inglés, todo lo que es código. El El lenguaje predominante es en inglés. Entonces, nada. Esta es la razón por la cual.
+
+Marina Fuster: en esos lenguajes es que funcionan mejor los modelos.
+
+Marina Fuster: porque la toquenización y la forma de manejar las palabras tiene que ver con el dataset de la tokenización.
+
+Marina Fuster: que nunca está muy explícito. Entonces nadie sabe muy bien qué es lo que hay ahí adentro
+
+Marina Fuster: para investigar y que lo chus meen, si les interesa, esto 
+
+Chunk 34: 9cc37a19e304b84aec8a2d3923b62d1889880bcbcd935303f516577af774c96f
+[00:17:53.110 --> 00:18:22.379] Intervenciones: 119, 120
+Tokens: 144 de contenido, 146 con especiales
+: para investigar y que lo chus meen, si les interesa, esto es un poco cómo se buscan definir los tamaños de vocabulario, que siempre fue muy como obscuro. Y esto salió hace un par de años para uniformar un poco. Y por otro lado, nosotros mismos que pasamos a up fake, y después iban marchando los tokens.
+
+Marina Fuster: Bueno, meta sacó una arquitectura donde argumenta que ese proceso de tokenización, que da lugar a muchos problemas
+
+Chunk 35: 567321612e8888670b0397f4c317677ff01f9f32a055016d92c922f14858beca
+[00:18:22.460 --> 00:19:08.759] Intervenciones: 121, 122, 123, 124, 125
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: no es lo mejor y que directamente puedes usar Youtube y face y hacer algo del lado del modelo al que le interesa. Lo pueden cambiar.
+
+Marina Fuster: Bien, ahora vamos a pasar a lo que es emerys.
+
+Marina Fuster: Esto ya lo fuimos viendo con la motivación cómo representar el significado de una palabra. Voy a usar palabras como reemplazo de unidad lingüística, Puede ser palabra, documento, su palabra, etcétera, etcétera. Me interesan un montón de cosas que caen bajo un campo que se llama lexical Semántics.
+
+Marina Fuster: Y lo que es Vectores Matics, que es como este precursor de Mains surge de 2 ideas
+
+Marina Fuster: que la primera sigue 
+
+Chunk 36: 4a3f9b494ae384517fa504167aa30bccf78a0713c0d8f7e204080f0ac212c1fd
+[00:18:50.480 --> 00:19:16.180] Intervenciones: 124, 125, 126
+Tokens: 101 de contenido, 103 con especiales
+es como este precursor de Mains surge de 2 ideas
+
+Marina Fuster: que la primera sigue motivando, lo que es la mayoría de los algoritmos de embering inclusive los modernos que lo que dice es You Know a World by the Company y Tips.
+
+Marina Fuster: Esta frase, que son famosas, pero prácticamente lo único que dice es que es muy probable de que vos puedas entender
+
+Chunk 37: 4d9bc1a4bbe4e83091d25451db9804ededf0d33493e5cf052db8f496bdca9877
+[00:19:16.260 --> 00:20:15.640] Intervenciones: 127, 128, 129, 130, 131, 132, 133
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: la palabra de la que estás hablando. Viendo el contexto, no una ventana al contexto.
+
+Marina Fuster: Eso por un lado, y por el otro.
+
+Marina Fuster: tenemos el primer como experimento donde este señor Osgood decidió usar un vector en R 3 para representar palabras. Si esto antes se hacía a mano. Quien decía Valencia Araus sabe que no sé a qué refiere, y Dominals eran humanos que coreaban del 1 al 10.
+
+Marina Fuster: Yo hacía alguna manipulación con esos números. Llamémosle el promedio o lo que fuera. Y ese vector era mi palabra
+
+Marina Fuster: Josh.
+
+Marina Fuster: Pero después teníamos
+
+Marina Fuster: ese. 
+
+Chunk 38: edab6e7f243e1bc9d2b9c8f47b5697302f5adbe23e77ff78d23512b7dfda5fb6
+[00:19:52.630 --> 00:20:15.640] Intervenciones: 131, 132, 133
+Tokens: 125 de contenido, 127 con especiales
+.
+
+Marina Fuster: Pero después teníamos
+
+Marina Fuster: ese. Es como un ejemplo muy pequeñito. Después empezaron a aparecer las primeras implementaciones. Por ejemplo, yo podía querer tener vectores para representar documentos en el espacio, ¿no? Entonces, ¿qué hacía? Me fijaba todas las palabras que estaban en ese documento las contaba. Y esa era la representación de mi documento.
+
+Chunk 39: a624c66b46c30210b61dca5b2341b7390aed7612180ee42515d4b75bb09691f1
+[00:20:15.640 --> 00:21:00.349] Intervenciones: 134, 135, 136, 137, 138, 139
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: o puede hacer lo mismo con palabras.
+
+Marina Fuster: Me fijaba en un corpus de texto. No se definía que mi contexto eran 4: la ventana de 4 4 hacia atrás. Cuatro hacia delante me fijo, palabras aparecen juntas.
+
+Marina Fuster: cuáles no. Y me quedan estas matrices.
+
+Marina Fuster: Y el chiste era que si yo veía estos vectores en el espacio.
+
+Marina Fuster: el ángulo entre esos vectores. Hablamos de esto como medida de similitud. Me podría decir que
+
+Marina Fuster: qué palabras por ahí eran parecidas o no. Fíjense acá. Que digital e information las toman como muy parecidas, porque el ángulo es muy chiqui
+
+Chunk 40: 238474aa8fb7ca5a2fe7acd0017ab9be8933338d6a836349100880c5a459d499
+[00:20:46.970 --> 00:21:17.359] Intervenciones: 139, 140, 141, 142
+Tokens: 115 de contenido, 117 con especiales
+toman como muy parecidas, porque el ángulo es muy chiquito, a pesar de que information aparece muchísimas más veces Por eso la magnitud es más grande.
+
+Marina Fuster: Pero esto vendría a ser como las primeras implementaciones.
+
+Marina Fuster: Ahora, ¿qué problema le ven a este tipo de abroch.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, acá, lo que estás anotando es
+
+Chunk 41: c1a2dac1abc8f949afc4c2b26ecd2536bb94cba90364f86c9c745a53f72f195d
+[00:21:14.990 --> 00:21:48.879] Intervenciones: 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152
+Tokens: 200 de contenido, 202 con especiales
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, acá, lo que estás anotando es
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Cuántas veces aparece una palabra al lado de la otra.
+
+Marina Fuster: Claro.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Entonces no sirve.
+
+Marina Fuster: Como para grupos de 3.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, si tengo 3 palabras que están siempre una al lado de la otra. No creo que me funcione También esto.
+
+Marina Fuster: ¿por qué no, o sea yo.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Un día.
+
+Marina Fuster: También.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: De tintas.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Tengo la asociación. Tengo, como tengo 3 campos y solo 
+
+Chunk 42: 263311242c93b94db4240a85efc6f52c76826f9033956c3dd45bb5a03aff2773
+[00:21:41.380 --> 00:22:09.050] Intervenciones: 152, 153, 154, 155, 156
+Tokens: 132 de contenido, 134 con especiales
+I: Tengo la asociación. Tengo, como tengo 3 campos y solo los puedo asociar de 2. Entonces
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No, la máquina no va a entender que es 1, 2 y 3 va a tener 1, 2, 2 y 3, 1 y 3.
+
+Marina Fuster: No te estoy entendiendo.
+
+Marina Fuster: ¿estás haciendo? Sí.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Pero si vos tenés una cadena de 3 palabras que estás siempre.
+
+Chunk 43: 38ddf77d8b9da4ee7491b26d3e3dd839174265f1be8ae8ddacc638f44e118f3e
+[00:22:05.710 --> 00:22:42.770] Intervenciones: 156, 157, 158, 159, 160, 161
+Tokens: 200 de contenido, 202 con especiales
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Pero si vos tenés una cadena de 3 palabras que estás siempre.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: no sé si va a entender que esas 3 palabras van siempre juntas.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Solo va a entender Grupos de 2.
+
+Marina Fuster: No, no es que acá no es. No es que sea
+
+Marina Fuster: o sea, si obvio vos. Lo vas a tener lo contás como de a 2, porque es la fila por la columna, pero vos definís una ventana ponele que yo digo la pala me centro en cada palabra, a medida que voy barriendo.
+
+Marina Fuster: y la ventana es de 4 elementos. Me fijo hacia atrás, 4 y hacia ad
+
+Chunk 44: 07960fefbe78fe92d491aa2fee1cda8b9cb5ed4c4776f0ad1be79c8b06dde3fe
+[00:22:36.940 --> 00:23:06.259] Intervenciones: 161, 162, 163, 164
+Tokens: 102 de contenido, 104 con especiales
+ana es de 4 elementos. Me fijo hacia atrás, 4 y hacia adelante.
+
+Marina Fuster: ¿no? Entonces las 4 que aparecen hacia atrás Suman 1 ponele que aparece
+
+Marina Fuster: de teira in the Computer. Y la ventana es 4. Data con Computer va a contar.
+
+Marina Fuster: Y si aparece 20 veces en el documento de la misma forma.
+
+Chunk 45: 2afb79ecea1b62e24e2d13a67c094123e4642f306848641641f445399cb0dfd3
+[00:23:02.780 --> 00:23:42.030] Intervenciones: 164, 165, 166, 167, 168, 169, 170, 171
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: Y si aparece 20 veces en el documento de la misma forma.
+
+Marina Fuster: va a contar 20 veces, entonces la ventana es lo que te permite, que que no es que miras como solamente de a 2, sino que vas mirando como una sliding Window, por así decirlo.
+
+Marina Fuster: recobras. Sí.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+Marina Fuster: Si si me dio delay perdón.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No, no pasa nada, que si el corpus es medio corto, te vas a quedar, o depende mucho de también de la
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: de cómo está escrito el texto, porque tal vez tiene relaciones que no se siguen después en
+
+JOAQUÍN 
+
+Chunk 46: 02c34e25430968ac7875ce245ed4c53989758c3964eb6a5a98f4c79501c33cdd
+[00:23:35.470 --> 00:24:01.680] Intervenciones: 170, 171, 172, 173
+Tokens: 120 de contenido, 122 con especiales
+tal vez tiene relaciones que no se siguen después en
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: en la vida real.
+
+Marina Fuster: Bien, perfecto. Eso es una desventaja. Depende mucho del corpus de cómo está escrito el texto. Quizás sí hay cosas como en dependencia larga, que son importantes y no lo estás contabilizando eso recontra. ¿qué otra por ahí desventaja
+
+Marina Fuster: que esas son válidas?
+
+Chunk 47: 0dbb6e6988cf6bb676ab06964233b9e63f250bfe503e3de0f9ccff6a8750d6c4
+[00:24:00.050 --> 00:24:56.609] Intervenciones: 173, 174, 175, 176, 177
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: que esas son válidas?
+
+Marina Fuster: ¿qué pasa cuando yo hago palabras a palabras o término término. Se le dice también.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No entiendo qué decís con termino termino. Se ¿Se es esto.
+
+Marina Fuster: Es cuadrático? Sí, Sí. Terminó término. Me refiero a esto como que me fijo para cada palabra con cuales aparece en el contexto en la dimensión del vocabulario. Bien, no solamente eso es, o sea, es cuadrático la dimensión del vocabulario, sino que hay muchas cosas que
+
+Marina Fuster: nunca van a aparecer juntas. Y esta matriz va a ser súper esparza. O sea, si yo tengo un corpus grande, 
+
+Chunk 48: 4afe1972fcf16e7cd44ba12fa6a7c6fdac8defb8f51e9b6b477da10ec6af6bad
+[00:24:43.310 --> 00:25:02.360] Intervenciones: 177, 178
+Tokens: 72 de contenido, 74 con especiales
+riz va a ser súper esparza. O sea, si yo tengo un corpus grande, este tipo de matrices se me queda súper corta, por lo que menciona Juan Ignacio y porque
+
+Marina Fuster: hay palabras que, o sea, muchas cosas, me quedan en 0. Entonces
+
+Chunk 49: bccd4afb2b6090d4f52049b4465805e54d8710be55aecd95a6f82cbe4d96e9e6
+[00:24:56.890 --> 00:25:37.590] Intervenciones: 178, 179, 180, 181
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: hay palabras que, o sea, muchas cosas, me quedan en 0. Entonces
+
+Marina Fuster: los vectores tienen mucho espacio vacío. La frecuencia sola no te alcanza porque aparece el mismo problema que vimos en la demo como la palabra de tanto en inglés como en español, que van a tener mucha representación.
+
+Marina Fuster: ¿y qué palabras caso con palabras que se usan muy poco. ¿sí?
+
+Marina Fuster: Entonces ahí es donde aparece el tema de los Emedings, que son vectores dimensionales y que ellos suele asociarse a que son vectores densos. No, yo tengo como una especie de representación más comprimida que estas matrices. Es fa
+
+Chunk 50: fb37c4785c8e73a3806181a6589c023c0fd7338518d8158a5ed84f97dafa984c
+[00:25:22.170 --> 00:25:57.289] Intervenciones: 181, 182
+Tokens: 130 de contenido, 132 con especiales
+como una especie de representación más comprimida que estas matrices. Es falsas, que son las primeras implementaciones. Si.
+
+Marina Fuster: como mido, la similitud puede usar una métrica como similitud coseno, es la única, no tiene sus ventajas, pero también tiene sus defectos. Por ejemplo, si a mí me importa la magnitud del vector porque me representa algo importante: el medir la similitud coseno me aplana esa
+
+Chunk 51: 931175d0a860afafc0cb5ce7023f05a8db8c2871dababf28272a4042e2b22410
+[00:25:57.310 --> 00:26:58.289] Intervenciones: 183, 184, 185, 186, 187
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: esa importancia. Por ejemplo, si yo tengo, bueno.
+
+Marina Fuster: alguien que mira series, y en la X tengo series románticas
+
+Marina Fuster: y en la I tengo series de terror. Soy, No conozco ninguna serie de terror. Bueno, la persona que mire 100 románticas y 100 de terror va a tener la misma similitud con 0 que la que mira 1 con una, no.
+
+Marina Fuster: ¿por qué el vector apunta. Pues así, entonces, Fíjense que en este caso yo quizás estoy tratando como iguales 2 puntos en el espacio que son sumamente distintos. Uno es adicto a ver series, y el otro vio algo un poco de cada cosa. Si entonces
+
+Marina Fu
+
+Chunk 52: 5aadac4c2e0defc917d67a1e1349bc43b098a972de2346cfb7ef42237e61afb2
+[00:26:28.020 --> 00:26:58.289] Intervenciones: 186, 187
+Tokens: 77 de contenido, 79 con especiales
+ro vio algo un poco de cada cosa. Si entonces
+
+Marina Fuster: similitud con seno, se puede usar. Fíjense que en la otra en realidad está. Bueno, porque si yo tengo, no sé una palabra que no se usa mucho como escarlata y
+
+Chunk 53: fb4d20804426f60212809d6560999e5a45fa3d20da8061711b4f0e549b0e1c62
+[00:26:58.290 --> 00:27:47.049] Intervenciones: 188, 189, 190
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: rojo rojo se usó un montón escarlata, ¿no? Entonces ahí quizás la frecuencia no me importa tanto escarlata. Es un sinónimo de rojo, entonces tienen sus ventajas y desventajas depende de donde las uso, pero nos vamos a conformar con quedarnos con la similitud con 0. Por ahora.
+
+Marina Fuster: entonces tengo 3 tipos de lo que son emerix, los emedis estáticos, los emedis dinámicos y los Leart Emerys. Los L Ert son los que charlamos en la demo. No, Yo tengo una tabla con parámetros a reaccionar, y los entreno junto al modelo. Y si
+
+Marina Fuster: quizás no es una catego
+
+Chunk 54: ba1a118ad3be2fd5632f5a8d26b458ae1dc20e2803e02a50fc4bd4f8e377c6e5
+[00:27:14.490 --> 00:27:47.049] Intervenciones: 189, 190
+Tokens: 99 de contenido, 101 con especiales
+no junto al modelo. Y si
+
+Marina Fuster: quizás no es una categoría que aparezca muy frecuente. Se suele referir a esos emails que yo uso en el contexto del otro modelo. No me sirven mucho por fuera. Ahora, lo que me va a interesar es la distinción entre esta cuestión del estático y el dinámico de
+
+Chunk 55: 48f3312e1533d4119a0319681ce5f87fc6bc650f43bc2430e67c43a55ae41127
+[00:27:47.050 --> 00:28:32.650] Intervenciones: 191, 192, 193, 194, 195
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: el estático. La característica principal es que mantiene el valor fijo. O sea, yo tengo una instancia de entrenamiento y de aprender los emails, pero una vez que terminé.
+
+Marina Fuster: El emeding va a ser siempre el mismo para la palabra. Si, por ejemplo.
+
+Marina Fuster: yo tengo un algoritmo de estática en Beit, si yo tengo estas 2 frases
+
+Marina Fuster: que comí pizza o que la pizza era asquerosa. El embelle para pizza va a ser el mismo. Se va a posicionar ahí? Sí,
+
+Marina Fuster: En cambio, los dinámicos van a cambiar de valor dependiendo del contexto en esta en la instancia particular, entonces el ejemp
+
+Chunk 56: eaec7695f9bcd2c81d918e66c3738223494f8a73ae590b7ef504b777d2055340
+[00:28:17.970 --> 00:28:50.049] Intervenciones: 195, 196, 197, 198, 199
+Tokens: 129 de contenido, 131 con especiales
+del contexto en esta en la instancia particular, entonces el ejemplo sería algo así. No supongamos que el eje X se relaciona con qué tan rico es la comida.
+
+Marina Fuster: Si yo tengo la frase que la pizza era asquerosa. Bueno, yo esperaría que el impeding no sea el mismo que
+
+Marina Fuster: la pizza común, que se asocia como que es más rica.
+
+Marina Fuster: Bien, eso estamos.
+
+Marina Fuster: Es decir.
+
+Chunk 57: 3f665323d077f1e44c2fd1159dff481e43742ca48527db8b8db34ae22ad7f280
+[00:28:45.050 --> 00:29:30.059] Intervenciones: 198, 199, 200, 201, 202, 203, 204
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: Bien, eso estamos.
+
+Marina Fuster: Es decir.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, Sí.
+
+Marina Fuster: Bien buenísimo, entonces medio que la Id. La idea fundamental trata de capturar esto, que charlábamos de
+
+Marina Fuster: la frase que vos. Vas a conocer el significado de la palabra o el mapeo de la palabra, de acuerdo al contexto. Entonces veamos 1 de los estáticos, que se llama
+
+Marina Fuster: Skidcrum.
+
+Marina Fuster: que es de una familia que se llama world to Beck. Creo que el Paper está al final, si a alguno le interesa. Y la idea muy básica es que yo voy a tener un modelo que lo voy a en
+
+Chunk 58: 0b0d0c97db961a6f262b5c5e53902a5569703af038281c1fce3fb0da81e8011a
+[00:29:16.470 --> 00:29:45.380] Intervenciones: 204, 205, 206
+Tokens: 122 de contenido, 124 con especiales
+y básica es que yo voy a tener un modelo que lo voy a entrenar con pares pares positivos y pares negativos.
+
+Marina Fuster: ¿cómo definen los pares positivos? Bueno, estuvimos charlando bastante de esta ventana de contexto que yo eligiendo. Entonces
+
+Marina Fuster: yo voy a definir una ventana 5, y cuando la palabra aparezca con las otras en ese contexto.
+
+Chunk 59: bcbe392ddb91bb30cb7dec0000d6769b423243123437c5cb7a1c166826054d14
+[00:29:45.490 --> 00:30:22.040] Intervenciones: 207, 208, 209
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: agarro ambas. Y digo, es un par positivo, por otro lado, que sería este item B, lo que es el par negativo. Selecciona palabra y agarra una random de todo el vocabulario. Eso vendría a ser el negativo. Y lo que puedo hacer es un clasificador que me distinga entre lo que son pares positivos y pares negativos.
+
+Marina Fuster: Acá W, C,
+
+Marina Fuster: La W por Word. Y la C es por context si quiere decir que la de la izquierda es la palabra en la que me estoy centrando y la de las letras del contexto. Y en este tipo de en este Squithgram, los parámetros que me quedan son 
+
+Chunk 60: 448e01a14529b17b2521785373154799074c25eaa21790db20a95c327e673a00
+[00:30:06.130 --> 00:30:46.010] Intervenciones: 209, 210, 211, 212
+Tokens: 143 de contenido, 145 con especiales
+este tipo de en este Squithgram, los parámetros que me quedan son los que uso como embebyns.
+
+Marina Fuster: entonces esquemáticamente un poco como se ve. Este blog está bastante bueno si lo quieren chumbear. Fíjense que mi input al principio tiene un 1
+
+Marina Fuster: con la palabra que yo considero. World, Sí, y voy a tener 2 matrices. La primera, que dice W Input es la que va a tener los envivings como filas, si
+
+Marina Fuster: que se refieren a
+
+Chunk 61: 757f6d35f01649fc16bb7b0570192764aa01084523152ef9a1ac5f65a8e9395c
+[00:30:44.320 --> 00:31:27.640] Intervenciones: 212, 213, 214, 215, 216, 217
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: que se refieren a
+
+Marina Fuster: la palabra como world, como como se entrada sí. Y por otro lado, esta matriz que tengo acá
+
+Marina Fuster: es la que va a tener los embeles como columnas.
+
+Marina Fuster: pero refiriéndose como contexto, ¿sí? Entonces lo que voy haciendo
+
+Marina Fuster: va a ser calcular. Bueno, este es mi vector, estoy centrándome en la palabra pases y The hijo son parte del contexto, o sea, son positivos. Entonces hago me agarro la fila de ese de ese medio que es este que está. Acá Y después lo que hago es
+
+Marina Fuster: el producto de estas 2 para obtener todos los escorts, o 
+
+Chunk 62: f0c4cac848f266fb67498cf81af6e4c5ce6abdb5d2fda2577a897d4f93dc92ab
+[00:31:19.920 --> 00:31:44.550] Intervenciones: 217, 218, 219
+Tokens: 132 de contenido, 134 con especiales
+Fuster: el producto de estas 2 para obtener todos los escorts, o sea, todas las probabilidades, en realidad
+
+Marina Fuster: no acaba de nacer. Sí, todas las probabilidades.
+
+Marina Fuster: Entonces fíjense que tanto esta como esta yo las quiero en 1, sí, O sea, estos son como 2 ejemplos separados, pero está como todo justo junto. Entonces yo quiero estas 2 que las reconozca como positivas.
+
+Chunk 63: 5acf1645d843217205b0d07696cce6f54ae9bf9a36e16ffdb0fb4e907c543cd6
+[00:31:44.560 --> 00:32:41.570] Intervenciones: 220, 221, 222, 223, 224
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: Entonces lo que voy a hacer es calcular la pérdida de eso y ajustar los pesos
+
+Marina Fuster: de acuerdo a ese error que tuve entonces
+
+Marina Fuster: esquemáticamente lo que empieza a pasar, porque fíjense que el el dot product que yo hago, o sea, este de acá entre el embel y el w output. Ese producto interno también es una métrica de similitud, o sea, la similitud coseno que la definimos así. Fíjense que es el producto dividido en la norma de los vectores.
+
+Marina Fuster: pero el producto en sí que es una operación que hacemos constantemente en todos los modelos. También es una métrica de similitud.
+
+Marina Fuster: 
+
+Chunk 64: 2c4a6c25c9264305bb647362f2f0e0953ee57653547ca9cf81c084c8719ff7db
+[00:32:14.890 --> 00:32:41.570] Intervenciones: 223, 224
+Tokens: 116 de contenido, 118 con especiales
+los modelos. También es una métrica de similitud.
+
+Marina Fuster: Entonces lo que yo estoy haciendo acá en este algoritmo, que es un poco más simple Cuando hago este producto y me fijo estos valores y los trato de ajustar como para que los naranjas se acerquen a 1 lo que estoy haciendo, es decir, Che. Quiero que subas el dot product entre el embelle de la palabra
+
+Chunk 65: 11f8a204156f00cb58331e835b2bf4c5e2816d0cfc00c76bc5a2bdd6594a0593
+[00:32:41.570 --> 00:33:30.450] Intervenciones: 225, 226, 227, 228, 229, 230
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: y le being del contexto que eso. Lo que va a terminar haciendo es que supongamos que el verde es la palabra, se acerque, o
+
+Marina Fuster: los del contexto, que son ejemplos positivos.
+
+Marina Fuster: Y caso contrario, acá yo digo: bueno, quiero que los que no eran ejemplos me los vayas hacia 0, o sea, achiques el dot product, que quiere decir que vayas alejando
+
+Marina Fuster: si las cosas del contexto que no están apareciendo, y es así como se van
+
+Marina Fuster: ajustando los vectores iterativamente para
+
+Marina Fuster: tener en medings estáticos. Pero fíjense que lo que yo después termino usando es esta
+
+Chunk 66: 3c7e8e7d88c8b7c3ea232c4ad1796b49cb87ab6e94f557c5e9d095797e056fa8
+[00:33:15.890 --> 00:33:41.579] Intervenciones: 230, 231, 232
+Tokens: 130 de contenido, 132 con especiales
+. Pero fíjense que lo que yo después termino usando es esta, matriz, por ejemplo, no. Esta es la matriz de los Emedings como palabra. Entonces está por ahí, la tiro
+
+Marina Fuster: o las combino se puede usar distinto. Pero supongamos que la tiro me quedo con esta y listo, ya tengo mis emerys.
+
+Marina Fuster: Y eso es la parte estática, porque yo, una vez que termine.
+
+Chunk 67: 358724ad57e437c2da43bb5b5515e50b39a307105eaf892b7293a150fb980b99
+[00:33:37.780 --> 00:34:42.280] Intervenciones: 232, 233, 234, 235, 236, 237, 238, 239, 240
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: Y eso es la parte estática, porque yo, una vez que termine.
+
+Marina Fuster: me olvidé de todo esto y lo único que tengo es
+
+Marina Fuster: una matriz en la cual, si a mí me aparece esta frase: pizza, busco, Ok, la fila para pizza, la fila para Eight Fin Sim.
+
+Marina Fuster: Esto más o menos se entendió el Statik.
+
+Marina Fuster: Sí. Ok. Entonces
+
+Marina Fuster: no me interesa tanto el Static como quizás va a ser un poco más interesante, el Dynamic.
+
+Marina Fuster: ¿Qué se les ocurre que podemos usar como Dynamic Empevin.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Como que podemos usar.
+
+Marina Fuster: Que bueno, acá en 
+
+Chunk 68: 9c37ceb90c7b6ea7bdc688e383c7508ece9849be3f2ef54c858360e8c11d794d
+[00:34:29.940 --> 00:34:59.340] Intervenciones: 239, 240, 241, 242
+Tokens: 110 de contenido, 112 con especiales
+: Como que podemos usar.
+
+Marina Fuster: Que bueno, acá en el Static usamos estas matrices que con el prado las vamos acercando y bla, bla, bla etcétera.
+
+Marina Fuster: ¿qué cosa que hemos estado viendo se podría usar como herramienta para lograr y un.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Me suena como que de atención para captar el resto del mensaje.
+
+Chunk 69: 73f7c3bf42dc743c8038fc7edf10fb91aba603cad89481ca3040ec42c96b31c3
+[00:34:54.540 --> 00:35:47.100] Intervenciones: 242, 243, 244, 245, 246, 247, 248
+Tokens: 200 de contenido, 202 con especiales
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Me suena como que de atención para captar el resto del mensaje.
+
+Marina Fuster: Bien, o sea, si el en la dinámica impeding funciona de acuerdo al contexto. Va bien. Va por ahí la parte de atención, pero un poco más general. ¿qué es lo que
+
+Marina Fuster: todavía no usamos? ¿qué es lo que nos falta?
+
+Marina Fuster: Darle El uso un poco más abarcativo que la capa de atención
+
+Marina Fuster: no worlto be es la familia de modelos estáticos. Skate Gran Cybou es
+
+Marina Fuster: es una familia, que es de los medios estáticos. A no ser que hayan incluido algo dinámico.
+
+Marina Fuster: Y no me has enter
+
+Chunk 70: 3969bcc17b489ca39d6e4d0df546b240925304b2a7b54587c2a47b4227f34309
+[00:35:37.710 --> 00:36:12.840] Intervenciones: 247, 248, 249, 250, 251
+Tokens: 112 de contenido, 114 con especiales
+hayan incluido algo dinámico.
+
+Marina Fuster: Y no me has enterado. Es posible.
+
+Marina Fuster: Bueno, avanzo nuestro amigo que quedó de la clase. Uno. Esta es la imagen que había presentado de Euge.
+
+Marina Fuster: Lo que podemos usar es un encoder only transformer Sí.
+
+Marina Fuster: ¿y por qué podíamos usar un encuder only transformer como Dynamic en Bedding?
+
+Chunk 71: d65fdf8a0f0c206c07e862011cc4237196b967eb6835a2cb79ee209de2e31af7
+[00:36:07.120 --> 00:36:54.179] Intervenciones: 251, 252, 253, 254
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: ¿y por qué podíamos usar un encuder only transformer como Dynamic en Bedding?
+
+Marina Fuster: ¿qué tenía de distinto que me puede ser muy útil en esta instancia.
+
+Marina Fuster: porque puede mirar hacia delante también, bien porque el engo drownlis se caracteriza porque la idea es entender qué
+
+Marina Fuster: tanto hacia adelante como hacia atrás con que otros Tokens está interaccionando lo que yo le estoy dando al transformer. Si se acuerdan en el ejemplo de traducción. Ustedes tenían su parte en Cover y su parte de cover. Y la parte del engobern parte del chiste era que recibía al principio toda la frase que yo después 
+
+Chunk 72: 1480a6982c13ec0bdf4c3578d5493389435f7d2ff7aa64e1635486c100c8952a
+[00:36:32.490 --> 00:37:07.939] Intervenciones: 254, 255, 256
+Tokens: 89 de contenido, 91 con especiales
+era que recibía al principio toda la frase que yo después quiero traducir
+
+Marina Fuster: ¿Por qué? Porque esa parte logra mirar hacia adelante y hacia atrás, construir una representación vectorial.
+
+Marina Fuster: Espero útil para que después la parte del Icoder pueda ir generando
+
+Chunk 73: cbf10d1b9ca21874d69dcfcf31284f64dc27137721990a629deaf6a3d0939884
+[00:37:02.460 --> 00:37:42.160] Intervenciones: 256, 257, 258, 259, 260
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: Espero útil para que después la parte del Icoder pueda ir generando
+
+Marina Fuster: la frase que yo quiero ir traduciendo. Sí, Ese es un poco el rol en el ejemplo de traducción del Encoder, de la parte izquierda del Encoder
+
+Marina Fuster: que se conecta con el de cover y bla, bla, bla. Pero nada nos impide deshacernos de toda la parte del ecoder y usar el incoder solamente para crear un espacio de medio. Si
+
+Marina Fuster: entonces vamos a mirar un pelín más en detalle Vert, que es el
+
+Marina Fuster: el Encoder. Es un poco como por excelencia tradicional que está basado en Transformers.
+
+
+
+Chunk 74: b24f777f02d5032b885e07007b6da838f8868971c9c91421cf3fd8eef34f1a82
+[00:37:35.020 --> 00:38:12.050] Intervenciones: 260, 261, 262, 263
+Tokens: 125 de contenido, 127 con especiales
+Es un poco como por excelencia tradicional que está basado en Transformers.
+
+Marina Fuster: ¿alguno chupeó este paper o vio algún videíto de Bert?
+
+Marina Fuster: No, Bueno, entonces avancemos y
+
+Marina Fuster: vamos a ver 3 cosas básicas que son las que importan. Cuando se trata de ver. Primero lo que ya dijeron que dijo Juan Bautista: el tema de la atención. Ahí no hay mucho misterio, o sea.
+
+Chunk 75: 938c9b3879f9bb42b702a786c883238e5a11bc2655a8ad48d16228061a929c3e
+[00:38:12.190 --> 00:38:58.600] Intervenciones: 264, 265, 266, 267
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: en lugar de aplicar ese menos infinito que era la máscara.
+
+Marina Fuster: No hago nada y listo, O sea, las matrices. W. Q. W, es lo mismo. Tengo que aprenderlas de la misma forma. Lo único que no estoy haciendo es clavar ese menos infinito para que después me vaya a 0. Entonces, atención bidireccional perfecto.
+
+Marina Fuster: Ahora, las tareas de predicción, si cambian porque yo antes tenía Next token predicción, entonces claramente tenía la cuestión enmascarada. Ahora, en lo que es ver
+
+Marina Fuster: original, hay 2 tareas de predicción. La primera se llama next sentens predicción. Y la 
+
+Chunk 76: 736b703cca381cdf3723a9ff159fd8f67fc79c9f3875838ddbc8242e97a860e4
+[00:38:44.740 --> 00:39:15.800] Intervenciones: 267, 268, 269, 270
+Tokens: 142 de contenido, 144 con especiales
+s de predicción. La primera se llama next sentens predicción. Y la segunda se llama Mlm e al Mast Language Modeling, que me comí una L en el modeling.
+
+Marina Fuster: Después le agrego entonces
+
+Marina Fuster: nexent de predicción. Voy a ir un poco rápido porque no es la que me interesa tanto, pero fíjense lo siguiente: ¿ven más o menos el
+
+Marina Fuster: el cosito o se ve muy, muy chiquito. No sé cómo están ustedes de de la pantalla.
+
+Chunk 77: d391dc5ad3215c9d0c66d0241d9e19874236bb4e6a3ca4c68bb3e0573baef391
+[00:39:09.810 --> 00:39:52.159] Intervenciones: 270, 271, 272, 273, 274, 275
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: el cosito o se ve muy, muy chiquito. No sé cómo están ustedes de de la pantalla.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, claro.
+
+Marina Fuster: ¿no?
+
+Marina Fuster: Bien. Perfecto. Entonces fíjense lo siguiente: acá abajo que te dice. Bueno, esto es lo que yo le voy a alimentar a el
+
+Marina Fuster: el encoder. Si tengo esta serie de tokens, estas de acá color mentalizar era.
+
+Marina Fuster: tengo esta serie de tokens que es la primera frase y esta serie tokens, que es la segunda frase y charlando un poco de los tokens especiales. Tengo este es especial que se llama C Ls: Este es especial que se 
+
+Chunk 78: 73bb1ffcfe74428bf1ae34a4c4407977ca0d3de3cc6212af6d6ae78698c1b924
+[00:39:37.370 --> 00:40:08.659] Intervenciones: 275, 276
+Tokens: 99 de contenido, 101 con especiales
+este es especial que se llama C Ls: Este es especial que se llama separador. Sí,
+
+Marina Fuster: como yo entreno la parte de nexentance prediction. El chiste es que este token que va acá que va a tener se meding y etcétera, etcétera. Yo lo voy a ir alimentando por acá si este token puede mirar a los otros.
+
+Chunk 79: 67ddc426c5d4c8ec66df050ee429f07dc557e542402003af0a2e0afd28b250bc
+[00:40:08.830 --> 00:40:54.310] Intervenciones: 277, 278, 279, 280
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: ¿sí? Pero lo que va a tratar de definir acá es 1 si estas frases son continuas. O es como si tiene sentido que la frase de siga la A o Zero si no.
+
+Marina Fuster: ese es el rol de la parte de next sentents, predicciones. Fíjense que esto, que está acá. Está todo tachado, pero fíjense que esto es un embebding, o sea, porque yo tengo el C. L. S. Plu Blue. Paso por todos los tokens. Y acá me quedó un vectorcito
+
+Marina Fuster: para yo llegar a un 0, Uno.
+
+Marina Fuster: acabo de tener, no sé una capa que esté conectada a estas neuronas y que la sal
+
+Chunk 80: 1a0b652c0e88dbfdb0eccb88fe16656c6f83ed134d79dbef5d12d42df4630640
+[00:40:42.070 --> 00:41:11.129] Intervenciones: 280, 281, 282
+Tokens: 151 de contenido, 153 con especiales
+no sé una capa que esté conectada a estas neuronas y que la salida sea una sola, Sí, en realidad es que nos vendría, sino que es directamente estas conexiones. Sí,
+
+Marina Fuster: Entonces, con esta esta única neurona, digo 0, 1 una probabilidad o lo que fuera. Pero bueno, esto lo que es Nexel Temps Prediction entender si las oraciones entre ellas tienen relación.
+
+Marina Fuster: Ahora, ¿cuál es la tarea que a mí me interesa, que es la de M. L. M:
+
+Chunk 81: dac389f38ce17a07b6b7240e01a0d7149214ea09344bc8a4ad298dd380defc0f
+[00:41:07.290 --> 00:41:53.150] Intervenciones: 282, 283, 284, 285
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: Ahora, ¿cuál es la tarea que a mí me interesa, que es la de M. L. M:
+
+Marina Fuster: Lo que voy a hacer acá es enmascarar pedazos de la oración que yo voy a darle al transformer Sí, cuanto es más caro eso variable para ajustar en el paper ponen 15 por 100 como los enmascaron. Eso ahí es un poquito más interesante, porque
+
+Marina Fuster: fíjense que un 80 por 100 de ese 15 le pongo el Token Mask, que es otro toque, en especial donde es como que yo no veo el Token. Por otro lado, un 10 por 100 es Random y el otro 10 por 100 es exactamente el mismo.
+
+Marina Fuster: Esto quizás es mucho pedir, 
+
+Chunk 82: 36d5cb60b2c5e13b77bca757f9dea4a9e32100c72f83cb0d5935e1eed99b5fb3
+[00:41:30.310 --> 00:42:03.970] Intervenciones: 284, 285, 286, 287
+Tokens: 96 de contenido, 98 con especiales
+e el mismo.
+
+Marina Fuster: Esto quizás es mucho pedir, pero la pregunta a alguno se le ocurre
+
+Marina Fuster: ¿Por qué cuando yo en más, cuando yo aplico, la más. No quiero quizás aplicar siempre la más, o sea, el chiste acá va a ser. Si yo tengo una más.
+
+Marina Fuster: no
+
+Chunk 83: 2484d0e107ecf087e12bb0b954dc6fdecde4f490935ddaedc255e3a6be0d8729
+[00:42:03.110 --> 00:42:56.380] Intervenciones: 287, 288, 289, 290, 291, 292, 293, 294
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: no
+
+Marina Fuster: pongámosle Acá Tengo una más, y esto alimento a través del encoder. Al final voy a querer que me diga 1 o lo más cercano a 1. Y la palabra dis en este caso no this viene a reemplazar la másca.
+
+Marina Fuster: pero no siempre quiero ponerla más. No sé si alguno
+
+Marina Fuster: quiere tirarse al lance de por qué tendría el 10 por 100, random 10 por 100 idénticos y no 100 por 100.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Porque las personas, cuando escriben, se equivocan.
+
+Marina Fuster: Muy bien. Esa es una a favor de cuál.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sea a favor de de Random.
+
+Marina Fuster: 
+
+Chunk 84: d25fd5ba62a9c3cc3eb0471a8af96ed08e017b8e0009734b865690105734de82
+[00:42:37.280 --> 00:43:22.390] Intervenciones: 292, 293, 294, 295, 296
+Tokens: 134 de contenido, 136 con especiales
+.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sea a favor de de Random.
+
+Marina Fuster: Perfecto. Entonces, a favor de Random, la gente se equivoca. Entonces quiero contemplar que eso va a ocurrir porque a favor de idénticos.
+
+Marina Fuster: También
+
+Marina Fuster: avanzo porque ya son las 9 por las dudas, pero es un poco una combinación, o sea, por un lado idénticos, porque yo quiero asegurarme de que en ningún momento
+
+Chunk 85: 456598c3a7cffd107a098d176975ba8a3a04350e64adf479fd358d12d440c78b
+[00:43:22.460 --> 00:44:11.619] Intervenciones: 297, 298, 299, 300
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: o en ninguna posición, no tengo también lo mismo que está puesto, porque porque en la distribución real, o sea, cuando yo me vaya del entrenamiento más no va a aparecer. Y entonces voy a tener un balance entre que a veces está el token real y a veces
+
+Marina Fuster: o la gente se equivoca. O lo que yo no quiero que el modelo aprenda es que
+
+Marina Fuster: confíe demasiado en que si el Token está,
+
+Marina Fuster: es porque es ese, sino que aprenda también incorporar información del contexto, entonces es un balance entre esas 3 cosas y por un lado, además, es el que te empuja efect
+
+Chunk 86: 628ab0ea0907be75bb2ded08ec9c2225712c253c1c0b83c9eab714064fd4193d
+[00:43:51.640 --> 00:44:13.519] Intervenciones: 300, 301
+Tokens: 79 de contenido, 81 con especiales
+sas y por un lado, además, es el que te empuja efectivamente tener que averiguar cuál es el Token, que está ahí, y el la combinación de 10 por 100, rando al 10 por 100 idéntico es cubrir
+
+Marina Fuster: 1, equivocaciones.
+
+Chunk 87: a9bf425b10f91f252a17ce4c1879376808f567e6434e0248651ddab21c98313f
+[00:44:11.620 --> 00:44:54.700] Intervenciones: 301, 302, 303, 304, 305, 306
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: 1, equivocaciones.
+
+Marina Fuster: 2, que el modelo no se base tanto en la información que viene y que contemple que siempre tiene que tratar de incorporar el contexto; y tercero, que la distribución real A mí no me va a parecer nunca más, y por ahí tampoco me aparecen equivocaciones, sino simplemente el texto.
+
+Marina Fuster: Entonces estas son las 2 tareas que se combinan para lo que es entrenamiento en Sp: Y Mlm.
+
+Marina Fuster: ¿Alguna pregunta acá. Más o menos, o vamos.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Todo bien, pero.
+
+Marina Fuster: Perfecto. Lo último muy simple es 
+
+Chunk 88: 7865300df6709ae4be3d103e5fe9c78183e3457af5ed38c85278756c4e824f56
+[00:44:45.390 --> 00:45:06.129] Intervenciones: 305, 306, 307
+Tokens: 108 de contenido, 110 con especiales
+bien, pero.
+
+Marina Fuster: Perfecto. Lo último muy simple es el tema de los inputs. Y nosotros antes le dábamos el corpus.
+
+Marina Fuster: Acá Hay que hacer algo un poquito más sofisticado, en el sentido de que yo tengo que armar, que tengo que poner cls. Tengo que agarrar 2 oraciones a veces que sean continuas a veces que no
+
+Chunk 89: 0d95395a543225fcd39c96a6cbd67c73fef9c8ea7d24c9237bd34cfa329fc03d
+[00:45:06.140 --> 00:45:55.709] Intervenciones: 308, 309, 310, 311, 312
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: separarlas por un separator. Y bueno, al final, también tengo que hacer algo un poco más complejo con la función de pérdida, porque está combinando los 2,
+
+Marina Fuster: pero
+
+Marina Fuster: algo que es muy feliz para nosotros en el cuestión en la cuestión de espacios de meding, de algoritmos de Meding es que yo en realidad no necesito la parte de nexentance predicción, porque esto se hace así con
+
+Marina Fuster: en el Paper. Bueno, justo, El Paper de Berta original tiene como fin que la arquitectura sea apropiada para un montón de
+
+Marina Fuster: tareas post. Si es como la arquitectura base y yo después, 
+
+Chunk 90: b9edb69b50c3a9ab2a0e7e9b1962517dd1d7f75cf7a17304c169bb881af26d52
+[00:45:43.690 --> 00:46:05.430] Intervenciones: 312, 313, 314
+Tokens: 118 de contenido, 120 con especiales
+tareas post. Si es como la arquitectura base y yo después, quizás quiero hacer resumir, o cuestión, anstering o otras cosas. Entonces, por ejemplo, para lo que es cubanai
+
+Marina Fuster: entender la relación entre oraciones que son continuas o no me sirve. Sí, pero si yo estoy armando un espacio de en medio donde lo que quiero hacer es
+
+Marina Fuster: y
+
+Chunk 91: 0d31c3c71767bc8ec3aa475e0627cb6bcdf06ade46dfb4b364e4e150a7f28ac9
+[00:46:04.390 --> 00:46:57.369] Intervenciones: 314, 315, 316, 317
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: y
+
+Marina Fuster: ver la representación en el espacio de las distintas palabras, o lo que sea que esté considerando que tengo, no necesito hacer un excedente expedition con tener mlm, que es la que me da esto de Chia aprende del contexto ¿De ¿De qué se trata esta palabra con eso ya está.
+
+Marina Fuster: Entonces es algo que se puede simplificar ahí abajo. Les dejé por las dudas si lo necesitan, el Paper, donde hay como una comparación de muchos vert. Y están los que no usan Nsp, sino que solo usan Mlm: Bien.
+
+Marina Fuster: esto es un poco lo que es la dinamica, y es lo que más se usa hoy por hoy. 
+
+Chunk 92: 3611567aeff064eaba7bccc482faba327c571cf890e60b2b69dd0ceb6fac88f7
+[00:46:40.080 --> 00:47:06.129] Intervenciones: 317, 318
+Tokens: 129 de contenido, 131 con especiales
+que es la dinamica, y es lo que más se usa hoy por hoy. O sea, estos emeding son bastante mejores que los que son estáticos. Si el costo de diferencia no es un impedimento Okay, porque acá tengo que hacer un fip. Howard. Entonces quizás
+
+Marina Fuster: tengo alguna aplicación donde eso me es muy caro, y el stating en medio. Es una buena opción, porque solamente un look up. Y nos vimos.
+
+Chunk 93: cf0b0d05e4ae6dafed64fb8489c2664783f9eedcecf2d6b288c20db512b936a6
+[00:47:06.470 --> 00:47:59.909] Intervenciones: 319, 320, 321, 322, 323, 324, 325, 326, 327
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: Así que no es como para descartarlo. Tampoco
+
+Marina Fuster: Bien, alguna pregunta de esto, sino
+
+Marina Fuster: lentamente. Nos vamos acercando al final todo bien.
+
+Marina Fuster: Ya deseando subir al final
+
+Marina Fuster: bien, es lo último y va a ser medio cortito, porque creo que esta clase es como muy ping pong de temas.
+
+Marina Fuster: ¿por qué? Porque yo no Leencogin fue relevante.
+
+Marina Fuster: Esto no me acuerdo si lo llamamos la primera clase, la verdad.
+
+Marina Fuster: Pero bueno, lo repito un poco brevemente.
+
+Marina Fuster: No sé si sabían o lo charlamos o se acuerdan, el estado del arte 
+
+Chunk 94: 224637742fc6d45c5123d14704423cd484211e7b64ffcd8500a46d4b4220b860
+[00:47:45.630 --> 00:48:04.729] Intervenciones: 327, 328
+Tokens: 76 de contenido, 78 con especiales
+sé si sabían o lo charlamos o se acuerdan, el estado del arte previo a lo que es transformers, era redes neuronales recurrentes, no importa cual más o menos compleja. Pero la idea general es que la con la
+
+Marina Fuster: la variable tiempo o la variable secuencia
+
+Chunk 95: 95f3b2102acafccb5f15e1011ab2e61b9127d31fa4a48d653ad482a7ff7ead51
+[00:48:01.010 --> 00:48:57.319] Intervenciones: 328, 329, 330, 331
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: la variable tiempo o la variable secuencia
+
+Marina Fuster: se daba por hacer lo que se llaman Roland outs sucesivos de la red. O sea, yo hacía un fifoware y la representación interna que se generaba la alimentaba en otro de la red y así sucesivamente. Entonces, en lugar de tener un embeding que yo le sumo a mi lector.
+
+Marina Fuster: las la longitud de la secuencia implicaba que yo tenía que ir alimentando ese Estado interno a lo largo de despliegues sucesivos de la red despliegues sucesivos. Me refiero a agarro la misma red y también a un software. Sí, entonces.
+
+Marina Fuster: en codor de cover ya existía atención
+
+Chunk 96: 544ad9b64437514d77369bcf7069ddd1f9ab555eedd65e1cb975f40861fba130
+[00:48:22.470 --> 00:49:04.670] Intervenciones: 330, 331, 332
+Tokens: 145 de contenido, 147 con especiales
+, entonces.
+
+Marina Fuster: en codor de cover ya existía atención, mecanismo. Ya existía de todo el resto que los email que sos bla, bla, bla. Todo eso ya existía. Entonces el atention y sol unir viene de que no necesito la parte recurrente, o sea, con atención, posicionar el coding y mi Mp Estoy Jose.
+
+Marina Fuster: Entonces, ¿qué nos interesa de positional en Coding 2 cosas: Uno: ¿cómo declaramos esas posiciones? Y 2,
+
+Chunk 97: 8fdb2e37d907e76271ea052dcbd73a3463cc0c645485b19dd19a276f209ed3d8
+[00:49:04.790 --> 00:49:52.180] Intervenciones: 333, 334, 335, 336, 337, 338
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: ¿Cómo impacta el posicional en coding en la generalización. Y acá hay 2 aspectos importantes. Cuando yo estoy pensando en generalizar 1
+
+Marina Fuster: que hay un transformer. Hay un límite dado por el transformer. Sí.
+
+Marina Fuster: ¿a qué me refiero. Con esto
+
+Marina Fuster: yo puedo tener el algoritmo de positional en codi más generalizable de la Tierra, pero el transformer
+
+Marina Fuster: se tiene que bancar en su estructura de atención y M. L. Ps.
+
+Marina Fuster: Poder procesar eso sí, o poder interpretar eso por una cuestión computacional de que yo tengo que armar la matriz de atención que si eso me explota, es un problema y por una 
+
+Chunk 98: 31e13bc27aae71cca3bf9b160c24616ac062cba031af23e1f23634077edfcff3
+[00:49:37.400 --> 00:50:04.219] Intervenciones: 338, 339
+Tokens: 100 de contenido, 102 con especiales
+de atención que si eso me explota, es un problema y por una cuestión de parámetros también. Si entonces.
+
+Marina Fuster: por un lado, si yo eso por ahí no tengo tanto control, no de de hasta dónde el transformer con sus propios parámetros llega a procesar todo, Pero a mí lo que sí me interesa es que el límite
+
+Chunk 99: 3705e0ee35ae228051b2f9978c9009edfb5f47f4f065c9ed40a66eaf62fbfa97
+[00:50:04.220 --> 00:50:53.340] Intervenciones: 340, 341, 342, 343, 344
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: no venga tanto por el lado del positional en Covid: Sí, Y eso al principio quizás no era tanto un problema, pero últimamente los modelos consumen cada vez más contexto. Entonces la parte posicional en Coding se vuelve más relevante también. O sea, yo tengo que tener estrategias, viola generalizables de posición en Covid.
+
+Marina Fuster: Esto es un mini representación. ¿de
+
+Marina Fuster: qué pasa si yo lo hago de forma muy Naif.
+
+Marina Fuster: que antes tenía una diapositiva que mostraba esto? Creo que era o agregarle el número entero de la posición
+
+Marina Fuster: o una fracción, algo por el estilo. Ya 
+
+Chunk 100: da6b0b500c17079179f0abbb4562cbbf65a890d7df8d76af203d5d218ac0f926
+[00:50:32.320 --> 00:50:53.340] Intervenciones: 343, 344
+Tokens: 57 de contenido, 59 con especiales
+sición
+
+Marina Fuster: o una fracción, algo por el estilo. Ya no no me acuerdo, pero nada Lo que yo básicamente quiero tener en mente para para ver lo visual es que si yo le sumo el
+
+Chunk 101: 5297eb26dc273ecd50dfea70262b88672e1b54d6df137e6b264b3e35c4c732af
+[00:50:53.470 --> 00:51:33.420] Intervenciones: 345, 346, 347, 348
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: el al el E. M. B ing the Positional Ecoding, el Mbajing original. No se me destruye que lo que está mostrando este gráfico, el de la izquierda le está sumando los learn positional Ecodins de la demo ¿no? Entonces. Fíjense que yo tengo el la parte más
+
+Marina Fuster: clara. En realidad es donde arranca Y a medida que lo voy moviendo se me va corriendo. Pero fíjense que
+
+Marina Fuster: si bien tampoco sé si esto es ideal o no dio. Fíjense que quedó más o menos en la región, y le pedí, en cambio, si yo lo hago de una forma muy naif
+
+Marina Fuster: pierdo completamente el significado de mi embay original. Es
+
+Chunk 102: 3a0a114f84d543cab939badca076c3d4bfdbf85c4b6fb3ac87c21b53a54aa342
+[00:51:27.170 --> 00:51:53.160] Intervenciones: 348, 349, 350, 351, 352
+Tokens: 125 de contenido, 127 con especiales
+Fuster: pierdo completamente el significado de mi embay original. Eso, por un lado, algo que siempre que tener en cuenta
+
+Marina Fuster: alguna pregunta sobre eso, no sé si pasa un poco rápido
+
+Marina Fuster: o algo que no se haya entendido de la parte de generalización.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Lo podrías repetir. No me quedó del todo claro.
+
+Marina Fuster: Esto o esto.
+
+Chunk 103: 7ddf959ea9e7f7184fe3fd70ad2d4c6af27de7f5c51dc5c291d7296df85280dd
+[00:51:51.050 --> 00:52:44.660] Intervenciones: 352, 353, 354, 355, 356, 357, 358
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: Esto o esto.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No, no. La La parte de generalización.
+
+Marina Fuster: Ah bien que con la parte de generalización, lo que me refiero es que en
+
+Marina Fuster: la generali la generalización, de acuerdo a lo que es procesar una secuencia larga te importa desde el punto de vista del transformer en sí sin la parte de
+
+Marina Fuster: en beding y positional ecodin Me refiero más a la parte de atención y parámetros del Mlp. Sea Vos ahí podés tener una limitante de que quizás el Transformer no llega a incorporar
+
+Marina Fuster: toda la información que vos tenés en la secuencia. No fíjate que vos
+
+Marina Fuster: tenés como es
+
+Chunk 104: 84cfee9a27ccb69b0d61b3572b2218efba041b7ed739323df43a9e3108da7737
+[00:52:27.320 --> 00:52:44.660] Intervenciones: 357, 358
+Tokens: 81 de contenido, 83 con especiales
+la secuencia. No fíjate que vos
+
+Marina Fuster: tenés como ese ese embeding que viaja por el residuo stream en el Transformer, al cual vas modificando cuando incorpora atención de otros Tokens cuando pasa por e el M L. P. E incorpora datos
+
+Chunk 105: 4156b90a1706b4f5f94e300482e5883d5d25d85777367d077f81cbd1463c2b12
+[00:52:44.660 --> 00:53:22.559] Intervenciones: 359, 360, 361, 362
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: de de Internet, por así decirlo, y así sucesivamente. Entonces ese ese vector que va viajando para el residuo stream. También tiene un límite.
+
+Marina Fuster: O sea, vos no podés ahí incorporar la información infinita. Entonces, una limitación de la generalización de secuencia va a venir por el lado del transformer
+
+Marina Fuster: ponerle que de eso vos no tenés control. Si te estás mirando solo el posicional en código. Pero lo que sí te quieres asegurar es que el algoritmo que uses de Positional Engoding
+
+Marina Fuster: es lo suficientemente general para que los problemas que quizás tenga el transformer de generalización no vengan por el 
+
+Chunk 106: 439adc38ab863910a13f3594e0c3538685e57fcc71fc672c24400b9db42f45a6
+[00:53:12.540 --> 00:53:30.050] Intervenciones: 362, 363, 364
+Tokens: 62 de contenido, 64 con especiales
+problemas que quizás tenga el transformer de generalización no vengan por el porque vos elegiste
+
+Marina Fuster: una mala estrategia de positional en coding sí.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, Ahora, Sí. Gracias.
+
+Chunk 107: 9c02059746f32a3b69aa2a7466f638aadd9c47d552c29da6cbd0d228a9c8e517
+[00:53:28.670 --> 00:54:23.550] Intervenciones: 364, 365, 366, 367, 368, 369
+Tokens: 200 de contenido, 202 con especiales
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, Ahora, Sí. Gracias.
+
+Marina Fuster: Bien perfecto. Y todo esto sin meterme en la parte de cómputo. O sea, eso es otra cosa. Bien, entonces Este se fue el que vimos el absolute positional. Encoding. Se llama antes. Lo vimos como solo positional, pero es absoluto si no es relativo a nada. O sea, yo tengo este cálculo fijo. Cada dimensión
+
+Marina Fuster: hago la cuenta y listo.
+
+Marina Fuster: Entonces, ¿cuál es la motivación de esta cuenta. Sí
+
+Marina Fuster: que parece un poco oscura. Al principio. Fíjense, este es un grafito que muestra de las posiciones 0 a 50
+
+Marina Fu
+
+Chunk 108: 7b5f766197925d2c7b61ea8a43db6a78bd8e364347e3c9730bbf3eaab5bbb193
+[00:53:56.980 --> 00:54:23.550] Intervenciones: 368, 369
+Tokens: 94 de contenido, 96 con especiales
+, este es un grafito que muestra de las posiciones 0 a 50
+
+Marina Fuster: como van cambiando los valores. Si yo estoy tomando la parte de seno, si y fíjense que lo que termina pasando es que las dimensiones, esto 0 50 vendría a ser si el medio fuera de 50 dimensiones en el paper, el 512. Sí, fíjense que
+
+Chunk 109: d2df8ccac0a5d0e6d373ce1dfa09cb81425dcf251a3ab3025a7ebc90fac2f5bb
+[00:54:23.800 --> 00:55:11.990] Intervenciones: 370, 371, 372, 373, 374
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: las dimensiones más bajas tienen cambios muy bruscos de una posición a la otra, ¿no? Entonces eso me va a servir para cuando yo estoy procesando reconocer que 2 tokens están
+
+Marina Fuster: son distintos, ¿no? Pero fíjense que igual, Yo me puedo dar cuenta de que esos toques, que son distintos
+
+Marina Fuster: y que están en posiciones distintas, igual
+
+Marina Fuster: por ahí están más o menos cerca, porque a medida que voy avanzando en las dimensiones, voy modelando relaciones de mayor distancia. ¿no? Fíjense que la número 16 es esta curva.
+
+Marina Fuster: entonces quizás todos 
+
+Chunk 110: 7c51bd805e98f3cd94f590f91806644f6c2e03cf0e27db9a073f92b479ea9e83
+[00:54:50.440 --> 00:55:16.530] Intervenciones: 373, 374, 375
+Tokens: 76 de contenido, 78 con especiales
+mero 16 es esta curva.
+
+Marina Fuster: entonces quizás todos estos van subiendo un poco de valor que es muy distinto de los que están acá. Fíjense que la de 32
+
+Marina Fuster: va subiendo un poco más levemente y la de 60. Y 2.
+
+Chunk 111: 3165ec0bed13ad703f7ee250beee51e3986d6870ca82fd7bc0c2ffcf8ee6989a
+[00:55:12.400 --> 00:56:02.800] Intervenciones: 375, 376, 377, 378, 379
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: va subiendo un poco más levemente y la de 60. Y 2.
+
+Marina Fuster: Bueno, ese sentido se me fue. Está como por afuera del gráfico, pero fíjense que si se mantiene casi estable, entonces las distintas dimensiones de el vector de posicional en coging. Me están tratando de modelar y dar una señal
+
+Marina Fuster: sobre Ok, algunos relaciones de corta distancia, otros relaciones de más larga distancia, sí. Entonces quizás
+
+Marina Fuster: yo tengo una secuencia de un 1 000 000. Y el embeding me puede dar información de que quizás
+
+Marina Fuster: tales tokens están muy lejos, si que no, que prácticamente las 
+
+Chunk 112: 753c837681d642b4b4ed85f914474b566063c2670a67a86687534bcdccc4adb1
+[00:55:47.820 --> 00:56:17.560] Intervenciones: 379, 380, 381, 382, 383
+Tokens: 134 de contenido, 136 con especiales
+tales tokens están muy lejos, si que no, que prácticamente las que son de cercanía. No les voy a dar mucha bola, sino que están muy lejos. Entonces, un poco la idea de jugar con las frecuencias es eso ir modelando relaciones de distinta distancia.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Entonces.
+
+Marina Fuster: Pereza.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Tener el peor dimensión más grande posible.
+
+Marina Fuster: Qué opinas, o sea que.
+
+Chunk 113: 069d6baa32b84c3ea18ff5a4d363b38744e73ef92beefbb25ef906fc15a373d6
+[00:56:12.390 --> 00:56:50.840] Intervenciones: 383, 384, 385, 386, 387, 388
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: Qué opinas, o sea que.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Con un mes muy grande. Puedo ubicar relaciones entre palabras que estén muy lejos, pero también puedo encontrar relaciones que en verdad no existen.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, mencioné de perro.
+
+Marina Fuster: Eso es.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Catorce palabras! ¿qué.
+
+Marina Fuster: No. Ese es un buen punto. Lo que vos decís de por ahí. Estoy agregando ruido porque estás tratando de modelar algo de ni idea. Pero vos decís, me conviene tener un vector cada vez más grande, que es, L, ¿Qué es lo que 
+
+Chunk 114: 6592f82fe3b32655c80f3bce58684d31b5c1cbc32c392b4662a9604dda370b1a
+[00:56:35.360 --> 00:57:01.270] Intervenciones: 388, 389, 390
+Tokens: 62 de contenido, 64 con especiales
+er un vector cada vez más grande, que es, L, ¿Qué es lo que te limita esa idea.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y el Transformer.
+
+Marina Fuster: Bien perfecto, o sea el justo, el tamaño de ese vector, y
+
+Chunk 115: cf5426da35be723252955ad5e186da0e348457fe3ccd38b7c95c2636fa9d31d9
+[00:56:53.810 --> 00:57:47.499] Intervenciones: 390, 391, 392, 393, 394, 395
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: Bien perfecto, o sea el justo, el tamaño de ese vector, y
+
+Marina Fuster: un paso más adelante de todo lo que tenés que hacer te afecta directamente todo, no solo la performance a nivel no solo el costo computacional, sino también la performance, Entonces, tenés un vector muy, muy, muy largo, más de lo que necesitas. Eso también es malo, porque va a ser
+
+Marina Fuster: propenso a ver fitiar.
+
+Marina Fuster: Entonces tampoco puedes hacer algo infinito.
+
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Ahora, Sí.
+
+Marina Fuster: Bien, Perfecto. Igual Muy buena la pregunta, porque si en teoría el vos tener más espacio
+
+Chunk 116: 63172f14da27b607acb737b20a9bb9ae658d4bd6bad64426b43b585cfe5c2e67
+[00:57:33.230 --> 00:57:50.360] Intervenciones: 395, 396
+Tokens: 77 de contenido, 79 con especiales
+la pregunta, porque si en teoría el vos tener más espacio, si cada una de esas dimensiones va modelando de distinta relación de distinta de distinto plazo, por así decirlo.
+
+Marina Fuster: 1 pensaría que lo puedes seguir extendiendo.
+
+Chunk 117: a9775f9e4b7a068fb5994b9280b1ee0d6ac3f27e9daa1a45757414f548cf5d9d
+[00:57:47.670 --> 00:58:32.660] Intervenciones: 396, 397, 398, 399
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: 1 pensaría que lo puedes seguir extendiendo.
+
+Marina Fuster: Y esto porque es de interés procesar secuencias largas. Eso ya un poco más allá de la teoría, ustedes lo van experimentando, que todo lo que tiene que ver con razonamiento. Se correlaciona muy directamente con
+
+Marina Fuster: el uso de muchos tokens. Si los niveles de razonamiento, cuando están resolviendo un problema en general. Las estrategias que vamos a ver más adelante de razonamiento que se usan implica que las secuencias sean más largas. Entonces, a mí me interesa poder generalizar eso. Bien. Sí,
+
+Marina Fuster: son 20 y 20. 
+
+Chunk 118: 4e2e61e8ef335942dfa34f59d3dbccd1d601a5e22e825ea38d3eb8a2c423eb82
+[00:58:06.640 --> 00:58:41.050] Intervenciones: 398, 399, 400
+Tokens: 91 de contenido, 93 con especiales
+er generalizar eso. Bien. Sí,
+
+Marina Fuster: son 20 y 20. Quiero enfocarme un poco. Ahora en el D. P.
+
+Marina Fuster: Acá medio que un poco termina, lo que es Positional Engoding. Esto es para que entiendan un poco la motivación de de lo del tema de frecuencias.
+
+Chunk 119: f95d2fb22918c2f6cb9241fa9117fc991bbfc9627571cfb53caa50c639fa067b
+[00:58:41.310 --> 00:59:25.170] Intervenciones: 401, 402, 403
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: Lo voy a retomar en la clase que vemos un poco más, lo que se hace a nivel industria de laboratorios, 2 avances muy importantes que igual los explico después. Pero por si alguno quiere ir cambiando el primero, Mixter of Express, donde la idea es
+
+Marina Fuster: tener muchos parámetros en el modelo. Es beneficioso porque me permite generalizar mejor a conjuntos de datos más grandes.
+
+Marina Fuster: pero inferencia pesadilla, o sea, con los modelos cada vez más grandes que hay. Es mucho. Es muy costoso hacer inferencia, porque ahora todo el mundo los usa muy intensivamente, entonces una forma de 
+
+Chunk 120: 6611f5163bdcd3bc80ceec2ff09528b8f4b4970fa51ce76427cd0fc2e073294b
+[00:59:09.720 --> 00:59:34.730] Intervenciones: 403, 404
+Tokens: 83 de contenido, 85 con especiales
+o el mundo los usa muy intensivamente, entonces una forma de ser muy eficiente en la parte de diferencia.
+
+Marina Fuster: sin renunciar a los parámetros es mix surf experts. Esa es la motivación, y el otro es retrory positional. Encoging Recién les presenté 1 que era
+
+Chunk 121: 231d97cba393f889541890242b9b5baad19e5ca75882d5d99a7cf8a0fab3c2f6
+[00:59:34.730 --> 01:00:23.119] Intervenciones: 405, 406, 407
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: bueno. Yo le presenté lo monta en la clase, 1 que era el clásico, que es absoluto. Pero esta idea de modelar relaciones de corto de corta distancia y de larga distancia es interesante, pero tiene la desventaja de que si yo tengo la frase, el perro azul a
+
+Marina Fuster: al principio de un texto o en el medio de un texto o al final de un texto. El modelo igual tiene que entender cómo se relacionan esas palabras en las distintas partes, porque esto no
+
+Marina Fuster: es absoluto. Cada posición tiene lo suyo. Fin. Entonces lo que vamos a ver un poquito después de cómo general
+
+Chunk 122: ee4359cda394d46fb8f11d80702501f4e6df036c0d0736293723adbe13e15db8
+[01:00:04.760 --> 01:00:23.119] Intervenciones: 407
+Tokens: 68 de contenido, 70 con especiales
+Entonces lo que vamos a ver un poquito después de cómo generaliza en modelos más grandes es esta cuestión de Roster Positional Ecoding, que incluye un componente de contemplar cuando las cosas son relativas. En la secuencia.
+
+Chunk 123: 8f935abf8d24a017942d83daddc8903d0fd4bbaf029fd9a2f176015e35218368
+[01:00:24.240 --> 01:01:11.649] Intervenciones: 408, 409, 410
+Tokens: 200 de contenido, 202 con especiales
+Marina Fuster: voy a cerrar por acá lo que es la clase. Acá les queda. La bibliografía está separado por secciones. Lo que nadie se ve y posición en el Covi, los que tienen estrellitas, porque a mí me parece que son los que están buenos para chupear si les interesa acá recomendaciones. Si alguno quiere chusmear
+
+Marina Fuster: acá recomendaciones de estar al día con las noticias. Creo que este blog es bastante ameno, y a mí me agrada que sea una vez por semana para no saturarme.
+
+Marina Fuster: Y por último, esto es como video sugerido a los que les interesa un poco la parte más interpretable, ese vídeo de blue One Brown 
+
+Chunk 124: 36a16c84de7c7aab9e205c0583b1669382760694de55a70528b0f2df3203bbe4
+[01:00:53.630 --> 01:01:11.649] Intervenciones: 410
+Tokens: 57 de contenido, 59 con especiales
+les interesa un poco la parte más interpretable, ese vídeo de blue One Brown Está bueno, pregunta abierta que el disparador de la clase que viene. Fíjense o traten de reflexionar que lo
+
+Chunk 125: f46d09b160d22cfd66fb1cb9cd67af640228a7bdc9f0a830a7de5f305dec4b80
+[01:01:11.920 --> 01:01:48.330] Intervenciones: 411, 412, 413, 414, 415
+Tokens: 188 de contenido, 190 con especiales
+Marina Fuster: los modelos que vimos de generación no tienen ningún incentivo per se para hacer lo que hacen hoy los modelos, instrucciones. Reshoring bla, bla, bla. Entonces pregunta abierta: ¿por qué es que los modelos funcionan así hoy? ¿y qué vemos la clase próxima, toda la parte de
+
+Marina Fuster: transfer learning No, Eso va a la 4 perdón. Toda la parte de
+
+Marina Fuster: por qué los modelos hoy funcionan como deberían funcionar, que te ayudan y que resuelven, y que bla bla
+
+Marina Fuster: Poco eso.
+
+Marina Fuster: Y en fin, voy a parar alguna duda.

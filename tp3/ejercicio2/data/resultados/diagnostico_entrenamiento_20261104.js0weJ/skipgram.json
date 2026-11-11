@@ -1,0 +1,235 @@
+{
+  "fecha_utc": "2026-11-04T21:38:27.860673+00:00",
+  "objetivo": "cómo se entrena Word2Vec skip-gram con pares positivos y negativos",
+  "coleccion": "tp3_248fe3ddb4d5588934314f79",
+  "ruta_chroma": "/Users/agostinasquillari/Desktop/LLMS/monorepo-llm/tp3/ejercicio2/data/chroma",
+  "manifiesto": {
+    "version": 2,
+    "sha256_documento_chunks": "fbbddd3cf54cf0640e850c4da18c1fe41f7efc3a982a5029dd34a85dafe31271",
+    "cantidad_chunks": 136,
+    "embedding": {
+      "modelo": "sentence-transformers/all-MiniLM-L6-v2",
+      "revision": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+      "dimension": 384,
+      "dispositivo": "cpu",
+      "normalizar": false
+    },
+    "metrica": "cosine",
+    "versiones": {
+      "chromadb": "1.5.9",
+      "sentence-transformers": "5.1.2",
+      "torch": "2.8.0",
+      "transformers": "4.57.1",
+      "tokenizers": "0.22.2"
+    },
+    "fuentes": [
+      {
+        "fuente": "docs/embeddings_2.VTT",
+        "sha256_fuente": "a1fa8324b6d63c7c6d90fd4dc467b65095524aba8e134d806c2118278b24cd18",
+        "id_configuracion_chunks": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd"
+      },
+      {
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "sha256_fuente": "ff2487e368cc59534b2abfa6e711f61cc9f00bc4bf2fe344ed76fcce0262e269",
+        "id_configuracion_chunks": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5"
+      }
+    ]
+  },
+  "k_solicitado": 8,
+  "k_efectivo": 8,
+  "umbral": null,
+  "segundos_embedding_incluida_carga": 0.24120787499999974,
+  "segundos_busqueda": 0.0018099999999998673,
+  "segundos_totales": 0.24316612499999968,
+  "referencias": [
+    {
+      "posicion": 1,
+      "chunk_id": "bcbe392ddb91bb30cb7dec0000d6769b423243123437c5cb7a1c166826054d14",
+      "texto": "Marina Fuster: agarro ambas. Y digo, es un par positivo, por otro lado, que sería este item B, lo que es el par negativo. Selecciona palabra y agarra una random de todo el vocabulario. Eso vendría a ser el negativo. Y lo que puedo hacer es un clasificador que me distinga entre lo que son pares positivos y pares negativos.\n\nMarina Fuster: Acá W, C,\n\nMarina Fuster: La W por Word. Y la C es por context si quiere decir que la de la izquierda es la palabra en la que me estoy centrando y la de las letras del contexto. Y en este tipo de en este Squithgram, los parámetros que me quedan son ",
+      "distancia_coseno": 0.47098439931869507,
+      "similitud_coseno": 0.5290156006813049,
+      "metadata": {
+        "segmentos_ids": [
+          "207",
+          "208",
+          "209"
+        ],
+        "fin": "00:30:22.040",
+        "fin_caracter": 26949,
+        "inicio_caracter": 26360,
+        "inicio_ms": 1785490,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "fin_ms": 1822040,
+        "fuente": "docs/embeddings_2.VTT",
+        "tokens_totales": 202,
+        "tokens_contenido": 200,
+        "inicio": "00:29:45.490"
+      }
+    },
+    {
+      "posicion": 2,
+      "chunk_id": "0b0d0c97db961a6f262b5c5e53902a5569703af038281c1fce3fb0da81e8011a",
+      "texto": "y básica es que yo voy a tener un modelo que lo voy a entrenar con pares pares positivos y pares negativos.\n\nMarina Fuster: ¿cómo definen los pares positivos? Bueno, estuvimos charlando bastante de esta ventana de contexto que yo eligiendo. Entonces\n\nMarina Fuster: yo voy a definir una ventana 5, y cuando la palabra aparezca con las otras en ese contexto.",
+      "distancia_coseno": 0.5194057822227478,
+      "similitud_coseno": 0.4805942177772522,
+      "metadata": {
+        "tokens_contenido": 122,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "fin_caracter": 26358,
+        "inicio_ms": 1756470,
+        "inicio": "00:29:16.470",
+        "fin": "00:29:45.380",
+        "inicio_caracter": 26001,
+        "tokens_totales": 124,
+        "segmentos_ids": [
+          "204",
+          "205",
+          "206"
+        ],
+        "fuente": "docs/embeddings_2.VTT",
+        "fin_ms": 1785380
+      }
+    },
+    {
+      "posicion": 3,
+      "chunk_id": "567321612e8888670b0397f4c317677ff01f9f32a055016d92c922f14858beca",
+      "texto": "Marina Fuster: no es lo mejor y que directamente puedes usar Youtube y face y hacer algo del lado del modelo al que le interesa. Lo pueden cambiar.\n\nMarina Fuster: Bien, ahora vamos a pasar a lo que es emerys.\n\nMarina Fuster: Esto ya lo fuimos viendo con la motivación cómo representar el significado de una palabra. Voy a usar palabras como reemplazo de unidad lingüística, Puede ser palabra, documento, su palabra, etcétera, etcétera. Me interesan un montón de cosas que caen bajo un campo que se llama lexical Semántics.\n\nMarina Fuster: Y lo que es Vectores Matics, que es como este precursor de Mains surge de 2 ideas\n\nMarina Fuster: que la primera sigue ",
+      "distancia_coseno": 0.5300130844116211,
+      "similitud_coseno": 0.4699869155883789,
+      "metadata": {
+        "tokens_totales": 202,
+        "fin_ms": 1148759,
+        "tokens_contenido": 200,
+        "inicio_caracter": 15879,
+        "fin": "00:19:08.759",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "fuente": "docs/embeddings_2.VTT",
+        "fin_caracter": 16538,
+        "inicio": "00:18:22.460",
+        "inicio_ms": 1102460,
+        "segmentos_ids": [
+          "121",
+          "122",
+          "123",
+          "124",
+          "125"
+        ]
+      }
+    },
+    {
+      "posicion": 4,
+      "chunk_id": "3708230ec5e125fdd8ad2216514a317cee0af4bfa5de7c1e9bb9e0e7b31cbfab",
+      "texto": "Texto → Modelo de embeddings → Vector\n\n\nEmbeddings estáticos y contextuales\nUn embedding estático, como el de una palabra en Word2Vec, conserva el mismo vector\npara esa palabra una vez entrenado. El contexto del corpus ayuda a aprenderlo durante el\nentrenamiento. En cada uso posterior, el modelo consulta el vector fijo.\n\nUn embedding contextual se calcula para una aparición concreta. En «fui al banco a retirar\ndinero» y «me senté en el banco de la plaza», las palabras vecinas permiten construir\nrepresentaciones distintas para «banco». La clase ilustra esta diferencia con un ejemplo de\n«pizza» en dos oraciones.\n\nRefer",
+      "distancia_coseno": 0.5433098673820496,
+      "similitud_coseno": 0.45669013261795044,
+      "metadata": {
+        "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+        "tokens_totales": 202,
+        "pagina_inicio": 3,
+        "apunte_derivado": true,
+        "inicio_caracter": 850,
+        "pagina_fin": 3,
+        "tokens_contenido": 200,
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "segmentos_ids": [
+          "3"
+        ],
+        "fin_caracter": 1474
+      }
+    },
+    {
+      "posicion": 5,
+      "chunk_id": "9cc37a19e304b84aec8a2d3923b62d1889880bcbcd935303f516577af774c96f",
+      "texto": ": para investigar y que lo chus meen, si les interesa, esto es un poco cómo se buscan definir los tamaños de vocabulario, que siempre fue muy como obscuro. Y esto salió hace un par de años para uniformar un poco. Y por otro lado, nosotros mismos que pasamos a up fake, y después iban marchando los tokens.\n\nMarina Fuster: Bueno, meta sacó una arquitectura donde argumenta que ese proceso de tokenización, que da lugar a muchos problemas",
+      "distancia_coseno": 0.5464558601379395,
+      "similitud_coseno": 0.45354413986206055,
+      "metadata": {
+        "fin_caracter": 15877,
+        "tokens_contenido": 144,
+        "fin_ms": 1102379,
+        "inicio_ms": 1073110,
+        "tokens_totales": 146,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "inicio_caracter": 15441,
+        "segmentos_ids": [
+          "119",
+          "120"
+        ],
+        "fin": "00:18:22.379",
+        "fuente": "docs/embeddings_2.VTT",
+        "inicio": "00:17:53.110"
+      }
+    },
+    {
+      "posicion": 6,
+      "chunk_id": "30f035d1677d31b83d24358ac6c10750d539eabad73095f8c93278a0308ccac6",
+      "texto": "coseno conserva la\ndirección y descarta la magnitud.\n\nFuentes de la clase\nClase 2 - Transformación de Texto a Embeddings. Diapositivas 31–35. Definición, similitud coseno y\ntipos de embeddings.",
+      "distancia_coseno": 0.5464800596237183,
+      "similitud_coseno": 0.45351994037628174,
+      "metadata": {
+        "fuente": "output/pdf/LLMs - Apuntes - Embeddings.pdf",
+        "pagina_fin": 5,
+        "id_configuracion": "b1ab1602511cb3b873b7718d304d20fd0a6a6c8b98ae6515e3ce9eac6853c4d5",
+        "inicio_caracter": 4449,
+        "tokens_contenido": 69,
+        "segmentos_ids": [
+          "5"
+        ],
+        "tokens_totales": 71,
+        "apunte_derivado": true,
+        "pagina_inicio": 5,
+        "fin_caracter": 4642
+      }
+    },
+    {
+      "posicion": 7,
+      "chunk_id": "736b703cca381cdf3723a9ff159fd8f67fc79c9f3875838ddbc8242e97a860e4",
+      "texto": "s de predicción. La primera se llama next sentens predicción. Y la segunda se llama Mlm e al Mast Language Modeling, que me comí una L en el modeling.\n\nMarina Fuster: Después le agrego entonces\n\nMarina Fuster: nexent de predicción. Voy a ir un poco rápido porque no es la que me interesa tanto, pero fíjense lo siguiente: ¿ven más o menos el\n\nMarina Fuster: el cosito o se ve muy, muy chiquito. No sé cómo están ustedes de de la pantalla.",
+      "distancia_coseno": 0.5497409105300903,
+      "similitud_coseno": 0.45025908946990967,
+      "metadata": {
+        "fin": "00:39:15.800",
+        "inicio_caracter": 33990,
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "inicio": "00:38:44.740",
+        "fuente": "docs/embeddings_2.VTT",
+        "inicio_ms": 2324740,
+        "tokens_totales": 144,
+        "segmentos_ids": [
+          "267",
+          "268",
+          "269",
+          "270"
+        ],
+        "fin_ms": 2355800,
+        "tokens_contenido": 142,
+        "fin_caracter": 34428
+      }
+    },
+    {
+      "posicion": 8,
+      "chunk_id": "448e01a14529b17b2521785373154799074c25eaa21790db20a95c327e673a00",
+      "texto": "este tipo de en este Squithgram, los parámetros que me quedan son los que uso como embebyns.\n\nMarina Fuster: entonces esquemáticamente un poco como se ve. Este blog está bastante bueno si lo quieren chumbear. Fíjense que mi input al principio tiene un 1\n\nMarina Fuster: con la palabra que yo considero. World, Sí, y voy a tener 2 matrices. La primera, que dice W Input es la que va a tener los envivings como filas, si\n\nMarina Fuster: que se refieren a",
+      "distancia_coseno": 0.5497438907623291,
+      "similitud_coseno": 0.4502561092376709,
+      "metadata": {
+        "fin": "00:30:46.010",
+        "inicio": "00:30:06.130",
+        "inicio_caracter": 26883,
+        "inicio_ms": 1806130,
+        "fin_caracter": 27335,
+        "tokens_totales": 145,
+        "tokens_contenido": 143,
+        "fin_ms": 1846010,
+        "fuente": "docs/embeddings_2.VTT",
+        "id_configuracion": "147b259ab7ec50dffd66d11ed05a48bbbde0b6e9ed4ff74c7a129e01ca68f1bd",
+        "segmentos_ids": [
+          "209",
+          "210",
+          "211",
+          "212"
+        ]
+      }
+    }
+  ]
+}

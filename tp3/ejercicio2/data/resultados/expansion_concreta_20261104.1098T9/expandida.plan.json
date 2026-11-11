@@ -1,0 +1,39 @@
+{
+  "modelo_solicitado": "openai/gpt-4o-2024-08-06",
+  "modelo": "gpt-4o-2024-08-06",
+  "mensajes": [
+    {
+      "role": "system",
+      "content": "Descomponé el objetivo de estudio en hasta cuatro subtemas mínimos, distintos y pertinentes para una primera comprensión en una materia de modelos de lenguaje. Por cada subtema, escribí una pregunta breve en español que permita recuperar una explicación en material de clase. Ordená de lo básico a lo específico. Devolvé únicamente un objeto JSON con la clave subtemas y una lista de objetos con las claves tema y consulta. No respondas las preguntas. Cuando el subtema trate de un proceso, mencioná en la pregunta un método representativo por su nombre y preguntá cómo funciona con un ejemplo. Para los usos, elegí una aplicación concreta. Mantené las preguntas cortas y elegí términos técnicos pertinentes para el objetivo."
+    },
+    {
+      "role": "user",
+      "content": "quiero estudiar embeddings"
+    }
+  ],
+  "temperature": 0,
+  "store": false,
+  "max_completion_tokens": 200,
+  "response_format": "json_object",
+  "finish_reason": "stop",
+  "segundos": 5.11010025,
+  "uso": {
+    "completion_tokens": 142,
+    "prompt_tokens": 165,
+    "total_tokens": 307,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": null,
+      "cached_tokens": 0
+    }
+  },
+  "costo_reportado_proxy": "0.0018325000000000001",
+  "respuesta": "{\n  \"subtemas\": [\n    {\n      \"tema\": \"Concepto de embeddings\",\n      \"consulta\": \"¿Qué son los embeddings en el procesamiento del lenguaje natural?\"\n    },\n    {\n      \"tema\": \"Representación vectorial\",\n      \"consulta\": \"¿Cómo se representa una palabra como un vector en un espacio de embeddings?\"\n    },\n    {\n      \"tema\": \"Método Word2Vec\",\n      \"consulta\": \"¿Cómo funciona el método Word2Vec para generar embeddings con un ejemplo?\"\n    },\n    {\n      \"tema\": \"Aplicaciones de embeddings\",\n      \"consulta\": \"¿Cómo se utilizan los embeddings en la clasificación de texto?\"\n    }\n  ]\n}",
+  "prompt_expansion": "concreto"
+}

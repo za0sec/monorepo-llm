@@ -393,6 +393,7 @@
       <div class="meta">
         <div><strong>Grupo 03</strong>Cátedra Transformers · 2026</div>
         <div><strong>Ejercicio 2</strong>Desarrollo y experimentos</div>
+        <div><strong>Ejercicio 4</strong>Configuración de partida</div>
       </div>
     </section>
 
@@ -415,6 +416,21 @@
         </div>
       </div>
       <p class="source"><a href="ejercicio1/Grupo03-ej1-TP3.md">Propuesta del grupo</a> · <a href="ejercicio2/evaluacion/caso_01_embeddings.md">Caso manual de embeddings</a></p>
+    </section>
+
+    <section class="slide" id="caso-manual" aria-labelledby="titulo-caso-manual">
+      <div class="head">
+        <p class="eyebrow">Referencia de desarrollo</p>
+        <h2 id="titulo-caso-manual">Qué esperábamos del primer informe</h2>
+      </div>
+      <p>Para el caso 01 comparamos la clase de embeddings con <strong>99 segmentos</strong> del video «¿Qué son los EMBEDDINGS?», transcripto con Whisper.</p>
+      <div class="rows">
+        <div><h3>Cubierto</h3><p>El video define los embeddings como vectores y explica cómo cambia su representación con el contexto.</p></div>
+        <div><h3>Parcial</h3><p>Describe cómo usar embeddings para comparar textos y deja sin explicar la operación de comparación.</p></div>
+        <div><h3>Sin evidencia</h3><p>La revisión del audio transcripto dejó sin respaldo el cálculo del coseno y su limitación respecto de la magnitud.</p></div>
+      </div>
+      <p class="caption">De esta lectura manual salieron los cinco criterios E1–E5 que usamos para revisar las primeras búsquedas y los informes automáticos.</p>
+      <p class="source"><a href="ejercicio2/evaluacion/caso_01_embeddings.md">Criterios, estados y tiempos del caso 01</a></p>
     </section>
 
     <section class="slide" id="indice" aria-labelledby="titulo-indice">
@@ -444,7 +460,7 @@
         <span class="tag">Resultado</span>
         <p><strong>415 intervenciones → 125 chunks.</strong> El máximo fue de 202 tokens con especiales frente al límite de 256. La segunda carga reutilizó los 125 chunks.</p>
       </div>
-      <p class="caption">Estos parámetros quedaron como configuración inicial para probar la recuperación.</p>
+      <p class="caption">Los parámetros quedaron como punto de partida para la búsqueda directa con <strong>k = 4</strong> y sin umbral. El splitting, el embedder y la base se mantuvieron fijos en las primeras comparaciones.</p>
       <p class="source"><a href="ejercicio2/evaluacion/revision_retrieval_inicial.md">Corrida inicial de indexación</a> · <a href="ejercicio2/README.md#preparar-chunks-de-la-clase">Método y referencias de clase</a></p>
     </section>
 
@@ -609,6 +625,209 @@
         <p>Sumamos un apunte de embeddings al corpus para ver si la búsqueda recuperaba evidencia que había quedado fuera.</p>
       </div>
       <p class="source"><a href="ejercicio2/evaluacion/generacion_caso01.md#quinta-prueba-con-gpt-4o-y-chroma--0411">Resultados y revisión de las citas</a></p>
+    </section>
+
+    <section class="slide" id="corpus-mixto" aria-labelledby="titulo-corpus-mixto">
+      <div class="head">
+        <p class="eyebrow">Experimento 8 · Corpus</p>
+        <h2 id="titulo-corpus-mixto">Sumamos el apunte de embeddings</h2>
+      </div>
+      <p>Agregamos <strong>11 chunks</strong> de las páginas 3–5 del apunte. Repetimos la consulta sobre coseno y sus limitaciones con MiniLM, distancia coseno y <strong>k = 8</strong> fijos.</p>
+      <div class="table-wrap">
+        <table class="data" aria-label="Resultados de la consulta de coseno con y sin el apunte">
+          <thead>
+            <tr><th scope="col">Métrica retrospectiva</th><th scope="col">VTT · 125 chunks</th><th scope="col" class="highlight">VTT + apunte · 136 chunks</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Context Precision@8</th><td>0,25</td><td class="highlight">0,333</td></tr>
+            <tr><th scope="row">Precision@8 · chunks relevantes</th><td>1/8</td><td class="highlight">2/8</td></tr>
+            <tr><th scope="row">Context Recall@8 · afirmaciones respaldadas</th><td>1/2</td><td class="highlight">2/2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="caption">Evaluamos dos afirmaciones, la fórmula y el efecto de la magnitud. En el corpus mixto, el ejemplo de magnitud apareció 3.º y la fórmula 6.ª.</p>
+      <div class="decision">
+        <span class="tag">Decisión</span>
+        <p>Conservamos el corpus mixto. El apunte completó el respaldo en esta consulta. La búsqueda general todavía dejaba afuera la fórmula y el ejemplo completo.</p>
+      </div>
+      <p class="source"><a href="presentación.md#13-colección-con-la-clase-y-el-apunte-derivado--0411">Comparación de corpus y rankings</a> · <a href="presentación.md#48-recorrido-experimental-completo-en-el-html--1111">Cálculo retrospectivo</a></p>
+    </section>
+
+    <section class="slide" id="expansion" aria-labelledby="titulo-expansion">
+      <div class="head">
+        <p class="eyebrow">Experimento 9 · Advanced RAG</p>
+        <h2 id="titulo-expansion">De una consulta a cuatro subconsultas</h2>
+      </div>
+      <p>Para «quiero estudiar embeddings», comparamos búsqueda directa y expansión con GPT‑4o. Ambas usaron el corpus mixto, MiniLM, coseno y <strong>8 referencias finales</strong>.</p>
+      <div class="two">
+        <div class="card">
+          <h3>Búsqueda directa</h3>
+          <p><strong>Context Recall 2/3.</strong> Recuperó definición y uso para comparar textos. El contraste entre embeddings estáticos y contextuales quedó parcial.</p>
+        </div>
+        <div class="card tinted">
+          <h3>Expansión con el prompt inicial</h3>
+          <p><strong>Context Recall 3/3.</strong> Sumó el contraste con el ejemplo de «banco» en el puesto 5.</p>
+          <p class="caption">32 candidatos, 15 únicos y 8 finales seleccionados por rondas de posición.</p>
+        </div>
+      </div>
+      <div class="decision">
+        <span class="tag">Decisión</span>
+        <p>Usamos expansión porque agregó evidencia con la misma cantidad de referencias finales. La lista de fuentes siguió primera en ambos rankings.</p>
+      </div>
+      <p class="source"><a href="presentación.md#15-revisión-de-la-recuperación-según-el-objetivo--0411">Revisión retrospectiva del objetivo introductorio</a> · <a href="../docs/RAG/UN_Report_Advanced_RAG.ipynb">Demo de clase, celdas 48–51</a></p>
+    </section>
+
+    <section class="slide" id="formato-estudiante" aria-labelledby="titulo-formato-estudiante">
+      <div class="head">
+        <p class="eyebrow">Experimento 10 · Generación</p>
+        <h2 id="titulo-formato-estudiante">Informe por subtema para el estudiante</h2>
+      </div>
+      <p>Con GPT‑4o, los cuatro subtemas de la expansión, ocho referencias automáticas y el mismo VTT, probamos el prompt <strong>estudiante</strong>.</p>
+      <div class="two">
+        <div class="card">
+          <h3>Salida estructurada</h3>
+          <p><strong>4 evaluaciones, 1 recomendación y 1 conclusión</strong> en JSON. La vista legible muestra las referencias académicas y permite consultar los tiempos del video.</p>
+        </div>
+        <div class="card tinted">
+          <h3>Qué encontró la revisión</h3>
+          <p>La definición y el contexto quedaron respaldados. En aplicaciones citó una lista de fuentes. En entrenamiento marcó «Parcial» con respaldo académico insuficiente.</p>
+        </div>
+      </div>
+      <p class="caption">Conservamos el formato para revisar las citas por subtema. El objetivo y las referencias también habían cambiado respecto de la tabla anterior.</p>
+      <p class="source"><a href="presentación.md#16-primer-informe-en-el-formato-para-el-estudiante--0411">Primer informe y revisión de estados y citas</a></p>
+    </section>
+
+    <section class="slide" id="generador-gpt41" aria-labelledby="titulo-generador-gpt41">
+      <div class="head">
+        <p class="eyebrow">Experimento 11 · Generación</p>
+        <h2 id="titulo-generador-gpt41">GPT‑4o y GPT‑4.1 con la misma evidencia</h2>
+      </div>
+      <p>Fijamos el prompt <strong>estudiante</strong>, el plan de GPT‑4o, los 8 chunks, los 99 segmentos del video y la temperatura en 0.</p>
+      <div class="table-wrap">
+        <table class="data" aria-label="Comparación de generadores con los mismos mensajes y referencias">
+          <thead>
+            <tr><th scope="col">Resultado por informe</th><th scope="col">GPT‑4o</th><th scope="col" class="highlight">GPT‑4.1</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Citas con ID existente · clase / video</th><td>7/7 · 11/11</td><td class="highlight">10/10 · 26/26</td></tr>
+            <tr><th scope="row">Tokens de entrada / salida</th><td>3.737 / 446</td><td class="highlight">3.737 / 622</td></tr>
+            <tr><th scope="row">Costo histórico de generación</th><td>US$0,0138025</td><td class="highlight">US$0,01245</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="caption">Las cifras de citas cuentan ocurrencias con IDs válidos. Ambos informes entregaron cuatro filas y una recomendación, y ambos asignaron «Parcial» a entrenamiento con respaldo insuficiente.</p>
+      <div class="decision">
+        <span class="tag">Decisión</span>
+        <p>Elegimos GPT‑4.1 como generador de referencia. En aplicaciones citó un pasaje que sí explica un uso y la llamada costó <strong>9,8 % menos</strong>.</p>
+      </div>
+      <p class="source"><a href="presentación.md#18-comparación-de-gpt-41-y-gpt-4o-en-el-informe-del-estudiante--0411">Control de entradas, costo y revisión de citas</a></p>
+    </section>
+
+    <section class="slide" id="consulta-entrenamiento" aria-labelledby="titulo-consulta-entrenamiento">
+      <div class="head">
+        <p class="eyebrow">Experimento 12 · Consultas</p>
+        <h2 id="titulo-consulta-entrenamiento">¿Podíamos recuperar cómo se entrena Word2Vec?</h2>
+      </div>
+      <div class="two">
+        <div class="card">
+          <h3>Consulta manual de diagnóstico</h3>
+          <p>Al nombrar <em>skip-gram</em> y los pares positivos y negativos, encontramos la explicación en los puestos <strong>1 y 2</strong>.</p>
+          <p class="caption">El pasaje ya estaba indexado en el VTT (29:16–30:22).</p>
+        </div>
+        <div class="card tinted">
+          <h3>Prompt concreto con GPT‑4o</h3>
+          <p>El plan nombró Word2Vec, dejó la explicación fuera de los candidatos y perdió el contraste contextual que recuperaba el prompt inicial.</p>
+        </div>
+      </div>
+      <div class="decision">
+        <span class="tag">Decisión</span>
+        <p>Mantuvimos el prompt inicial. En el objetivo introductorio conservó <strong>3/3</strong> afirmaciones respaldadas frente a <strong>2/3</strong> del concreto, con ocho referencias finales.</p>
+      </div>
+      <p class="source"><a href="presentación.md#19-diagnóstico-de-la-subconsulta-de-entrenamiento--0411">Consulta diagnóstica y comparación de prompts</a></p>
+    </section>
+
+    <section class="slide" id="planificador-gpt41" aria-labelledby="titulo-planificador-gpt41">
+      <div class="head">
+        <p class="eyebrow">Experimento 13 · Planificación</p>
+        <h2 id="titulo-planificador-gpt41">GPT‑4.1 como planificador</h2>
+      </div>
+      <p>Comparamos ambos modelos con el prompt inicial, el mismo corpus, ocho candidatos por subconsulta y ocho resultados finales.</p>
+      <div class="table-wrap">
+        <table class="data" aria-label="Comparación de los planificadores de subconsultas">
+          <thead>
+            <tr><th scope="col">Resultado del plan y la búsqueda</th><th scope="col">GPT‑4o</th><th scope="col" class="highlight">GPT‑4.1</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Context Recall introductorio</th><td>3/3</td><td class="highlight">3/3</td></tr>
+            <tr><th scope="row">Puesto del contraste contextual</th><td>5.º</td><td class="highlight">1.º</td></tr>
+            <tr><th scope="row">Candidatos únicos antes del corte final</th><td>15</td><td class="highlight">20</td></tr>
+            <tr><th scope="row">Costo histórico de planificación</th><td>US$0,00177</td><td class="highlight">US$0,001456</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="decision">
+        <span class="tag">Decisión</span>
+        <p>Adoptamos GPT‑4.1 también para planificar. Adelantó el pasaje contextual y costó menos. Ambos planes dejaron fuera el pasaje de entrenamiento.</p>
+      </div>
+      <p class="source"><a href="presentación.md#22-planificación-de-subtemas-con-gpt-41--0411">Planes, referencias y costos</a></p>
+    </section>
+
+    <section class="slide" id="respaldo-word2vec" aria-labelledby="titulo-respaldo-word2vec">
+      <div class="head">
+        <p class="eyebrow">Experimento 14 · Diagnóstico de generación</p>
+        <h2 id="titulo-respaldo-word2vec">Qué cambia al aportar evidencia de entrenamiento</h2>
+      </div>
+      <p>Con GPT‑4.1 y el mismo plan, VTT y prompt, reemplazamos solo el quinto chunk, una lista de fuentes, por el pasaje de Word2Vec elegido a mano.</p>
+      <div class="two">
+        <div class="card">
+          <h3>Control · 8 resultados automáticos</h3>
+          <p><strong>0/1</strong> para la afirmación auditada. La recomendación apuntó a una lista de fuentes que no explica cómo se entrena Word2Vec.</p>
+        </div>
+        <div class="card tinted">
+          <h3>Variante · pasaje incorporado</h3>
+          <p><strong>1/1.</strong> La recomendación citó el pasaje de clase que explica los pares positivos y negativos.</p>
+        </div>
+      </div>
+      <div class="decision">
+        <span class="tag">Hallazgo</span>
+        <p>La recomendación mejoró. El estado siguió como «Parcial» en ambos informes con las mismas citas tangenciales. En el control correspondía «Respaldo insuficiente».</p>
+      </div>
+      <p class="source"><a href="presentación.md#23-prueba-de-respaldo-para-métodos-de-entrenamiento--0411">Comparación de los informes</a> · <a href="evaluaciones.md#3-generación-generation">Ejemplo de auditoría de Faithfulness</a></p>
+    </section>
+
+    <section class="slide" id="version-referencia" aria-labelledby="titulo-version-referencia">
+      <div class="head">
+        <p class="eyebrow">Base para el ejercicio 4</p>
+        <h2 id="titulo-version-referencia">Configuración de referencia del RAG</h2>
+      </div>
+      <div class="pipeline">
+        <div class="lane">
+          <h3 class="lane-label">Materia</h3>
+          <div class="step"><strong>VTT de clase + apunte</strong><span>Páginas 3–5 del apunte de embeddings</span></div>
+          <span class="arrow" aria-hidden="true">→</span>
+          <div class="step"><strong>Splitting + MiniLM</strong><span>1.000/100 caracteres, 200/20 tokens y vectores de 384 dimensiones</span></div>
+          <span class="arrow" aria-hidden="true">→</span>
+          <div class="step out"><strong>Chroma persistente</strong><span>136 chunks con tiempos o páginas. Distancia coseno.</span></div>
+        </div>
+        <div class="lane">
+          <h3 class="lane-label">Objetivo</h3>
+          <div class="step"><strong>GPT‑4.1 · prompt inicial</strong><span>Hasta 4 subconsultas</span></div>
+          <span class="arrow" aria-hidden="true">→</span>
+          <div class="step"><strong>Chroma · k = 8</strong><span>8 candidatos por subconsulta</span></div>
+          <span class="arrow" aria-hidden="true">→</span>
+          <div class="step out"><strong>8 referencias finales</strong><span>Selección por rondas y sin IDs repetidos</span></div>
+        </div>
+        <div class="lane">
+          <h3 class="lane-label">Informe</h3>
+          <div class="step"><strong>VTT de Whisper + referencias</strong><span>99 segmentos del video en el caso 01</span></div>
+          <span class="arrow" aria-hidden="true">→</span>
+          <div class="step"><strong>GPT‑4.1 · prompt estudiante</strong><span>Temperatura 0, hasta 1.000 tokens de salida</span></div>
+          <span class="arrow" aria-hidden="true">→</span>
+          <div class="step out"><strong>Informe en JSON</strong><span>Cobertura, citas, recomendación y conclusión</span></div>
+        </div>
+      </div>
+      <p class="caption">El control del ejercicio 4 usa el informe automático del experimento 14 con el ranking original de GPT‑4.1.</p>
+      <p class="source"><a href="ejercicio2/README.md#repetir-las-pruebas-con-el-proxy">Comandos de reproducción</a> · <a href="presentación.md#23-prueba-de-respaldo-para-métodos-de-entrenamiento--0411">Corrida automática de referencia</a></p>
     </section>
 
   </main>

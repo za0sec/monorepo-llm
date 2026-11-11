@@ -1018,7 +1018,45 @@ citas que no respaldaban la medida de similitud y dos criterios omitidos.
 El experimento siguiente incorporó un apunte de embeddings al corpus.
 [Registro de la generación](ejercicio2/evaluacion/generacion_caso01.md)
 
-## 47. Cómo seguiremos actualizando este documento
+## 47. Prueba de texto con el nuevo script — 11/11
+
+La usuaria ejecutó `tp3/prueba.py` con `gpt-4o-mini` y obtuvo
+«The capital of France is Paris.». El script usa el cliente de OpenAI
+con su URL por defecto. Esta ejecución confirma la generación de texto
+con la nueva configuración. Queda por verificar la transcripción del
+recorte ASR01 con Whisper.
+
+Se ajustó `tp3/prueba.py` para leer `OPENAI_API_KEY` de `tp3/.env`.
+Se repitió la consulta sin una clave exportada en la terminal y el
+modelo respondió correctamente.
+
+## 48. Recorrido experimental completo en el HTML — 11/11
+
+Se completó [la presentación HTML](presentacion.html) con el caso manual,
+los experimentos 8–14, el piloto de transcripción y la configuración de
+referencia para el ejercicio 4. El recorrido conecta las decisiones sobre
+corpus, expansión, formato del informe y elección de GPT-4.1 con los
+resultados de las corridas guardadas.
+
+Para «entender similitud coseno y sus limitaciones», con MiniLM, distancia
+coseno y `k=8` fijos, agregar el apunte llevó Context Precision de 0,25
+a 0,333, Precision@8 de 1/8 a 2/8 y Context Recall de 1/2 a 2/2. El
+cálculo retrospectivo del 11/11 tomó como referencia el cálculo por
+producto interno normalizado y el efecto de la magnitud. Los puestos
+relevantes fueron 4 en el VTT y 3 y 6 en el corpus mixto. El puesto 5
+del corpus mixto describe el escalado sin relacionarlo con el coseno.
+Se calcularon las métricas sobre los rankings guardados
+`ablacion_k_20261104.oaCc7k/coseno_k8.json` y
+`chroma_con_apunte_20261104.7sqyKv/coseno_k8.json`.
+
+Se revisaron en Arc la navegación por teclado y las diapositivas de
+transcripción, configuración de referencia y propuesta de iteración.
+El control del ejercicio 4 es la [corrida automática de GPT-4.1](#23-prueba-de-respaldo-para-métodos-de-entrenamiento--0411)
+con el ranking original de ocho referencias. El siguiente paso es
+contrastar esa versión con un prompt que exija respaldo académico antes
+de clasificar, y medir ambos brazos con la misma pauta.
+
+## 49. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

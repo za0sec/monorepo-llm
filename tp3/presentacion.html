@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>TP3 · Evaluación de videos con RAG</title>
+  <style>
+    :root {
+      --paper: #f6f5ef;
+      --card: #ffffff;
+      --ink: #14232b;
+      --muted: #55676d;
+      --line: #dcdfd6;
+      --teal: #0b6b5a;
+      --teal-soft: #e3f0ea;
+      --lime: #c9ef5c;
+      --night: #10242a;
+      --night-2: #183238;
+      --amber: #a2640a;
+      --amber-soft: #fbf1dc;
+      font-family: "Inter", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      color: var(--ink);
+      background: #0b191d;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #0b191d; }
+    a { color: inherit; text-underline-offset: .22em; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); }
+    a:hover { text-decoration-color: currentColor; }
+    button { font: inherit; }
+    [hidden] { display: none !important; }
+    :focus-visible { outline: 3px solid #7aa52f; outline-offset: 4px; }
+
+    .deck {
+      width: min(100%, calc((100svh - 4.5rem) * 16 / 9), 106rem);
+      margin: auto;
+      container-type: inline-size;
+    }
+
+    /* ---------- Slide base ---------- */
+    .slide {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 1.6cqw;
+      width: 100%;
+      min-height: 56.25cqw;
+      padding: 3.6cqw 5cqw 2.6cqw;
+      background: var(--paper);
+      font-size: 1.68cqw;
+      line-height: 1.42;
+      overflow-wrap: break-word;
+    }
+    .slide + .slide { border-top: .25rem solid #0b191d; }
+    .presenting .slide { border-top: 0; }
+    .presenting .deck { margin-block-start: .7rem; }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: .55cqw;
+      background: var(--teal);
+    }
+
+    .slide-num {
+      position: absolute;
+      right: 5cqw;
+      bottom: 2.4cqw;
+      color: var(--muted);
+      font-size: 1.1cqw;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: .04em;
+    }
+
+    h1, h2, h3, p, ol, ul { margin: 0; }
+    h1, h2 { line-height: 1.05; letter-spacing: -.035em; text-wrap: balance; font-weight: 760; }
+    h1 { font-size: 5.6cqw; }
+    h2 { font-size: 3.6cqw; }
+    h3 { color: var(--teal); font-size: 1.85cqw; line-height: 1.2; font-weight: 700; }
+    p { text-wrap: pretty; }
+
+    .eyebrow {
+      display: block;
+      color: var(--teal);
+      font-weight: 750;
+      font-size: 1.15cqw;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      content: "";
+      display: inline-block;
+      vertical-align: middle;
+      width: 2.4cqw;
+      height: .22cqw;
+      margin-right: .8cqw;
+      background: currentColor;
+    }
+    .head { display: grid; gap: .9cqw; }
+
+    .lede { font-size: 2.1cqw; line-height: 1.32; max-width: 60ch; color: #24363d; }
+    .muted { color: var(--muted); }
+    .caption { color: var(--muted); font-size: 1.36cqw; line-height: 1.38; }
+    .source {
+      margin-top: auto;
+      padding-top: 1cqw;
+      padding-right: 8cqw;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 1.08cqw;
+    }
+    strong { font-weight: 700; }
+
+    /* ---------- Layout ---------- */
+    .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2cqw; }
+    .three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.6cqw; }
+    .card {
+      display: grid;
+      align-content: start;
+      gap: .8cqw;
+      padding: 1.6cqw 1.8cqw;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: .9cqw;
+      box-shadow: 0 .15cqw .4cqw rgb(20 35 43 / .04);
+    }
+    .card.tinted { background: var(--teal-soft); border-color: #c4ddd2; }
+
+    .decision {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1.4cqw;
+      align-items: baseline;
+      padding: 1.2cqw 1.6cqw;
+      background: var(--night);
+      color: #eef6f1;
+      border-radius: .9cqw;
+    }
+    .decision .tag {
+      color: var(--night);
+      background: var(--lime);
+      padding: .25cqw .8cqw;
+      border-radius: .4cqw;
+      font-size: 1.05cqw;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .rows { display: grid; gap: 1.1cqw; }
+    .rows > div {
+      display: grid;
+      grid-template-columns: 22% 1fr;
+      gap: 2cqw;
+      align-items: baseline;
+      padding: 1.2cqw 1.8cqw;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: .9cqw;
+    }
+
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.6cqw; }
+    .stats > div {
+      display: grid;
+      gap: .3cqw;
+      padding: 1.4cqw 1.8cqw;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: .9cqw;
+    }
+    .stats > div > span:last-child { color: var(--muted); font-size: 1.4cqw; }
+    .stat { color: var(--teal); font-size: 4.4cqw; line-height: 1; letter-spacing: -.05em; font-weight: 780; font-variant-numeric: tabular-nums; }
+    .compact { display: flex; gap: 2.6cqw; }
+    .compact .stat { font-size: 3.6cqw; }
+    .compact > div { display: grid; gap: .2cqw; }
+    .compact > div > span:last-child { color: var(--muted); font-size: 1.3cqw; }
+
+    /* ---------- Tables ---------- */
+    .table-wrap { background: var(--card); border: 1px solid var(--line); border-radius: .9cqw; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 1.5cqw; line-height: 1.3; }
+    th, td { padding: .9cqw 1.3cqw; border-bottom: 1px solid var(--line); vertical-align: top; }
+    tbody tr:last-child > * { border-bottom: 0; }
+    thead th { color: #fff; background: var(--night); font-weight: 650; font-size: 1.3cqw; letter-spacing: .02em; }
+    tbody th { color: var(--ink); font-weight: 600; }
+    .data td { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .data thead th:not(:first-child), .data td { text-align: center; }
+    .data td { font-weight: 600; }
+    thead th.highlight { background: var(--teal); }
+    td.highlight { background: var(--teal-soft); color: var(--teal); }
+
+    /* ---------- Pipeline ---------- */
+    .pipeline { display: grid; gap: 1cqw; }
+    .lane {
+      display: grid;
+      grid-template-columns: 13cqw minmax(0, 1fr) 2cqw minmax(0, 1fr) 2cqw minmax(0, 1fr);
+      align-items: stretch;
+      gap: 0 .6cqw;
+    }
+    .lane-label {
+      align-self: center;
+      color: var(--teal);
+      font-size: 1.15cqw;
+      font-weight: 750;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .step {
+      padding: .9cqw 1.2cqw;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: .7cqw;
+    }
+    .step strong { display: block; font-size: 1.55cqw; }
+    .step span { display: block; color: var(--muted); font-size: 1.25cqw; }
+    .step.out { background: var(--teal-soft); border-color: #c4ddd2; }
+    .arrow { align-self: center; justify-self: center; color: var(--teal); font-weight: 800; font-size: 1.8cqw; }
+
+    /* ---------- Roadmap ---------- */
+    .roadmap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.4cqw; }
+    .stage {
+      display: grid;
+      align-content: start;
+      gap: .7cqw;
+      padding: 1.4cqw 1.5cqw;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-top: .45cqw solid var(--teal);
+      border-radius: .8cqw;
+    }
+    .stage h3 { font-size: 1.9cqw; }
+    .stage ol { list-style: none; padding: 0; display: grid; gap: .9cqw; font-size: 1.6cqw; line-height: 1.32; }
+    .stage li { display: grid; grid-template-columns: 1.6cqw 1fr; gap: .5cqw; }
+    .stage li::before { content: "✓"; color: var(--teal); font-weight: 800; }
+    .stage li.todo { color: var(--amber); }
+    .stage li.todo::before { content: "○"; color: var(--amber); }
+    .legend { display: flex; gap: 2.4cqw; font-size: 1.25cqw; color: var(--muted); }
+    .legend span::before { margin-right: .5cqw; font-weight: 800; }
+    .legend .ok::before { content: "✓"; color: var(--teal); }
+    .legend .no::before { content: "○"; color: var(--amber); }
+
+    /* ---------- Pending ---------- */
+    .pending {
+      display: grid;
+      align-content: start;
+      gap: .8cqw;
+      padding: 1.6cqw 1.8cqw;
+      background: var(--amber-soft);
+      border: .15cqw dashed #d5a650;
+      border-radius: .9cqw;
+    }
+    .pending h3 { color: var(--amber); }
+    .badge {
+      justify-self: start;
+      padding: .2cqw .8cqw;
+      color: var(--amber);
+      border: 1px solid currentColor;
+      border-radius: 99px;
+      font-size: 1.02cqw;
+      font-weight: 750;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    #pendientes .three { flex: 1; margin-bottom: 1cqw; }
+    .pending { grid-template-rows: auto auto auto 1fr; }
+    .blank {
+      min-height: 8cqw;
+      border-radius: .6cqw;
+      background: repeating-linear-gradient(135deg, transparent 0 1cqw, rgb(162 100 10 / .07) 1cqw 2cqw);
+    }
+
+    /* ---------- Dark slides ---------- */
+    .dark { color: #eef6f1; background: var(--night); }
+    .dark::before { background: var(--lime); }
+    .dark .eyebrow { color: var(--lime); }
+    .dark .slide-num { color: #8fa9a6; }
+    .subtitle { color: #b9d0cb; font-size: 2cqw; max-width: 54ch; }
+    .cover, .divider { justify-content: center; isolation: isolate; overflow: hidden; }
+    .cover > *, .divider > * { max-width: 70%; }
+    .cover::after, .divider::after {
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      right: 0;
+      width: 34%;
+      height: 100%;
+      content: "";
+      background:
+        radial-gradient(circle at 70% 50%, rgb(201 239 92 / .16), transparent 60%),
+        repeating-linear-gradient(135deg, transparent 0 2cqw, rgb(120 170 150 / .22) 2cqw 2.12cqw);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 80%);
+    }
+    .cover h1 { margin-block: .6cqw; }
+    .cover .meta { display: flex; gap: 3cqw; margin-top: 2.4cqw; color: #b9d0cb; font-size: 1.4cqw; }
+    .cover .meta strong { display: block; color: #fff; font-size: 1.6cqw; }
+    .divider h2 { font-size: 5cqw; }
+    .divider .badge { color: var(--lime); margin-top: 1.4cqw; }
+    .divider .num-big {
+      color: var(--lime);
+      font-size: 1.6cqw;
+      font-weight: 750;
+      letter-spacing: .12em;
+    }
+
+    /* ---------- Controls ---------- */
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: .65rem;
+      padding: .65rem .7rem;
+      color: #f0f7f3;
+      background: #0b191d;
+      font-size: .92rem;
+    }
+    .controls button {
+      background: #1b343b;
+      color: inherit;
+      border: 1px solid #4f6d6a;
+      border-radius: .38rem;
+      min-height: 2.4rem;
+      padding: .3rem .8rem;
+      cursor: pointer;
+    }
+    .controls button:hover:not(:disabled) { background: #24444c; }
+    .controls button:disabled { opacity: .4; cursor: default; }
+    .counter { min-width: 4.4rem; text-align: center; font-variant-numeric: tabular-nums; }
+    .progress { width: 10rem; height: .3rem; background: #1b343b; border-radius: 99px; overflow: hidden; }
+    .progress > span { display: block; height: 100%; background: var(--lime); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+    /* ---------- Mobile ---------- */
+    @media (max-width: 720px) and (orientation: portrait) {
+      .deck { width: 100%; }
+      .presenting .deck { margin: 0; }
+      .slide { min-height: calc(100svh - 4rem); gap: 1rem; padding: 1.4rem 1rem 2.6rem 1.25rem; font-size: 1rem; }
+      .slide::before { width: .3rem; }
+      .slide-num { font-size: .8rem; right: 1rem; bottom: .9rem; }
+      h1 { font-size: clamp(2.2rem, 9vw, 3.4rem); }
+      h2, .divider h2 { font-size: clamp(1.7rem, 7vw, 2.8rem); }
+      h3, .stage h3 { font-size: 1.08rem; }
+      .subtitle, .lede { font-size: 1.15rem; }
+      .eyebrow, .source, .caption, .step span, .lane-label, .badge, .legend, .stage ol,
+      .stats > div > span:last-child, .compact > div > span:last-child, thead th { font-size: .82rem; }
+      .eyebrow::before { width: 1.2rem; height: 2px; }
+      .two, .three, .stats, .roadmap { grid-template-columns: 1fr; gap: .8rem; }
+      .card, .pending, .stats > div, .stage, .rows > div { padding: .85rem 1rem; border-radius: .6rem; }
+      .cover > *, .divider > * { max-width: 100%; }
+      .stat, .compact .stat { font-size: 2.3rem; }
+      .rows > div { grid-template-columns: 1fr; gap: .2rem; }
+      .rows { gap: .6rem; }
+      .lane { grid-template-columns: 1fr; gap: .35rem; }
+      .lane .arrow { transform: rotate(90deg); font-size: 1rem; }
+      .step strong { font-size: .95rem; }
+      .step { padding: .5rem .7rem; }
+      .decision { grid-template-columns: 1fr; gap: .4rem; padding: .8rem 1rem; }
+      .decision .tag { justify-self: start; font-size: .72rem; }
+      .table-wrap { overflow-x: auto; border-radius: .6rem; }
+      table { font-size: .85rem; }
+      th, td { padding: .45rem .5rem; }
+      .data td { white-space: normal; }
+      .stage li { grid-template-columns: 1rem 1fr; }
+      .cover .meta { flex-direction: column; gap: .6rem; font-size: .9rem; }
+      .cover .meta strong { font-size: 1rem; }
+      .divider .num-big { font-size: .9rem; }
+      .source { padding-right: 2.5rem; }
+      .blank { min-height: 4rem; }
+      .progress { display: none; }
+      .controls { position: sticky; bottom: 0; }
+    }
+
+    @media print {
+      @page { size: 13.333in 7.5in; margin: 0; }
+      :root { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      body { background: none; }
+      .deck, .presenting .deck { width: 100%; margin: 0; }
+      .slide, .slide[hidden] { display: flex !important; min-height: 7.5in; break-after: page; border: 0 !important; }
+      .slide:last-child { break-after: auto; }
+      .controls { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" aria-label="Presentación del TP3">
+
+    <!-- ===================== PORTADA ===================== -->
+    <section class="slide dark cover" id="portada" aria-labelledby="titulo-portada">
+      <p class="eyebrow">73.69 Large Language Models · TP3</p>
+      <h1 id="titulo-portada">Evaluación de videos de estudio con RAG</h1>
+      <p class="subtitle">Cómo armamos cada pieza del sistema y qué decidimos en cada iteración</p>
+      <div class="meta">
+        <div><strong>Grupo 03</strong>Cátedra Transformers · 2026</div>
+        <div><strong>Ejercicio 2</strong>Desarrollo y experimentos</div>
+      </div>
+    </section>
+
+    <!-- ===================== PROBLEMA ===================== -->
+    <section class="slide" id="problema" aria-labelledby="titulo-problema">
+      <div class="head">
+        <p class="eyebrow">Problema a resolver</p>
+        <h2 id="titulo-problema">¿Este video me sirve para estudiar?</h2>
+      </div>
+      <p class="lede">El título de un video dice poco sobre qué temas explica y con qué profundidad. Contrastarlo con los materiales de la materia lleva tiempo.</p>
+      <div class="two">
+        <div class="card">
+          <h3>Entrada</h3>
+          <p>Audio de un video y un objetivo de estudio de la materia.</p>
+          <p class="caption">Ejemplo: entender qué son los embeddings y cómo se compara la similitud entre textos.</p>
+        </div>
+        <div class="card tinted">
+          <h3>Salida</h3>
+          <p>Cobertura por tema, citas con tiempos del video, material de clase para completar faltantes y una conclusión sobre la utilidad del video.</p>
+        </div>
+      </div>
+      <p class="source"><a href="ejercicio1/Grupo03-ej1-TP3.md">Propuesta del grupo</a> · <a href="ejercicio2/evaluacion/caso_01_embeddings.md">Caso manual de embeddings</a></p>
+    </section>
+
+    <section class="slide" id="indice" aria-labelledby="titulo-indice">
+      <div class="head">
+        <p class="eyebrow">Experimento 1 · Indexing pipeline</p>
+        <h2 id="titulo-indice">Primer índice a partir de una clase</h2>
+      </div>
+      <p class="lede">Partimos del VTT de la clase de embeddings y construimos un índice local que permite volver al tiempo de cada pasaje.</p>
+      <div class="three">
+        <div class="card">
+          <h3>Corte por caracteres</h3>
+          <p><strong>1.000 caracteres</strong> con <strong>100 de solapamiento</strong>.</p>
+          <p class="caption">Usamos el splitter recursivo de LangChain visto en clase. Prioriza cortes entre párrafos y líneas.</p>
+        </div>
+        <div class="card">
+          <h3>Corte por tokens</h3>
+          <p>Hasta <strong>200 tokens de contenido</strong> con <strong>20 de solapamiento</strong>.</p>
+          <p class="caption">Implementamos ventanas con el tokenizer de MiniLM, inspiradas en la demo del reporte ONU. Conservamos texto, IDs y tiempos.</p>
+        </div>
+        <div class="card tinted">
+          <h3>Embeddings e índice</h3>
+          <p><strong>all-MiniLM-L6-v2</strong> en CPU. Un vector de <strong>384 dimensiones</strong> por chunk.</p>
+          <p class="caption">Elegimos el modelo de la demo de asistente virtual para correr en local. Guardamos texto, vectores y referencias en Chroma persistente con distancia coseno.</p>
+        </div>
+      </div>
+      <div class="decision">
+        <span class="tag">Resultado</span>
+        <p><strong>415 intervenciones → 125 chunks.</strong> El máximo fue de 202 tokens con especiales frente al límite de 256. La segunda carga reutilizó los 125 chunks.</p>
+      </div>
+      <p class="caption">Estos parámetros quedaron como configuración inicial para probar la recuperación.</p>
+      <p class="source"><a href="ejercicio2/evaluacion/revision_retrieval_inicial.md">Corrida inicial de indexación</a> · <a href="ejercicio2/README.md#preparar-chunks-de-la-clase">Método y referencias de clase</a></p>
+    </section>
+
+    <section class="slide" id="k" aria-labelledby="titulo-k">
+      <div class="head">
+        <p class="eyebrow">Experimento 2 · Retrieval</p>
+        <h2 id="titulo-k">¿Cuántos chunks conviene recuperar?</h2>
+      </div>
+      <p>Variamos solo <strong>k</strong>, la cantidad de chunks devueltos. Hicimos seis búsquedas locales sobre los mismos 125 chunks, con MiniLM y distancia coseno.</p>
+      <div class="table-wrap">
+        <table class="data" aria-label="Resultados de recuperación para k igual a 2, 4 y 8">
+          <thead>
+            <tr><th scope="col">Consulta y métrica</th><th scope="col">k = 2</th><th scope="col">k = 4</th><th scope="col" class="highlight">k = 8</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">A · Coseno y limitaciones · criterios completos</th><td>0/2</td><td>1/2</td><td class="highlight">1/2</td></tr>
+            <tr><th scope="row">B · Embeddings y similitud entre textos · criterios completos</th><td>0/5</td><td>0/5</td><td class="highlight">1/5</td></tr>
+            <tr><th scope="row">A · Context Precision</th><td>0</td><td>0,25</td><td class="highlight">0,25</td></tr>
+            <tr><th scope="row">A · P@k (chunks relevantes / devueltos)</th><td>0/2</td><td>1/4</td><td class="highlight">1/8</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="caption">
+        <p><strong>Criterios manuales del grupo.</strong> En A evaluamos 2 (fórmula del coseno y limitación por magnitud). En B evaluamos 5 (definición, contexto, comparación entre textos, fórmula y limitación). <strong>1/5</strong> significa que los chunks, leídos en conjunto, respaldaron por completo uno de los cinco criterios.</p>
+        <p><strong>P@k cuenta chunks.</strong> En A, el único relevante quedó 4.º. Por eso Context Precision se mantuvo en 0,25 al pasar de 4 a 8, mientras P@k bajó de 1/4 a 1/8.</p>
+      </div>
+      <div class="decision">
+        <span class="tag">Decisión</span>
+        <p><strong>k = 8 para la primera integración.</strong> Fue el único corte que respaldó la definición de embedding en B, al combinar los puestos 5 y 8. En A conservó la fórmula y agregó ruido. La elección fue provisional.</p>
+      </div>
+      <p class="source"><a href="ejercicio2/evaluacion/ablacion_k.md">Ablación y rankings</a> · <a href="evaluaciones.md#2-recuperaci%C3%B3n-retrieval">Cálculo retrospectivo de precisión</a></p>
+    </section>
+
+    <section class="slide" id="qwen" aria-labelledby="titulo-qwen">
+      <div class="head">
+        <p class="eyebrow">Experimento 3 · Generación</p>
+        <h2 id="titulo-qwen">Primera prueba del informe con Qwen</h2>
+      </div>
+      <p class="lede">¿Puede el generador evaluar el video cuando recibe evidencia académica suficiente?</p>
+      <p class="caption">Fijamos Qwen2.5-1.5B-Instruct local, el prompt inicial, el objetivo, los 99 segmentos del video y el tope de 1.000 tokens de salida. Solo cambió el contexto académico.</p>
+      <div class="two">
+        <div class="card">
+          <h3>Diagnóstico · pasajes elegidos a mano</h3>
+          <p>Los <strong>6 pasajes de clase</strong> respaldaban los <strong>5 criterios</strong> del caso.</p>
+          <p>Qwen copió fragmentos y llegó al límite de <strong>1.000 tokens</strong> antes de clasificar.</p>
+        </div>
+        <div class="card tinted">
+          <h3>RAG básico · búsqueda en Chroma</h3>
+          <p>Los <strong>8 chunks recuperados</strong> respaldaban por completo <strong>1 de los 5 criterios</strong>.</p>
+          <p>Qwen declaró cubierto el objetivo e inventó <strong>4 IDs de citas de clase</strong>. La salida tuvo 608 tokens.</p>
+        </div>
+      </div>
+      <div class="decision">
+        <span class="tag">Siguiente prueba</span>
+        <p>Qwen falló incluso con los pasajes de referencia. Decidimos cambiar solo el prompt y pedir una tabla con una fila por criterio, estado y citas.</p>
+      </div>
+      <p class="source"><a href="ejercicio2/evaluacion/generacion_caso01.md#resultados-de-la-inferencia">Resultados de la primera generación</a></p>
+    </section>
+
+    <section class="slide" id="qwen-tabla" aria-labelledby="titulo-qwen-tabla">
+      <div class="head">
+        <p class="eyebrow">Experimento 4 · Generación</p>
+        <h2 id="titulo-qwen-tabla">Prompt con una fila por criterio</h2>
+      </div>
+      <p>Cambiamos solo el prompt de Qwen. Pedimos empezar con una tabla de criterio, estado, cita de clase, cita del video y justificación.</p>
+      <p class="caption">Mantuvimos el modelo, el objetivo, el video y los dos contextos académicos. El prompt distinguía «Sin evidencia en el video» de «Sin respaldo académico».</p>
+      <div class="two">
+        <div class="card">
+          <h3>6 pasajes de referencia</h3>
+          <p><strong>19 filas completas y 14 IDs de citas inexistentes.</strong></p>
+          <p>Omitió el cálculo del coseno y la limitación por magnitud, aunque ambos estaban en el contexto.</p>
+        </div>
+        <div class="card tinted">
+          <h3>8 chunks de Chroma</h3>
+          <p><strong>22 filas completas, 13 duplicadas.</strong></p>
+          <p>Usó una cita del video en la columna de clase y confundió la falta de respaldo académico con una ausencia en el video.</p>
+        </div>
+      </div>
+      <div class="decision">
+        <span class="tag">Siguiente prueba</span>
+        <p>Qwen empezó a clasificar en ambas corridas y llegó al tope de <strong>1.000 tokens</strong> antes de recomendar material o concluir. Mantuvimos el prompt de tabla para probar una penalización por repetición de <strong>1,10 a 1,15</strong>.</p>
+      </div>
+      <p class="source"><a href="ejercicio2/evaluacion/generacion_caso01.md#segunda-prueba-con-una-tabla-por-criterio--0411">Comparación del prompt inicial y el de tabla</a></p>
+    </section>
+
+    <section class="slide" id="qwen-repeticion" aria-labelledby="titulo-qwen-repeticion">
+      <div class="head">
+        <p class="eyebrow">Experimento 5 · Generación</p>
+        <h2 id="titulo-qwen-repeticion">Penalización por repetición en Qwen</h2>
+      </div>
+      <p>Con el prompt de tabla, subimos la penalización de <strong>1,10 a 1,15</strong> para reducir las filas repetidas y ver si Qwen podía terminar antes del límite de 1.000 tokens.</p>
+      <div class="table-wrap">
+        <table class="data" aria-label="Comparación de dos valores de penalización por repetición">
+          <thead>
+            <tr><th scope="col">Contexto y métrica</th><th scope="col">1,10</th><th scope="col" class="highlight">1,15</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Pasajes de referencia · tokens de salida</th><td>1.000 (límite)</td><td class="highlight">473</td></tr>
+            <tr><th scope="row">Pasajes de referencia · IDs de clase inexistentes</th><td>14</td><td class="highlight">6</td></tr>
+            <tr><th scope="row">Chroma · tokens de salida</th><td>1.000 (límite)</td><td class="highlight">197</td></tr>
+            <tr><th scope="row">Chroma · filas duplicadas</th><td>13</td><td class="highlight">0</td></tr>
+            <tr><th scope="row">Chroma · filas completas</th><td>22</td><td class="highlight">2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="caption">Con 1,15, ambas salidas terminaron antes del tope. Las dos filas de Chroma quedaron sin citas del video y la salida con pasajes de referencia todavía inventó IDs.</p>
+      <div class="decision">
+        <span class="tag">Siguiente prueba</span>
+        <p>Probamos GPT-4o con el mismo prompt de tabla y los seis pasajes de referencia para comparar la cobertura y las citas.</p>
+      </div>
+      <p class="source"><a href="ejercicio2/evaluacion/generacion_caso01.md#tercera-prueba-con-penalizaci%C3%B3n-por-repetici%C3%B3n--0411">Registro del ajuste y resultados</a></p>
+    </section>
+
+    <section class="slide" id="gpt4o-referencia" aria-labelledby="titulo-gpt4o-referencia">
+      <div class="head">
+        <p class="eyebrow">Experimento 6 · Generación</p>
+        <h2 id="titulo-gpt4o-referencia">Qwen local y GPT-4o con pasajes de referencia</h2>
+      </div>
+      <p>Enviamos a ambos modelos el prompt de tabla, los <strong>6 pasajes de clase</strong> elegidos a mano y los <strong>99 segmentos del video</strong>.</p>
+      <div class="table-wrap">
+        <table aria-label="Comparación de las salidas de Qwen local y GPT-4o">
+          <thead>
+            <tr><th scope="col">Resultado</th><th scope="col">Qwen local (1,15)</th><th scope="col" class="highlight">GPT-4o (proxy)</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Filas de la tabla</th><td>8</td><td class="highlight">5</td></tr>
+            <tr><th scope="row">IDs de cita inexistentes</th><td>6</td><td class="highlight">0</td></tr>
+            <tr><th scope="row">Tokens de salida</th><td>473</td><td class="highlight">346</td></tr>
+            <tr><th scope="row">Cierre del informe</th><td>Resumen general</td><td class="highlight">Recomendación con citas de clase y conclusión</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="caption">GPT-4o dio evaluaciones contradictorias sobre el papel del contexto, mencionó la fórmula del coseno solo en la recomendación y omitió la limitación por magnitud como criterio.</p>
+      <div class="decision">
+        <span class="tag">Siguiente prueba</span>
+        <p>Probamos GPT-4o con los <strong>8 chunks recuperados por Chroma</strong> para evaluar el informe con el contexto que entrega el RAG.</p>
+      </div>
+      <p class="source"><a href="ejercicio2/evaluacion/generacion_caso01.md#cuarta-prueba-con-gpt-4o--0411">Comparación de generadores y revisión de las citas</a></p>
+    </section>
+
+    <section class="slide" id="gpt4o-chroma" aria-labelledby="titulo-gpt4o-chroma">
+      <div class="head">
+        <p class="eyebrow">Experimento 7 · Generación</p>
+        <h2 id="titulo-gpt4o-chroma">GPT-4o con el contexto recuperado</h2>
+      </div>
+      <p>Con el mismo GPT-4o, el prompt de tabla y el mismo video, reemplazamos los <strong>6 pasajes elegidos a mano</strong> por los <strong>8 chunks recuperados por Chroma</strong>.</p>
+      <div class="table-wrap">
+        <table class="data" aria-label="Resultados de GPT-4o con selección manual y con Chroma">
+          <thead>
+            <tr><th scope="col">Resultado</th><th scope="col">Selección manual</th><th scope="col" class="highlight">Chroma (k = 8)</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Filas de cobertura</th><td>5</td><td class="highlight">4</td></tr>
+            <tr><th scope="row">IDs de cita inexistentes</th><td>0</td><td class="highlight">0</td></tr>
+            <tr><th scope="row">Tokens de salida</th><td>346</td><td class="highlight">314</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="caption">Con Chroma, GPT-4o respaldó la definición de embedding. Marcó la comparación entre textos como parcial y citó pasajes de clase que describían los vectores sin explicar la medida de similitud. Los pasajes sobre la fórmula del coseno y la magnitud quedaron fuera de la búsqueda y el informe omitió ambos criterios sin señalar que faltaba respaldo académico.</p>
+      <div class="decision">
+        <span class="tag">Siguiente prueba</span>
+        <p>Sumamos un apunte de embeddings al corpus para ver si la búsqueda recuperaba evidencia que había quedado fuera.</p>
+      </div>
+      <p class="source"><a href="ejercicio2/evaluacion/generacion_caso01.md#quinta-prueba-con-gpt-4o-y-chroma--0411">Resultados y revisión de las citas</a></p>
+    </section>
+
+  </main>
+
+  <nav class="controls" aria-label="Controles de la presentación" aria-describedby="ayuda" hidden>
+    <button type="button" id="anterior" aria-label="Diapositiva anterior">←</button>
+    <output id="contador" class="counter" aria-live="polite"></output>
+    <button type="button" id="siguiente" aria-label="Diapositiva siguiente">→</button>
+    <div class="progress" aria-hidden="true"><span id="barra"></span></div>
+    <button type="button" id="pantalla" aria-keyshortcuts="F">Pantalla completa</button>
+    <span id="ayuda" class="sr-only">Usá las flechas para navegar, Inicio o Fin para saltar y F para pantalla completa.</span>
+  </nav>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const controls = document.querySelector(".controls");
+    const previous = document.querySelector("#anterior");
+    const next = document.querySelector("#siguiente");
+    const fullscreen = document.querySelector("#pantalla");
+    const counter = document.querySelector("#contador");
+    const bar = document.querySelector("#barra");
+    let current = 0;
+
+    slides.forEach((slide, i) => {
+      const num = document.createElement("span");
+      num.className = "slide-num";
+      num.setAttribute("aria-hidden", "true");
+      num.textContent = String(i + 1).padStart(2, "0") + " / " + String(slides.length).padStart(2, "0");
+      slide.append(num);
+    });
+
+    function showSlide(index, updateHash = true) {
+      current = Math.max(0, Math.min(index, slides.length - 1));
+      slides.forEach((slide, position) => { slide.hidden = position !== current; });
+      previous.disabled = current === 0;
+      next.disabled = current === slides.length - 1;
+      counter.value = (current + 1) + " / " + slides.length;
+      bar.style.width = ((current + 1) / slides.length * 100) + "%";
+      if (updateHash) history.replaceState(null, "", "#" + slides[current].id);
+      window.scrollTo(0, 0);
+    }
+
+    function showFromHash() {
+      const index = slides.findIndex((slide) => "#" + slide.id === location.hash);
+      showSlide(index < 0 ? 0 : index, false);
+    }
+
+    async function toggleFullscreen() {
+      try {
+        if (document.fullscreenElement) {
+          await document.exitFullscreen();
+        } else {
+          await document.documentElement.requestFullscreen();
+        }
+      } catch {
+        fullscreen.hidden = true;
+      }
+    }
+
+    document.body.classList.add("presenting");
+    controls.hidden = false;
+    fullscreen.hidden = !document.fullscreenEnabled;
+    previous.addEventListener("click", () => showSlide(current - 1));
+    next.addEventListener("click", () => showSlide(current + 1));
+    fullscreen.addEventListener("click", toggleFullscreen);
+    document.addEventListener("fullscreenchange", () => {
+      fullscreen.textContent = document.fullscreenElement ? "Salir de pantalla completa" : "Pantalla completa";
+    });
+    window.addEventListener("hashchange", showFromHash);
+    window.addEventListener("keydown", (event) => {
+      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+      if (event.target.closest("input, textarea, select, [contenteditable]")) return;
+      if (event.key === " " && event.target.closest("a, button")) return;
+      const destinations = {
+        ArrowLeft: current - 1,
+        PageUp: current - 1,
+        ArrowRight: current + 1,
+        PageDown: current + 1,
+        " ": current + 1,
+        Home: 0,
+        End: slides.length - 1
+      };
+      if (Object.hasOwn(destinations, event.key)) {
+        event.preventDefault();
+        showSlide(destinations[event.key]);
+      } else if (event.key.toLowerCase() === "f" && !fullscreen.hidden) {
+        toggleFullscreen();
+      }
+    });
+    showFromHash();
+  </script>
+</body>
+</html>

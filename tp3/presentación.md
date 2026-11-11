@@ -1,6 +1,6 @@
 # Presentación: recorrido y decisiones del TP3
 
-Última actualización: **09/11/2026**.
+Última actualización: **11/11/2026**.
 
 Este documento cuenta cómo fuimos construyendo el proyecto: con qué alcance
 empezamos, qué decisiones tomamos, qué implementamos, qué comprobamos y qué
@@ -908,7 +908,117 @@ con «You have no credits remaining». LiteLLM reintentó dos veces y no
 tenía un modelo de respaldo para esa ruta. El piloto sigue pendiente
 hasta recuperar acceso a la transcripción por el proxy.
 
-## 37. Cómo seguiremos actualizando este documento
+## 37. Verificación del proxy — 11/11
+
+Se volvió a ejecutar `tp3/prueba.py`. El modelo de la guía,
+`gpt-3.5-turbo`, devolvió HTTP 404 por deprecación. Una consulta breve
+por separado a `openai/gpt-4o-mini` devolvió HTTP 429 con el mensaje de
+OpenAI «You have no credits remaining». El piloto de Whisper sigue
+pendiente.
+
+## 38. Evaluaciones por componente para la defensa — 11/11
+
+Se creó [evaluaciones.md](evaluaciones.md) para relacionar las métricas de
+clase con las pruebas de indexación, recuperación y generación. Se revisaron
+los rankings y las salidas guardadas del caso 01. Con el VTT solo, la
+consulta de coseno obtuvo CP de 0,25 con `k=4` y `k=8`, mientras P@k bajó
+de 1/4 a 1/8. En el corpus mixto, la expansión pasó de 2/3 a 3/3 de
+respaldo sobre la referencia introductoria. Se verificó la existencia de
+los IDs citados en los dos informes `estudiante` y se registró un ejemplo
+de fidelidad sobre la recomendación de Word2Vec, que pasó de 0/1 a 1/1 al
+añadir su pasaje. Son cálculos retrospectivos de desarrollo sobre los
+artefactos existentes.
+
+El documento distingue las comparaciones locales y la auditoría de
+informes guardados de las corridas nuevas que requieren proxy. El próximo
+paso es anotar las afirmaciones y citas de los informes históricos para
+completar Faithfulness y preparar los contrastes locales de splitting y
+reranking. Answer Relevance queda pendiente de calibrar con un juez común.
+
+## 39. Presentación del desarrollo del RAG — 11/11
+
+Se armó [presentacion.html](presentacion.html) para la defensa. Sigue
+la secuencia del TP1 de mostrar el punto de partida, el cambio probado,
+la evidencia y la decisión. Las diapositivas recorren el piloto de ASR,
+la construcción del índice, la ablación de k, Qwen local, el corpus
+mixto, la expansión de consultas y los informes históricos del proxy.
+Las métricas y los ejemplos se cotejaron con las corridas del ejercicio 2
+y con [el registro de evaluaciones](evaluaciones.md).
+
+Los resultados de ambas versiones, las limitaciones y trabajo futuro,
+y las conclusiones quedaron como diapositivas de título para completar.
+El próximo paso es incorporar la comparación integral cuando se
+ejecute la iteración del ejercicio 4.
+
+## 40. Primer experimento en la presentación — 11/11
+
+Después de la portada y el problema, [la presentación](presentacion.html#indice)
+abre con la construcción del índice inicial. La diapositiva documenta las dos
+pasadas del splitter, el embedder y la persistencia en Chroma. Las cifras
+corresponden al VTT de una clase y a su segunda carga. Se cotejaron con
+[la revisión inicial](ejercicio2/evaluacion/revision_retrieval_inicial.md).
+La siguiente etapa del recorrido es la primera búsqueda sobre ese índice.
+
+## 41. Ablación de k en la presentación — 11/11
+
+Se añadió [la diapositiva de recuperación](presentacion.html#k) después del
+índice inicial. Resume las seis búsquedas con k de 2, 4 y 8 sobre los mismos
+125 chunks. Se cotejaron los criterios completos y los cálculos retrospectivos
+de Context Precision y P@k. Se aclaró que 2 y 5 son los criterios de la
+referencia manual de cada consulta, mientras que P@k cuenta chunks.
+Se eligió k de 8 provisionalmente porque permitió
+respaldar la definición en la consulta general, aunque bajó la proporción de
+chunks útiles en la consulta de coseno. La siguiente etapa fue integrar el
+generador con ese contexto. [Registro de la ablación](ejercicio2/evaluacion/ablacion_k.md)
+
+## 42. Primera generación en la presentación — 11/11
+
+Se agregó [la comparación con Qwen](presentacion.html#qwen) después de la
+ablación de k. Se cotejaron las dos salidas históricas con el mismo modelo,
+prompt y video. Con los seis pasajes de referencia Qwen agotó 1.000 tokens
+antes de clasificar. Con los ocho chunks de Chroma declaró cubierto el
+objetivo e inventó cuatro IDs académicos. La próxima prueba del recorrido
+cambió el prompt para pedir una tabla por criterio.
+[Registro de la generación](ejercicio2/evaluacion/generacion_caso01.md)
+
+## 43. Prompt de tabla en la presentación — 11/11
+
+Se añadió [la diapositiva del prompt de tabla](presentacion.html#qwen-tabla)
+después de la primera generación. Se cotejaron las 19 filas con los pasajes
+de referencia y las 22 con Chroma, de las cuales 13 eran duplicadas. Ambas
+salidas agotaron el límite antes de la recomendación y la conclusión. El
+siguiente contraste mantuvo la tabla y varió la penalización por repetición
+de 1,10 a 1,15. [Registro de la generación](ejercicio2/evaluacion/generacion_caso01.md)
+
+## 44. Penalización por repetición en la presentación — 11/11
+
+Se añadió [la diapositiva de penalización por repetición](presentacion.html#qwen-repeticion)
+después del prompt de tabla. Resume la comparación entre 1,10 y 1,15 con
+Qwen. Ambas salidas terminaron antes del tope con 1,15 y Chroma pasó de 13
+filas duplicadas a 0. Persistieron omisiones y problemas de citas, por lo
+que el siguiente contraste probó GPT-4o con los pasajes de referencia.
+[Registro de la generación](ejercicio2/evaluacion/generacion_caso01.md)
+
+## 45. Comparación con GPT-4o en la presentación — 11/11
+
+Se añadió [la diapositiva de Qwen y GPT-4o](presentacion.html#gpt4o-referencia)
+después del ajuste de penalización. Con los mismos mensajes y pasajes de
+referencia, GPT-4o pasó de los seis IDs inexistentes de Qwen a cero y
+cerró con recomendación y conclusión. Persistieron problemas en la
+clasificación de tres criterios. El siguiente contraste usó GPT-4o con los
+ocho chunks recuperados por Chroma. [Registro de la comparación](ejercicio2/evaluacion/generacion_caso01.md)
+
+## 46. GPT-4o con Chroma en la presentación — 11/11
+
+Se añadió [la diapositiva con contexto recuperado](presentacion.html#gpt4o-chroma)
+después de la comparación de generadores. Con el mismo GPT-4o y el
+prompt de tabla, la selección manual produjo cinco filas y Chroma cuatro.
+Ambas salidas citaron IDs existentes. En Chroma, la revisión encontró
+citas que no respaldaban la medida de similitud y dos criterios omitidos.
+El experimento siguiente incorporó un apunte de embeddings al corpus.
+[Registro de la generación](ejercicio2/evaluacion/generacion_caso01.md)
+
+## 47. Cómo seguiremos actualizando este documento
 
 En cada avance significativo agregaremos una entrada al recorrido, con fecha
 y en el orden en que ocurrió. Actualizaremos también el estado actual. Al

@@ -167,15 +167,61 @@ done
 
 ### I3 · Solapamiento
 
-- **Punto de partida:** splitter y tamaño elegidos. Revisar si los cortes dejaron evidencia fuera.
-- Comparar **0, 10, 20 y 40 tokens de solapamiento**. Usar 0 como control y mantener el splitter recursivo, el máximo de 160 tokens, el corpus, las diez consultas, MiniLM, Chroma, coseno y `k=4`.
-- Medir Context Recall y Context Precision, revisar si reaparece el ejemplo de magnitud y contar cuánto texto se repite en los cuatro resultados. Registrar el solapamiento efectivo mediante los offsets de cada fuente, porque los separadores del recursivo pueden dejar menos texto compartido que el valor configurado.
-- **Resultados:** pendientes.
-- **Decisión:** pendiente. Si dos valores recuperan la misma evidencia con posiciones similares, conservar el menor para evitar contexto repetido.
+**Prueba de desarrollo · 14/11/2026.** Se compararon 0, 10, 20 y 40 tokens de solapamiento con 0 como control. Se mantuvieron el recursivo de 160 tokens, las tres fuentes, las diez consultas de I2, MiniLM en CPU, Chroma, coseno y `k=4`. La hipótesis era que compartir texto en los bordes ayudaría a recuperar explicaciones partidas, en especial la de magnitud. [Consultas y criterios](consultas_i1_ampliado.json) · [Clase de RAG, pp. 22–24](../../docs/RAG/Clase%207.1%20-%20RAG.pdf)
+
+El asistente evaluó los candidatos por consulta sin mostrar su variante ni su puesto. Se usó la misma pauta de relevancia y cobertura de I2. La revisión humana queda pendiente. Las métricas de búsqueda promedian las diez consultas y las dos reconstrucciones de cada índice.
+
+| Resultado | 0 (control) | 10 | 20 | 40 |
+| --- | ---: | ---: | ---: | ---: |
+| Chunks | 623 | 623 | 635 | 691 |
+| Context Recall | 25,0% | 25,0% | 25,0% | 25,0% |
+| Context Precision | 43,8% | **45,0%** | 36,4% | 39,6% |
+| Precision@4 | 22,5% | 22,5% | 25,0% | 25,0% |
+| Criterios completos en cada corrida | 3/14 | 3/14 | 3/14 | 3/14 |
+| Pares de chunks contiguos con solapamiento efectivo | 0/620 | 47/620 | 162/632 | 394/688 |
+| Tokens compartidos por par contiguo, promedio | 0 | 0,6 | 3,6 | 14,9 |
+| Tokens recuperados por consulta, promedio | 497,8 | 496,5 | 491,6 | 538,9 |
+| Tokens de intervalos repetidos por consulta, promedio | 0 | 0 | 1,6 | 6,0 |
+
+El solapamiento efectivo se midió con las intersecciones de los offsets en cada documento. Para el top 4 se contó cada aparición adicional de un tramo de la misma fuente y se tokenizó el texto compartido. Así, el conteo registra redundancia del splitter aunque el resultado venga en otro puesto y deja fuera coincidencias literales de tramos diferentes.
+
+| Consulta con evidencia útil | Puestos útiles con 0 | Con 10 | Con 20 | Con 40 | Criterios completos con cada valor |
+| --- | --- | --- | --- | --- | --- |
+| Q2 · Fórmula del coseno | 3 | 2 | 4 | 3 | 1/1 |
+| Q3 · Magnitud | 1 | 1 | 2, 4 | 2, 3 | 0/1 |
+| Q7 · Objetivo de Transformers | 3 en primera, 4 en segunda | 4 | 3 | 3 en primera, 4 en segunda | 0/2 |
+| Q8 · Ajuste de pesos | 1, 2, 4 | 1, 2, 4 | 1, 3, 4 | 1, 2, 3 | 1/1 |
+| Q9 · Destilación | 1 | 1 | 1 | 1 | 0/1 |
+| Q10 · Objetivo de fine-tuning | 1, 3 | 1, 3 | 1, 4 | 1, 4 | 1/2 |
+
+Q1, Q4, Q5 y Q6 quedaron sin evidencia útil con los cuatro valores. En Q3, 20 y 40 recuperaron una parte más del ejemplo de magnitud (bloques 186–187). El bloque 185, que compara 100 y 100 frente a 1 y 1, quedó fuera de los cuatro resultados. Con 10, el chunk de la fórmula del coseno conservó el mismo contenido del control y subió del puesto 3 al 2. [Embeddings VTT, 25:37–27:13 y 31:55–32:14](../../docs/embeddings_2.VTT)
+
+**Verificación.** Se construyó dos veces cada índice y se verificó la cobertura del texto usando los offsets, el tamaño de los chunks y el conteo de las colecciones reabiertas. Coincidieron 38 de los 40 rankings. El índice de 0 y el de 40 cambiaron en Q7 entre las dos corridas, sin cambiar los criterios completos recuperados. La segunda corrida de 0 reprodujo los rankings de I2.
+
+**Decisión revisada.** En la primera lectura elegimos 0 por ser el menor solapamiento. Para comparar embeddings vamos a usar el recursivo de **160 tokens con 10 de solapamiento**. Ambas opciones cubrieron los mismos 3 de 14 criterios, generaron 623 chunks y devolvieron cero tokens repetidos en el top 4. Con ese empate, usamos Context Precision para decidir. Subió de 43,8% a 45,0% porque la fórmula del coseno pasó del tercer al segundo puesto. La ventaja viene de una consulta y la decisión se aplica a este conjunto de desarrollo.
+
+**Reproducción.** Usar las fuentes y la revisión local de MiniLM de I2. Los ocho rankings guardan los offsets y los conteos de texto compartido. [Salidas locales de I3](data/experimentos/i3/)
+
+```bash
+base=tp3/ejercicio2
+modelo="/ruta/a/la/copia/local/de/MiniLM"
+for solape in 0 10 20 40; do
+  for repeticion in 1 2; do
+    python3 "$base/comparar_splitters.py" \
+      --modelo-local "$modelo" \
+      --corpus "$base/data/procesados/embeddings_2.json" \
+      --corpus "$base/data/procesados/transformers.json" \
+      --corpus "$base/data/procesados/finetuning.json" \
+      --consultas "$base/consultas_i1_ampliado.json" \
+      --solo-recursivo --tamano 160 --solapamiento "$solape" \
+      --salida "$base/data/experimentos/i3_nueva/solape_${solape}_r${repeticion}"
+  done
+done
+```
 
 ### I4 · Modelo de embeddings
 
-- **Punto de partida:** chunks elegidos y MiniLM como baseline.
+- **Punto de partida:** mismos chunks del recursivo de 160 tokens con 10 de solapamiento en ambos brazos, con MiniLM como baseline.
 - **Qué evaluar:** comparar con `text-embedding-3-small` si está disponible para el grupo y el corpus. Usar los mismos chunks, consultas y `k`. Medir recall, precisión y recursos.
 - **Resultados:** pendientes.
 - **Decisión:** pendiente.

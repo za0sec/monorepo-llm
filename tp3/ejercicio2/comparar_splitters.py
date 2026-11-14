@@ -53,14 +53,37 @@ def ventanas_fijas(texto, tokenizer, contar, tamano):
         inicio_token, inicio = fin_token, fin
 
 
-def crear_chunks(fragmentos, texto, tramos, contar, tamano, fuente, primer_id):
-    fragmentos = list(fragmentos)
-    if "".join(fragmentos) != texto:
-        raise ValueError("Los chunks deben reconstruir exactamente el texto de entrada.")
-    chunks = []
-    inicio = 0
-    for numero, fragmento in enumerate(fragmentos, primer_id):
+def ubicar_fragmentos(fragmentos, texto, contar, solapamiento):
+    inicio_anterior = -1
+    fin_anterior = 0
+    for fragmento in fragmentos:
+        if solapamiento and fin_anterior:
+            # Cada corte avanza en la misma fuente y puede empezar dentro del anterior.
+            posibles = []
+            inicio = texto.find(fragmento, inicio_anterior + 1)
+            while 0 <= inicio <= fin_anterior:
+                if inicio + len(fragmento) > fin_anterior:
+                    if contar(texto[inicio:fin_anterior]) <= solapamiento:
+                        posibles.append(inicio)
+                inicio = texto.find(fragmento, inicio + 1)
+            if len(posibles) != 1:
+                raise ValueError(f"No se pudo ubicar de forma inequívoca el corte tras {fin_anterior}.")
+            inicio = posibles[0]
+        else:
+            inicio = fin_anterior
         fin = inicio + len(fragmento)
+        if texto[inicio:fin] != fragmento or fin <= fin_anterior:
+            raise ValueError("Los chunks deben cubrir el texto de entrada en orden.")
+        yield inicio, fin, fragmento
+        inicio_anterior, fin_anterior = inicio, fin
+    if fin_anterior != len(texto):
+        raise ValueError("El último chunk no llega al final del texto de entrada.")
+
+
+def crear_chunks(fragmentos, texto, tramos, contar, tamano, fuente, primer_id, solapamiento):
+    chunks = []
+    cortes = ubicar_fragmentos(fragmentos, texto, contar, solapamiento)
+    for numero, (inicio, fin, fragmento) in enumerate(cortes, primer_id):
         tokens = contar(fragmento)
         if not 0 < tokens <= tamano:
             raise ValueError(f"Chunk {numero} fuera del límite: {tokens} tokens.")
@@ -76,8 +99,39 @@ def crear_chunks(fragmentos, texto, tramos, contar, tamano, fuente, primer_id):
             "fin": max(bloques, key=lambda s: s["fin_ms"])["fin"],
             "tokens": tokens,
         })
-        inicio = fin
     return chunks
+
+
+def medir_texto_compartido(chunks, ranking, contar):
+    """Cuenta tokens de intervalos repetidos de una misma fuente."""
+    por_id = {c["id"]: c for c in chunks}
+    solapes = [
+        contar(actual["texto"][:max(0, previo["fin_caracter"] - actual["inicio_caracter"])])
+        for previo, actual in zip(chunks, chunks[1:])
+        if previo["fuente"] == actual["fuente"]
+    ]
+    consultas = {}
+    for consulta, hits in ranking.items():
+        recuperados = [por_id[hit["chunk"]] for hit in hits]
+        fin_por_fuente = {}
+        repetidos = 0
+        for chunk in sorted(recuperados, key=lambda c: (c["fuente"], c["inicio_caracter"])):
+            fuente = chunk["fuente"]
+            fin_previo = fin_por_fuente.get(fuente, 0)
+            caracteres_repetidos = max(0, fin_previo - chunk["inicio_caracter"])
+            repetidos += contar(chunk["texto"][:caracteres_repetidos])
+            fin_por_fuente[fuente] = max(fin_previo, chunk["fin_caracter"])
+        consultas[consulta] = {
+            "tokens_recuperados": sum(c["tokens"] for c in recuperados),
+            "tokens_en_intervalos_repetidos": repetidos,
+        }
+    return {
+        "pares_contiguos": len(solapes),
+        "pares_con_solapamiento": sum(s > 0 for s in solapes),
+        "tokens_compartidos_totales": sum(solapes),
+        "tokens_compartidos_maximo": max(solapes, default=0),
+        "consultas": consultas,
+    }
 
 
 def codificar(modelo, textos):
@@ -123,6 +177,8 @@ def main():
     parser.add_argument("--consultas", type=Path, default=CARPETA / "consultas_i1.json")
     parser.add_argument("--tamano", type=int, default=TAMANO,
                         help="Máximo de tokens de contenido por chunk.")
+    parser.add_argument("--solapamiento", type=int, default=0,
+                        help="Máximo de tokens compartidos para el splitter recursivo.")
     parser.add_argument("--solo-recursivo", action="store_true",
                         help="Ejecuta únicamente el splitter recursivo.")
     parser.add_argument("--salida", type=Path, required=True,
@@ -130,6 +186,10 @@ def main():
     args = parser.parse_args()
     if args.tamano < 1:
         parser.error("--tamano debe ser positivo.")
+    if not 0 <= args.solapamiento < args.tamano:
+        parser.error("--solapamiento debe ser menor que el tamaño y no negativo.")
+    if args.solapamiento and not args.solo_recursivo:
+        parser.error("Usar --solo-recursivo al configurar el solapamiento.")
     rutas = args.corpus or [CARPETA / "data/procesados/embeddings_2.json"]
     documentos = []
     fuentes = {}
@@ -160,7 +220,7 @@ def main():
 
     recursivo = RecursiveCharacterTextSplitter(
         separators=SEPARADORES, length_function=contar, chunk_size=args.tamano,
-        chunk_overlap=0, keep_separator="end", strip_whitespace=False,
+        chunk_overlap=args.solapamiento, keep_separator="end", strip_whitespace=False,
     )
     variantes = {"recursivo": []} if args.solo_recursivo else {"ventanas_fijas": [], "recursivo": []}
     for documento in documentos:
@@ -170,7 +230,8 @@ def main():
                       else ventanas_fijas(texto, tokenizer, contar, args.tamano))
             chunks = variantes[nombre]
             chunks.extend(crear_chunks(
-                cortes, texto, tramos, contar, args.tamano, documento["fuente"], len(chunks) + 1,
+                cortes, texto, tramos, contar, args.tamano, documento["fuente"],
+                len(chunks) + 1, args.solapamiento,
             ))
     vectores_consultas = codificar(modelo, [q["texto"] for q in consultas])
     args.salida.mkdir(parents=True, exist_ok=False)
@@ -183,7 +244,7 @@ def main():
         "modelo_local": str(args.modelo_local.resolve()),
         "limite_encoder": modelo.max_seq_length,
         "max_tokens": args.tamano,
-        "solapamiento": 0,
+        "solapamiento": args.solapamiento,
         "separadores": SEPARADORES,
         "distancia": "cosine",
         "k": K,
@@ -198,7 +259,11 @@ def main():
     for nombre, chunks in variantes.items():
         vectores_chunks = codificar(modelo, [c["texto"] for c in chunks])
         ranking = buscar(cliente, nombre, chunks, vectores_chunks, vectores_consultas, consultas)
-        resultado["variantes"][nombre] = {"chunks": chunks, "ranking": ranking}
+        resultado["variantes"][nombre] = {
+            "chunks": chunks,
+            "ranking": ranking,
+            "texto_compartido": medir_texto_compartido(chunks, ranking, contar),
+        }
         print(f"{nombre}: {len(chunks)} chunks y {len(ranking)} consultas.")
     ruta = args.salida / "ranking.json"
     ruta.write_text(json.dumps(resultado, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

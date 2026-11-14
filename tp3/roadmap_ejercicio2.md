@@ -78,7 +78,7 @@ Ejecutar un contraste por vez y usar la variante seleccionada como control del s
 
 Por cada contraste guardar una ficha Markdown y resultados por caso en CSV o JSON en una carpeta propia. Ficha mínima: **ID/fecha | pregunta e hipótesis | control y variante | constantes y presupuesto | criterio de decisión | resultados y diferencias | errores y casos representativos | decisión y siguiente paso**. Adjuntar revisión del código (hash y cambios locales si los hay), comando, versiones de entorno/modelo/tokenizer, hashes de corpus y casos, parámetros, semillas cuando correspondan, rankings con puntajes, el contexto exacto enviado, salida cruda, etiquetas de revisión, tiempos y tokens. Conservar casos con fallo y anotar por qué faltan métricas. Llevar la decisión y su evidencia a la [bitácora][bitacora].
 
-**Próximo paso.** Comparar 0, 10, 20 y 40 tokens de solapamiento con el splitter recursivo de 160 tokens. El tamaño se conservó tras la [comparación I2](ejercicio2/experimentos.md#i2--tamaño-de-chunk) y el caso de magnitud sirve para revisar qué ocurre con las explicaciones partidas.
+**Próximo paso.** Comparar modelos de embeddings con los mismos chunks del recursivo de 160 tokens con 10 de solapamiento. En I3, 10 mejoró la Context Precision frente a 0 con los mismos criterios completos y cero tokens repetidos en los primeros cuatro resultados. [Comparación I3](ejercicio2/experimentos.md#i3--solapamiento)
 
 [ej1]: ejercicio1/Grupo03-ej1-TP3.md
 [archivo]: archivo/README.md

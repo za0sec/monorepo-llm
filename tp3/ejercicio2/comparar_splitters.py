@@ -31,7 +31,7 @@ def unir_segmentos(segmentos):
     return "\n".join(s["texto"] for s in segmentos), tramos
 
 
-def ventanas_fijas(texto, tokenizer, contar):
+def ventanas_fijas(texto, tokenizer, contar, tamano):
     """Usa offsets de MiniLM para conservar el texto original al cortar."""
     offsets = tokenizer(
         texto, add_special_tokens=False, truncation=False,
@@ -40,11 +40,11 @@ def ventanas_fijas(texto, tokenizer, contar):
     inicio_token = 0
     inicio = 0
     while inicio_token < len(offsets):
-        fin_token = min(inicio_token + TAMANO, len(offsets))
+        fin_token = min(inicio_token + tamano, len(offsets))
         while fin_token > inicio_token:
             fin = offsets[fin_token][0] if fin_token < len(offsets) else len(texto)
             # Un corte dentro de una palabra puede cambiar el conteo al retokenizar.
-            if inicio < fin and 0 < contar(texto[inicio:fin]) <= TAMANO:
+            if inicio < fin and 0 < contar(texto[inicio:fin]) <= tamano:
                 break
             fin_token -= 1
         else:
@@ -53,7 +53,7 @@ def ventanas_fijas(texto, tokenizer, contar):
         inicio_token, inicio = fin_token, fin
 
 
-def crear_chunks(fragmentos, texto, tramos, contar, fuente, primer_id):
+def crear_chunks(fragmentos, texto, tramos, contar, tamano, fuente, primer_id):
     fragmentos = list(fragmentos)
     if "".join(fragmentos) != texto:
         raise ValueError("Los chunks deben reconstruir exactamente el texto de entrada.")
@@ -62,7 +62,7 @@ def crear_chunks(fragmentos, texto, tramos, contar, fuente, primer_id):
     for numero, fragmento in enumerate(fragmentos, primer_id):
         fin = inicio + len(fragmento)
         tokens = contar(fragmento)
-        if not 0 < tokens <= TAMANO:
+        if not 0 < tokens <= tamano:
             raise ValueError(f"Chunk {numero} fuera del límite: {tokens} tokens.")
         bloques = [s for a, b, s in tramos if a < fin and inicio < b]
         chunks.append({
@@ -121,9 +121,15 @@ def main():
     parser.add_argument("--corpus", type=Path, action="append",
                         help="JSON de un VTT preparado. Repetir para sumar fuentes.")
     parser.add_argument("--consultas", type=Path, default=CARPETA / "consultas_i1.json")
+    parser.add_argument("--tamano", type=int, default=TAMANO,
+                        help="Máximo de tokens de contenido por chunk.")
+    parser.add_argument("--solo-recursivo", action="store_true",
+                        help="Ejecuta únicamente el splitter recursivo.")
     parser.add_argument("--salida", type=Path, required=True,
                         help="Directorio nuevo para el índice y los resultados.")
     args = parser.parse_args()
+    if args.tamano < 1:
+        parser.error("--tamano debe ser positivo.")
     rutas = args.corpus or [CARPETA / "data/procesados/embeddings_2.json"]
     documentos = []
     fuentes = {}
@@ -145,25 +151,26 @@ def main():
     modelo = SentenceTransformer(str(args.modelo_local.resolve()), device="cpu",
                                  local_files_only=True)
     tokenizer = modelo.tokenizer
+    max_con_especiales = args.tamano + tokenizer.num_special_tokens_to_add(pair=False)
+    if max_con_especiales > modelo.max_seq_length:
+        parser.error("--tamano más los tokens especiales excede el límite del encoder.")
 
     def contar(fragmento):
         return len(tokenizer.encode(fragmento, add_special_tokens=False, verbose=False))
 
     recursivo = RecursiveCharacterTextSplitter(
-        separators=SEPARADORES, length_function=contar, chunk_size=TAMANO,
+        separators=SEPARADORES, length_function=contar, chunk_size=args.tamano,
         chunk_overlap=0, keep_separator="end", strip_whitespace=False,
     )
-    variantes = {"ventanas_fijas": [], "recursivo": []}
+    variantes = {"recursivo": []} if args.solo_recursivo else {"ventanas_fijas": [], "recursivo": []}
     for documento in documentos:
         texto, tramos = unir_segmentos(documento["segmentos"])
-        fragmentos = {
-            "ventanas_fijas": ventanas_fijas(texto, tokenizer, contar),
-            "recursivo": recursivo.split_text(texto),
-        }
-        for nombre, cortes in fragmentos.items():
+        for nombre in variantes:
+            cortes = (recursivo.split_text(texto) if nombre == "recursivo"
+                      else ventanas_fijas(texto, tokenizer, contar, args.tamano))
             chunks = variantes[nombre]
             chunks.extend(crear_chunks(
-                cortes, texto, tramos, contar, documento["fuente"], len(chunks) + 1,
+                cortes, texto, tramos, contar, args.tamano, documento["fuente"], len(chunks) + 1,
             ))
     vectores_consultas = codificar(modelo, [q["texto"] for q in consultas])
     args.salida.mkdir(parents=True, exist_ok=False)
@@ -175,7 +182,7 @@ def main():
         "sha256_consultas": hashlib.sha256(referencia).hexdigest(),
         "modelo_local": str(args.modelo_local.resolve()),
         "limite_encoder": modelo.max_seq_length,
-        "max_tokens": TAMANO,
+        "max_tokens": args.tamano,
         "solapamiento": 0,
         "separadores": SEPARADORES,
         "distancia": "cosine",

@@ -111,17 +111,67 @@ python3 "$base/comparar_splitters.py" \
 
 ### I2 · Tamaño de chunk
 
-- **Punto de partida:** splitter recursivo con 160 tokens como control, elegido para esta etapa en la repetición ampliada de I1.
-- **Qué evaluar:** 96, 160 y 224 tokens con solapamiento cero. Medir recuperación de evidencia y cantidad de tokens recuperados.
-- **Resultados:** pendientes.
-- **Decisión:** pendiente.
+**Prueba de desarrollo · 14/11/2026.** Se compararon máximos de 96, 160 y 224 tokens. El control fue el recursivo de 160 tokens de I1. Se mantuvieron las tres transcripciones, las diez consultas y sus criterios, MiniLM en CPU, Chroma, coseno, `k=4` y solapamiento cero. La hipótesis era que un tamaño mayor preservaría explicaciones partidas, a cambio de traer más texto por consulta. Se comprobó que los tres máximos más los tokens especiales caben en el encoder. [Consultas y criterios](consultas_i1_ampliado.json) · [Clase de RAG, pp. 31–33](../../docs/RAG/Clase%207.1%20-%20RAG.pdf)
+
+| Resultado | 96 | 160 (control) | 224 |
+| --- | ---: | ---: | ---: |
+| Chunks | 1.162 | 623 | 417 |
+| Mediana de tokens por chunk | 74 | 136 | 201 |
+| Context Recall promedio | 0% | **25,0%** | 23,3% |
+| Context Precision promedio | 26,4% | 43,3% | **60,8%** |
+| Precision@4 promedio | 22,5% | 22,5% | 22,5% |
+| Criterios completos | 0/14 | **3/14** | **3/14** |
+| Tokens recuperados por consulta | 239,1 | 495,9 | 722,0 |
+
+El asistente anotó los candidatos agrupados por consulta, sin mostrar el tamaño ni la posición. Las posiciones útiles cuentan para *Context Precision* aunque solo aporten una parte de un criterio. Para *Context Recall* se exige respaldo completo. La revisión humana de estas etiquetas está pendiente. La tabla da primero los puestos útiles y después la fracción de criterios completos.
+
+| Consulta | 96 | 160 | 224 |
+| --- | --- | --- | --- |
+| Q1 · Definición de embedding | — · 0/1 | — · 0/1 | 1 · 1/1 |
+| Q2 · Fórmula del coseno | 3 · 0/1 | 3 · 1/1 | 3 · 1/1 |
+| Q3 · Magnitud | 3, 4 · 0/1 | 1 · 0/1 | 2 · 0/1 |
+| Q4 · Objetivo de embeddings | — · 0/3 | — · 0/3 | 2 · 1/3 |
+| Q5 · Máscara causal | — · 0/1 | — · 0/1 | — · 0/1 |
+| Q6 · Query, key y value | — · 0/1 | — · 0/1 | — · 0/1 |
+| Q7 · Objetivo de Transformers | — · 0/2 | 4 · 0/2 | 1 · 0/2 |
+| Q8 · Ajuste de pesos | 1, 4 · 0/1 | 1, 2, 4 · 1/1 | 1, 4 · 0/1 |
+| Q9 · Destilación | 2 · 0/1 | 1 · 0/1 | 1 · 0/1 |
+| Q10 · Objetivo de fine-tuning | 2, 3, 4 · 0/2 | 1, 3 · 1/2 | 1 · 0/2 |
+
+- **96 tokens.** En Q2 recuperó solo el final del bloque 222. La mención al producto dividido por las normas quedó separada de la explicación de que se trata del producto interno. Quedó evidencia parcial, pero la fórmula completa quedó fuera de los cuatro resultados.
+- **160 y 224 tokens.** Ambos recuperaron la fórmula. Con 160 entró la explicación de ajustar todas o algunas capas en Q8 y Q10 (fine-tuning, bloques 310–311). Con 224 entró un ejemplo que explica cómo un vector numérico representa una palabra en Q1 y Q4 (embeddings, bloques 130–134). Los tres aciertos de cada variante incluyen un criterio que se repite en dos consultas.
+- **Presupuesto común.** Para separar recuperación de longitud de contexto se revisaron los dos finalistas con hasta 384 tokens de MiniLM por consulta, el máximo teórico de cuatro chunks de 96. Se recorrió el ranking en orden y, cuando el siguiente chunk excedía el saldo, se conservó solo su prefijo hasta el último token que cabía, sin tokens especiales. Con 160 se conservaron Q2 y el criterio de ajuste de pesos de Q10. Con 224 se conservaron Q1 y el criterio de definición de Q4. Ambos quedaron en 2/14 criterios, con recall promedio de 15,0% y 13,3%, respectivamente. [Contextos con el tope común](data/experimentos/i2/contextos_384.json)
+
+**Verificación.** Se construyó dos veces cada índice. Coincidieron los chunks, los rankings y sus distancias en las dos corridas de cada tamaño. Se comprobaron la trazabilidad de los chunks, la reconstrucción del texto y el conteo de registros de las colecciones persistidas.
+
+**Decisión.** Mantener 160 tokens como control. Cubrió la misma cantidad de criterios que 224 con un 31% menos de tokens por consulta. Bajo el tope común quedaron empatados en cantidad de criterios completos. El tamaño de 224 sigue siendo una alternativa para consultas que necesitan una explicación repartida en varios bloques. El número de consultas es bajo y todos los resultados son de desarrollo. Para I3, el caso de magnitud permite comprobar si el solapamiento ayuda a recuperar el ejemplo que quedó en el chunk contiguo.
+
+**Reproducción.** Usar las mismas fuentes y la revisión de MiniLM de I1. Los seis rankings y las colecciones quedan en los subdirectorios `tamano_<máximo>_r<repetición>`. [Salidas locales de I2](data/experimentos/i2/)
+
+```bash
+base=tp3/ejercicio2
+modelo="/ruta/a/la/copia/local/de/MiniLM"
+for tamano in 96 160 224; do
+  for repeticion in 1 2; do
+    python3 "$base/comparar_splitters.py" \
+      --modelo-local "$modelo" \
+      --corpus "$base/data/procesados/embeddings_2.json" \
+      --corpus "$base/data/procesados/transformers.json" \
+      --corpus "$base/data/procesados/finetuning.json" \
+      --consultas "$base/consultas_i1_ampliado.json" \
+      --solo-recursivo --tamano "$tamano" \
+      --salida "$base/data/experimentos/i2_nueva/tamano_${tamano}_r${repeticion}"
+  done
+done
+```
 
 ### I3 · Solapamiento
 
 - **Punto de partida:** splitter y tamaño elegidos. Revisar si los cortes dejaron evidencia fuera.
-- **Qué evaluar:** si aparecen pérdidas en los bordes, comparar 0 y 20 tokens de solapamiento. Medir criterios recuperados y contexto repetido.
+- Comparar **0, 10, 20 y 40 tokens de solapamiento**. Usar 0 como control y mantener el splitter recursivo, el máximo de 160 tokens, el corpus, las diez consultas, MiniLM, Chroma, coseno y `k=4`.
+- Medir Context Recall y Context Precision, revisar si reaparece el ejemplo de magnitud y contar cuánto texto se repite en los cuatro resultados. Registrar el solapamiento efectivo mediante los offsets de cada fuente, porque los separadores del recursivo pueden dejar menos texto compartido que el valor configurado.
 - **Resultados:** pendientes.
-- **Decisión:** pendiente.
+- **Decisión:** pendiente. Si dos valores recuperan la misma evidencia con posiciones similares, conservar el menor para evitar contexto repetido.
 
 ### I4 · Modelo de embeddings
 

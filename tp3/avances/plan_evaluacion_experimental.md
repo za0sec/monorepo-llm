@@ -1,5 +1,7 @@
 # Plan de reconstrucción experimental del TP3
 
+> **Plan histórico.** Desde el 14/11/2026, consultar el [roadmap del nuevo ejercicio 2](../roadmap_ejercicio2.md).
+
 **Relevamiento del 09/11/2026.** Código en `f4dad33` y corridas locales registradas. Este plan reconstruye el pipeline experimental desde los insumos y vuelve a ejecutar las comparaciones, reutilizando los scripts y los datos disponibles. El estado actual queda congelado como referencia histórica. Las pruebas y reglas de decisión se fijan antes de medir.
 
 El producto compara **lo que el estudiante debería aprender** con **lo que explica el audio del video**. El objetivo consulta la base académica. El VTT del video aporta evidencia al generador y se mantiene fuera del índice.
@@ -172,19 +174,19 @@ La preparación y anotación iniciales son locales. Presupuestar el ASR de los c
 [ragas]: ../../docs/RAG/RAGAS.ipynb
 [pinecone]: ../../docs/RAG/Langchain_Pinecone.ipynb
 [advanced]: ../../docs/RAG/UN_Report_Advanced_RAG.ipynb
-[chunks]: ../ejercicio2/preparar_chunks.py
-[config]: ../ejercicio2/config.py
-[indice]: ../ejercicio2/indexar_material.py
-[retrieval]: ../ejercicio2/recuperar.py
-[asr]: ../ejercicio2/transcribir_audio.py
-[generador]: ../ejercicio2/generar_informe.py
-[proxy]: ../ejercicio2/proxy_catedra.py
-[readme]: ../ejercicio2/README.md
+[chunks]: ../archivo/ejercicio2_anterior/preparar_chunks.py
+[config]: ../archivo/ejercicio2_anterior/config.py
+[indice]: ../archivo/ejercicio2_anterior/indexar_material.py
+[retrieval]: ../archivo/ejercicio2_anterior/recuperar.py
+[asr]: ../archivo/ejercicio2_anterior/transcribir_audio.py
+[generador]: ../archivo/ejercicio2_anterior/generar_informe.py
+[proxy]: ../archivo/ejercicio2_anterior/proxy_catedra.py
+[readme]: ../archivo/ejercicio2_anterior/README.md
 [bitacora]: ../presentación.md
-[caso]: ../ejercicio2/evaluacion/caso_01_embeddings.md
-[revision]: ../ejercicio2/evaluacion/revision_retrieval_inicial.md
-[k]: ../ejercicio2/evaluacion/ablacion_k.md
-[gen]: ../ejercicio2/evaluacion/generacion_caso01.md
+[caso]: ../archivo/ejercicio2_anterior/evaluacion/caso_01_embeddings.md
+[revision]: ../archivo/ejercicio2_anterior/evaluacion/revision_retrieval_inicial.md
+[k]: ../archivo/ejercicio2_anterior/evaluacion/ablacion_k.md
+[gen]: ../archivo/ejercicio2_anterior/evaluacion/generacion_caso01.md
 [clase7]: <../../docs/RAG/Clase 7.1 - RAG.pdf>
 [clase7-avanzado]: <../../docs/RAG/Clase 7.2 - Advanced RAG(1).pdf>
 [wav2vec]: https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-spanish

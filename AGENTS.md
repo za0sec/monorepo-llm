@@ -9,22 +9,13 @@
 - `tp1/`: predicción de BTR con PyTorch; `experiments/` procesa, entrena y evalúa; `plots/` grafica CSV de `output/`; `data/` contiene splits preparados.
 - `tp2/`: paper, consigna y apuntes de defensa; sin aplicación propia.
 - `tp3/ejercicio1/`: propuesta y diagrama del evaluador de cobertura de videos.
-- `tp3/ejercicio2/`: preparación de VTT/chunks, transcripción, caso manual revisado e indexación/recuperación con **MiniLM y Chroma local persistente en `data/chroma/`**. Hay 125 chunks indexados localmente; las búsquedas iniciales muestran ruido y omisiones (ver `evaluacion/revision_retrieval_inicial.md`). Falta generación y comparación automática de cobertura; el generador sigue propuesto.
+- `tp3/ejercicio2/`: carpeta del reinicio, reservada para la implementación nueva. El [roadmap experimental](tp3/roadmap_ejercicio2.md) define etapas, comparaciones y métricas.
+- `tp3/archivo/ejercicio2_anterior/`: código, datos y resultados históricos del prototipo. Consultar el [inventario del archivo](tp3/archivo/README.md) antes de reutilizar una pieza. La guía local conserva una fotografía anterior del estado del código.
 - `docs/`: material local de cátedra, excluido de Git; respetar las minúsculas para portabilidad.
 
 ## Instalación y ejecución
 
-Desde la raíz, Python 3.9+ para preparar VTT:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python3 -m pip install -r tp3/ejercicio2/requirements.txt
-python3 tp3/ejercicio2/preparar_transcripcion.py
-python3 tp3/ejercicio2/transcribir_audio.py "ruta/al/audio.mp3"
-```
-
-La transcripción puede consumir API; requiere audio y configuración de `tp3/.env`. No imprimir ni versionar credenciales. Para comandos del TP1, dependencias y directorios de ejecución, consultar la guía (§9).
+El ejercicio 2 nuevo aún no tiene comandos ni dependencias. Documentarlos al implementar cada etapa. Si una futura prueba de ASR usa la API, configurar las credenciales localmente en `tp3/.env`. No imprimirlas ni versionarlas. Para comandos del TP1, dependencias y directorios de ejecución, consultar la guía (§9).
 
 ## Código y formatos
 
@@ -32,7 +23,7 @@ Usar español en documentación, comentarios y justificaciones. Seguir Python ex
 
 ## Testing y validación
 
-Ejecutar `python3 -m unittest discover -s tp3/ejercicio2/tests -v` para integridad de chunks; requiere tokenizer en caché y VTT local. No hay CI. Validar VTT con `python3 tp3/ejercicio2/preparar_transcripcion.py --salida /tmp/tp3-vtt-check`. `evaluate_test.py` reentrena/evalúa TP1. Validar evidencias y métricas por módulo antes de comparar configuraciones.
+El ejercicio 2 nuevo aún no tiene pruebas. Validar la trazabilidad del VTT, la integridad de los chunks y la persistencia del índice al desarrollar esas etapas. Aplicar los controles y métricas por módulo del roadmap antes de comparar configuraciones. No hay CI. `evaluate_test.py` reentrena/evalúa TP1.
 
 ## Commits y pull requests
 

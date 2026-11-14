@@ -1,5 +1,7 @@
 # TP3 · Recorrido experimental hasta la versión actual
 
+> **Archivo histórico.** Este documento describe el prototipo anterior al reinicio del 14/11/2026. El [roadmap vigente](roadmap_ejercicio2.md) define el nuevo ejercicio 2.
+
 **Corte al 11 de noviembre de 2026.** La presentación HTML llega al experimento 7, GPT‑4o con el contexto recuperado por Chroma. Los experimentos posteriores dejaron una configuración de referencia con **corpus mixto, expansión de consultas y GPT‑4.1**. El recorrido explica qué se probó, qué justificó cada decisión y con qué configuración comparar la futura iteración del ejercicio 4. [Presentación HTML][html] · [Bitácora][bitacora] · [Consigna, pp. 2–4][consigna]
 
 ## 1. Punto de partida · Caso manual, índice y búsqueda directa
@@ -105,24 +107,24 @@ Los cálculos retrospectivos se basan en la lectura y el etiquetado de los artef
 [html-fin]: presentacion.html#gpt4o-chroma
 [bitacora]: presentación.md
 [consigna]: ../docs/RAG/tp3.pdf
-[caso]: ejercicio2/evaluacion/caso_01_embeddings.md
-[revision]: ejercicio2/evaluacion/revision_retrieval_inicial.md
-[ablacion]: ejercicio2/evaluacion/ablacion_k.md
-[generacion]: ejercicio2/evaluacion/generacion_caso01.md
+[caso]: archivo/ejercicio2_anterior/evaluacion/caso_01_embeddings.md
+[revision]: archivo/ejercicio2_anterior/evaluacion/revision_retrieval_inicial.md
+[ablacion]: archivo/ejercicio2_anterior/evaluacion/ablacion_k.md
+[generacion]: archivo/ejercicio2_anterior/evaluacion/generacion_caso01.md
 [evaluaciones]: evaluaciones.md
-[readme]: ejercicio2/README.md#repetir-las-pruebas-con-el-proxy
-[config]: ejercicio2/config.py
+[readme]: archivo/ejercicio2_anterior/README.md#repetir-las-pruebas-con-el-proxy
+[config]: archivo/ejercicio2_anterior/config.py
 [asr]: avances/transcripcion/README.md
 [plan]: avances/plan_evaluacion_experimental.md
 [asistente]: ../docs/RAG/Langchain_Virtual_Assitant.ipynb
 [advanced]: ../docs/RAG/UN_Report_Advanced_RAG.ipynb
 [metricas]: ../docs/RAG/Clase%2011%20-%20M%C3%A9tricas%20de%20la%20Industria%20%281%29.pdf
 [metricas-vtt]: ../docs/RAG/Metricas.VTT
-[datos-k]: ejercicio2/data/resultados/ablacion_k_20261104.oaCc7k/coseno_k8.json
-[datos-mixto]: ejercicio2/data/resultados/chroma_con_apunte_20261104.7sqyKv/coseno_k8.json
-[datos-expansion]: ejercicio2/data/resultados/expansion_subtemas_20261104.zQ1Iz1/
-[datos-4o]: ejercicio2/data/resultados/informe_estudiante_embeddings_20261104.4x6c1gtg/auditoria.json
-[datos-41]: ejercicio2/data/resultados/informe_estudiante_gpt41_20261104.41f5UB/informe.json
-[datos-plan-41]: ejercicio2/data/resultados/expansion_gpt41_20261104.umOHA2/expandida.json
-[datos-respaldo]: ejercicio2/data/resultados/respaldo_entrenamiento_20261104.63FuR6/
-[datos-control]: ejercicio2/data/resultados/respaldo_entrenamiento_20261104.63FuR6/informe_sin_pasaje.json
+[datos-k]: archivo/ejercicio2_anterior/data/resultados/ablacion_k_20261104.oaCc7k/coseno_k8.json
+[datos-mixto]: archivo/ejercicio2_anterior/data/resultados/chroma_con_apunte_20261104.7sqyKv/coseno_k8.json
+[datos-expansion]: archivo/ejercicio2_anterior/data/resultados/expansion_subtemas_20261104.zQ1Iz1/
+[datos-4o]: archivo/ejercicio2_anterior/data/resultados/informe_estudiante_embeddings_20261104.4x6c1gtg/auditoria.json
+[datos-41]: archivo/ejercicio2_anterior/data/resultados/informe_estudiante_gpt41_20261104.41f5UB/informe.json
+[datos-plan-41]: archivo/ejercicio2_anterior/data/resultados/expansion_gpt41_20261104.umOHA2/expandida.json
+[datos-respaldo]: archivo/ejercicio2_anterior/data/resultados/respaldo_entrenamiento_20261104.63FuR6/
+[datos-control]: archivo/ejercicio2_anterior/data/resultados/respaldo_entrenamiento_20261104.63FuR6/informe_sin_pasaje.json

@@ -1,5 +1,7 @@
 # Evaluaciones del RAG del TP3
 
+> **Archivo histórico.** Este documento describe el prototipo anterior al reinicio del 14/11/2026. El [roadmap vigente](roadmap_ejercicio2.md) define el nuevo ejercicio 2.
+
 **Estado al 11/11/2026.** Registro para la defensa del RAG textual que compara lo que exige un objetivo de estudio con lo que explica el audio de un video. El **objetivo** consulta el índice de **apuntes y transcripciones de clase**. El **VTT del video** entra al generador como evidencia de cobertura y queda fuera del índice académico.
 
 Las consignas ubican la evaluación y la ablación del RAG en el ejercicio 2 y la comparación antes/después en el ejercicio 4. El ejercicio 3 pide el informe de Responsible AI, Safety y producción. La clase de métricas toma como base **Context Precision, Context Recall, Answer Relevance y Answer Faithfulness**. Permite anotación y cálculo propios, con RAGAS como opción. [Consigna, pp. 2–3][consigna] · [Otra versión, pp. 2–3][consigna-alt] · [Explicación del TP, 07:31–10:19][tp-vtt] · [Métricas, 23:26–24:09 y 33:20–33:39][metricas]
@@ -119,11 +121,11 @@ Para la defensa, mostrar cada decisión con el par de configuraciones, el cambio
 [pinecone]: ../docs/RAG/Langchain_Pinecone.ipynb
 [advanced]: ../docs/RAG/UN_Report_Advanced_RAG.ipynb
 [ragas]: ../docs/RAG/RAGAS.ipynb
-[caso]: ejercicio2/evaluacion/caso_01_embeddings.md
-[revision]: ejercicio2/evaluacion/revision_retrieval_inicial.md
-[ablacion]: ejercicio2/evaluacion/ablacion_k.md
-[generacion]: ejercicio2/evaluacion/generacion_caso01.md
-[readme]: ejercicio2/README.md
+[caso]: archivo/ejercicio2_anterior/evaluacion/caso_01_embeddings.md
+[revision]: archivo/ejercicio2_anterior/evaluacion/revision_retrieval_inicial.md
+[ablacion]: archivo/ejercicio2_anterior/evaluacion/ablacion_k.md
+[generacion]: archivo/ejercicio2_anterior/evaluacion/generacion_caso01.md
+[readme]: archivo/ejercicio2_anterior/README.md
 [asr]: avances/transcripcion/README.md
 [plan]: avances/plan_evaluacion_experimental.md
 [bitacora]: presentación.md

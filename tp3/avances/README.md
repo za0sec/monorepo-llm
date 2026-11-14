@@ -1,16 +1,9 @@
 # Avances del TP3
 
-## En curso
+El ejercicio 2 comienza de nuevo con el [roadmap experimental](../roadmap_ejercicio2.md). La [bitácora](../presentación.md) registra el reinicio y las decisiones del grupo.
 
-**Transcripción.** Las seis referencias están revisadas. El piloto de ASR01 con Wav2Vec2 ya tiene métricas. El proxy de Whisper respondió HTTP 429 y el contraste sigue pendiente.
+## Referencias del prototipo anterior
 
-- [Piloto de transcripción y comandos](transcripcion/README.md)
-- [Abrir la ficha de referencia](transcripcion/data/asr_caso01_20261109/referencia.md)
-- [Consultar el plan experimental](plan_evaluacion_experimental.md)
-
-## Código y recorrido
-
-El código se incorpora a esta carpeta por módulo cuando trabajemos en él. Antes de mover un script, revisamos sus entradas, salidas e importaciones y comprobamos cómo se ejecuta en su nueva ubicación.
-
-- [Implementación de partida en ejercicio 2](../ejercicio2/README.md)
-- [Bitácora del TP3](../presentación.md)
+- [Implementación y resultados previos](../archivo/README.md).
+- [Plan experimental del 09/11](plan_evaluacion_experimental.md).
+- [Piloto de transcripción](transcripcion/README.md). El contraste con Whisper quedó pendiente tras recibir HTTP 429. La [ficha de referencia](transcripcion/data/asr_caso01_20261109/referencia.md) está en los datos locales del piloto.

@@ -1,6 +1,10 @@
 # Presentación: recorrido y decisiones del TP3
 
-Última actualización: **11/11/2026**.
+Última actualización: **14/11/2026**.
+
+El [roadmap experimental del ejercicio 2](roadmap_ejercicio2.md) rige desde
+el reinicio del 14/11. Las entradas anteriores a ese reinicio documentan el
+prototipo histórico.
 
 Este documento cuenta cómo fuimos construyendo el proyecto: con qué alcance
 empezamos, qué decisiones tomamos, qué implementamos, qué comprobamos y qué
@@ -65,7 +69,7 @@ Para la generación, el diseño posterior propuso **Qwen2.5-1.5B-Instruct local*
 presente en el notebook de la cátedra, dejando por verificar la disponibilidad
 del modelo por API de la propuesta original. La implementación se registra
 en el apartado 7. La justificación y las referencias están en el
-[diseño inicial](ejercicio2/diseno_rag_inicial.md).
+[diseño inicial](archivo/ejercicio2_anterior/diseno_rag_inicial.md).
 
 ### Flujo elegido
 
@@ -95,7 +99,7 @@ colección académica: no debe convertirse en respaldo de su propia cobertura.
 
 ### Paso 1. Preparar la transcripción de la clase — 28/10
 
-Implementamos [preparar_transcripcion.py](ejercicio2/preparar_transcripcion.py)
+Implementamos [preparar_transcripcion.py](archivo/ejercicio2_anterior/preparar_transcripcion.py)
 para leer el VTT y producir JSON y una vista TXT. Quitamos cabeceras y marcas
 del cuerpo del texto, normalizamos espacios y conservamos IDs, hablantes y
 tiempos en campos identificables.
@@ -108,7 +112,7 @@ Referencia del historial: `96b7096` — «Limpieza de VTT».
 
 ### Paso 2. Obtener el texto del video — 28/10
 
-Implementamos [transcribir_audio.py](ejercicio2/transcribir_audio.py) con Whisper
+Implementamos [transcribir_audio.py](archivo/ejercicio2_anterior/transcribir_audio.py) con Whisper
 a través del proxy de la cátedra. Guardamos la respuesta original, un VTT y
 una vista TXT. Reutilizamos los archivos existentes para evitar repetir llamadas.
 
@@ -124,7 +128,7 @@ Referencia del historial: `50c3b73` — «transcripcion de audios».
 
 ### Paso 3. Definir una salida esperada con un caso manual — 28/10; revisión el 31/10
 
-El asistente elaboró el [caso 01](ejercicio2/evaluacion/caso_01_embeddings.md)
+El asistente elaboró el [caso 01](archivo/ejercicio2_anterior/evaluacion/caso_01_embeddings.md)
 comparando las transcripciones, y el usuario confirmó su revisión el 31/10.
 Se definieron cinco criterios: qué es un embedding, papel del contexto,
 comparación de vectores, cálculo del coseno y limitación relacionada con magnitud.
@@ -144,7 +148,7 @@ Referencia del historial: `1a2c2a8` — «ejemplo de analisis de cobertura».
 
 ### Paso 4. Documentar el diseño antes de completar el RAG — 31/10
 
-Se incorporó el [diseño inicial y plan de experimentos](ejercicio2/diseno_rag_inicial.md),
+Se incorporó el [diseño inicial y plan de experimentos](archivo/ejercicio2_anterior/diseno_rag_inicial.md),
 con los componentes de los notebooks, una configuración inicial y el orden
 propuesto para comparar alternativas. Se fijó Chroma local persistente como base.
 
@@ -157,7 +161,7 @@ Referencia del historial: `8767f2e` — «guia tp3 y diseño inicial».
 
 ### Paso 5. Construir chunks para el encoder — 31/10
 
-Implementamos [preparar_chunks.py](ejercicio2/preparar_chunks.py) con dos pasadas:
+Implementamos [preparar_chunks.py](archivo/ejercicio2_anterior/preparar_chunks.py) con dos pasadas:
 splitter recursivo de 1000 caracteres y 100 de overlap, seguido por ventanas
 de hasta 200 tokens de contenido y 20 de overlap, con el tokenizer de MiniLM.
 
@@ -174,9 +178,9 @@ Referencia del historial: `10a2cf8` — «chunks».
 
 ### Paso 6. Indexar y buscar referencias — 31/10
 
-Implementamos [indexar_material.py](ejercicio2/indexar_material.py) y
-[recuperar.py](ejercicio2/recuperar.py), con valores compartidos en
-[config.py](ejercicio2/config.py). Se cargaron los 125 chunks con embeddings
+Implementamos [indexar_material.py](archivo/ejercicio2_anterior/indexar_material.py) y
+[recuperar.py](archivo/ejercicio2_anterior/recuperar.py), con valores compartidos en
+[config.py](archivo/ejercicio2_anterior/config.py). Se cargaron los 125 chunks con embeddings
 MiniLM de 384 dimensiones en Chroma persistente, con distancia coseno explícita.
 La búsqueda inicial usa el objetivo de estudio, `k=4` y ningún umbral.
 
@@ -207,7 +211,7 @@ una evaluación automática del video.**
 | Objetivo general del caso 01, `k=4` | Recuperar las referencias necesarias para el caso manual | Hubo ruido y no aparecieron las intervenciones citadas como referencia para E1-E5. |
 
 Las consultas completas, los tiempos y la revisión por fragmento están en
-[revisión inicial de recuperación](ejercicio2/evaluacion/revision_retrieval_inicial.md).
+[revisión inicial de recuperación](archivo/ejercicio2_anterior/evaluacion/revision_retrieval_inicial.md).
 Por ejemplo, la fórmula recuperada corresponde al intervalo de clase
 31:44.560-32:41.570, mientras que el ejemplo de magnitud esperado en
 25:37.950-27:13.979 quedó fuera de los cuatro resultados.
@@ -254,7 +258,7 @@ de un pasaje relacionado con magnitud, pero quedaron fuera la explicación y
 el ejemplo de series. Para el objetivo general, `k=2` y `k=4` respaldaron
 0 de 5 criterios y `k=8` respaldó 1 de 5 al combinar dos fragmentos sobre
 qué es un embedding. Al registrar la comparación se conservó inicialmente `k=4`.
-El [informe de ablación](ejercicio2/evaluacion/ablacion_k.md) detalla el método,
+El [informe de ablación](archivo/ejercicio2_anterior/evaluacion/ablacion_k.md) detalla el método,
 los fragmentos nuevos y los comandos para reproducirlos.
 
 **Decisión posterior:** adoptamos `k=8` como valor por defecto. Entre los
@@ -270,14 +274,14 @@ buscador. Así se puede observar por separado si el informe usa bien las
 fuentes y qué limitaciones arrastra cuando faltan referencias de la clase.
 Para la corrida con búsqueda se fija `k=8`.
 
-Para ejecutar el estado actual, consultar el [README del ejercicio 2](ejercicio2/README.md).
+Para ejecutar el estado actual, consultar el [README del ejercicio 2](archivo/ejercicio2_anterior/README.md).
 Los VTT originales bajo `docs/`, los audios, los pesos, Chroma y los resultados
 bajo `data/` están ignorados por Git: un clon no incluye todos esos archivos.
 Este documento y los informes de revisión conservan el recorrido compartible.
 
 ## 7. Implementación del generador y prueba del caso 01 — 04/11
 
-Implementamos [generar_informe.py](ejercicio2/generar_informe.py) con el
+Implementamos [generar_informe.py](archivo/ejercicio2_anterior/generar_informe.py) con el
 Qwen2.5-1.5B-Instruct local del notebook de la cátedra. El comando recibe un
 objetivo y un VTT de video. Por defecto busca material académico con
 `k=8` y admite pasajes conocidos para el diagnóstico. El informe usa IDs
@@ -289,7 +293,7 @@ y los 99 segmentos del video. El diagnóstico contiene seis pasajes del caso
 manual y usa 4.097 tokens. La corrida con Chroma contiene ocho fragmentos y
 usa 4.151 tokens. Ambos conteos se verificaron con el tokenizer real sin
 recortar las fuentes. La comparación y los comandos de reproducción están
-en el [registro de generación](ejercicio2/evaluacion/generacion_caso01.md).
+en el [registro de generación](archivo/ejercicio2_anterior/evaluacion/generacion_caso01.md).
 
 Pasaron las 13 pruebas del ejercicio 2. Con una salida controlada se
 comprobaron el mapeo de tiempos y la detección de citas inexistentes.
@@ -321,7 +325,7 @@ inexistentes. Con Chroma se repitieron filas y se usó una cita de video como
 referencia académica. En ninguno de los dos informes las clasificaciones y
 citas alcanzaron para una evaluación utilizable. La tabla queda disponible
 con `--prompt tabla` para reproducir la prueba. El
-[registro de generación](ejercicio2/evaluacion/generacion_caso01.md#segunda-prueba-con-una-tabla-por-criterio--0411)
+[registro de generación](archivo/ejercicio2_anterior/evaluacion/generacion_caso01.md#segunda-prueba-con-una-tabla-por-criterio--0411)
 contiene los resultados y ejemplos.
 
 **Siguiente paso propuesto:** comparar el efecto de la penalización por
@@ -342,7 +346,7 @@ referencia y 197 con Chroma. En Chroma las filas duplicadas bajaron de
 13 a cero, pero quedaron dos filas sin citas del video. Con los pasajes de
 referencia persistieron seis IDs académicos inexistentes y se omitieron
 coseno y magnitud. Se conserva `1.15` como variante experimental. El
-[registro de generación](ejercicio2/evaluacion/generacion_caso01.md#tercera-prueba-con-penalización-por-repetición--0411)
+[registro de generación](archivo/ejercicio2_anterior/evaluacion/generacion_caso01.md#tercera-prueba-con-penalización-por-repetición--0411)
 incluye el detalle. Se propone comparar otro generador primero con los
 pasajes de referencia para evaluar el uso de evidencia disponible.
 
@@ -361,7 +365,7 @@ limitación de magnitud.
 El proxy reportó US$0,0124925 por la corrida. La próxima comparación
 propuesta es pasarle a GPT-4o los fragmentos recuperados por Chroma con
 `k=8` para ver cómo responde cuando faltan referencias académicas.
-El [registro de generación](ejercicio2/evaluacion/generacion_caso01.md#cuarta-prueba-con-gpt-4o--0411)
+El [registro de generación](archivo/ejercicio2_anterior/evaluacion/generacion_caso01.md#cuarta-prueba-con-gpt-4o--0411)
 incluye la revisión y los archivos de la corrida.
 
 ## 11. GPT-4o con referencias recuperadas por Chroma — 04/11
@@ -376,7 +380,7 @@ La definición quedó respaldada. La comparación de similitud se marcó
 como parcial con evidencia del video, pero los pasajes de clase citados
 no explicaban la medida. La respuesta omitió coseno y magnitud y no
 señaló que faltaba respaldo académico. El proxy reportó US$0,0123625.
-El [registro de generación](ejercicio2/evaluacion/generacion_caso01.md#quinta-prueba-con-gpt-4o-y-chroma--0411)
+El [registro de generación](archivo/ejercicio2_anterior/evaluacion/generacion_caso01.md#quinta-prueba-con-gpt-4o-y-chroma--0411)
 conserva la comparación. La siguiente revisión puede comprobar si el
 generador reconoce referencias insuficientes antes de asignar etiquetas.
 
@@ -418,7 +422,7 @@ fuentes del apunte. Los resultados locales quedaron en
 Como el apunte se preparó con los temas del caso ya conocidos, la comparación
 mide el efecto de agregar una síntesis dirigida al caso. Para las próximas
 pruebas queda disponible el corpus mixto mediante `--chunks`. El
-[README](ejercicio2/README.md#usar-la-colección-con-la-transcripción-y-el-apunte)
+[README](archivo/ejercicio2_anterior/README.md#usar-la-colección-con-la-transcripción-y-el-apunte)
 registra cómo reconstruirlo y consultarlo.
 
 ## 14. Búsqueda por subtemas del objetivo — 04/11
@@ -571,7 +575,7 @@ y mantiene abierta la revisión de cómo exigir respaldo antes de clasificar.
 
 La salida y la auditoría están en
 `data/resultados/informe_estudiante_gpt41_20261104.41f5UB/`
-del ejercicio 2. El [README](ejercicio2/README.md#repetir-las-pruebas-con-el-proxy)
+del ejercicio 2. El [README](archivo/ejercicio2_anterior/README.md#repetir-las-pruebas-con-el-proxy)
 registra cómo repetir la comparación.
 
 ## 19. Diagnóstico de la subconsulta de entrenamiento — 04/11
@@ -701,7 +705,7 @@ La evidencia de ese caso permite identificar fallos de recuperación y de
 respaldo en el informe. El plan reserva casos nuevos para comprobar si las
 decisiones se sostienen fuera de ese ejemplo.
 
-El [plan de evaluación](ejercicio2/evaluacion/plan_evaluacion_experimental.md)
+El [plan de evaluación](archivo/ejercicio2_anterior/evaluacion/plan_evaluacion_experimental.md)
 define las cuatro métricas de la clase, los controles y los criterios de cierre
 de cada comparación. WER y CER quedan para audios con referencia humana.
 Este avance documenta el protocolo. Las ablaciones y sus resultados siguen
@@ -710,7 +714,7 @@ y calibrar la rúbrica de anotación.
 
 ## 25. Reordenamiento del plan por arquitectura — 09/11
 
-Se reordenó el [plan experimental](ejercicio2/evaluacion/plan_evaluacion_experimental.md)
+Se reordenó el [plan experimental](archivo/ejercicio2_anterior/evaluacion/plan_evaluacion_experimental.md)
 para empezar por indexación y búsqueda con los datos que ya tenemos. La primera
 sesión usará el VTT de la clase, los 125 chunks y las seis búsquedas de la
 ablación de `k`. Se revisarán carga y splitting, modelo de embeddings,
@@ -725,7 +729,7 @@ los rankings guardados. El cambio es documental y las pruebas siguen pendientes.
 
 ## 26. Reconstrucción experimental desde los insumos — 09/11
 
-Se actualizó el [plan experimental](ejercicio2/evaluacion/plan_evaluacion_experimental.md)
+Se actualizó el [plan experimental](archivo/ejercicio2_anterior/evaluacion/plan_evaluacion_experimental.md)
 para volver a ejecutar las pruebas con salidas nuevas y conservar las corridas
 anteriores como referencia. El primer contraste compara Whisper con un
 checkpoint de Wav2Vec2 en español sobre los mismos recortes y una transcripción
@@ -740,7 +744,7 @@ la referencia humana mientras se inventarían los archivos fuente.
 
 ## 27. Corpus académico con varias unidades — 09/11
 
-El [plan experimental](ejercicio2/evaluacion/plan_evaluacion_experimental.md)
+El [plan experimental](archivo/ejercicio2_anterior/evaluacion/plan_evaluacion_experimental.md)
 incorpora transcripciones y apuntes o diapositivas de embeddings,
 Transformers, fine-tuning y RAG. La colección común será el control de las
 ablaciones de arquitectura. Se conservarán las colecciones históricas de
@@ -956,7 +960,7 @@ Después de la portada y el problema, [la presentación](presentacion.html#indic
 abre con la construcción del índice inicial. La diapositiva documenta las dos
 pasadas del splitter, el embedder y la persistencia en Chroma. Las cifras
 corresponden al VTT de una clase y a su segunda carga. Se cotejaron con
-[la revisión inicial](ejercicio2/evaluacion/revision_retrieval_inicial.md).
+[la revisión inicial](archivo/ejercicio2_anterior/evaluacion/revision_retrieval_inicial.md).
 La siguiente etapa del recorrido es la primera búsqueda sobre ese índice.
 
 ## 41. Ablación de k en la presentación — 11/11
@@ -969,7 +973,7 @@ referencia manual de cada consulta, mientras que P@k cuenta chunks.
 Se eligió k de 8 provisionalmente porque permitió
 respaldar la definición en la consulta general, aunque bajó la proporción de
 chunks útiles en la consulta de coseno. La siguiente etapa fue integrar el
-generador con ese contexto. [Registro de la ablación](ejercicio2/evaluacion/ablacion_k.md)
+generador con ese contexto. [Registro de la ablación](archivo/ejercicio2_anterior/evaluacion/ablacion_k.md)
 
 ## 42. Primera generación en la presentación — 11/11
 
@@ -979,7 +983,7 @@ prompt y video. Con los seis pasajes de referencia Qwen agotó 1.000 tokens
 antes de clasificar. Con los ocho chunks de Chroma declaró cubierto el
 objetivo e inventó cuatro IDs académicos. La próxima prueba del recorrido
 cambió el prompt para pedir una tabla por criterio.
-[Registro de la generación](ejercicio2/evaluacion/generacion_caso01.md)
+[Registro de la generación](archivo/ejercicio2_anterior/evaluacion/generacion_caso01.md)
 
 ## 43. Prompt de tabla en la presentación — 11/11
 
@@ -988,7 +992,7 @@ después de la primera generación. Se cotejaron las 19 filas con los pasajes
 de referencia y las 22 con Chroma, de las cuales 13 eran duplicadas. Ambas
 salidas agotaron el límite antes de la recomendación y la conclusión. El
 siguiente contraste mantuvo la tabla y varió la penalización por repetición
-de 1,10 a 1,15. [Registro de la generación](ejercicio2/evaluacion/generacion_caso01.md)
+de 1,10 a 1,15. [Registro de la generación](archivo/ejercicio2_anterior/evaluacion/generacion_caso01.md)
 
 ## 44. Penalización por repetición en la presentación — 11/11
 
@@ -997,7 +1001,7 @@ después del prompt de tabla. Resume la comparación entre 1,10 y 1,15 con
 Qwen. Ambas salidas terminaron antes del tope con 1,15 y Chroma pasó de 13
 filas duplicadas a 0. Persistieron omisiones y problemas de citas, por lo
 que el siguiente contraste probó GPT-4o con los pasajes de referencia.
-[Registro de la generación](ejercicio2/evaluacion/generacion_caso01.md)
+[Registro de la generación](archivo/ejercicio2_anterior/evaluacion/generacion_caso01.md)
 
 ## 45. Comparación con GPT-4o en la presentación — 11/11
 
@@ -1006,7 +1010,7 @@ después del ajuste de penalización. Con los mismos mensajes y pasajes de
 referencia, GPT-4o pasó de los seis IDs inexistentes de Qwen a cero y
 cerró con recomendación y conclusión. Persistieron problemas en la
 clasificación de tres criterios. El siguiente contraste usó GPT-4o con los
-ocho chunks recuperados por Chroma. [Registro de la comparación](ejercicio2/evaluacion/generacion_caso01.md)
+ocho chunks recuperados por Chroma. [Registro de la comparación](archivo/ejercicio2_anterior/evaluacion/generacion_caso01.md)
 
 ## 46. GPT-4o con Chroma en la presentación — 11/11
 
@@ -1016,7 +1020,7 @@ prompt de tabla, la selección manual produjo cinco filas y Chroma cuatro.
 Ambas salidas citaron IDs existentes. En Chroma, la revisión encontró
 citas que no respaldaban la medida de similitud y dos criterios omitidos.
 El experimento siguiente incorporó un apunte de embeddings al corpus.
-[Registro de la generación](ejercicio2/evaluacion/generacion_caso01.md)
+[Registro de la generación](archivo/ejercicio2_anterior/evaluacion/generacion_caso01.md)
 
 ## 47. Prueba de texto con el nuevo script — 11/11
 
@@ -1084,3 +1088,25 @@ Cada entrada incluirá:
 Las pruebas propuestas se anotarán como pendientes hasta ejecutarse. La
 configuración detallada y las salidas completas permanecerán en los informes
 de cada experimento; aquí registraremos lo necesario para entender la evolución.
+
+
+## 51. Reinicio del ejercicio 2 — 14/11
+
+Se conservó la propuesta corregida del ejercicio 1. En el ejercicio 2, el
+prototipo había acumulado decisiones y corridas exploratorias sin controles
+suficientes para atribuir las diferencias a un componente. Se trasladó la
+carpeta completa al [archivo histórico](archivo/README.md) y se dejó
+`ejercicio2/` vacío salvo por `.gitkeep`.
+
+El [roadmap vigente](roadmap_ejercicio2.md) separa indexación, recuperación y
+generación. Define un corpus mínimo, casos de desarrollo y prueba, anotación
+humana, una baseline simple por componente y ablaciones de una variable. El
+reranking queda para después de integrar el RAG básico. El ejercicio 4
+partirá de una versión del nuevo ejercicio 2 con configuración y resultados
+congelados.
+
+Se comprobó la conservación de 77 archivos versionados y 98 archivos
+locales ignorados, y que el ejercicio 1 no tiene cambios. Esta etapa solo
+preparó el repositorio y el plan; no hubo implementación, experimentos ni
+commits. El próximo paso es acordar el corpus y calibrar la pauta con el
+caso manual antes de escribir el primer lector de VTT.

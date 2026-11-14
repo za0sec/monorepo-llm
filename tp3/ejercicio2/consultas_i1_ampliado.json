@@ -1,0 +1,51 @@
+{
+  "criterios": {
+    "definicion": {
+      "esperado": "Un embedding de texto es un vector numérico que representa información o significado de una unidad textual.",
+      "fuente": "docs/embeddings_2.VTT",
+      "bloques_referencia": ["123", "181"]
+    },
+    "formula": {
+      "esperado": "La similitud coseno se calcula como producto interno dividido por el producto de las normas de los dos vectores.",
+      "fuente": "docs/embeddings_2.VTT",
+      "bloques_referencia": ["222"]
+    },
+    "magnitud": {
+      "esperado": "El coseno compara dirección e ignora la magnitud. Dos vectores que apuntan en la misma dirección pueden tener magnitudes distintas y obtener la misma similitud.",
+      "fuente": "docs/embeddings_2.VTT",
+      "bloques_referencia": ["182", "183", "184", "185", "186", "187", "188"]
+    },
+    "mascara_causal": {
+      "esperado": "La máscara del decoder impide que un token atienda a posiciones futuras, porque esos tokens son los que todavía se deben predecir.",
+      "fuente": "docs/transformers.VTT",
+      "bloques_referencia": ["204", "205", "206", "207", "475", "478", "480"]
+    },
+    "qkv": {
+      "esperado": "En atención, la query representa lo que busca el token que se procesa, las keys permiten determinar a qué tokens atender y los values aportan la información para construir el contexto.",
+      "fuente": "docs/transformers.VTT",
+      "bloques_referencia": ["350", "351", "353", "355", "359"]
+    },
+    "ajuste_pesos": {
+      "esperado": "El fine-tuning parte de pesos ya entrenados y los ajusta con datos de la nueva tarea. Puede ajustar todas las capas o solo algunas.",
+      "fuente": "docs/finetuning.VTT",
+      "bloques_referencia": ["309", "310", "311"]
+    },
+    "destilacion": {
+      "esperado": "En la destilación, un modelo estudiante generalmente más pequeño aprende del modelo profesor ya entrenado.",
+      "fuente": "docs/finetuning.VTT",
+      "bloques_referencia": ["385", "386"]
+    }
+  },
+  "consultas": [
+    {"id": "Q1", "texto": "¿Qué es un embedding de texto?", "criterios": ["definicion"]},
+    {"id": "Q2", "texto": "¿Cómo se calcula la similitud coseno entre dos vectores?", "criterios": ["formula"]},
+    {"id": "Q3", "texto": "¿Qué papel juega la magnitud de los vectores en la similitud coseno?", "criterios": ["magnitud"]},
+    {"id": "Q4", "texto": "Quiero entender qué es un embedding de texto, cómo se calcula la similitud coseno y qué ocurre cuando cambia la magnitud.", "criterios": ["definicion", "formula", "magnitud"]},
+    {"id": "Q5", "texto": "¿Para qué se usa la máscara causal en el decoder de un Transformer?", "criterios": ["mascara_causal"]},
+    {"id": "Q6", "texto": "¿Qué representan query, key y value en la atención de un Transformer?", "criterios": ["qkv"]},
+    {"id": "Q7", "texto": "Quiero entender el papel de query, key y value en la atención y por qué el decoder usa una máscara.", "criterios": ["qkv", "mascara_causal"]},
+    {"id": "Q8", "texto": "¿Cómo se reutilizan y ajustan los pesos al hacer fine-tuning para una tarea nueva?", "criterios": ["ajuste_pesos"]},
+    {"id": "Q9", "texto": "¿Qué hacen el modelo profesor y el modelo estudiante en la destilación de conocimiento?", "criterios": ["destilacion"]},
+    {"id": "Q10", "texto": "Quiero entender cómo se adaptan los pesos con fine-tuning y cómo aprende un estudiante en la destilación.", "criterios": ["ajuste_pesos", "destilacion"]}
+  ]
+}

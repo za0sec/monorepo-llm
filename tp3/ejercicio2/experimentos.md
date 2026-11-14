@@ -56,9 +56,62 @@ python3 tp3/ejercicio2/comparar_splitters.py \
   --salida tp3/ejercicio2/data/experimentos/i1_repeticion
 ```
 
+#### I1 · Repetición con tres unidades · 14/11/2026
+
+Se sumaron 754 bloques de Transformers y 829 de fine-tuning a los 415 de embeddings. Cada variante corta cada documento por separado, conserva la fuente y los tiempos, y busca en una colección con las tres clases. Se mantuvieron MiniLM en CPU, Chroma, coseno, el límite de 160 tokens, solapamiento cero y `k=4`. El único cambio entre variantes fue el splitter.
+
+La referencia se escribió antes de correr la búsqueda. Conserva las cuatro consultas del piloto y agrega seis sobre la máscara causal, query/key/value, ajuste de pesos y destilación. Hay 14 instancias de criterios, 8 en las consultas nuevas. El asistente revisó los candidatos agrupados por consulta sin etiqueta de variante ni posición. Las anotaciones quedan abiertas a revisión humana. [Consultas y criterios](consultas_i1_ampliado.json) · [Transformers, 24:52–25:31 y 41:29–42:32](../../docs/transformers.VTT) · [Fine-tuning, 43:12–43:47 y 55:06–55:29](../../docs/finetuning.VTT)
+
+| Resultado | Ventanas fijas | Corte recursivo |
+| --- | ---: | ---: |
+| Chunks | 508 | 623 |
+| Criterios completos, todas las consultas | 1/14 | 3/14 |
+| Criterios completos, solo consultas nuevas | 1/8 | 2/8 |
+| Context Recall promedio por consulta | 0,05 | 0,25 |
+| Context Precision promedio por consulta | 0,358 | 0,433 |
+| Precision@4 promedio por consulta | 0,175 | 0,225 |
+| Tokens recuperados en promedio por consulta | 640 | 495,9 |
+
+| Consulta | Puestos relevantes, fijo | Puestos relevantes, recursivo | Recall fijo | Recall recursivo |
+| --- | --- | --- | ---: | ---: |
+| Q1 · Definición de embedding | — | — | 0/1 | 0/1 |
+| Q2 · Fórmula del coseno | — | 3 | 0/1 | 1/1 |
+| Q3 · Magnitud | 1 | 1 | 0/1 | 0/1 |
+| Q4 · Objetivo de embeddings | 3 | — | 0/3 | 0/3 |
+| Q5 · Máscara causal | — | — | 0/1 | 0/1 |
+| Q6 · Query, key y value | — | — | 0/1 | 0/1 |
+| Q7 · Objetivo de Transformers | 3 | 4 | 1/2 | 0/2 |
+| Q8 · Ajuste de pesos | 3, 4 | 1, 2, 4 | 0/1 | 1/1 |
+| Q9 · Destilación | 1 | 1 | 0/1 | 0/1 |
+| Q10 · Objetivo de fine-tuning | 2 | 1, 3 | 0/2 | 1/2 |
+
+- **Coseno.** La fórmula se mantuvo en el top 4 del recursivo, ahora en el puesto 3. El ejemplo que completaba el criterio de magnitud quedó fuera del top 4 en el corpus ampliado.
+- **Transformers.** Para Q7, el fijo recuperó los bloques 205–207 y explicó por qué la máscara impide mirar tokens futuros. El recursivo recuperó solo una parte de esa explicación y ninguno recuperó el papel de query, key y value.
+- **Fine-tuning.** El recursivo recuperó los bloques 310–311 en Q8 y Q10, con la explicación de reutilizar y ajustar todas o parte de las capas. Los dos aciertos corresponden al mismo criterio en dos consultas. En destilación, ambos recuperaron menciones útiles a entrenar un modelo con salidas de otro. Faltó la explicación de la relación profesor–estudiante y del menor tamaño típico del estudiante.
+
+**Verificación.** Se reabrieron las colecciones y se comprobó que los chunks reconstruyen cada VTT preparado y conservan su fuente, tiempos y límite de tokens. Al construir las dos colecciones desde cero por segunda vez, coincidieron los chunks y 19 de los 20 rankings. Para Q7, el índice fijo dejó fuera el pasaje de la máscara causal en la segunda ejecución. En esa corrida el fijo cubrió 0/14 y el recursivo mantuvo 3/14. La búsqueda aproximada mostró variación entre reconstrucciones, incluso con la misma configuración. [Ranking de la segunda corrida](data/experimentos/i1_ampliado_repeticion/ranking.json)
+
+**Decisión.** Usar el recursivo como punto de partida para I2, la comparación de tamaño de chunk. Recuperó más criterios y usó menos tokens con el mismo `k`. El fijo logró un acierto propio en Q7 en una de las corridas y el recall absoluto sigue siendo bajo.
+
+**Reproducción.** Usar el entorno y la revisión local de MiniLM de I1. La corrida deja el [ranking ampliado](data/experimentos/i1_ampliado/ranking.json) y sus colecciones en una carpeta nueva. Cada chunk guarda su fuente, sus offsets en ese documento, los IDs de los bloques y los tiempos. El ranking del piloto original queda disponible en su carpeta.
+
+```bash
+base=tp3/ejercicio2
+python3 "$base/preparar_transcripcion.py" docs/embeddings_2.VTT
+python3 "$base/preparar_transcripcion.py" docs/transformers.VTT
+python3 "$base/preparar_transcripcion.py" docs/finetuning.VTT
+python3 "$base/comparar_splitters.py" \
+  --modelo-local "/ruta/a/la/copia/local/de/MiniLM" \
+  --corpus "$base/data/procesados/embeddings_2.json" \
+  --corpus "$base/data/procesados/transformers.json" \
+  --corpus "$base/data/procesados/finetuning.json" \
+  --consultas "$base/consultas_i1_ampliado.json" \
+  --salida "$base/data/experimentos/i1_ampliado_nueva_corrida"
+```
+
 ### I2 · Tamaño de chunk
 
-- **Punto de partida:** splitter elegido en I1.
+- **Punto de partida:** splitter recursivo con 160 tokens como control, elegido para esta etapa en la repetición ampliada de I1.
 - **Qué evaluar:** 96, 160 y 224 tokens con solapamiento cero. Medir recuperación de evidencia y cantidad de tokens recuperados.
 - **Resultados:** pendientes.
 - **Decisión:** pendiente.

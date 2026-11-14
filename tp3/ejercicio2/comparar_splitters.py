@@ -53,13 +53,13 @@ def ventanas_fijas(texto, tokenizer, contar):
         inicio_token, inicio = fin_token, fin
 
 
-def crear_chunks(fragmentos, texto, tramos, contar):
+def crear_chunks(fragmentos, texto, tramos, contar, fuente, primer_id):
     fragmentos = list(fragmentos)
     if "".join(fragmentos) != texto:
         raise ValueError("Los chunks deben reconstruir exactamente el texto de entrada.")
     chunks = []
     inicio = 0
-    for numero, fragmento in enumerate(fragmentos, 1):
+    for numero, fragmento in enumerate(fragmentos, primer_id):
         fin = inicio + len(fragmento)
         tokens = contar(fragmento)
         if not 0 < tokens <= TAMANO:
@@ -68,6 +68,7 @@ def crear_chunks(fragmentos, texto, tramos, contar):
         chunks.append({
             "id": f"c{numero:03}",
             "texto": fragmento,
+            "fuente": fuente,
             "inicio_caracter": inicio,
             "fin_caracter": fin,
             "bloques": [s["id"] for s in bloques],
@@ -97,7 +98,7 @@ def buscar(cliente, nombre, chunks, vectores_chunks, vectores_consultas, consult
         ids=[c["id"] for c in chunks],
         documents=[c["texto"] for c in chunks],
         embeddings=vectores_chunks,
-        metadatas=[{"inicio": c["inicio"], "fin": c["fin"],
+        metadatas=[{"fuente": c["fuente"], "inicio": c["inicio"], "fin": c["fin"],
                     "bloques": ",".join(c["bloques"])} for c in chunks],
     )
     if coleccion.count() != len(chunks):
@@ -117,16 +118,28 @@ def buscar(cliente, nombre, chunks, vectores_chunks, vectores_consultas, consult
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--modelo-local", type=Path, required=True)
-    parser.add_argument("--corpus", type=Path,
-                        default=CARPETA / "data/procesados/embeddings_2.json")
+    parser.add_argument("--corpus", type=Path, action="append",
+                        help="JSON de un VTT preparado. Repetir para sumar fuentes.")
+    parser.add_argument("--consultas", type=Path, default=CARPETA / "consultas_i1.json")
     parser.add_argument("--salida", type=Path, required=True,
                         help="Directorio nuevo para el índice y los resultados.")
     args = parser.parse_args()
-    datos = args.corpus.read_bytes()
-    documento = json.loads(datos)
-    referencia = (CARPETA / "consultas_i1.json").read_bytes()
+    rutas = args.corpus or [CARPETA / "data/procesados/embeddings_2.json"]
+    documentos = []
+    fuentes = {}
+    for ruta in rutas:
+        datos = ruta.read_bytes()
+        documento = json.loads(datos)
+        fuente = documento["fuente"]
+        if fuente in fuentes:
+            raise ValueError(f"Fuente repetida: {fuente}")
+        fuentes[fuente] = {
+            "sha256_fuente": documento["sha256_fuente"],
+            "sha256_corpus": hashlib.sha256(datos).hexdigest(),
+        }
+        documentos.append(documento)
+    referencia = args.consultas.read_bytes()
     consultas = json.loads(referencia)["consultas"]
-    texto, tramos = unir_segmentos(documento["segmentos"])
 
     torch.set_num_threads(1)
     modelo = SentenceTransformer(str(args.modelo_local.resolve()), device="cpu",
@@ -140,19 +153,25 @@ def main():
         separators=SEPARADORES, length_function=contar, chunk_size=TAMANO,
         chunk_overlap=0, keep_separator="end", strip_whitespace=False,
     )
-    variantes = {
-        "ventanas_fijas": crear_chunks(ventanas_fijas(texto, tokenizer, contar), texto, tramos, contar),
-        "recursivo": crear_chunks(recursivo.split_text(texto), texto, tramos, contar),
-    }
+    variantes = {"ventanas_fijas": [], "recursivo": []}
+    for documento in documentos:
+        texto, tramos = unir_segmentos(documento["segmentos"])
+        fragmentos = {
+            "ventanas_fijas": ventanas_fijas(texto, tokenizer, contar),
+            "recursivo": recursivo.split_text(texto),
+        }
+        for nombre, cortes in fragmentos.items():
+            chunks = variantes[nombre]
+            chunks.extend(crear_chunks(
+                cortes, texto, tramos, contar, documento["fuente"], len(chunks) + 1,
+            ))
     vectores_consultas = codificar(modelo, [q["texto"] for q in consultas])
     args.salida.mkdir(parents=True, exist_ok=False)
     cliente = chromadb.PersistentClient(
         path=str(args.salida / "chroma"), settings=Settings(anonymized_telemetry=False),
     )
     resultado = {
-        "fuente": documento["fuente"],
-        "sha256_fuente": documento["sha256_fuente"],
-        "sha256_corpus": hashlib.sha256(datos).hexdigest(),
+        "fuentes": fuentes,
         "sha256_consultas": hashlib.sha256(referencia).hexdigest(),
         "modelo_local": str(args.modelo_local.resolve()),
         "limite_encoder": modelo.max_seq_length,

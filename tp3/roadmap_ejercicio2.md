@@ -78,7 +78,7 @@ Ejecutar un contraste por vez y usar la variante seleccionada como control del s
 
 Por cada contraste guardar una ficha Markdown y resultados por caso en CSV o JSON en una carpeta propia. Ficha mínima: **ID/fecha | pregunta e hipótesis | control y variante | constantes y presupuesto | criterio de decisión | resultados y diferencias | errores y casos representativos | decisión y siguiente paso**. Adjuntar revisión del código (hash y cambios locales si los hay), comando, versiones de entorno/modelo/tokenizer, hashes de corpus y casos, parámetros, semillas cuando correspondan, rankings con puntajes, el contexto exacto enviado, salida cruda, etiquetas de revisión, tiempos y tokens. Conservar casos con fallo y anotar por qué faltan métricas. Llevar la decisión y su evidencia a la [bitácora][bitacora].
 
-**Próximo paso.** Acordar las tres unidades y calibrar la ficha del caso 01 con dos revisores. Preparar un texto común a partir del VTT y construir la búsqueda básica para medir la comparación entre splitters.
+**Próximo paso.** Comparar tamaños de 96, 160 y 224 tokens con el splitter recursivo. El corpus de tres unidades, los resultados de I1 y la variación observada al reconstruir Chroma quedaron registrados en la [ficha de la comparación](ejercicio2/experimentos.md#i1--repetición-con-tres-unidades--14112026).
 
 [ej1]: ejercicio1/Grupo03-ej1-TP3.md
 [archivo]: archivo/README.md

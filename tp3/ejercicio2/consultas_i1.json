@@ -1,0 +1,22 @@
+{
+  "criterios": {
+    "definicion": {
+      "esperado": "Un embedding de texto es un vector numérico que representa información o significado de una unidad textual.",
+      "bloques_referencia": ["123", "181"]
+    },
+    "formula": {
+      "esperado": "La similitud coseno se calcula como producto interno dividido por el producto de las normas de los dos vectores.",
+      "bloques_referencia": ["222"]
+    },
+    "magnitud": {
+      "esperado": "El coseno compara dirección e ignora la magnitud. Dos vectores que apuntan en la misma dirección pueden tener magnitudes distintas y obtener la misma similitud.",
+      "bloques_referencia": ["182", "183", "184", "185", "186", "187", "188"]
+    }
+  },
+  "consultas": [
+    {"id": "Q1", "texto": "¿Qué es un embedding de texto?", "criterios": ["definicion"]},
+    {"id": "Q2", "texto": "¿Cómo se calcula la similitud coseno entre dos vectores?", "criterios": ["formula"]},
+    {"id": "Q3", "texto": "¿Qué papel juega la magnitud de los vectores en la similitud coseno?", "criterios": ["magnitud"]},
+    {"id": "Q4", "texto": "Quiero entender qué es un embedding de texto, cómo se calcula la similitud coseno y qué ocurre cuando cambia la magnitud.", "criterios": ["definicion", "formula", "magnitud"]}
+  ]
+}

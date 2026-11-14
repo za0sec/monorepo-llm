@@ -15,13 +15,17 @@ Para aislar el RAG, usar el mismo VTT de cada video en todas las variantes. Si m
 
 ## 1. Indexing pipeline: preparar, partir, representar y persistir
 
+El [registro experimental](ejercicio2/experimentos.md) documenta cómo se preparó el VTT de embeddings y reúne los resultados y decisiones de cada comparación.
+
 **Entrada:** fuentes de la materia. **Salida:** colección local de textos, vectores y metadatos; cada chunk tiene ID estable, documento, unidad y límites en los cues originales (o página si se amplía a PDF). La [clase de RAG][rag], pp. 17–36 y 41–49, separa estas operaciones.
 
-La baseline **I0** lee VTT, limpia marcas y repeticiones de subtítulos con reglas explícitas y conserva los tiempos. Corta el texto en ventanas de **160 tokens de contenido, sin solapamiento**, contados con el tokenizer de MiniLM. Usa `sentence-transformers/all-MiniLM-L6-v2` en CPU y una colección Chroma local persistente con coseno. MiniLM y Chroma aparecen juntos en la [demo del asistente][asistente], celda 9; sirven para empezar en local. Antes de aceptar cada índice, comprobar el límite del encoder incluyendo tokens especiales.
+La carga lee los bloques del VTT y conserva su texto, fuente y tiempos. Documentar las reglas de limpieza que se apliquen, como quitar marcas de formato, y usar el mismo texto resultante en todas las variantes de splitting. Leer los bloques existentes es parte de la carga. El splitting decide cómo agrupar o cortar ese texto para indexarlo.
 
-Validar lectura y trazabilidad de una muestra contra los cues originales, ausencia de vacíos y recorte silencioso, cobertura del texto normalizado, cantidad y distribución de longitudes, duplicados exactos, vectores finitos de la dimensión esperada y correspondencia uno a uno entre chunks y registros. Verificar que reindexar los mismos datos no duplique entradas y que reabrir la colección conserve IDs, conteo y ranking de una consulta de control. Medir tiempo de construcción y tamaño del índice.
+La baseline **I0** corta el texto en ventanas de **160 tokens de contenido, sin solapamiento**, contados con el tokenizer de MiniLM. Usa `sentence-transformers/all-MiniLM-L6-v2` en CPU y una colección Chroma local persistente con coseno. MiniLM y Chroma aparecen juntos en la [demo del asistente][asistente], celda 9. Antes de aceptar cada índice, comprobar el límite del encoder incluyendo tokens especiales.
 
-Una vez que exista **R0** (§2), usarlo como instrumento de medida para comparar la contribución de I0 y sus variantes:
+Como controles de integridad del índice, revisar la procedencia, los chunks vacíos o duplicados, el truncamiento y la correspondencia entre chunks y vectores. Verificar que reindexar los mismos datos no duplique entradas y que reabrir la colección conserve IDs, conteo y ranking de una consulta de control. Registrar tiempo de construcción y tamaño del índice.
+
+**El primer experimento es I1**, la comparación entre splitters. Una vez que exista el recuperador básico **R0** (§2), usarlo para medir el efecto de cambiar cómo se corta el mismo texto.
 
 | ID | Hipótesis y cambio único | Controles y criterio |
 | --- | --- | --- |
@@ -74,11 +78,11 @@ Ejecutar un contraste por vez y usar la variante seleccionada como control del s
 
 Por cada contraste guardar una ficha Markdown y resultados por caso en CSV o JSON en una carpeta propia. Ficha mínima: **ID/fecha | pregunta e hipótesis | control y variante | constantes y presupuesto | criterio de decisión | resultados y diferencias | errores y casos representativos | decisión y siguiente paso**. Adjuntar revisión del código (hash y cambios locales si los hay), comando, versiones de entorno/modelo/tokenizer, hashes de corpus y casos, parámetros, semillas cuando correspondan, rankings con puntajes, el contexto exacto enviado, salida cruda, etiquetas de revisión, tiempos y tokens. Conservar casos con fallo y anotar por qué faltan métricas. Llevar la decisión y su evidencia a la [bitácora][bitacora].
 
-**Próximo paso:** acordar las tres unidades y calibrar la ficha del caso 01 con dos revisores; recién después empezar a implementar la carga de un VTT y sus controles.
+**Próximo paso.** Acordar las tres unidades y calibrar la ficha del caso 01 con dos revisores. Preparar un texto común a partir del VTT y construir la búsqueda básica para medir la comparación entre splitters.
 
 [ej1]: ejercicio1/Grupo03-ej1-TP3.md
 [archivo]: archivo/README.md
-[bitacora]: presentación.md
+[bitacora]: ejercicio2/experimentos.md
 [guía]: ../docs/RAG/GUIA_TP3.md
 [consigna]: ../docs/RAG/tp3.pdf
 [consigna-alt]: ../docs/RAG/DeepLearningTP2.pdf

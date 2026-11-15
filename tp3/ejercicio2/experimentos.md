@@ -278,10 +278,43 @@ python3 tp3/ejercicio2/comparar_embeddings.py --openai-directo \
 
 ### R1 · Cantidad de resultados
 
-- **Punto de partida:** índice elegido tras las comparaciones de indexación.
-- **Qué evaluar:** comparar `k=2, 4 y 8` sobre el mismo ranking. Medir recall, precisión, redundancia y tamaño del contexto recuperado.
-- **Resultados:** pendientes.
-- **Decisión:** pendiente.
+**Prueba de desarrollo · 14/11/2026.** Se reutilizó la colección `openai_i4` de Chroma con los 623 chunks del recursivo de 160 tokens, 10 de solapamiento y embeddings de `text-embedding-3-small` de 1.536 dimensiones. Se generaron únicamente los vectores de las diez consultas. Para cada consulta se guardó un ranking por coseno de ocho resultados y se evaluaron sus primeros 2, 4 y 8. La hipótesis era que con más resultados podía entrar evidencia completa para las consultas que fallaban en I4.
+
+| Resultado | `k=2` | `k=4` (baseline) | `k=8` |
+| --- | ---: | ---: | ---: |
+| Context Recall promedio | 43,3% | 53,3% | **66,7%** |
+| Context Precision promedio | 60,0% | **62,2%** | 60,6% |
+| Precision@k promedio | **45,0%** | 37,5% | 31,3% |
+| Criterios completos | 6/14 | 7/14 | **9/14** |
+| Tokens recuperados por consulta, promedio | 266,6 | 549,8 | 1.067,7 |
+
+La Context Precision pondera los puestos relevantes. Precision@k mide la proporción de resultados relevantes entre los devueltos. El asistente mantuvo la pauta de I4 y revisó el texto de los candidatos adicionales por consulta, sin mostrar su posición. La anotación sigue pendiente de revisión humana. Los tokens recuperados se midieron con el tokenizer de MiniLM, igual que en I4. [Clase de métricas, pp. 9–15](../../docs/RAG/Clase%2011%20-%20M%C3%A9tricas%20de%20la%20Industria%20(1).pdf)
+
+| Consulta | Puestos útiles en el ranking de ocho | Recall `k=2` | Recall `k=4` | Recall `k=8` |
+| --- | --- | ---: | ---: | ---: |
+| Q1 · Definición de embedding | 3 | 0/1 | 1/1 | 1/1 |
+| Q2 · Fórmula del coseno | 1 | 1/1 | 1/1 | 1/1 |
+| Q3 · Magnitud | 1, 7 | 0/1 | 0/1 | 0/1 |
+| Q4 · Objetivo de embeddings | 2, 3, 7 | 1/3 | 1/3 | 2/3 |
+| Q5 · Máscara causal | 5 | 0/1 | 0/1 | 1/1 |
+| Q6 · Query, key y value | 6, 7 | 0/1 | 0/1 | 0/1 |
+| Q7 · Objetivo de Transformers | 1, 3, 4, 5, 6, 7 | 1/2 | 1/2 | 1/2 |
+| Q8 · Ajuste de pesos | 1, 2, 3, 7 | 1/1 | 1/1 | 1/1 |
+| Q9 · Destilación | 2 | 1/1 | 1/1 | 1/1 |
+| Q10 · Objetivo de fine-tuning | 1, 2, 3, 6 | 1/2 | 1/2 | 1/2 |
+
+En Q1 el puesto 3 contiene la definición que se pierde con `k=2`. En Q5 el puesto 5 aporta la explicación de la máscara causal (`c198`, Transformers, 25:08–25:37). En Q4 el puesto 7 agrega la definición de embedding (`c219`, Transformers, 35:03–35:22). Q6 incorpora evidencia para query y key, pero sigue sin explicar para qué se usan los values al construir el contexto. [Transcripción de Transformers](../../docs/transformers.VTT)
+
+**Decisión.** De los tres valores probados, `k=8` cubre más criterios. Como los dos aciertos nuevos aparecen en los puestos 5 y 7, se inspeccionaron esos prefijos del ranking guardado. Con `k=5` y `k=6` quedaron 8/14 criterios. Con **`k=7`** quedan los mismos 9/14 criterios, 66,7% de recall y 60,6% de Context Precision que con 8, con **943,3 tokens promedio**. Se usa 7 como punto de partida para la generación en desarrollo. Esta elección se revisará en el conjunto reservado y parte de una inspección posterior del ranking.
+
+**Verificación.** Los diez primeros cuatro resultados coincidieron con los de I4 en el mismo orden. Al reabrir Chroma y reutilizar los vectores de consulta guardados se reprodujeron los diez rankings de ocho resultados, incluidas sus distancias. La API informó 202 tokens de entrada en un solo lote de consultas. [Ranking de R1](data/experimentos/r1/ranking.json)
+
+**Reproducción.** El archivo de salida guarda los vectores de consulta para repetir las búsquedas localmente. El comando genera nuevamente los vectores de las diez consultas con la clave de la API directa y usa la colección existente de I4.
+
+```bash
+python3 tp3/ejercicio2/comparar_k.py \
+  --salida tp3/ejercicio2/data/experimentos/r1_nueva_corrida/ranking.json
+```
 
 ### R2 · Reranking
 

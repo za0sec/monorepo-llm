@@ -1,0 +1,504 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<<
+/Producer (pypdf)
+/Title (Apuntes de Transformers)
+/Subject (Apuntes de prueba para el ejercicio 4)
+>>
+endobj
+2 0 obj
+<<
+/Type /Pages
+/Count 2
+/Kids [ 4 0 R 10 0 R ]
+>>
+endobj
+3 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+4 0 obj
+<<
+/Contents 5 0 R
+/MediaBox [ 0 0 595.2756 841.8898 ]
+/Resources <<
+/Font <<
+/F1 6 0 R
+/F1-0 7 0 R
+/F2 8 0 R
+/F3 9 0 R
+>>
+/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
+>>
+/Rotate 0
+/Trans <<
+>>
+/Type /Page
+/Annots [ ]
+/Parent 2 0 R
+>>
+endobj
+5 0 obj
+<<
+/Length 3583
+>>
+stream
+q
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
+1 0 0 1 60 752.8898 cm
+q
+.094118 .145098 .2 rg
+BT 1 0 0 1 0 5 Tm /F2 27 Tf 32 TL (Atenci\363n escalada y multi-cabeza) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 731.8898 cm
+q
+.278431 .333333 .396078 rg
+BT 1 0 0 1 0 3.5 Tm /F1 9.5 Tf 13 TL (Unidad 1 \267 Transformers | Apunte de prueba elaborado a partir de la clase) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 718.8898 cm
+q
+1 w
+1 J
+0 .388235 .345098 RG
+n 0 0 m 475.2756 0 l S
+Q
+Q
+q
+1 0 0 1 60 712.8898 cm
+Q
+q
+1 0 0 1 60 685.8898 cm
+q
+0 .388235 .345098 rg
+BT 1 0 0 1 0 4 Tm /F2 13 Tf 17 TL (Query, key y value) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 633.8898 cm
+q
+.094118 .145098 .2 rg
+BT 1 0 0 1 0 37 Tm /F1 11 Tf 16 TL (En self-attention, cada token aporta tres vectores. La consulta \(query\) indica qu\351 informaci\363n) Tj T* (busca esa posici\363n. La clave \(key\) permite calcular cu\341nto coincide otro token con esa consulta.) Tj T* (El valor \(value\) contiene la informaci\363n que se combina a la salida.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 611.8898 cm
+q
+.094118 .145098 .2 rg
+BT 1 0 0 1 0 5 Tm /F1 11 Tf 16 TL (Las tres proyecciones salen de la misma secuencia X, pero usan matrices aprendidas diferentes.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 590.8898 cm
+q
+.929412 .964706 .956863 rg
+n 0 -8 475.2756 31 re f*
+Q
+q
+.094118 .145098 .2 rg
+BT 1 0 0 1 10 5.3 Tm /F3 9.7 Tf 15 TL (Q = X @ W_Q K = X @ W_K V = X @ W_V) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 563.8898 cm
+q
+0 .388235 .345098 rg
+BT 1 0 0 1 0 4 Tm /F2 13 Tf 17 TL (C\363mo se calcula la atenci\363n) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 511.8898 cm
+q
+.094118 .145098 .2 rg
+BT 1 0 0 1 0 37 Tm /F1 11 Tf 16 TL -0.107894 Tw (Se compara cada consulta con las claves usando el producto interno. Antes de aplicar softmax se) Tj T* 0 Tw (divide por la ra\355z de la dimensi\363n de las claves \(d_k\). El softmax normaliza los puntajes de cada) Tj T* (consulta y los convierte en pesos que suman 1. La salida es la suma ponderada de los valores.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 490.8898 cm
+q
+.929412 .964706 .956863 rg
+n 0 -8 475.2756 31 re f*
+Q
+q
+.094118 .145098 .2 rg
+BT 1 0 0 1 10 5.3 Tm /F3 9.7 Tf 15 TL (Atencion\(Q, K, V\) = softmax\(\(Q @ K^T\) / sqrt\(d_k\)\) @ V) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 463.8898 cm
+q
+0 .388235 .345098 rg
+BT 1 0 0 1 0 4 Tm /F2 13 Tf 17 TL (Ejemplo con dos claves) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 411.8898 cm
+q
+.094118 .145098 .2 rg
+BT 1 0 0 1 0 37 Tm /F1 11 Tf 16 TL (Si q = [1, 0], k1 = [1, 0], k2 = [0, 1] y d_k = 2, los puntajes escalados son aproximadamente 0.707) Tj T* (y 0. El softmax da pesos de 0.67 y 0.33. Con v1 = [2, 0] y v2 = [0, 2], la salida es) Tj T* (aproximadamente [1.34, 0.66].) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 384.8898 cm
+q
+0 .388235 .345098 rg
+BT 1 0 0 1 0 4 Tm /F2 13 Tf 17 TL (Qu\351 cambia con varias cabezas) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 332.8898 cm
+q
+.094118 .145098 .2 rg
+BT 1 0 0 1 0 37 Tm /F1 11 Tf 16 TL (Cada cabeza tiene sus propias proyecciones Q, K y V. Las cabezas pueden dar peso a) Tj T* (posiciones diferentes de la secuencia. Sus salidas se concatenan y se proyectan para producir) Tj T* (una sola representaci\363n por token.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 313.8898 cm
+Q
+q
+1 0 0 1 60 312.3898 cm
+q
+.5 w
+1 J
+.721569 .776471 .796078 RG
+n 0 0 m 475.2756 0 l S
+Q
+Q
+q
+1 0 0 1 60 305.3898 cm
+Q
+q
+1 0 0 1 60 292.3898 cm
+q
+.278431 .333333 .396078 rg
+BT 1 0 0 1 0 4 Tm /F1 9 Tf 13 TL (Fuente: Clase 1 - Introducci\363n a Transformers \(73.69, 2026\), pp. 27-34 y 38-39.) Tj T* ET
+Q
+Q
+ 
+
+Q
+q
+0.0 0.0 595.2756 841.8898 re
+W
+n
+1 0 0 1 0 0 cm
+BT
+/F1-0 12 Tf
+14.4 TL
+ET
+0.278431 0.333333 0.396078 rg
+BT
+/F1-0 9 Tf
+10.8 TL
+ET
+BT
+1 0 0 1 485.7366 34 Tm
+(P\341gina 1 de 2) Tj
+T*
+ET
+Q
+
+endstream
+endobj
+6 0 obj
+<<
+/BaseFont /Helvetica
+/Encoding /WinAnsiEncoding
+/Name /F1
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+7 0 obj
+<<
+/BaseFont /Helvetica
+/Encoding /WinAnsiEncoding
+/Name /F1
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+8 0 obj
+<<
+/BaseFont /Helvetica-Bold
+/Encoding /WinAnsiEncoding
+/Name /F2
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+9 0 obj
+<<
+/BaseFont /Courier
+/Encoding /WinAnsiEncoding
+/Name /F3
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+10 0 obj
+<<
+/Contents 11 0 R
+/MediaBox [ 0 0 595.2756 841.8898 ]
+/Resources <<
+/Font <<
+/F1 12 0 R
+/F1-0 13 0 R
+/F2 14 0 R
+/F3 15 0 R
+>>
+/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
+>>
+/Rotate 0
+/Trans <<
+>>
+/Type /Page
+/Annots [ ]
+/Parent 2 0 R
+>>
+endobj
+11 0 obj
+<<
+/Length 4130
+>>
+stream
+q
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
+1 0 0 1 60 720.8898 cm
+q
+.094118 .145098 .2 rg
+BT 1 0 0 1 0 37 Tm /F2 27 Tf 32 TL (Codificaci\363n posicional y m\341scara) Tj T* (causal) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 699.8898 cm
+q
+.278431 .333333 .396078 rg
+BT 1 0 0 1 0 3.5 Tm /F1 9.5 Tf 13 TL (Unidad 1 \267 Transformers | Apunte de prueba elaborado a partir de la clase) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 686.8898 cm
+q
+1 w
+1 J
+0 .388235 .345098 RG
+n 0 0 m 475.2756 0 l S
+Q
+Q
+q
+1 0 0 1 60 680.8898 cm
+Q
+q
+1 0 0 1 60 653.8898 cm
+q
+0 .388235 .345098 rg
+BT 1 0 0 1 0 4 Tm /F2 13 Tf 17 TL (C\363mo se incorpora el orden) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 585.8898 cm
+q
+.094118 .145098 .2 rg
+BT 1 0 0 1 0 53 Tm /F1 11 Tf 16 TL (La atenci\363n compara tokens mediante sus representaciones. Para darle al Transformer) Tj T* -0.022078 Tw (informaci\363n sobre el orden, al embedding x de cada token se le suma un vector posicional p de la) Tj T* 0 Tw (misma dimensi\363n. Dos apariciones del mismo token en posiciones diferentes reciben vectores p) Tj T* (distintos.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 564.8898 cm
+q
+.929412 .964706 .956863 rg
+n 0 -8 475.2756 31 re f*
+Q
+q
+.094118 .145098 .2 rg
+BT 1 0 0 1 10 5.3 Tm /F3 9.7 Tf 15 TL (x_pos = x + p) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 537.8898 cm
+q
+0 .388235 .345098 rg
+BT 1 0 0 1 0 4 Tm /F2 13 Tf 17 TL (Codificaci\363n sinusoidal) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 485.8898 cm
+q
+.094118 .145098 .2 rg
+BT 1 0 0 1 0 37 Tm /F1 11 Tf 16 TL (El Transformer original alterna seno y coseno en las dimensiones pares e impares. pos es la) Tj T* (posici\363n del token, i identifica el par de dimensiones y d_model es el tama\361o del embedding. El) Tj T* (denominador cambia con i y da distintas frecuencias.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 434.8898 cm
+q
+.929412 .964706 .956863 rg
+n 0 -8 475.2756 61 re f*
+Q
+q
+BT 1 0 0 1 10 35.3 Tm 15 TL /F3 9.7 Tf .094118 .145098 .2 rg (PE\(pos, 2*i\) = sin\(pos / 10000^\(2*i/d_model\)\)) Tj  T* (PE\(pos, 2*i + 1\) = cos\(pos / 10000^\(2*i/d_model\)\)) Tj  T* (Ejemplo con pos = 0 y d_model = 4: PE = [0, 1, 0, 1]) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 407.8898 cm
+q
+0 .388235 .345098 rg
+BT 1 0 0 1 0 4 Tm /F2 13 Tf 17 TL (Qu\351 evita la m\341scara causal) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 339.8898 cm
+q
+.094118 .145098 .2 rg
+BT 1 0 0 1 0 53 Tm /F1 11 Tf 16 TL -0.151161 Tw (En la autoatenci\363n del decodificador, una consulta en la posici\363n t puede atender a las posiciones) Tj T* 0 Tw (hasta t de la entrada del decodificador. Las posiciones posteriores reciben un puntaje de -inf) Tj T* (antes del softmax y por eso su peso queda en cero. Esto permite predecir el siguiente token) Tj T* (usando la secuencia disponible.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 303.8898 cm
+q
+.929412 .964706 .956863 rg
+n 0 -8 475.2756 46 re f*
+Q
+q
+BT 1 0 0 1 10 20.3 Tm 15 TL /F3 9.7 Tf .094118 .145098 .2 rg (M[t, j] = 0 si j <) Tj (= t) Tj  T* (M[t, j] = -inf si j > t) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 264.8898 cm
+q
+.094118 .145098 .2 rg
+BT 1 0 0 1 0 21 Tm /F1 11 Tf 16 TL (Por ejemplo, si la entrada del decodificador contiene \253Yo leo libros\273, la atenci\363n de \253leo\273 puede) Tj T* (usar \253Yo\273 y \253leo\273. El peso asignado a \253libros\273 en esa posici\363n es cero.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 237.8898 cm
+q
+0 .388235 .345098 rg
+BT 1 0 0 1 0 4 Tm /F2 13 Tf 17 TL (Relaci\363n entre posici\363n y visibilidad) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 201.8898 cm
+q
+.094118 .145098 .2 rg
+BT 1 0 0 1 0 21 Tm /F1 11 Tf 16 TL (La codificaci\363n posicional aporta informaci\363n sobre d\363nde est\341 cada token. La m\341scara causal) Tj T* (define qu\351 posiciones se pueden consultar durante la generaci\363n.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 60 182.8898 cm
+Q
+q
+1 0 0 1 60 181.3898 cm
+q
+.5 w
+1 J
+.721569 .776471 .796078 RG
+n 0 0 m 475.2756 0 l S
+Q
+Q
+q
+1 0 0 1 60 174.3898 cm
+Q
+q
+1 0 0 1 60 161.3898 cm
+q
+.278431 .333333 .396078 rg
+BT 1 0 0 1 0 4 Tm /F1 9 Tf 13 TL (Fuente: Clase 1 - Introducci\363n a Transformers \(73.69, 2026\), pp. 25-26, 35 y 40-44.) Tj T* ET
+Q
+Q
+ 
+
+Q
+q
+0.0 0.0 595.2756 841.8898 re
+W
+n
+1 0 0 1 0 0 cm
+BT
+/F1-0 12 Tf
+14.4 TL
+ET
+0.278431 0.333333 0.396078 rg
+BT
+/F1-0 9 Tf
+10.8 TL
+ET
+BT
+1 0 0 1 485.7366 34 Tm
+(P\341gina 2 de 2) Tj
+T*
+ET
+Q
+
+endstream
+endobj
+12 0 obj
+<<
+/BaseFont /Helvetica
+/Encoding /WinAnsiEncoding
+/Name /F1
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+13 0 obj
+<<
+/BaseFont /Helvetica
+/Encoding /WinAnsiEncoding
+/Name /F1
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+14 0 obj
+<<
+/BaseFont /Helvetica-Bold
+/Encoding /WinAnsiEncoding
+/Name /F2
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+15 0 obj
+<<
+/BaseFont /Courier
+/Encoding /WinAnsiEncoding
+/Name /F3
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+xref
+0 16
+0000000000 65535 f 
+0000000015 00000 n 
+0000000136 00000 n 
+0000000202 00000 n 
+0000000251 00000 n 
+0000000504 00000 n 
+0000004139 00000 n 
+0000004246 00000 n 
+0000004353 00000 n 
+0000004465 00000 n 
+0000004570 00000 n 
+0000004829 00000 n 
+0000009012 00000 n 
+0000009120 00000 n 
+0000009228 00000 n 
+0000009341 00000 n 
+trailer
+<<
+/Size 16
+/Root 3 0 R
+/Info 1 0 R
+>>
+startxref
+9447
+%%EOF

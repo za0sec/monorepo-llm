@@ -103,28 +103,28 @@ Los cálculos retrospectivos se basan en la lectura y el etiquetado de los artef
 
 **Propuesta para el ejercicio 4.** Mantener el corpus, el ranking, el VTT y GPT‑4.1 fijos, y cambiar solo el prompt para que identifique qué afirmación académica respalda cada pasaje antes de clasificar el video. Pedir `respaldo_insuficiente` cuando falte esa base. Comparar la versión actual con la variante en los mismos casos, con ejemplos de respaldo suficiente e insuficiente y objetivos reservados. Medir abstenciones correctas, estados por criterio, respaldo de citas y recomendaciones, Faithfulness y Answer Relevance con la misma pauta. Con el ranking fijo, CP y CR describen la entrada compartida. Si se prueba un cambio de recuperación en otra comparación, medir CP y CR sobre sus rankings finales. La iteración queda por ejecutar y documentar con resultados antes/después. [Consigna, §1.4, p. 3][consigna] · [Plan experimental][plan]
 
-[html]: presentacion.html
-[html-fin]: presentacion.html#gpt4o-chroma
-[bitacora]: presentación.md
+[html]: https://github.com/za0sec/monorepo-llm/blob/51ce249901a29d4d4cc697e04e17f2371c04fb79/tp3/presentacion.html
+[html-fin]: https://github.com/za0sec/monorepo-llm/blob/51ce249901a29d4d4cc697e04e17f2371c04fb79/tp3/presentacion.html#gpt4o-chroma
+[bitacora]: https://github.com/za0sec/monorepo-llm/blob/51ce249901a29d4d4cc697e04e17f2371c04fb79/tp3/presentaci%C3%B3n.md
 [consigna]: ../docs/RAG/tp3.pdf
-[caso]: archivo/ejercicio2_anterior/evaluacion/caso_01_embeddings.md
-[revision]: archivo/ejercicio2_anterior/evaluacion/revision_retrieval_inicial.md
-[ablacion]: archivo/ejercicio2_anterior/evaluacion/ablacion_k.md
-[generacion]: archivo/ejercicio2_anterior/evaluacion/generacion_caso01.md
-[evaluaciones]: evaluaciones.md
-[readme]: archivo/ejercicio2_anterior/README.md#repetir-las-pruebas-con-el-proxy
-[config]: archivo/ejercicio2_anterior/config.py
+[caso]: https://github.com/za0sec/monorepo-llm/blob/25735b23ab381795a5ffbfe614850fc5b974bba5/tp3/archivo/ejercicio2_anterior/evaluacion/caso_01_embeddings.md
+[revision]: https://github.com/za0sec/monorepo-llm/blob/25735b23ab381795a5ffbfe614850fc5b974bba5/tp3/archivo/ejercicio2_anterior/evaluacion/revision_retrieval_inicial.md
+[ablacion]: https://github.com/za0sec/monorepo-llm/blob/25735b23ab381795a5ffbfe614850fc5b974bba5/tp3/archivo/ejercicio2_anterior/evaluacion/ablacion_k.md
+[generacion]: https://github.com/za0sec/monorepo-llm/blob/25735b23ab381795a5ffbfe614850fc5b974bba5/tp3/archivo/ejercicio2_anterior/evaluacion/generacion_caso01.md
+[evaluaciones]: https://github.com/za0sec/monorepo-llm/blob/51ce249901a29d4d4cc697e04e17f2371c04fb79/tp3/evaluaciones.md
+[readme]: https://github.com/za0sec/monorepo-llm/blob/25735b23ab381795a5ffbfe614850fc5b974bba5/tp3/archivo/ejercicio2_anterior/README.md#repetir-las-pruebas-con-el-proxy
+[config]: https://github.com/za0sec/monorepo-llm/blob/25735b23ab381795a5ffbfe614850fc5b974bba5/tp3/archivo/ejercicio2_anterior/config.py
 [asr]: ejercicio2/transcripcion/README.md
-[plan]: archivo/plan_evaluacion_experimental_anterior.md
+[plan]: https://github.com/za0sec/monorepo-llm/blob/25735b23ab381795a5ffbfe614850fc5b974bba5/tp3/archivo/plan_evaluacion_experimental_anterior.md
 [asistente]: ../docs/RAG/Langchain_Virtual_Assitant.ipynb
 [advanced]: ../docs/RAG/UN_Report_Advanced_RAG.ipynb
 [metricas]: ../docs/RAG/Clase%2011%20-%20M%C3%A9tricas%20de%20la%20Industria%20%281%29.pdf
 [metricas-vtt]: ../docs/RAG/Metricas.VTT
-[datos-k]: archivo/ejercicio2_anterior/data/resultados/ablacion_k_20261104.oaCc7k/coseno_k8.json
-[datos-mixto]: archivo/ejercicio2_anterior/data/resultados/chroma_con_apunte_20261104.7sqyKv/coseno_k8.json
-[datos-expansion]: archivo/ejercicio2_anterior/data/resultados/expansion_subtemas_20261104.zQ1Iz1/
-[datos-4o]: archivo/ejercicio2_anterior/data/resultados/informe_estudiante_embeddings_20261104.4x6c1gtg/auditoria.json
-[datos-41]: archivo/ejercicio2_anterior/data/resultados/informe_estudiante_gpt41_20261104.41f5UB/informe.json
-[datos-plan-41]: archivo/ejercicio2_anterior/data/resultados/expansion_gpt41_20261104.umOHA2/expandida.json
-[datos-respaldo]: archivo/ejercicio2_anterior/data/resultados/respaldo_entrenamiento_20261104.63FuR6/
-[datos-control]: archivo/ejercicio2_anterior/data/resultados/respaldo_entrenamiento_20261104.63FuR6/informe_sin_pasaje.json
+[datos-k]: https://github.com/za0sec/monorepo-llm/blob/25735b23ab381795a5ffbfe614850fc5b974bba5/tp3/archivo/ejercicio2_anterior/data/resultados/ablacion_k_20261104.oaCc7k/coseno_k8.json
+[datos-mixto]: https://github.com/za0sec/monorepo-llm/blob/25735b23ab381795a5ffbfe614850fc5b974bba5/tp3/archivo/ejercicio2_anterior/data/resultados/chroma_con_apunte_20261104.7sqyKv/coseno_k8.json
+[datos-expansion]: https://github.com/za0sec/monorepo-llm/tree/25735b23ab381795a5ffbfe614850fc5b974bba5/tp3/archivo/ejercicio2_anterior/data/resultados/expansion_subtemas_20261104.zQ1Iz1
+[datos-4o]: https://github.com/za0sec/monorepo-llm/blob/25735b23ab381795a5ffbfe614850fc5b974bba5/tp3/archivo/ejercicio2_anterior/data/resultados/informe_estudiante_embeddings_20261104.4x6c1gtg/auditoria.json
+[datos-41]: https://github.com/za0sec/monorepo-llm/blob/25735b23ab381795a5ffbfe614850fc5b974bba5/tp3/archivo/ejercicio2_anterior/data/resultados/informe_estudiante_gpt41_20261104.41f5UB/informe.json
+[datos-plan-41]: https://github.com/za0sec/monorepo-llm/blob/25735b23ab381795a5ffbfe614850fc5b974bba5/tp3/archivo/ejercicio2_anterior/data/resultados/expansion_gpt41_20261104.umOHA2/expandida.json
+[datos-respaldo]: https://github.com/za0sec/monorepo-llm/tree/25735b23ab381795a5ffbfe614850fc5b974bba5/tp3/archivo/ejercicio2_anterior/data/resultados/respaldo_entrenamiento_20261104.63FuR6
+[datos-control]: https://github.com/za0sec/monorepo-llm/blob/25735b23ab381795a5ffbfe614850fc5b974bba5/tp3/archivo/ejercicio2_anterior/data/resultados/respaldo_entrenamiento_20261104.63FuR6/informe_sin_pasaje.json

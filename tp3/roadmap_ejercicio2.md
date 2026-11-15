@@ -84,7 +84,7 @@ Por cada contraste guardar una ficha Markdown y resultados por caso en CSV o JSO
 **Integración verificada.** El flujo de objetivo y audio a informe Markdown usa G4 como modo avanzado y conserva G2 como modo básico. Se probó desde el MP3 del Caso 01. La validación con otros objetivos queda para el ejercicio 4. [Comando y artefactos](ejercicio2/README.md)
 
 [ej1]: ejercicio1/Grupo03-ej1-TP3.md
-[archivo]: archivo/README.md
+[archivo]: recorrido_experimental.md
 [bitacora]: ejercicio2/experimentos.md
 [guía]: ../docs/RAG/GUIA_TP3.md
 [consigna]: ../docs/RAG/tp3.pdf

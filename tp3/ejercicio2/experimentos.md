@@ -7,7 +7,7 @@ Este registro documenta el corpus de partida, las comparaciones y las decisiones
 ### Preparación del corpus · 14/11/2026
 
 - **Punto de partida:** [`docs/embeddings_2.VTT`](../../docs/embeddings_2.VTT), transcripción docente en español de la clase de embeddings. Su SHA-256 es `a1fa8324b6d63c7c6d90fd4dc467b65095524aba8e134d806c2118278b24cd18`.
-- **Implementación:** se adaptó el [lector archivado](../archivo/ejercicio2_anterior/preparar_transcripcion.py). Une las líneas de texto de cada bloque y reduce secuencias de espacios en blanco a un espacio. Conserva las palabras, la puntuación y el hablante tal como aparecen en el VTT. Guarda la ruta y el hash de la fuente y, por bloque, el ID, el texto y el inicio y fin en formato VTT y en milisegundos.
+- **Implementación:** se adaptó el lector del prototipo que dio origen al [lector activo](preparar_transcripcion.py). Une las líneas de texto de cada bloque y reduce secuencias de espacios en blanco a un espacio. Conserva las palabras, la puntuación y el hablante tal como aparecen en el VTT. Guarda la ruta y el hash de la fuente y, por bloque, el ID, el texto y el inicio y fin en formato VTT y en milisegundos.
 - **Resultado:** 415 de 415 bloques coinciden con el original en ID, texto normalizado y tiempos. Abarcan de `00:00:03.410` a `01:01:48.330`. Una segunda ejecución en otro directorio produjo el mismo JSON byte a byte.
 - **Decisión:** usar [`data/procesados/embeddings_2.json`](data/procesados/embeddings_2.json) como único insumo de texto del piloto. Los tiempos permiten revisar la definición de embedding (bloque 123, 18:32.360–18:50.210), el papel de la magnitud (bloques 182–188, 25:37.950–27:13.979) y el cálculo del coseno (bloque 222, 31:55.350–32:14.820). Son referencias iniciales del [caso manual](evaluacion/caso_01_embeddings.md).
 
@@ -52,7 +52,6 @@ Por suma de criterios, el fijo cubrió 0/6 y el recursivo 2/6. Las posiciones re
 ```bash
 python3 -m pip install -r tp3/ejercicio2/requirements.txt
 python3 tp3/ejercicio2/comparar_splitters.py \
-  --modelo-local "/ruta/a/la/copia/local/de/MiniLM" \
   --salida tp3/ejercicio2/data/experimentos/i1_repeticion
 ```
 
@@ -101,7 +100,6 @@ python3 "$base/preparar_transcripcion.py" docs/embeddings_2.VTT
 python3 "$base/preparar_transcripcion.py" docs/transformers.VTT
 python3 "$base/preparar_transcripcion.py" docs/finetuning.VTT
 python3 "$base/comparar_splitters.py" \
-  --modelo-local "/ruta/a/la/copia/local/de/MiniLM" \
   --corpus "$base/data/procesados/embeddings_2.json" \
   --corpus "$base/data/procesados/transformers.json" \
   --corpus "$base/data/procesados/finetuning.json" \
@@ -150,11 +148,9 @@ El asistente anotó los candidatos agrupados por consulta, sin mostrar el tamañ
 
 ```bash
 base=tp3/ejercicio2
-modelo="/ruta/a/la/copia/local/de/MiniLM"
 for tamano in 96 160 224; do
   for repeticion in 1 2; do
     python3 "$base/comparar_splitters.py" \
-      --modelo-local "$modelo" \
       --corpus "$base/data/procesados/embeddings_2.json" \
       --corpus "$base/data/procesados/transformers.json" \
       --corpus "$base/data/procesados/finetuning.json" \
@@ -204,11 +200,9 @@ Q1, Q4, Q5 y Q6 quedaron sin evidencia útil con los cuatro valores. En Q3, 20 y
 
 ```bash
 base=tp3/ejercicio2
-modelo="/ruta/a/la/copia/local/de/MiniLM"
 for solape in 0 10 20 40; do
   for repeticion in 1 2; do
     python3 "$base/comparar_splitters.py" \
-      --modelo-local "$modelo" \
       --corpus "$base/data/procesados/embeddings_2.json" \
       --corpus "$base/data/procesados/transformers.json" \
       --corpus "$base/data/procesados/finetuning.json" \
@@ -616,6 +610,8 @@ Se ejecutó el modo avanzado con el MP3 original del Caso 01. Whisper generó un
 Se comprobó con respuestas simuladas que el modo básico usa una sola consulta, que el modo avanzado completa los siete chunks si las búsquedas devuelven los mismos cinco y que los IDs de clase y video se resuelven a los tiempos correctos. La validación con objetivos y videos nuevos se reserva para el ejercicio 4.
 
 [Transcripción](data/ejecuciones/caso01-integracion/transcripcion.vtt) · [Entrada y ranking](data/ejecuciones/caso01-integracion/entrada.json) · [Informe](data/ejecuciones/caso01-integracion/gpt41/informe.md)
+
+**Insumos del ejercicio 2 · 15/11/2026.** El [audio y el VTT de referencia](evaluacion/casos/caso_01/) se copiaron desde el prototipo y se verificó que son idénticos. G1, la evaluación de transcripción y el comando de ejemplo usan ahora esas rutas. Los snapshots fijados de Qwen y MiniLM se copiaron a la caché local del ejercicio 2. Se verificaron las cargas de ambos modelos y que G1 reconstruye los mismos mensajes con acceso bloqueado a la carpeta histórica. Al recalcular WER y CER con el VTT trasladado coincidieron todos los valores. La ruta del VTT fue el único cambio en ese reporte. Las corridas congeladas conservan sus rutas originales como datos de procedencia.
 
 ### Comparación opcional del formato del informe
 

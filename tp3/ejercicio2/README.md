@@ -9,7 +9,7 @@ Desde la raíz del repositorio, con las [dependencias](requirements.txt) instala
 ```bash
 .venv/bin/python tp3/ejercicio2/evaluar_video.py \
   'entender qué son los embeddings y cómo se compara la similitud entre textos' \
-  'tp3/archivo/ejercicio2_anterior/data/audios/¿Qué son los EMBEDDINGS Grandes Modelos de Lenguaje.mp3'
+  'tp3/ejercicio2/evaluacion/casos/caso_01/audio.mp3'
 ```
 
 El modo predeterminado es **avanzado**. Genera tres subconsultas, busca con ellas y el objetivo original, deduplica los candidatos y reordena los chunks localmente con el CrossEncoder de G4. Envía al generador los siete primeros. Si el solapamiento deja menos de siete candidatos, completa la lista con la búsqueda del objetivo original antes de reordenar y registra esa búsqueda adicional.
@@ -18,6 +18,7 @@ El modo predeterminado es **avanzado**. Genera tres subconsultas, busca con ella
 
 ## Insumos locales
 
+- **Caso 01.** Su MP3 original está en `evaluacion/casos/caso_01/audio.mp3` y va por fuera de Git. En otro checkout, colocar ahí una copia del audio o pasar la ruta de un audio propio. El [VTT de referencia](evaluacion/casos/caso_01/transcripcion.vtt) se usa para reconstruir G1. El comando integrado vuelve a transcribir el audio.
 - **Índice académico.** Se usa la colección `openai_i4` de Chroma y su `ranking.json`. La ruta predeterminada es `tp3/ejercicio2/data/experimentos/i4/`. Para reconstruirlo a partir de los VTT docentes, seguir la [reproducción de I4](experimentos.md#i4--modelo-de-embeddings) y de su baseline de I3. Se puede indicar otra ubicación del índice de I4 con `--indice`.
 - **Reranker.** El modo avanzado usa el snapshot de `cross-encoder/ms-marco-MiniLM-L6-v2` fijado en G4. Si falta, descargarlo en la caché esperada:
 
@@ -31,6 +32,22 @@ El modo predeterminado es **avanzado**. Genera tres subconsultas, busca con ella
   Si el snapshot está en otra carpeta, pasar su ruta con `--snapshot`.
 
 Whisper y GPT‑4.1 se ejecutan en la API directa de OpenAI. El audio se envía a Whisper. La expansión y los embeddings usan las consultas de texto. La generación recibe el contexto académico seleccionado y la transcripción.
+
+## Reproducir los modelos locales de las ablaciones
+
+La caché local del ejercicio 2 está en `data/modelos/`, ignorada por Git. MiniLM se usa para reconstruir las pruebas de splitting e indexación. Qwen se usa para repetir la comparación de generadores de G1. Para reponerlos en otro checkout:
+
+```bash
+HF_HUB_DISABLE_XET=1 .venv/bin/hf download sentence-transformers/all-MiniLM-L6-v2 \
+  --revision c9745ed1d9f207416be6d2e6f8de32d1f16199bf \
+  --cache-dir tp3/ejercicio2/data/modelos \
+  --include config.json config_sentence_transformers.json model.safetensors modules.json sentence_bert_config.json \
+    tokenizer.json tokenizer_config.json special_tokens_map.json vocab.txt 1_Pooling/config.json
+HF_HUB_DISABLE_XET=1 .venv/bin/hf download Qwen/Qwen2.5-1.5B-Instruct \
+  --revision 989aa7980e4cf806f80c7fef2b1adb7bc71aa306 \
+  --cache-dir tp3/ejercicio2/data/modelos \
+  --include config.json generation_config.json model.safetensors merges.txt tokenizer.json tokenizer_config.json vocab.json
+```
 
 ## Revisar una ejecución
 

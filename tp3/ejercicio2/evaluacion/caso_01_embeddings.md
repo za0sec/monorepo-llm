@@ -4,7 +4,7 @@
 
 Esta es la pauta manual activa del ejercicio 2. Los criterios se usan para
 corregir los informes de generación y quedan fuera del prompt.
-[Versión histórica](../../archivo/ejercicio2_anterior/evaluacion/caso_01_embeddings.md).
+[Recorrido experimental del prototipo](../../recorrido_experimental.md).
 
 Ejemplo de respuesta elaborado por el asistente mediante revisión de las
 transcripciones. El 31/10/2026 el usuario confirmó haber revisado el caso como
@@ -30,7 +30,7 @@ transcripción contra el audio original.
 Fuentes utilizadas:
 
 - [Transcripción de la clase](../../../docs/embeddings_2.VTT).
-- [Transcripción automática del video](../../archivo/ejercicio2_anterior/data/transcripciones/¿Qué%20son%20los%20EMBEDDINGS%20Grandes%20Modelos%20de%20Lenguaje.vtt).
+- [Transcripción automática del video](casos/caso_01/transcripcion.vtt).
 
 El VTT de la clase se conserva localmente en `docs/`. El VTT del video está
 incluido en Git. Los tiempos del video provienen de Whisper y los de la clase

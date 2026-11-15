@@ -1,7 +1,7 @@
 {
   "objetivo": "entender qué son los embeddings y cómo se compara la similitud entre textos",
   "nivel": "introductorio",
-  "video_vtt": "tp3/archivo/ejercicio2_anterior/data/transcripciones/¿Qué son los EMBEDDINGS Grandes Modelos de Lenguaje.vtt",
+  "video_vtt": "tp3/ejercicio2/evaluacion/casos/caso_01/transcripcion.vtt",
   "segmentos_video_esperados": 99,
   "indice_i4": "tp3/ejercicio2/data/experimentos/i4",
   "coleccion": "openai_i4",

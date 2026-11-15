@@ -23,7 +23,7 @@
 - `tp2/`: paper, consigna y apuntes de defensa; sin aplicación propia.
 - `tp3/ejercicio1/`: propuesta y diagrama del evaluador de cobertura de videos.
 - `tp3/ejercicio2/`: código activo, configuración de casos y bitácora experimental. `transcripcion/` reúne scripts y pruebas de ASR. Los índices, corridas y demás salidas locales se conservan en carpetas `data/` ignoradas por Git.
-- `tp3/archivo/ejercicio2_anterior/`: código, datos y resultados históricos del prototipo. Consultar el [inventario del archivo](tp3/archivo/README.md) antes de reutilizar una pieza. La guía local conserva una fotografía anterior del estado del código.
+- **Prototipo previo al reinicio.** El [recorrido histórico](tp3/recorrido_experimental.md) enlaza los artefactos fijados en Git. El audio de prueba, el VTT y las cachés que usa el ejercicio 2 están en su propia carpeta.
 - `docs/`: material local de cátedra, excluido de Git; respetar las minúsculas para portabilidad.
 
 ## Instalación y ejecución
@@ -44,6 +44,6 @@ Hacer commits solo cuando el usuario los pida. El historial usa mensajes breves,
 
 ## Instrucciones para agentes
 
-Actualizar [tp3/ejercicio2/experimentos.md](tp3/ejercicio2/experimentos.md) en cada avance significativo. Registrar el cambio, motivo, configuración, pruebas realizadas, resultados y decisión. Mantener el próximo paso actualizado en el [roadmap](tp3/roadmap_ejercicio2.md). Conservar las decisiones anteriores y sus reemplazos en orden cronológico. El trabajo activo queda en `tp3/ejercicio2/` y el material anterior en `tp3/archivo/`.
+Actualizar [tp3/ejercicio2/experimentos.md](tp3/ejercicio2/experimentos.md) en cada avance significativo. Registrar el cambio, motivo, configuración, pruebas realizadas, resultados y decisión. Mantener el próximo paso actualizado en el [roadmap](tp3/roadmap_ejercicio2.md). Conservar las decisiones anteriores y sus reemplazos en orden cronológico. El trabajo activo queda en `tp3/ejercicio2/` y el prototipo previo se consulta en el historial de Git.
 
 Preservar cambios ajenos y originales docentes. Citar páginas, tiempos o celdas; separar obligaciones, ejemplos y propuestas. Justificar decisiones; avisar antes de incorporar técnicas ajenas al material. Completar el pipeline básico antes de Advanced RAG y extras. No presentar el caso manual como resultado automático. La guía bajo `docs/` requiere inclusión explícita para compartirse por Git.

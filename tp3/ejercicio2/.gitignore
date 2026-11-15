@@ -1,4 +1,6 @@
 /data/procesados/
 /data/experimentos/
 /data/ejecuciones/
+/data/modelos/
+/evaluacion/casos/*/audio.mp3
 /transcripcion/data/

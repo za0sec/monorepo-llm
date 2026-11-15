@@ -69,7 +69,7 @@ Para recalcular las medidas desde la raíz con las transcripciones guardadas:
 
 ```bash
 caso=tp3/ejercicio2/transcripcion/data/asr_caso01_20261109
-vtt='tp3/archivo/ejercicio2_anterior/data/transcripciones/¿Qué son los EMBEDDINGS Grandes Modelos de Lenguaje.vtt'
+vtt='tp3/ejercicio2/evaluacion/casos/caso_01/transcripcion.vtt'
 .venv/bin/python -m tp3.ejercicio2.transcripcion.evaluar_recortes "$caso/manifiesto.json" \
   --vtt "$vtt" --wav2vec "$caso/comparacion_20261114/wav2vec" \
   --whisper "$caso/comparacion_20261114/whisper" \

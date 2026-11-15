@@ -16,6 +16,10 @@ from sentence_transformers import SentenceTransformer
 
 
 CARPETA = Path(__file__).resolve().parent
+MINILM_LOCAL = (
+    CARPETA / "data/modelos/models--sentence-transformers--all-MiniLM-L6-v2"
+    / "snapshots/c9745ed1d9f207416be6d2e6f8de32d1f16199bf"
+)
 TAMANO = 160
 K = 4
 SEPARADORES = ["\n\n", "\n", ". ", " ", ""]
@@ -171,7 +175,8 @@ def buscar(cliente, nombre, chunks, vectores_chunks, vectores_consultas, consult
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--modelo-local", type=Path, required=True)
+    parser.add_argument("--modelo-local", type=Path, default=MINILM_LOCAL,
+                        help="Snapshot local de MiniLM. Por defecto usa la revisión fijada del ejercicio 2.")
     parser.add_argument("--corpus", type=Path, action="append",
                         help="JSON de un VTT preparado. Repetir para sumar fuentes.")
     parser.add_argument("--consultas", type=Path, default=CARPETA / "consultas_i1.json")

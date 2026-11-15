@@ -12,7 +12,7 @@ from preparar_transcripcion import REPO, leer_vtt
 
 CARPETA = Path(__file__).resolve().parent
 DATOS = CARPETA / "data/experimentos/g1"
-CACHE = REPO / "tp3/archivo/ejercicio2_anterior/data/modelos"
+CACHE = CARPETA / "data/modelos"
 CITAS = re.compile(r"\[([CV]\d+)\]")
 
 

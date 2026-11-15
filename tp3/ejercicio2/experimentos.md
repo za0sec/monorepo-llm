@@ -508,7 +508,64 @@ La relevancia manual dio **1/2 en foco** porque abordó la definición y la simi
 .venv/bin/python tp3/ejercicio2/generar_g1.py gpt41 --carpeta tp3/ejercicio2/data/experimentos/g1_5
 ```
 
-### G3 · Formato del informe
+### Diagnóstico del top 20 de G2
+
+Se consultó el objetivo literal de G2 en `openai_i4` con `text-embedding-3-small`. Los siete primeros chunks coincidieron con G2 en el mismo orden. La llamada de embeddings reportó 18 tokens de entrada.
+
+- **E4 · Fórmula del coseno.** Aparece completa en el puesto **10**, `c075` de Embeddings (31:55–32:23), que distingue el producto interno de su normalización por las normas.
+- **E5 · Efecto de la magnitud.** El puesto **18**, `c060` de Embeddings (25:37–26:10), explica por qué el coseno reduce la importancia de la magnitud y empieza el ejemplo. El **6**, `c049`, aporta un caso de ángulo pequeño con magnitudes distintas. El cierre del ejemplo de igual similitud con vectores escalados (`c061`) queda fuera, así que el respaldo sigue siendo parcial según la pauta.
+- **E2 · Papel del contexto.** El puesto **13**, `c197` de Transformers (24:45–25:08), menciona que el encoder mira tokens a ambos lados. Los chunks que contrastan el embedding fijo con el contextual (`c066` y `c067`) quedan fuera. El respaldo sigue siendo parcial.
+
+El conjunto de 20 respalda por completo **3/5 criterios** (E1, E3 y E4), frente a **2/5** en el top 7. Se revisó solo el ranking por coseno y queda pendiente elegir una técnica para la siguiente prueba. [Ranking y textos](data/experimentos/g2/diagnostico_top20.json)
+
+### G3 · Advanced RAG con expansión de consulta
+
+**Configuración.** GPT‑4.1 a temperatura 0 generó tres subconsultas a partir del objetivo literal de G2. El expander recibió solo ese objetivo y una instrucción general para dividirlo en preguntas de búsqueda. Se buscaron la original y las tres nuevas con `text-embedding-3-small` y la misma colección `openai_i4`, cinco resultados por consulta. Se intercalaron los cuatro rankings por posición, empezando por la consulta original en cada turno, y se deduplicó por ID. Se pasaron los primeros siete chunks distintos al mismo GPT‑4.1 con el prompt, objetivo y VTT de G2. Se verificaron esos controles y que el ranking de la consulta original reproduce los cinco primeros puestos de G2.
+
+| Consulta generada | Primeros cinco IDs |
+| --- | --- |
+| ¿Qué son los embeddings en el contexto del procesamiento de lenguaje natural? | `c434`, `c357`, `c219`, `c436`, `c437` |
+| ¿Cómo se generan y representan los embeddings de textos? | `c434`, `c219`, `c357`, `c437`, `c418` |
+| ¿Cuáles son los métodos para comparar la similitud entre textos utilizando embeddings? | `c357`, `c434`, `c060`, `c075`, `c223` |
+
+**Resultados de recuperación.** Los 20 resultados se redujeron a diez candidatos distintos. El conjunto completo respaldó **3/5** criterios (E1, E3 y E4), los mismos que el diagnóstico de los 20 candidatos por coseno. La tercera subconsulta encontró la fórmula (`c075`) en su cuarto puesto. Quedó **octava** al intercalar, fuera del contexto del generador. También encontró `c060`, que pasó al **cuarto** puesto final y explica el efecto de la magnitud, pero deja incompleto el ejemplo de E5. La primera subconsulta usa «contexto del procesamiento de lenguaje natural» en un sentido general. Ninguna de las tres buscó explícitamente el contraste entre embeddings fijos y contextuales.
+
+El top 7 fue `c357`, `c434`, `c219`, `c060`, `c360`, `c436`, `c437`. Solo quedó plenamente respaldada la definición (E1). Para E3, `c357` explica qué se compara y `c060` nombra el coseno, pero se perdieron `c048` y `c049`, que en G2 explicaban el ángulo como criterio. Para Context Precision se marcó evidencia directa aunque fuera parcial. Los puestos relevantes fueron 1, 3, 6 y 7 en G2 y 1, 3 y 4 en G3. El aumento de Context Precision refleja la posición de los aciertos. La proporción simple de chunks pertinentes bajó de 4/7 a 3/7.
+
+| Métrica del contexto final | G2 · Coseno | G3 · Expansión |
+| --- | ---: | ---: |
+| Context Recall | 2/5 (40 %) | 1/5 (20 %) |
+| Context Precision | 68,5 % | 80,6 % |
+| Precision@7 | 4/7 | 3/7 |
+| Tokens de clase con MiniLM | 904 | 880 |
+
+**Resultados del informe.**
+
+| Métrica | G2 · Coseno | G3 · Expansión |
+| --- | ---: | ---: |
+| Criterios presentes | 3/5 | 3/5 |
+| Estados correctos | 2/5 | 2/5 |
+| Citas localizables | 39/39 | 34/34 |
+| Citas con respaldo | 27/39 | 18/34 |
+| Answer Faithfulness descriptiva | 11/12 | 12/15 |
+| Relevancia manual | 4/6 | 4/6 |
+| Informe completo | Sí | Sí |
+| Tokens de entrada / salida del generador | 3.472 / 550 | 3.427 / 496 |
+
+Se mantuvo la corrección de G2 por criterio. E1 y E2 coincidieron con el estado del video. E2 citó pasajes que no establecen el contraste que juzga. Se contó E3 como ambiguo porque el informe marcó como cubierta la comparación semántica y como parcial la comparación de similitud entre textos en otra fila. E4 y E5 quedaron sin estado propio.
+
+Para las citas se contaron cada ID escrito y los extremos de los cinco rangos del video, como en G2. Respaldaron al menos parte de su fila **5/13** citas de clase y **13/21** del video. La recomendación apunta a `c060` para entender cómo se mide el coseno, aunque el texto comenta su efecto sobre la magnitud y no enseña el cálculo. Las tres afirmaciones descriptivas sin respaldo atribuyeron a los chunks de clase la equivalencia entre similitud numérica y semántica, el contraste fijo/contextual y la disponibilidad de todos los pasajes pertinentes. La relevancia manual dio 1/2 en foco por temas laterales, 1/2 en recomendaciones por identificar el tema pendiente con un pasaje incompleto y 2/2 en conclusión por precisar la utilidad del video para el objetivo.
+
+**Decisión.** Conservar G2 como baseline. La expansión encontró evidencia útil, pero la fusión por turnos dejó afuera la fórmula y redujo la cobertura del top 7. La concurrencia de consultas parecidas redujo a la mitad la cantidad de candidatos distintos. Las llamadas adicionales reportaron 129 tokens de entrada y 58 de salida para expandir y 70 tokens para vectorizar las cuatro consultas. Este contraste corresponde a un piloto de un solo objetivo.
+
+**Reproducción.** [Expansión y prompt](data/experimentos/g3/expansion.json) · [Rankings y contexto final](data/experimentos/g3/entrada_expandida.json) · [Informe](data/experimentos/g3/gpt41/informe.md)
+
+```bash
+.venv/bin/python tp3/ejercicio2/recuperar_g3.py
+.venv/bin/python tp3/ejercicio2/generar_g1.py gpt41 --carpeta tp3/ejercicio2/data/experimentos/g3 --entrada tp3/ejercicio2/data/experimentos/g3/entrada_expandida.json
+```
+
+### Comparación opcional del formato del informe
 
 - **Punto de partida:** modelo y prompt elegidos. Revisar si faltan campos en la salida en prosa.
 - **Qué evaluar:** si se observan omisiones, comparar prosa y tabla por criterio con las mismas entradas y exigencias de contenido. Medir completitud y citas válidas.

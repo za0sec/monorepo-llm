@@ -14,7 +14,7 @@ from comparar_embeddings import API_OPENAI, MODELO_OPENAI, obtener_vectores
 from generar_g1 import CARPETA, DATOS, REPO, guardar_json
 
 
-def recuperar(control):
+def abrir_indice(control):
     caso = control["configuracion_experimental"]
     indice = REPO / caso["indice_i4"]
     ranking = (indice / "ranking.json").read_bytes()
@@ -29,32 +29,47 @@ def recuperar(control):
     coleccion = chroma.get_collection(caso["coleccion"], embedding_function=None)
     if coleccion.count() != len(por_id) or coleccion.configuration["hnsw"]["space"] != i4["distancia"]:
         raise ValueError("Chroma no coincide con el registro de I4.")
+    return coleccion, i4, por_id
+
+
+def cliente_openai():
     clave = dotenv_values(CARPETA.parent / ".env").get("OPENAI_API_KEY")
     if not clave:
         raise ValueError("Falta OPENAI_API_KEY en tp3/.env.")
-    cliente = OpenAI(base_url=API_OPENAI, api_key=clave, max_retries=0, timeout=30)
-    vectores, uso = obtener_vectores(cliente, MODELO_OPENAI, [caso["objetivo"]])
+    return OpenAI(base_url=API_OPENAI, api_key=clave, max_retries=0, timeout=30)
+
+
+def buscar(coleccion, i4, por_id, cliente, consultas, k):
+    vectores, uso = obtener_vectores(cliente, MODELO_OPENAI, consultas)
     campos = ("modelo_respuesta", "dimensiones")
     if any(uso[campo] != i4["uso_openai"][campo] for campo in campos):
         raise ValueError("El embedding de consulta no coincide con I4.")
 
-    k = len(control["clase"])
     respuesta = coleccion.query(query_embeddings=vectores, n_results=k, include=["documents", "metadatas", "distances"])
-    hits = [respuesta[campo][0] for campo in ("ids", "documents", "metadatas", "distances")]
-    if any(len(x) != k for x in hits) or len(set(hits[0])) != k:
-        raise ValueError("Chroma no devolvió los k chunks distintos esperados.")
-    clase = {}
-    for puesto, (id_, texto, meta, distancia) in enumerate(zip(*hits), 1):
-        original = por_id[id_]
-        procedencia = {campo: original[campo] for campo in ("fuente", "inicio", "fin")}
-        procedencia["bloques"] = ",".join(original["bloques"])
-        if texto != original["texto"] or meta != procedencia:
-            raise ValueError(f"El contenido o los metadatos de {id_} difieren de I4.")
-        clase[f"C{puesto}"] = {
-            "id": id_, "texto": texto, "tokens_minilm": original["tokens"],
-            "distancia_coseno": distancia, **meta,
-        }
+    columnas = [respuesta[campo] for campo in ("ids", "documents", "metadatas", "distances")]
+    if any(len(columna) != len(consultas) for columna in columnas):
+        raise ValueError("Faltan rankings de consulta.")
+    rankings = []
+    for hits in zip(*columnas):
+        if any(len(x) != k for x in hits) or len(set(hits[0])) != k:
+            raise ValueError("Chroma no devolvió los k chunks distintos esperados.")
+        ranking = []
+        for id_, texto, meta, distancia in zip(*hits):
+            original = por_id[id_]
+            procedencia = {campo: original[campo] for campo in ("fuente", "inicio", "fin")}
+            procedencia["bloques"] = ",".join(original["bloques"])
+            if texto != original["texto"] or meta != procedencia:
+                raise ValueError(f"El contenido o los metadatos de {id_} difieren de I4.")
+            ranking.append({
+                "id": id_, "texto": texto, "tokens_minilm": original["tokens"],
+                "distancia_coseno": distancia, **meta,
+            })
+        rankings.append(ranking)
+    return rankings, uso
 
+
+def reemplazar_clase(control, chunks, recuperacion):
+    clase = {f"C{i}": chunk for i, chunk in enumerate(chunks, 1)}
     sistema, usuario = control["mensajes"]
     antes, bloque = usuario["content"].split("\n\nMaterial de clase:\n", 1)
     _, video = bloque.rsplit("\n\nTranscripción del video:\n", 1)
@@ -64,8 +79,18 @@ def recuperar(control):
     )}]
     return {
         **control, "mensajes": mensajes, "clase": clase,
-        "recuperacion": {"consulta": caso["objetivo"], "k": k, "distancia": i4["distancia"], "uso": uso},
+        "recuperacion": recuperacion,
     }
+
+
+def recuperar(control):
+    consulta = control["configuracion_experimental"]["objetivo"]
+    k = len(control["clase"])
+    coleccion, i4, por_id = abrir_indice(control)
+    rankings, uso = buscar(coleccion, i4, por_id, cliente_openai(), [consulta], k)
+    return reemplazar_clase(control, rankings[0], {
+        "consulta": consulta, "k": k, "distancia": i4["distancia"], "uso": uso,
+    })
 
 
 def main():

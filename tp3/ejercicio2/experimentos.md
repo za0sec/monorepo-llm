@@ -332,6 +332,12 @@ python3 tp3/ejercicio2/comparar_k.py \
 
 ## 3. Generator
 
+### Control previo de la transcripción · 14/11/2026
+
+Se revisó el VTT del Caso 01 contra seis recortes con referencia humana verificada. La estimación del VTT fue de **15,07% de WER y 12,80% de CER** al seleccionar segmentos por punto medio. Como el VTT tiene tiempos por segmento, el resultado depende de qué texto se incluye en los bordes. Las dos corridas de G0 usarán el mismo VTT. La comparación de transcriptores sobre WAV idénticos sigue aparte. [Registro de audio](transcripcion/README.md#control-del-vtt-y-seis-recortes--14112026)
+
+En la comparación sobre los seis WAV idénticos, Whisper obtuvo **5,87% de WER y 3,92% de CER** frente a **14,09% y 3,07%** de Wav2Vec2. Este contraste evalúa la transcripción sobre los recortes. La evaluación de G0 medirá el informe con el VTT completo como entrada. [Comparación sobre los mismos seis WAV](transcripcion/README.md#comparación-sobre-los-mismos-seis-wav)
+
 ### G0 · Informe básico
 
 - **Punto de partida:** objetivo, VTT fijo del video y Qwen2.5-1.5B-Instruct como candidato inicial, con un prompt directo.

@@ -114,8 +114,8 @@ Los cálculos retrospectivos se basan en la lectura y el etiquetado de los artef
 [evaluaciones]: evaluaciones.md
 [readme]: archivo/ejercicio2_anterior/README.md#repetir-las-pruebas-con-el-proxy
 [config]: archivo/ejercicio2_anterior/config.py
-[asr]: avances/transcripcion/README.md
-[plan]: avances/plan_evaluacion_experimental.md
+[asr]: ejercicio2/transcripcion/README.md
+[plan]: archivo/plan_evaluacion_experimental_anterior.md
 [asistente]: ../docs/RAG/Langchain_Virtual_Assitant.ipynb
 [advanced]: ../docs/RAG/UN_Report_Advanced_RAG.ipynb
 [metricas]: ../docs/RAG/Clase%2011%20-%20M%C3%A9tricas%20de%20la%20Industria%20%281%29.pdf

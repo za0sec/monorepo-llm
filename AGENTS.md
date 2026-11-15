@@ -2,7 +2,7 @@
 
 ## Prioridad y contexto actual
 
-**Estamos trabajando en el ejercicio 2 del TP3. Se completó G3 con expansión de consulta y G2 sigue como baseline.** Para retomar, leer los registros de [G2](tp3/ejercicio2/experimentos.md#g2--modelo-elegido-con-chunks-recuperados), [G1.5](tp3/ejercicio2/experimentos.md#g15--prompt-con-cotejo-explícito-de-las-fuentes) y [G3](tp3/ejercicio2/experimentos.md#g3--advanced-rag-con-expansión-de-consulta) y el [roadmap](tp3/roadmap_ejercicio2.md). Antes de implementar, consultar [la guía](docs/RAG/GUIA_TP3.md), las consignas originales y las clases pertinentes. La guía reúne el material académico y señala contradicciones de fechas que deben confirmarse con la cátedra.
+**Estamos trabajando en el ejercicio 2 del TP3. G4 combina expansión y reranking, y G2 sigue como control de RAG básico.** Para retomar, leer el [registro de G4](tp3/ejercicio2/experimentos.md#g4--expansión-con-reranking-de-los-candidatos-de-g3) y el [roadmap](tp3/roadmap_ejercicio2.md). Antes de implementar, consultar [la guía](docs/RAG/GUIA_TP3.md), las consignas originales y las clases pertinentes. La guía reúne el material académico y señala contradicciones de fechas que deben confirmarse con la cátedra.
 
 ## Estado del TP3 al 15/11/2026
 
@@ -14,7 +14,8 @@
 - **Generación G2.** Se reemplazaron únicamente los pasajes de clase por el top 7 de `openai_i4` para el objetivo literal. El ranking cubrió 2/5 criterios académicos por completo. GPT‑4.1 terminó el informe y acertó 2/5 estados, con 27/39 citas que aportan respaldo. [Resultados por criterio](tp3/ejercicio2/experimentos.md#g2--modelo-elegido-con-chunks-recuperados)
 - **Generación G1.5.** Con los mismos chunks manuales de G1, el prompt nuevo aumentó los criterios presentes de 3/5 a 4/5, mantuvo 2/5 estados correctos y redujo las citas con respaldo en proporción (25/30 a 26/36). Se conserva la baseline de G1 y G2. G2b queda condicionado a un prompt que supere ese control.
 - **Recuperación G3.** Se probaron tres subconsultas más la original, cinco resultados por consulta y fusión por turnos. El pool de diez chunks distintos respaldó 3/5 criterios, pero el top 7 solo respaldó 1/5. La fórmula del coseno quedó octava. El informe acertó 2/5 estados, igual que G2, y bajó la proporción de citas con respaldo. [Resultados](tp3/ejercicio2/experimentos.md#g3--advanced-rag-con-expansión-de-consulta)
-- **Siguiente paso propuesto.** Medir el efecto de una selección alternativa sobre los candidatos congelados, manteniendo fija la expansión, y comprobar en otras consultas si faltan evidencias desde la generación de candidatos. Para completar el corpus del ejercicio 2, la intención es sumar apuntes PDF preexistentes con procedencia y páginas. Reservar las diapositivas para una comparación antes/después en el ejercicio 4.
+- **Recuperación G4.** Se reordenaron los mismos diez candidatos de G3 con el CrossEncoder MiniLM de la cátedra. La fórmula subió del puesto 8 al 3, el respaldo del top 7 subió de 1/5 a 3/5 y GPT‑4.1 pasó de 2/5 a 3/5 estados correctos. La generación citó la fórmula para estudiar, pero siguió sin evaluarla por separado. [Resultados](tp3/ejercicio2/experimentos.md#g4--expansión-con-reranking-de-los-candidatos-de-g3)
+- **Siguiente paso propuesto.** Validar la comparación de G2 y G4 con otros objetivos. Para completar el corpus del ejercicio 2, la intención es sumar apuntes PDF preexistentes con procedencia y páginas. Reservar las diapositivas para una comparación antes/después en el ejercicio 4.
 
 ## Estructura y arquitectura
 

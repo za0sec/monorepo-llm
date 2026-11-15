@@ -565,6 +565,48 @@ Para las citas se contaron cada ID escrito y los extremos de los cinco rangos de
 .venv/bin/python tp3/ejercicio2/generar_g1.py gpt41 --carpeta tp3/ejercicio2/data/experimentos/g3 --entrada tp3/ejercicio2/data/experimentos/g3/entrada_expandida.json
 ```
 
+### G4 · Expansión con reranking de los candidatos de G3
+
+**Configuración.** Se congelaron los diez candidatos distintos y su orden de G3. El CrossEncoder `cross-encoder/ms-marco-MiniLM-L6-v2` de la demo de cátedra (celdas 58–61) puntuó cada par del objetivo literal con el texto completo de un chunk. Se ordenaron los puntajes de mayor a menor, con el orden de G3 como desempate. Se ejecutó localmente en CPU, revisión `233902d25c440f23af6f7d6e94d2946bac0bee0a`. Los pares midieron entre 124 y 179 tokens y entraron completos en el límite de 512. Los 0,06 s de puntuación excluyen la descarga y carga del modelo. El modelo fue entrenado para ranking en inglés, una limitación al interpretar este piloto en español. [Notebook de cátedra](../../docs/RAG/UN_Report_Advanced_RAG.ipynb) · [Ficha del modelo](https://huggingface.co/cross-encoder/ms-marco-MiniLM-L6-v2)
+
+| Puesto G4 | Chunk | Puesto G3 | Puntaje |
+| ---: | --- | ---: | ---: |
+| 1 | `c357` | 1 | 4,2170 |
+| 2 | `c434` | 2 | 2,6228 |
+| 3 | `c075` | 8 | 1,4065 |
+| 4 | `c219` | 3 | 0,8030 |
+| 5 | `c360` | 5 | −0,1619 |
+| 6 | `c060` | 4 | −0,3330 |
+| 7 | `c418` | 9 | −2,1051 |
+| 8 | `c437` | 7 | −3,7129 |
+| 9 | `c223` | 10 | −7,7017 |
+| 10 | `c436` | 6 | −9,0469 |
+
+**Recuperación.** El top 7 conservó la definición (E1), recuperó la fórmula del coseno en `c075` (E4) y completó la evidencia del procedimiento de comparación (E3) al combinar ese pasaje con `c357`. El ejemplo de la magnitud (E5) quedó incompleto en `c060` y el contraste fijo/contextual (E2) sigue sin respaldo completo en el conjunto. Los puestos con evidencia directa fueron 1, 3, 4 y 6. La incorporación de un cuarto chunk pertinente en el puesto 6 eleva Precision@7, pero baja el promedio ponderado por posición de Context Precision respecto de G3.
+
+| Métrica | G2 · Coseno | G3 · Expansión | G4 · Expansión + reranking |
+| --- | ---: | ---: | ---: |
+| Context Recall del top 7 | 2/5 (40 %) | 1/5 (20 %) | 3/5 (60 %) |
+| Context Precision | 68,5 % | 80,6 % | 77,1 % |
+| Precision@7 | 4/7 | 3/7 | 4/7 |
+| Tokens de clase con MiniLM | 904 | 880 | 940 |
+| Criterios presentes en el informe | 3/5 | 3/5 | 3/5 |
+| Estados correctos | 2/5 | 2/5 | 3/5 |
+| Citas localizables | 39/39 | 34/34 | 42/42 |
+| Citas con respaldo | 27/39 | 18/34 | 29/42 |
+| Answer Faithfulness descriptiva | 11/12 | 12/15 | 14/15 |
+| Relevancia manual | 4/6 | 4/6 | 4/6 |
+| Informe completo | Sí | Sí | Sí |
+| Tokens de entrada / salida de GPT‑4.1 | 3.472 / 550 | 3.427 / 496 | 3.476 / 570 |
+
+**Informe.** Se mantuvieron el GPT‑4.1, el prompt, el objetivo, el nivel y el VTT de G3. E1 y E2 coincidieron con el estado esperado del video. Los dos chunks de clase que cita la fila de E2 no establecen el contraste. E3 pasó a una sola fila con estado «Parcial» y el informe recomienda el pasaje que contiene la fórmula. E4 y E5 quedaron sin evaluación propia.
+
+Se contaron las apariciones de IDs y los extremos escritos de los cinco rangos de video. Respaldaron al menos parte de su fila o recomendación **10/15** citas de clase y **19/27** de video. Por ejemplo, el pasaje sobre predicción de emojis `c418` no respalda la definición vectorial que le atribuye el informe. En Answer Faithfulness se deduplicaron afirmaciones descriptivas sobre definición, representación semántica y computacional, contexto, comparación y medidas, más los cuatro usos que aparecen en el video. La afirmación sin respaldo fue que el contexto académico ya tenía todos los pasajes pertinentes. La relevancia manual dio 1/2 en foco por las filas solapadas y laterales, 1/2 en recomendaciones porque los pasajes sobre similitud son útiles pero se afirma que la búsqueda no dejó faltantes, y 2/2 en conclusión porque identifica el uso introductorio y lo que hay que complementar.
+
+**Decisión.** El reranking mejoró el contexto final y el acierto de estados frente a G3 y G2 en el Caso 01. G2 se conserva como control de RAG básico y G4 queda como candidato avanzado para validar con otros objetivos. Los diez candidatos de G3 fijaron el techo en 3/5. El generador usó el pasaje del coseno en la recomendación y todavía lo omitió como criterio de cobertura.
+
+**Reproducción.** Ejecutar [rerankear_g4.py](rerankear_g4.py) con `--snapshot` apuntando al snapshot local indicado, y después `generar_g1.py gpt41 --carpeta tp3/ejercicio2/data/experimentos/g4 --entrada tp3/ejercicio2/data/experimentos/g4/entrada_rerankeada.json`. [Ranking, puntajes y contexto final](data/experimentos/g4/entrada_rerankeada.json) · [Informe](data/experimentos/g4/gpt41/informe.md)
+
 ### Comparación opcional del formato del informe
 
 - **Punto de partida:** modelo y prompt elegidos. Revisar si faltan campos en la salida en prosa.

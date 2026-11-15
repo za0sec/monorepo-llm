@@ -158,8 +158,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("accion", choices=("preparar", "qwen", "gpt41"))
     parser.add_argument("--carpeta", type=Path, default=DATOS)
+    parser.add_argument("--entrada", type=Path, help="JSON congelado para una corrida de generación.")
     args = parser.parse_args()
-    ruta_entrada = args.carpeta / "entrada_manual.json"
+    ruta_entrada = args.entrada or args.carpeta / "entrada_manual.json"
     if args.accion == "preparar":
         if ruta_entrada.exists():
             parser.error("La entrada ya está congelada. Para otra preparación, usá --carpeta.")

@@ -423,7 +423,90 @@ La [pauta manual de corrección](evaluacion/caso_01_embeddings.md) se incorporó
 
 ### G2 · Modelo elegido con chunks recuperados
 
-Usar GPT‑4.1 con el mismo objetivo, video, prompt y configuración de G1. Comparar su control manual con los siete chunks que devuelva la búsqueda del objetivo literal en la misma colección. Revisar qué criterios tienen respaldo en ese contexto antes de corregir la respuesta. Registrar tokens, porque emparejar siete chunks no garantiza la misma longitud. Resultados pendientes.
+**Configuración · 15/11/2026.** Se comparó el control manual de G1 contra una corrida con los siete chunks que devolvió Chroma para el objetivo literal. Se mantuvieron el prompt, el objetivo, el nivel, el VTT de 99 segmentos y el snapshot `gpt-4.1-2025-04-14`, con temperatura 0 y máximo de 1.000 tokens de salida. Se verificó que en el mensaje al generador solo cambió el bloque de clase. La búsqueda usó `openai_i4`, distancia coseno y una llamada a `text-embedding-3-small` para vectorizar solo el objetivo (18 tokens de entrada). No se volvió a indexar el corpus.
+
+| Puesto | Chunk | Fuente | Distancia coseno |
+| ---: | --- | --- | ---: |
+| 1 | `c357` | Fine-tuning | 0,4083 |
+| 2 | `c434` | Fine-tuning | 0,4320 |
+| 3 | `c219` | Transformers | 0,5005 |
+| 4 | `c360` | Fine-tuning | 0,5109 |
+| 5 | `c437` | Fine-tuning | 0,5143 |
+| 6 | `c049` | Embeddings | 0,5177 |
+| 7 | `c048` | Embeddings | 0,5204 |
+
+**Respaldo académico revisado antes de generar.** La pauta manual cubre los cinco criterios con los pasajes de G1. En G2, el ranking respalda por completo **2/5**. E1 aparece en `c219`. E3 queda respaldado al combinar la comparación de consulta y elementos de `c357` con el ángulo como criterio en `c048` y `c049`. El apoyo a E2 es parcial porque hay pistas sobre cómo se obtiene un embedding con transformers, pero falta el contraste entre embeddings fijos y contextuales. El apoyo a E5 es parcial porque `c049` muestra un ángulo pequeño a pesar de distinta magnitud y carece del ejemplo de igual similitud ante un cambio de escala. E4 carece de respaldo en los siete resultados porque ninguno contiene la fórmula del coseno. Este 2/5 mide **Context Recall de este objetivo**; se contabiliza aparte del acierto de estados del informe.
+
+| Métrica | G1 · Manual | G2 · Recuperado |
+| --- | ---: | ---: |
+| Criterios con respaldo académico completo | 5/5 | 2/5 |
+| Criterios presentes en el informe | 3/5 | 3/5 |
+| Estados que coinciden con la pauta del video | 2/5 | 2/5 |
+| Citas localizables | 30/30 | 39/39 |
+| Citas con respaldo | 25/30 | 27/39 |
+| Answer Faithfulness descriptiva | 11/14 | 11/12 |
+| Relevancia manual | 3/6 | 4/6 |
+| Informe completo | Sí | Sí |
+| Tokens de clase con MiniLM | 934 | 904 |
+| Tokens de entrada / salida de GPT‑4.1 | 3.499 / 518 | 3.472 / 550 |
+| Tiempo de generación vía API | 5,6 s | 5,4 s |
+
+| Criterio | Resultado con los chunks recuperados |
+| --- | --- |
+| E1 · Definición | Cubierto, como en la pauta. De los tres pasajes citados, `c219` aporta la definición. |
+| E2 · Papel del contexto | Cubierto, coincide con la revisión del video. Los dos pasajes citados no establecen el contraste y el informe no avisó que la clase recuperada aportaba respaldo parcial. |
+| E3 · Comparación vectorial | Marcó «Cubierto» para comparar textos y «Parcial» para las medidas. La pauta reúne el procedimiento y la medida en el mismo criterio. Se registró la evaluación como ambigua y se contó como error de estado. |
+| E4 · Cálculo del coseno | Omitido. Los siete chunks carecen de la fórmula y el generador tampoco lo evaluó por separado con el control manual, que sí la incluía. |
+| E5 · Efecto de la magnitud | Omitido en ambos informes. La variante recuperada tenía un ejemplo parcial del vínculo entre ángulo y magnitud. |
+
+Se contaron los extremos escritos en los cinco rangos de video, igual que en G1. El formato pedía IDs individuales. **14/21** citas de clase y **13/18** del video respaldaron al menos una parte de su fila o recomendación. En la fila sobre definiciones, `C4` y `C5` mencionan cómo se obtienen o reutilizan embeddings, pero la definición viene de `C3`. En la fila de búsqueda semántica, solo `C1` describe la comparación entre consulta y elementos. El `[V19]` de la fila de similitud entre textos describe rostros. Ningún ID fue inventado.
+
+En Answer Faithfulness se contaron doce afirmaciones descriptivas distintas. Se respaldaron la definición vectorial, la relación entre similitud numérica y semántica, el contraste entre tipos de embeddings, el papel del contexto, la búsqueda semántica, la comparación consulta–documentos, la obtención de embeddings con redes neuronales y con transformers, la remisión a otro video, la ausencia de una medida concreta en el video y el uso del ángulo en la clase. La afirmación sin respaldo fue que el material recuperado mencionaba el producto escalar. Los pasajes `C6` y `C7` solo aportan evidencia sobre el ángulo.
+
+La relevancia manual dio **1/2 en foco** porque abordó la definición y la similitud junto con temas laterales, **1/2 en recomendaciones** porque los pasajes sobre ángulo sirven, pero la recomendación atribuye a esos pasajes el producto escalar y agrega el proceso de obtención de embeddings, y **2/2 en conclusión** porque resume para qué sirve el video y señala correctamente que faltan detalles sobre las medidas.
+
+**Decisión.** Conservar G2 como baseline con recuperación real y registrar sus límites. Mejorar la recuperación podría aportar la fórmula y el contraste contextual. La omisión del cálculo y de la magnitud en el control de G1 también justifica probar un ajuste de instrucciones sin cambiar las fuentes.
+
+**Reproducción.** Recuperar una vez con `.venv/bin/python tp3/ejercicio2/recuperar_g2.py`. Para generar, usar `.venv/bin/python tp3/ejercicio2/generar_g1.py gpt41 --carpeta tp3/ejercicio2/data/experimentos/g2 --entrada tp3/ejercicio2/data/experimentos/g2/entrada_recuperada.json`. Los artefactos locales guardan el ranking con distancias, el contexto exacto y los hashes. [Entrada recuperada](data/experimentos/g2/entrada_recuperada.json) · [Informe G2](data/experimentos/g2/gpt41/informe.md) · [Registro de la corrida](data/experimentos/g2/gpt41/corrida.json)
+
+### G1.5 · Prompt con cotejo explícito de las fuentes
+
+**Configuración · 15/11/2026.** Se corrió después de G2 para comprobar el efecto del [nuevo prompt](g1_5/prompt.md) con el contexto manual de G1. El prompt pide evaluar contenidos por separado, establecer qué enseña la clase, cotejar el video y asignar un estado. Se verificó que solo cambió el contenido del mensaje de sistema. Se mantuvieron fijos los siete chunks, el objetivo, el nivel, el VTT, el formato Markdown, `gpt-4.1-2025-04-14`, temperatura 0 y máximo de 1.000 tokens de salida. Los criterios de la pauta se usaron solo al corregir.
+
+| Métrica | G1 · Prompt original | G1.5 · Nuevo prompt |
+| --- | ---: | ---: |
+| Criterios presentes en el informe | 3/5 | 4/5 |
+| Estados correctos | 2/5 | 2/5 |
+| Citas localizables | 30/30 | 36/36 |
+| Citas de clase con respaldo | 14/16 | 13/16 |
+| Citas de video con respaldo | 11/14 | 13/20 |
+| Citas con respaldo, total | 25/30 | 26/36 |
+| Answer Faithfulness descriptiva | 11/14 | 18/20 |
+| Relevancia manual | 3/6 | 4/6 |
+| Informe completo | Sí | Sí |
+| Tokens de entrada / salida | 3.499 / 518 | 3.560 / 587 |
+| Tiempo de generación vía API | 5,6 s | 4,3 s |
+
+| Criterio | Pauta | G1 | G1.5 |
+| --- | --- | --- | --- |
+| E1 · Definición | Cubierto | Cubierto | Cubierto |
+| E2 · Papel del contexto | Cubierto | Parcial | Cubierto, en dos filas complementarias |
+| E3 · Cómo comparar textos mediante vectores | Parcial | Parcial | Cubierto en la fila de similitud general, aunque no indica una medida explicada en el video |
+| E4 · Cálculo del coseno | Sin evidencia en el video | Mencionado sin estado propio | Parcial en la fila de coseno, aunque la explicación reconoce que el video no explica esa medida |
+| E5 · Efecto de la magnitud | Sin evidencia en el video | Omitido | Omitido, con una recomendación genérica sobre ventajas y limitaciones |
+
+**Citas y fidelidad.** Se contaron las apariciones de IDs y solo los extremos escritos de los seis rangos de video, como en G1 y G2. La fila de aplicaciones explica usos que sí aparecen en el video, pero sus tres citas de clase (C4, C5 y C6) carecen de respaldo para esa fila. Entre los IDs de video, V19 describe rostros en vez de textos. Al deduplicar afirmaciones descriptivas, las dos sin respaldo fueron atribuir a la clase la búsqueda semántica y el agrupamiento. Se contabilizó la descripción del coseno en términos del ángulo como fiel a la formulación oral de C4. La fórmula que precisa la medida está en C5. El error de estado de la fila del coseno se contabiliza aparte.
+
+**Relevancia manual.** Foco 1/2 porque aborda el objetivo pero agrega aplicaciones y omite magnitud. Recomendaciones 1/2 porque selecciona material pertinente sobre el coseno, pero remite a cuatro pasajes y deja genérico el estudio de sus limitaciones. Conclusión 2/2 porque explica la utilidad introductoria y señala qué falta complementar.
+
+**Decisión.** Conservar el prompt de G1 y G2 como baseline. G1.5 recuperó la evaluación contextual y dio una fila propia al coseno, pero mantuvo el acierto en 2/5 y redujo la proporción de citas con respaldo de 25/30 (83,3 %) a 26/36 (72,2 %). G2b queda condicionado a un prompt que supere el control acordado.
+
+**Reproducción.** [Preparador](preparar_variante_prompt.py) · [Prompt](g1_5/prompt.md) · [Entrada](data/experimentos/g1_5/entrada_manual.json) · [Informe](data/experimentos/g1_5/gpt41/informe.md)
+
+```bash
+.venv/bin/python tp3/ejercicio2/preparar_variante_prompt.py tp3/ejercicio2/data/experimentos/g1/entrada_manual.json tp3/ejercicio2/g1_5/prompt.md tp3/ejercicio2/data/experimentos/g1_5/entrada_manual.json
+.venv/bin/python tp3/ejercicio2/generar_g1.py gpt41 --carpeta tp3/ejercicio2/data/experimentos/g1_5
+```
 
 ### G3 · Formato del informe
 

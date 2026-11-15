@@ -221,10 +221,51 @@ done
 
 ### I4 · Modelo de embeddings
 
-- **Punto de partida:** mismos chunks del recursivo de 160 tokens con 10 de solapamiento en ambos brazos, con MiniLM como baseline.
-- **Qué evaluar:** comparar con `text-embedding-3-small` si está disponible para el grupo y el corpus. Usar los mismos chunks, consultas y `k`. Medir recall, precisión y recursos.
-- **Resultados:** pendientes.
-- **Decisión:** pendiente.
+**Configuración · 14/11/2026.** Se congelaron el ranking de MiniLM de I3, los 623 chunks del recursivo de 160 tokens con 10 de solapamiento y las diez consultas. Cada modelo representó los mismos textos y consultas con una colección propia de Chroma, distancia coseno y `k=4`. Se evaluó si el cambio de modelo recuperaba más evidencia completa y mejoraba su posición. [Baseline local](data/experimentos/i3/solape_10_r1/ranking.json) · [Demo de Pinecone, celdas 19 y 22–23](../../docs/RAG/Langchain_Pinecone.ipynb)
+
+El proxy de la cátedra rechazó la credencial con HTTP 401 en el catálogo y en las llamadas de embeddings con ambos identificadores de modelo, con y sin el prefijo `openai/`. Para esas comprobaciones se usaron frases de prueba. El grupo confirmó que la misma clave responde por la API directa de OpenAI en `prueba.py` con un modelo de chat.
+
+El [script de comparación](comparar_embeddings.py) reutiliza los chunks de I3, registra el hash de la baseline y comprueba que el archivo de consultas coincida con el usado en esa corrida. Guarda los dos rankings, la colección nueva y los tokens y costo de OpenAI cuando el proxy los informa. La ejecución local con respuestas simuladas verificó el orden de las 633 entradas, los 20 lotes, los diez rankings y la persistencia de la colección.
+
+La API directa de OpenAI se probó inicialmente con transporte simulado. Tras la autorización explícita para enviar los fragmentos y consultas a esa API, se completó la corrida real con `text-embedding-3-small`. La API informó **73.705 tokens de entrada** en 20 lotes y devolvió vectores de 1.536 dimensiones. A la tarifa estándar de US$0,02 por millón, el costo calculado es **US$0,0014741**. Las llamadas sumaron 27,4 segundos. El tiempo corresponde a OpenAI, incluida la red. [Tarifa oficial](https://developers.openai.com/api/docs/models/text-embedding-3-small)
+
+| Resultado | MiniLM | `text-embedding-3-small` |
+| --- | ---: | ---: |
+| Context Recall promedio | 25,0% | **53,3%** |
+| Context Precision promedio | 45,0% | **62,2%** |
+| Precision@4 promedio | 22,5% | **37,5%** |
+| Criterios completos | 3/14 | **7/14** |
+| Tokens recuperados por consulta, medidos con el tokenizer de MiniLM | 496,5 | 549,8 |
+
+El asistente revisó los candidatos agrupados por consulta sin etiqueta de modelo ni puesto. La evaluación está pendiente de revisión humana. El cálculo usa los puestos útiles para precisión y el respaldo completo entre los cuatro chunks para recall.
+
+| Consulta | Puestos útiles de MiniLM | Puestos útiles de OpenAI | Recall MiniLM | Recall OpenAI |
+| --- | --- | --- | ---: | ---: |
+| Q1 · Definición de embedding | — | 3 | 0/1 | 1/1 |
+| Q2 · Fórmula del coseno | 2 | 1 | 1/1 | 1/1 |
+| Q3 · Magnitud | 1 | 1 | 0/1 | 0/1 |
+| Q4 · Objetivo de embeddings | — | 2, 3 | 0/3 | 1/3 |
+| Q5 · Máscara causal | — | — | 0/1 | 0/1 |
+| Q6 · Query, key y value | — | — | 0/1 | 0/1 |
+| Q7 · Objetivo de Transformers | 4 | 1, 3, 4 | 0/2 | 1/2 |
+| Q8 · Ajuste de pesos | 1, 2, 4 | 1, 2, 3 | 1/1 | 1/1 |
+| Q9 · Destilación | 1 | 2 | 0/1 | 1/1 |
+| Q10 · Objetivo de fine-tuning | 1, 3 | 1, 2, 3 | 1/2 | 1/2 |
+
+- OpenAI recuperó la definición de embedding en un pasaje de Transformers (Q1, `c219`, 35:03–35:22) y la fórmula del coseno también en la consulta combinada (Q4, `c075`, 31:55–32:22).
+- En Q7 recuperó por qué el decoder enmascara los tokens futuros (`c198`, 25:08–25:37). Quedó incompleta la función de los values. Para la pregunta específica sobre la máscara, Q5, los dos modelos siguieron sin encontrar ese pasaje.
+- En Q9 recuperó la explicación profesor–estudiante (`c464`, 55:05–55:37). Los dos modelos siguieron sin completar la explicación de magnitud de Q3.
+
+**Verificación.** Coincidieron los 623 textos y sus referencias con la baseline congelada. Se comprobó el hash de las consultas, el conteo de 633 entradas a la API y que la colección de OpenAI se puede reabrir con los 623 documentos y distancia coseno. [Resultados locales de I4](data/experimentos/i4/ranking.json)
+
+**Decisión.** Usar `text-embedding-3-small` como referencia de desarrollo para comparar `k`. Mejoró cobertura y posición con el mismo número de resultados. MiniLM queda como comparación local y la decisión se limita a las diez consultas de desarrollo.
+
+**Reproducción.** Usar las dependencias de [requirements.txt](requirements.txt), una clave válida para la API directa en `tp3/.env` y un directorio nuevo.
+
+```bash
+python3 tp3/ejercicio2/comparar_embeddings.py --openai-directo \
+  --salida tp3/ejercicio2/data/experimentos/i4_nueva_corrida
+```
 
 ## 2. Retrieval
 

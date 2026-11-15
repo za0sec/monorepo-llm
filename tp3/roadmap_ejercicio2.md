@@ -58,8 +58,8 @@ Ejecutar un contraste por vez y usar la variante seleccionada como control del s
 
 | ID | Hipótesis y cambio único | Controles y criterio |
 | --- | --- | --- |
-| G1 · prompt | Comparar instrucción directa con la misma instrucción más una pauta explícita de respaldo académico, cotejo con audio y abstención por falta de evidencia. | Congelar modelo, referencias en el mismo orden, VTT, formato de salida y límites. Comparar coincidencia de estados, fidelidad, citas y relevancia. |
-| G2 · modelo | Comparar Qwen con GPT-4.1 como alternativa histórica si está habilitada en el entorno del grupo y se aprueba el presupuesto. | Usar el mejor prompt de G1, los mismos textos y el mismo contrato de salida. Usar límites comparables y registrar parámetros que difieran por proveedor, truncamiento, tokens y latencia. Si hay variación entre ejecuciones, repetir por igual en una muestra fija, guardar todas las salidas e informar dispersión. |
+| G1 · modelo con evidencia manual | Comparar Qwen con GPT-4.1 usando siete chunks completos elegidos por ID de la colección `openai_i4`. | Fijar objetivo, orden de los chunks, VTT, prompt Markdown y máximo de salida. Comparar cobertura, estados, fidelidad, respaldo de citas y completitud. Registrar las diferencias de decodificación por proveedor. [Protocolo y selección](ejercicio2/experimentos.md#g1--comparación-de-modelos-con-chunks-manuales) |
+| G2 · evidencia recuperada | Comparar el informe manual de GPT‑4.1, elegido en G1, con el que genere usando los siete chunks devueltos por búsqueda sobre el mismo objetivo literal. | Fijar la revisión del modelo, la colección, el prompt, el video y la cantidad de chunks. Registrar los tokens y revisar el respaldo académico de cada criterio en los contextos enviados. |
 | G3 · formato, opcional | Si la salida en prosa pierde campos, comparar la misma pauta en prosa y tabla por criterio. | Fijar modelo, entradas y contenido exigido; medir informes completos y validez de citas, junto con fidelidad y relevancia. |
 
 **Métricas** ([clase][metricas], pp. 16–24). Evaluar contra las referencias humanas, sin conocer la variante cuando sea posible:

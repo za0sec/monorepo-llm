@@ -9,7 +9,7 @@ Este registro documenta el corpus de partida, las comparaciones y las decisiones
 - **Punto de partida:** [`docs/embeddings_2.VTT`](../../docs/embeddings_2.VTT), transcripción docente en español de la clase de embeddings. Su SHA-256 es `a1fa8324b6d63c7c6d90fd4dc467b65095524aba8e134d806c2118278b24cd18`.
 - **Implementación:** se adaptó el [lector archivado](../archivo/ejercicio2_anterior/preparar_transcripcion.py). Une las líneas de texto de cada bloque y reduce secuencias de espacios en blanco a un espacio. Conserva las palabras, la puntuación y el hablante tal como aparecen en el VTT. Guarda la ruta y el hash de la fuente y, por bloque, el ID, el texto y el inicio y fin en formato VTT y en milisegundos.
 - **Resultado:** 415 de 415 bloques coinciden con el original en ID, texto normalizado y tiempos. Abarcan de `00:00:03.410` a `01:01:48.330`. Una segunda ejecución en otro directorio produjo el mismo JSON byte a byte.
-- **Decisión:** usar [`data/procesados/embeddings_2.json`](data/procesados/embeddings_2.json) como único insumo de texto del piloto. Los tiempos permiten revisar la definición de embedding (bloque 123, 18:32.360–18:50.210), el papel de la magnitud (bloques 182–188, 25:37.950–27:13.979) y el cálculo del coseno (bloque 222, 31:55.350–32:14.820). Son referencias iniciales del [caso manual](../archivo/ejercicio2_anterior/evaluacion/caso_01_embeddings.md).
+- **Decisión:** usar [`data/procesados/embeddings_2.json`](data/procesados/embeddings_2.json) como único insumo de texto del piloto. Los tiempos permiten revisar la definición de embedding (bloque 123, 18:32.360–18:50.210), el papel de la magnitud (bloques 182–188, 25:37.950–27:13.979) y el cálculo del coseno (bloque 222, 31:55.350–32:14.820). Son referencias iniciales del [caso manual](evaluacion/caso_01_embeddings.md).
 
 Para regenerar el JSON desde la raíz del repositorio con Python 3.9 o posterior y el VTT docente disponible localmente:
 
@@ -345,19 +345,85 @@ En la comparación sobre los seis WAV idénticos, Whisper obtuvo **5,87% de WER 
 - **Resultados:** pendientes.
 - **Decisión:** pendiente.
 
-### G1 · Prompt
+### G1 · Comparación de modelos con chunks manuales
 
-- **Punto de partida:** informe básico con el mismo modelo, audio transcripto y referencias académicas para ambas variantes.
-- **Qué evaluar:** comparar la instrucción directa con una pauta explícita de respaldo académico, cotejo con el audio y abstención. Medir cobertura, fidelidad, citas y relevancia.
-- **Resultados:** pendientes.
-- **Decisión:** pendiente.
+**Preparación · 15/11/2026.** El objetivo es «entender qué son los embeddings y cómo se compara la similitud entre textos», a nivel introductorio. Se reutiliza el VTT completo de Whisper de *¿Qué son los EMBEDDINGS Grandes Modelos de Lenguaje?* (99 segmentos). El [prompt](g1/prompt.md) pide una tabla Markdown, recomendaciones y una conclusión. El [caso](g1/caso.json) fija el objetivo, los modelos, el presupuesto y el orden de los chunks. Los resultados de G0 quedan como antecedente, porque G1 usa una selección de clase diferente.
 
-### G2 · Modelo generador
+**Control manual.** Se eligieron por ID siete documentos completos de la colección `openai_i4`. La preparación obtuvo sus textos y metadatos directamente de Chroma y verificó que coinciden con la copia de I4. Los dos modelos recibirán los mismos siete chunks y los mismos 99 segmentos en el mismo orden. En esta etapa la selección humana reemplaza la búsqueda por similitud.
 
-- **Punto de partida:** prompt elegido en G1 con entradas y formato fijos.
-- **Qué evaluar:** comparar Qwen con GPT-4.1 si está habilitado para el grupo. Comparar calidad, truncamiento y latencia.
-- **Resultados:** pendientes.
-- **Decisión:** pendiente.
+| En el prompt | ID en Chroma | Fuente y bloques VTT | Intervalo | Evidencia para la pauta |
+| --- | --- | --- | --- | --- |
+| C1 | `c219` | Transformers, 296–297 | 35:03.390–35:22.090 | E1 · Representación semántica como vector numérico |
+| C2 | `c066` | Embeddings, 192–194 | 27:57.050–28:17.709 | E2 · Embedding estático, ejemplo de «pizza» |
+| C3 | `c067` | Embeddings, 195–199 | 28:17.970–28:50.049 | E2 · Cómo cambia el embedding de «pizza» con el contexto |
+| C4 | `c355` | Fine-tuning, 56–58 | 07:40.540–08:12.510 | E3 · Ángulo como criterio al comparar representaciones |
+| C5 | `c075` | Embeddings, 222–223 | 31:55.350–32:22.889 | E4 · Producto interno y normalización por las normas |
+| C6 | `c060` | Embeddings, 182–184 | 25:37.950–26:10.769 | E5 · Cuándo importa la magnitud |
+| C7 | `c061` | Embeddings, 185–186 | 26:10.830–26:47.999 | E5 · Ejemplo de la misma dirección con distinta magnitud |
+
+Los chunks suman 934 tokens medidos por MiniLM durante I4. En inferencia se registrará el conteo de cada generador. La tabla anterior y la [pauta E1–E5](evaluacion/caso_01_embeddings.md#criterios-de-cobertura) se reservan para corregir. El [JSON congelado](data/experimentos/g1/entrada_manual.json) contiene los textos exactos, los dos mensajes y las huellas del VTT y del registro I4. Es un artefacto local ignorado por Git.
+
+**Qué se va a evaluar.** Comparar Qwen2.5‑1.5B‑Instruct local en CPU/float32, sin muestreo y con penalización 1,1, contra GPT‑4.1 (snapshot configurado `gpt-4.1-2025-04-14`, temperatura 0). Ambos tienen un máximo de 1.000 tokens de salida. Registrar revisión efectiva del modelo, tokens de entrada y salida, latencia y motivo de fin. Los parámetros de decodificación dependen de cada backend. Las dos corridas deben registrar el mismo SHA-256 de `entrada_manual.json`.
+
+| Métrica | Regla para G1 |
+| --- | --- |
+| Criterios presentes | Criterios comparables que aparecieron / 5. Registrar filas fuera de alcance y duplicados. |
+| Acierto de estados | Criterios con estado correcto / 5. Omitidos o contradictorios cuentan como error. |
+| Citas localizables y citas con respaldo | IDs existentes / citas emitidas, y citas que sostienen la fila / citas emitidas. Distinguir clase de video. Sin citas, registrar N/A y la omisión. |
+| Answer Faithfulness | Afirmaciones descriptivas distintas respaldadas / afirmaciones descriptivas evaluables. Revisar cada afirmación contra la fuente correspondiente. |
+| Relevancia manual | Sumar foco, pertinencia de las recomendaciones y utilidad de la conclusión según la rúbrica del roadmap. Cada eje vale 0–2. |
+| Completitud | Tabla, «Para estudiar» y conclusión presentes y sin truncamiento. |
+
+**Ejecución prevista.** El [script](generar_g1.py) tiene una acción local `preparar` para regenerar la entrada en otra carpeta y dos acciones de inferencia, `qwen` y `gpt41`. Estas últimas guardarán `informe_crudo.md`, `informe.md` con los tiempos de las citas y `corrida.json` en la carpeta de cada modelo. La configuración de GPT‑4.1 apunta a la API directa de OpenAI, con la clave local de `tp3/.env`.
+
+**Resultados · 15/11/2026.** Se ejecutó una corrida por modelo con el mismo SHA-256 de la entrada congelada. La API directa recibió solo los mensajes preparados y confirmó el snapshot `gpt-4.1-2025-04-14`. Los informes automáticos se auditaron manualmente con los siete chunks y el VTT.
+
+| Métrica | Qwen2.5‑1.5B‑Instruct | GPT‑4.1 |
+| --- | ---: | ---: |
+| Criterios presentes | 2/5 | 3/5 |
+| Estados correctos | 2/5 | 2/5 |
+| Citas de clase localizables | 7/20 | 16/16 |
+| Citas de clase con respaldo | 0/20 | 14/16 |
+| Citas del video localizables | N/A (sin citas) | 14/14 |
+| Citas del video con respaldo | N/A (sin citas) | 11/14 |
+| Answer Faithfulness descriptiva | 11/11 | 11/14 |
+| Relevancia manual del informe | 1/6 | 3/6 |
+| Informe completo | No | Sí |
+| Tokens de entrada / salida | 4.052 / 1.000 | 3.499 / 518 |
+| Motivo de fin | Límite (`length`) | Cierre normal (`stop`) |
+| Tiempo de generación | 99,0 s (CPU) | 5,6 s (API, incluido traslado) |
+
+| Criterio | Pauta manual | Qwen | GPT‑4.1 |
+| --- | --- | --- | --- |
+| E1 · Definición | Cubierto | Cubierto | Cubierto |
+| E2 · Papel del contexto | Cubierto | Cubierto | Parcial |
+| E3 · Comparación vectorial | Parcial | Omitido | Parcial |
+| E4 · Cálculo del coseno | Sin evidencia en el video | Omitido | Mencionado dentro de E3 y en la recomendación, sin estado propio |
+| E5 · Efecto de la magnitud | Sin evidencia en el video | Omitido | Omitido |
+
+Se considera presente un criterio cuando tiene una fila con una evaluación identificable. Los estados se corrigen por separado de la calidad de sus citas. Qwen escribió 20 filas con seis contenidos distintos y omitió las citas del video y la justificación en todas. Inventó los IDs `[C8]` a `[C20]`. GPT‑4.1 escribió cinco filas, con dos sobre la definición y propiedades de los embeddings y una sobre aplicaciones que se aparta del objetivo. Marcó E2 como parcial pese a que el video usa el ejemplo de «banco» y explica el contraste en `[V31]` a `[V37]`. Presentó dos recomendaciones con seis pasajes en total, aunque el prompt pedía hasta dos pasajes.
+
+Para auditar citas se cuenta cada ID emitido y se comprueba si su segmento aporta evidencia a la fila o recomendación. En los dos rangos de GPT‑4.1 se contaron solo los extremos escritos. Los rangos incumplen el formato pedido. Los tres IDs de video sin respaldo específico fueron `[V86]` en la comparación semántica y `[V63]` y `[V80]` en la lista de aplicaciones. Los dos IDs de clase sin respaldo fueron `[C4]` y `[C5]` en esa misma lista.
+
+En Answer Faithfulness se deduplicaron las afirmaciones descriptivas y se evaluó si las fuentes recibidas las respaldan. Las once afirmaciones de Qwen tenían respaldo en la transcripción. Eso incluye descripciones de aplicaciones que repitió y dejó sin citar. En GPT‑4.1 quedaron tres afirmaciones sin respaldo: que el video carece de un ejemplo del papel del contexto, que no explica cómo cambia la representación según el contexto y que la lista de aplicaciones está respaldada por los pasajes de clase. La revisión contabiliza las omisiones, los estados y las citas en sus propias métricas.
+
+**Relevancia manual.** Se aplicó a los dos informes guardados la adaptación de Answer Relevance del [roadmap](../roadmap_ejercicio2.md#3-generator-convertir-las-dos-fuentes-en-un-informe). Cada eje vale 0 si está ausente o desviado, 1 si es parcial y 2 si es adecuado.
+
+| Eje | Qwen | GPT‑4.1 |
+| --- | --- | --- |
+| Foco en el objetivo y el nivel | 1/2. Presenta la definición, pero se desvía hacia imágenes y aplicaciones y omite la comparación de textos. | 1/2. Trata la definición y la comparación, pero dedica una fila a aplicaciones y deja sin evaluar el cálculo y la magnitud. |
+| Recomendaciones pertinentes | 0/2. Sección ausente. | 1/2. Recomienda pasajes pertinentes para estudiar el coseno, pero también propone cubrir una supuesta falta de ejemplos de contexto. |
+| Conclusión útil | 0/2. Sección ausente. | 1/2. Señala que el video sirve de introducción y que faltan métricas, pero señala el ejemplo de contexto como faltante aunque el video lo incluye. |
+
+**Decisión.** Elegir GPT‑4.1 para G2. Empató en acierto de estados, pero completó el informe y 25 de sus 30 citas aportaron respaldo a la fila o recomendación. E2, E4 y E5 quedan como fallos a seguir en G2. La selección es para este piloto de un solo caso.
+
+[Informe de Qwen](data/experimentos/g1/qwen/informe.md) · [Informe de GPT‑4.1](data/experimentos/g1/gpt41/informe.md)
+
+La [pauta manual de corrección](evaluacion/caso_01_embeddings.md) se incorporó al ejercicio 2 para revisar los criterios junto con G1 y reutilizarlos en G2. Se conservó la tabla E1–E5 del caso original.
+
+### G2 · Modelo elegido con chunks recuperados
+
+Usar GPT‑4.1 con el mismo objetivo, video, prompt y configuración de G1. Comparar su control manual con los siete chunks que devuelva la búsqueda del objetivo literal en la misma colección. Revisar qué criterios tienen respaldo en ese contexto antes de corregir la respuesta. Registrar tokens, porque emparejar siete chunks no garantiza la misma longitud. Resultados pendientes.
 
 ### G3 · Formato del informe
 

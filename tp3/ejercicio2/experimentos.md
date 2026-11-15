@@ -603,9 +603,19 @@ Para las citas se contaron cada ID escrito y los extremos de los cinco rangos de
 
 Se contaron las apariciones de IDs y los extremos escritos de los cinco rangos de video. Respaldaron al menos parte de su fila o recomendación **10/15** citas de clase y **19/27** de video. Por ejemplo, el pasaje sobre predicción de emojis `c418` no respalda la definición vectorial que le atribuye el informe. En Answer Faithfulness se deduplicaron afirmaciones descriptivas sobre definición, representación semántica y computacional, contexto, comparación y medidas, más los cuatro usos que aparecen en el video. La afirmación sin respaldo fue que el contexto académico ya tenía todos los pasajes pertinentes. La relevancia manual dio 1/2 en foco por las filas solapadas y laterales, 1/2 en recomendaciones porque los pasajes sobre similitud son útiles pero se afirma que la búsqueda no dejó faltantes, y 2/2 en conclusión porque identifica el uso introductorio y lo que hay que complementar.
 
-**Decisión.** El reranking mejoró el contexto final y el acierto de estados frente a G3 y G2 en el Caso 01. G2 se conserva como control de RAG básico y G4 queda como candidato avanzado para validar con otros objetivos. Los diez candidatos de G3 fijaron el techo en 3/5. El generador usó el pasaje del coseno en la recomendación y todavía lo omitió como criterio de cobertura.
+**Decisión.** El reranking mejoró el contexto final y el acierto de estados frente a G3 y G2 en el Caso 01. G2 se conserva como control de RAG básico y G4 queda como configuración avanzada para integrar en el ejercicio 2. La validación con otros objetivos se reserva para el ejercicio 4. Los diez candidatos de G3 fijaron el techo en 3/5. El generador usó el pasaje del coseno en la recomendación y todavía lo omitió como criterio de cobertura.
 
 **Reproducción.** Ejecutar [rerankear_g4.py](rerankear_g4.py) con `--snapshot` apuntando al snapshot local indicado, y después `generar_g1.py gpt41 --carpeta tp3/ejercicio2/data/experimentos/g4 --entrada tp3/ejercicio2/data/experimentos/g4/entrada_rerankeada.json`. [Ranking, puntajes y contexto final](data/experimentos/g4/entrada_rerankeada.json) · [Informe](data/experimentos/g4/gpt41/informe.md)
+
+### Integración del ejercicio 2
+
+Se agregó el [comando de evaluación](evaluar_video.py) para recibir solo el objetivo y el audio. Reutiliza Whisper, la recuperación básica de G2, la expansión y el reranking de G4 y el generador de los experimentos. El modo avanzado es el predeterminado. La ruta básica queda disponible como control. [Instrucciones de uso](README.md)
+
+Se ejecutó el modo avanzado con el MP3 original del Caso 01. Whisper generó un VTT nuevo con **99 segmentos**. Las cuatro consultas dieron **10 candidatos distintos**, se seleccionaron **7** y entró el chunk `c075` con la fórmula. GPT‑4.1 terminó normalmente con **615 tokens de salida** y completó la tabla, las recomendaciones y la conclusión. Se verificaron las huellas del audio, el VTT y la entrada y se resolvieron las citas existentes a sus tiempos. La generación volvió a omitir un estado propio para el cálculo del coseno. Esta ejecución verifica la integración con audio real, con una expansión y una transcripción nuevas. Las cifras de calidad de G2 y G4 corresponden a sus corridas controladas.
+
+Se comprobó con respuestas simuladas que el modo básico usa una sola consulta, que el modo avanzado completa los siete chunks si las búsquedas devuelven los mismos cinco y que los IDs de clase y video se resuelven a los tiempos correctos. La validación con objetivos y videos nuevos se reserva para el ejercicio 4.
+
+[Transcripción](data/ejecuciones/caso01-integracion/transcripcion.vtt) · [Entrada y ranking](data/ejecuciones/caso01-integracion/entrada.json) · [Informe](data/ejecuciones/caso01-integracion/gpt41/informe.md)
 
 ### Comparación opcional del formato del informe
 

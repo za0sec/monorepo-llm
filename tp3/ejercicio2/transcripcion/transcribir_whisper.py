@@ -14,6 +14,13 @@ MODELO = "whisper-1"
 API_OPENAI = "https://api.openai.com/v1"
 
 
+def transcribir_archivo(cliente, audio, **opciones):
+    with audio.open("rb") as entrada:
+        return cliente.audio.transcriptions.create(
+            file=entrada, model=MODELO, language="es", temperature=0, **opciones,
+        )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("manifiesto", type=Path)
@@ -43,11 +50,9 @@ def main() -> None:
             continue
         inicio = perf_counter()
         try:
-            with audio.open("rb") as entrada:
-                respuesta = cliente.audio.transcriptions.create(
-                    file=entrada, model=MODELO, language="es", temperature=0,
-                    response_format="verbose_json", timestamp_granularities=["segment", "word"],
-                )
+            respuesta = transcribir_archivo(
+                cliente, audio, response_format="verbose_json", timestamp_granularities=["segment", "word"],
+            )
         except APIStatusError as error:
             parser.exit(1, f"{clip_id}: el servicio respondió HTTP {error.status_code}.\n")
         except APIConnectionError:

@@ -32,11 +32,11 @@ def abrir_indice(control):
     return coleccion, i4, por_id
 
 
-def cliente_openai():
+def cliente_openai(timeout=30):
     clave = dotenv_values(CARPETA.parent / ".env").get("OPENAI_API_KEY")
     if not clave:
         raise ValueError("Falta OPENAI_API_KEY en tp3/.env.")
-    return OpenAI(base_url=API_OPENAI, api_key=clave, max_retries=0, timeout=30)
+    return OpenAI(base_url=API_OPENAI, api_key=clave, max_retries=0, timeout=timeout)
 
 
 def buscar(coleccion, i4, por_id, cliente, consultas, k):

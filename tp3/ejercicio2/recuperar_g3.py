@@ -52,6 +52,21 @@ def intercalar(rankings):
     return list(candidatos.values())
 
 
+def consultas_expandidas(caso, expansion):
+    subconsultas = expansion["subconsultas"]
+    if (expansion["mensajes"][0]["content"] != PROMPT
+            or expansion["mensajes"][1]["content"] != caso["objetivo"]
+            or expansion["modelo"] != caso["gpt41"]["modelo"]
+            or not isinstance(subconsultas, list)
+            or len(subconsultas) != 3
+            or any(not isinstance(texto, str) or not texto.strip() for texto in subconsultas)):
+        raise ValueError("La expansión debe contener tres subconsultas válidas para el objetivo.")
+    consultas = [caso["objetivo"], *(texto.strip() for texto in subconsultas)]
+    if len({texto.casefold() for texto in consultas}) != 4:
+        raise ValueError("Las cuatro consultas deben ser distintas.")
+    return consultas
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--control", type=Path, default=DATOS.parent / "g2/entrada_recuperada.json")
@@ -68,17 +83,10 @@ def main():
     args.carpeta.mkdir(parents=True, exist_ok=True)
     ruta_expansion = args.carpeta / "expansion.json"
     expansion = json.loads(ruta_expansion.read_bytes()) if ruta_expansion.exists() else expandir(cliente, caso)
-    subconsultas = expansion["subconsultas"]
-    if (expansion["mensajes"][0]["content"] != PROMPT
-            or expansion["mensajes"][1]["content"] != caso["objetivo"]
-            or expansion["modelo"] != caso["gpt41"]["modelo"]
-            or not isinstance(subconsultas, list)
-            or len(subconsultas) != 3
-            or any(not isinstance(texto, str) or not texto.strip() for texto in subconsultas)):
-        parser.error("La expansión debe contener tres subconsultas válidas para el objetivo.")
-    consultas = [caso["objetivo"], *(texto.strip() for texto in subconsultas)]
-    if len({texto.casefold() for texto in consultas}) != 4:
-        parser.error("Las cuatro consultas deben ser distintas.")
+    try:
+        consultas = consultas_expandidas(caso, expansion)
+    except ValueError as error:
+        parser.error(str(error))
     if not ruta_expansion.exists():
         guardar_json(ruta_expansion, expansion)
 

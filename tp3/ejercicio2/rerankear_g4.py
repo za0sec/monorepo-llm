@@ -7,8 +7,6 @@ from math import isfinite
 from pathlib import Path
 from time import perf_counter
 
-from sentence_transformers import CrossEncoder
-
 from generar_g1 import DATOS, guardar_json
 from recuperar_g2 import reemplazar_clase
 from recuperar_g3 import intercalar
@@ -16,6 +14,37 @@ from recuperar_g3 import intercalar
 
 MODELO = "cross-encoder/ms-marco-MiniLM-L6-v2"
 MAX_LONGITUD = 512
+
+
+def reordenar(objetivo, candidatos, snapshot):
+    from sentence_transformers import CrossEncoder
+
+    textos = [chunk["texto"] for chunk in candidatos]
+    modelo = CrossEncoder(
+        str(snapshot), max_length=MAX_LONGITUD, device="cpu", local_files_only=True,
+        model_kwargs={"use_safetensors": True},
+    )
+    pares = modelo.tokenizer([objetivo] * len(textos), textos, truncation=False)
+    longitudes = [len(ids_par) for ids_par in pares["input_ids"]]
+    if max(longitudes) > MAX_LONGITUD:
+        raise ValueError("Un par consulta–chunk supera el contexto del reranker.")
+    inicio = perf_counter()
+    scores = modelo.predict([(objetivo, texto) for texto in textos], batch_size=16, show_progress_bar=False)
+    segundos = perf_counter() - inicio
+    puntajes = [float(score) for score in scores]
+    if len(puntajes) != len(candidatos) or not all(map(isfinite, puntajes)):
+        raise ValueError("Se necesita un puntaje finito por cada candidato.")
+    ranking = [
+        {"id": chunk["id"], "puesto_g3": i, "puntaje": puntaje, "tokens_par": longitud}
+        for i, (chunk, puntaje, longitud) in enumerate(zip(candidatos, puntajes, longitudes), 1)
+    ]
+    ranking.sort(key=lambda fila: -fila["puntaje"])
+    por_id = {chunk["id"]: chunk for chunk in candidatos}
+    return [por_id[fila["id"]] for fila in ranking], {
+        "modelo": MODELO, "revision": snapshot.name, "dispositivo": "cpu",
+        "max_longitud": MAX_LONGITUD, "consulta": objetivo, "segundos": segundos,
+        "ranking": ranking,
+    }
 
 
 def main():
@@ -37,36 +66,11 @@ def main():
     k = recuperacion["k"]
     if ids != recuperacion["candidatos_distintos"] or candidatos[:k] != list(control["clase"].values()):
         raise ValueError("Los candidatos deben reproducir el orden y el top k de G3.")
-    objetivo = control["configuracion_experimental"]["objetivo"]
-    textos = [chunk["texto"] for chunk in candidatos]
-    modelo = CrossEncoder(
-        str(args.snapshot), max_length=MAX_LONGITUD, device="cpu", local_files_only=True,
-        model_kwargs={"use_safetensors": True},
-    )
-    pares = modelo.tokenizer([objetivo] * len(textos), textos, truncation=False)
-    longitudes = [len(ids_par) for ids_par in pares["input_ids"]]
-    if max(longitudes) > MAX_LONGITUD:
-        raise ValueError("Un par consulta–chunk supera el contexto del reranker.")
-    inicio = perf_counter()
-    scores = modelo.predict([(objetivo, texto) for texto in textos], batch_size=16, show_progress_bar=False)
-    segundos = perf_counter() - inicio
-    puntajes = [float(score) for score in scores]
-    if len(puntajes) != len(candidatos) or not all(map(isfinite, puntajes)):
-        raise ValueError("Se necesita un puntaje finito por cada candidato.")
-    ranking = [
-        {"id": chunk["id"], "puesto_g3": i, "puntaje": puntaje, "tokens_par": longitud}
-        for i, (chunk, puntaje, longitud) in enumerate(zip(candidatos, puntajes, longitudes), 1)
-    ]
-    ranking.sort(key=lambda fila: -fila["puntaje"])
-    por_id = {chunk["id"]: chunk for chunk in candidatos}
-    seleccion = [por_id[fila["id"]] for fila in ranking[:k]]
+    orden, auditoria = reordenar(control["configuracion_experimental"]["objetivo"], candidatos, args.snapshot)
+    seleccion = orden[:k]
     entrada = reemplazar_clase(control, seleccion, {
         **recuperacion,
-        "reranker": {
-            "modelo": MODELO, "revision": args.snapshot.name, "dispositivo": "cpu",
-            "max_longitud": MAX_LONGITUD, "consulta": objetivo, "segundos": segundos,
-            "ranking": ranking,
-        },
+        "reranker": auditoria,
     })
     entrada["sha256_entrada_g3"] = hashlib.sha256(base).hexdigest()
     args.salida.parent.mkdir(parents=True, exist_ok=True)

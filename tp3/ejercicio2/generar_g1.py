@@ -65,23 +65,26 @@ def preparar_entrada():
             raise ValueError(f"El contenido o los metadatos de {id_} difieren de I4.")
         clase[f"C{i}"] = {"id": id_, "texto": texto, "tokens_minilm": original["tokens"], **meta}
 
-    texto_clase = "\n\n".join(f"[{i}] {p['texto']}" for i, p in clase.items())
-    texto_video = "\n".join(f"[{i}] {p['texto']}" for i, p in video.items())
-    mensajes = [
-        {"role": "system", "content": prompt},
-        {"role": "user", "content": (
-            f"Objetivo: {caso['objetivo']}\nNivel: {caso['nivel']}\n\n"
-            f"Material de clase:\n{texto_clase}\n\nTranscripción del video:\n{texto_video}"
-        )},
-    ]
     return {
         "configuracion_experimental": caso,
         "sha256_video": hashlib.sha256(vtt).hexdigest(),
         "sha256_ranking_i4": hashlib.sha256(ranking).hexdigest(),
         "clase": clase,
         "video": video,
-        "mensajes": mensajes,
+        "mensajes": armar_mensajes(caso, prompt, clase, video),
     }
+
+
+def armar_mensajes(caso, prompt, clase, video):
+    texto_clase = "\n\n".join(f"[{i}] {p['texto']}" for i, p in clase.items())
+    texto_video = "\n".join(f"[{i}] {p['texto']}" for i, p in video.items())
+    return [
+        {"role": "system", "content": prompt},
+        {"role": "user", "content": (
+            f"Objetivo: {caso['objetivo']}\nNivel: {caso['nivel']}\n\n"
+            f"Material de clase:\n{texto_clase}\n\nTranscripción del video:\n{texto_video}"
+        )},
+    ]
 
 
 def generar_qwen(entrada):
@@ -154,6 +157,19 @@ def ubicar_citas(informe, entrada):
     return CITAS.sub(ubicar, informe), sorted(set(CITAS.findall(informe)) - fuentes.keys())
 
 
+def guardar_informe(destino, entrada, contenido, informe, metadatos):
+    informe_ubicado, invalidas = ubicar_citas(informe, entrada)
+    destino.mkdir()
+    (destino / "informe_crudo.md").write_text(informe + "\n", encoding="utf-8")
+    (destino / "informe.md").write_text(informe_ubicado + "\n", encoding="utf-8")
+    guardar_json(destino / "corrida.json", {
+        **metadatos,
+        "sha256_entrada": hashlib.sha256(contenido).hexdigest(),
+        "max_tokens_salida": entrada["configuracion_experimental"]["max_tokens_salida"],
+        "citas_invalidas": invalidas,
+    })
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("accion", choices=("preparar", "qwen", "gpt41"))
@@ -177,16 +193,7 @@ def main():
     entrada = json.loads(contenido)
     generar = generar_qwen if args.accion == "qwen" else generar_gpt41
     informe, metadatos = generar(entrada)
-    informe_ubicado, invalidas = ubicar_citas(informe, entrada)
-    destino.mkdir()
-    (destino / "informe_crudo.md").write_text(informe + "\n", encoding="utf-8")
-    (destino / "informe.md").write_text(informe_ubicado + "\n", encoding="utf-8")
-    guardar_json(destino / "corrida.json", {
-        **metadatos,
-        "sha256_entrada": hashlib.sha256(contenido).hexdigest(),
-        "max_tokens_salida": entrada["configuracion_experimental"]["max_tokens_salida"],
-        "citas_invalidas": invalidas,
-    })
+    guardar_informe(destino, entrada, contenido, informe, metadatos)
     print(f"Informe y auditoría en {destino}.")
 
 

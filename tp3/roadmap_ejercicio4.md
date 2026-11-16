@@ -154,4 +154,6 @@ Guardar por caso las fuentes y sus hashes, los rankings, los chunks enviados, el
 
 **Comparación en seis objetivos.** Se completaron `k=7`, `8`, `10` y `12` con el corpus completo y diez candidatos por consulta. En los cuatro casos nuevos, `k=7` logró 8/12 criterios con respaldo académico y 10/12 estados correctos. Con `k=12` fueron 9/12 y 8/12, respectivamente. Se mantiene `k=7` como referencia provisional. [Métricas y auditoría por caso](ejercicio4/evaluacion/k_corpus_completo_seis_casos.md)
 
-**Siguiente paso.** Si se sigue iterando sobre el informe, congelar los rankings y comprobar si una validación de citas y de coherencia entre etiqueta y explicación corrige los errores observados en Razonamiento y AI Safety.
+**Ajuste del informe.** Se probaron dos corridas con los mismos contextos de `k=7`. La variante eliminó una cita inexistente en Razonamiento y corrigió la etiqueta de data poisoning, con una baja de 5/6 a 4/6 en estados correctos entre ambos casos. Se conserva el prompt de G1 y se agrega al informe el aviso para IDs inexistentes. [Comparación y auditoría](ejercicio4/evaluacion/ajuste_prompt_informe.md)
+
+**Siguiente paso.** Conectar el corpus completo al comando de objetivo y MP3 y verificar el recorrido de audio a informe con `k=7` y diez candidatos por consulta.

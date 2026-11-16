@@ -14,6 +14,7 @@ CARPETA = Path(__file__).resolve().parent
 DATOS = CARPETA / "data/experimentos/g1"
 CACHE = CARPETA / "data/modelos"
 CITAS = re.compile(r"\[([CV]\d+)\]")
+CITAS_EN_INFORME = re.compile(r"\[([CV]\d+(?:(?:\s*[,;–-]\s*|\s+)[CV]\d+)*)\]")
 
 
 def guardar_json(ruta, datos):
@@ -156,11 +157,22 @@ def ubicar_citas(informe, entrada):
             return f"[{id_}, {nombre}p. {fuente['pagina']}]"
         return f"[{id_}, {nombre}{fuente['inicio']}–{fuente['fin']}]"
 
-    return CITAS.sub(ubicar, informe), sorted(set(CITAS.findall(informe)) - fuentes.keys())
+    ids = {
+        id_
+        for grupo in CITAS_EN_INFORME.findall(informe)
+        for id_ in re.findall(r"[CV]\d+", grupo)
+    }
+    return CITAS.sub(ubicar, informe), sorted(ids - fuentes.keys())
 
 
 def guardar_informe(destino, entrada, contenido, informe, metadatos):
     informe_ubicado, invalidas = ubicar_citas(informe, entrada)
+    if invalidas:
+        referencias = ", ".join(f"`{id_}`" for id_ in invalidas)
+        informe_ubicado = (
+            f"> **Requiere revisión.** Hay citas sin fuente en la entrada ({referencias}).\n\n"
+            + informe_ubicado
+        )
     destino.mkdir()
     (destino / "informe_crudo.md").write_text(informe + "\n", encoding="utf-8")
     (destino / "informe.md").write_text(informe_ubicado + "\n", encoding="utf-8")

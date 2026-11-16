@@ -8,7 +8,9 @@ Medir cuánto aporta agregar **apuntes de estudiantes y diapositivas de clase** 
 
 | Fuente | Disponible | Uso previsto |
 | --- | --- | --- |
-| Apuntes de prueba | [Apuntes de Transformers](../output/pdf/ejercicio4/apuntes_transformers.pdf), dos páginas elaboradas a partir de la clase. | Primer PDF del piloto. La página 1 trata atención y la página 2, codificación posicional y máscara causal. |
+| Apuntes de prueba | [Apuntes de Transformers](ejercicio4/apuntes/apuntes_transformers.pdf), dos páginas elaboradas a partir de la clase. | Primer PDF del piloto. La página 1 trata atención y la página 2, codificación posicional y máscara causal. |
+| Apunte sobre el encoder | [El bloque del encoder](ejercicio4/apuntes/bloque_del_encoder.pdf), una página. | Autoatención, red feed-forward y Add & Norm. Fuente docente, pp. 22 y 36–37. |
+| Apunte sobre el decodificador | [Del decodificador al próximo token](ejercicio4/apuntes/decodificador_y_prediccion.pdf), una página. | Atención cruzada, logits, softmax y generación autorregresiva. Fuente docente, pp. 22 y 40–44. |
 | Diapositivas de Transformers | [Clase 1 · Introducción a Transformers](<../docs/Clase 1 - Introducción a Transformers.pdf>), 70 páginas, 2026. | Primera comparación de diapositivas sobre la misma unidad. |
 | Diapositivas de Fine-tuning | [Clase 3 · Transfer Learning & Finetuning](<../docs/Clase 3 - Transfer Learning & Finetuning.pdf>), 77 páginas, 2026. | Siguiente unidad con diapositivas disponibles. Registrar si para esa unidad se consiguen apuntes preexistentes. |
 | Diapositivas de Embeddings | [Clase 2 · Transformación de Texto a Embeddings](<../docs/Clase 2 - Transformación de Texto a Embeddings(1).pdf>), 65 páginas. La portada dice 73.64 y 2025. | Verificar si corresponde al material usado en 73.69 antes de incluirlo en la comparación principal. |
@@ -23,12 +25,42 @@ Transformers es el primer tema porque tenemos un apunte de prueba y diapositivas
 4. Guardar cada variante en su propia colección Chroma, con el mismo `text-embedding-3-small`, 1.536 dimensiones y distancia coseno. Verificar que los chunks de VTT coincidan entre variantes y registrar el número de chunks por tipo de fuente.
 5. Resolver las referencias del generador desde los metadatos. Una cita PDF muestra el nombre del documento y su página. Una cita VTT muestra el nombre y el intervalo. Verificar con un ejemplo de cada tipo que el localizador permite encontrar la evidencia.
 
+### Carga del apunte de Transformers
+
+La colección `openai_e4_apuntes` se guardó en la misma base Chroma de I4 y se reabrió para verificarla. Contiene **632 chunks**, con **623 de VTT copiados de `openai_i4` y 9 del PDF**. Chroma conserva ambas colecciones. En el apunte se guardaron **4 chunks de la página 1 y 5 de la página 2**. La fórmula de atención quedó asociada a la primera página y la regla de máscara causal a la segunda. Cada chunk del PDF tiene `fuente`, `tipo_fuente` y `pagina`.
+
+Esta primera carga usó solo el apunte de dos páginas. Sus dos borradores de una página quedaron fuera. Al trasladar el apunte se actualizó `fuente` en los nueve chunks y en el manifiesto. Los IDs, el texto, las páginas y los vectores coincidieron antes y después.
+
+Se reutilizaron el texto, la metadata y los embeddings de los VTT. La lectura posterior a la copia de los vectores mostró diferencias de redondeo de hasta `1,49e-8` por componente. La verificación usa una tolerancia absoluta de `1e-7`. El primer intento se revirtió al detectar la diferencia con la igualdad exacta, así que se repitió la llamada de embeddings del PDF. La carga final reportó **971 tokens de entrada** para los nueve chunks con `text-embedding-3-small`. [Script de carga](ejercicio4/indexar_apuntes.py) · [Manifiesto local](ejercicio4/data/carga_apuntes.json)
+
+Para reproducir desde la raíz con las [dependencias instaladas](ejercicio4/requirements.txt) y la colección de I4 disponible, usar un nombre y un manifiesto nuevos si la colección ya existe.
+
+```bash
+PYTHONPATH=tp3/ejercicio2 .venv/bin/python tp3/ejercicio4/indexar_apuntes.py \
+  --coleccion openai_e4_apuntes_repeticion \
+  --salida tp3/ejercicio4/data/carga_apuntes_repeticion.json
+```
+
+### Carga de los tres apuntes
+
+Se incorporaron los dos PDFs adicionales a `openai_e4_apuntes_ampliado`. Cada uno aportó 3 chunks de su primera página. La colección tiene **638 chunks**: 623 de VTT y 15 de los tres PDFs. Reutilizó los vectores de los VTT y los 9 del PDF original. Se enviaron a embeddings solo los 6 chunks nuevos, con 664 tokens de entrada. Al reabrir Chroma se verificaron el conteo, los IDs y la metadata de cada uno de los 15 chunks PDF. `openai_i4` y `openai_e4_apuntes` siguen disponibles para la comparación. [Manifiesto local](ejercicio4/data/carga_apuntes_ampliado.json)
+
+```bash
+PYTHONPATH=tp3/ejercicio2 .venv/bin/python tp3/ejercicio4/indexar_apuntes.py \
+  --desde-manifiesto tp3/ejercicio4/data/carga_apuntes.json \
+  --pdf tp3/ejercicio4/apuntes/bloque_del_encoder.pdf \
+  --pdf tp3/ejercicio4/apuntes/decodificador_y_prediccion.pdf \
+  --coleccion openai_e4_apuntes_ampliado \
+  --salida tp3/ejercicio4/data/carga_apuntes_ampliado.json
+```
+
 ## 3. Comparación controlada
 
 | Variante | Corpus | Pregunta |
 | --- | --- | --- |
 | Base | VTT de Embeddings, Transformers y Fine-tuning. | ¿Cuánta evidencia recupera G4 con el corpus del ejercicio 2? |
 | Con apuntes | Mismos VTT más el PDF de prueba de Transformers. | ¿Qué criterios adicionales se respaldan al incorporar apuntes? |
+| Con tres apuntes | Mismos VTT más los tres PDFs de Transformers. | ¿Qué evidencia aportan los apuntes adicionales de encoder y decodificador? |
 | Con apuntes y diapositivas | Mismos VTT y apuntes más diapositivas. | ¿Qué aportan las diapositivas sobre el corpus con apuntes? |
 
 Por objetivo se congela el audio transcripto, la consulta original y sus tres subconsultas. Las variantes usan la misma expansión, cinco candidatos por consulta, deduplicación, el mismo CrossEncoder y siete chunks finales. Se mantienen el prompt y el snapshot de GPT‑4.1 de G4, temperatura 0 y hasta 1.000 tokens de salida. La única variable experimental es el conjunto de fuentes disponibles. El formato de las citas se resuelve por código con el mismo criterio para las tres variantes. [Configuración del ejercicio 2](ejercicio2/README.md)
@@ -45,4 +77,4 @@ Por objetivo se congela el audio transcripto, la consulta original y sus tres su
 
 Guardar por caso las fuentes y sus hashes, los rankings, los siete chunks enviados, el informe y la evaluación. Para cada criterio que cambia, mostrar el pasaje que se ganó o se perdió y si el informe lo usó. Priorizar que aumente el Context Recall y revisar si los criterios adicionales se traducen en estados y citas más sólidos. Registrar el costo adicional de indexar y la longitud real del contexto.
 
-**Primer piloto.** Se verificó que el apunte de dos páginas permite extraer por separado los dos temas y sus fórmulas. El siguiente paso es cargar ese PDF y comparar los VTT solos contra los VTT con el apunte, ambos con `k=7`. Después se compara `k=7` con `k=10` sobre un mismo ranking ampliado, si hay al menos diez candidatos distintos. Las diapositivas quedan para una comparación posterior.
+**Primer piloto.** El apunte de dos páginas está cargado. El siguiente paso es comparar los VTT solos contra los VTT con el apunte, ambos con `k=7`. Después se compara `k=7` con `k=10` sobre un mismo ranking ampliado, si hay al menos diez candidatos distintos. Las diapositivas quedan para una comparación posterior.

@@ -619,3 +619,7 @@ Se comprobó con respuestas simuladas que el modo básico usa una sola consulta,
 - **Qué evaluar:** si se observan omisiones, comparar prosa y tabla por criterio con las mismas entradas y exigencias de contenido. Medir completitud y citas válidas.
 - **Resultados:** pendientes.
 - **Decisión:** pendiente.
+
+### Continuación en el ejercicio 4
+
+El corpus de VTT de I4 se conserva como referencia. La colección ampliada suma tres apuntes de Transformers y tiene 638 chunks: 623 VTT y 15 PDF. Se verificaron los IDs y los localizadores del PDF al reabrir Chroma. La comparación de recuperación queda pendiente. [Configuración y carga](../roadmap_ejercicio4.md#carga-de-los-tres-apuntes)

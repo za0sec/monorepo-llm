@@ -8,7 +8,7 @@ Medir cuánto aporta agregar **apuntes de estudiantes y diapositivas de clase** 
 
 | Fuente | Disponible | Uso previsto |
 | --- | --- | --- |
-| Apuntes de prueba | [Apuntes de Transformers](ejercicio4/apuntes/apuntes_transformers.pdf), dos páginas elaboradas a partir de la clase. | Primer PDF del piloto. La página 1 trata atención y la página 2, codificación posicional y máscara causal. |
+| Apuntes de prueba | [Apuntes de Transformers](ejercicio4/apuntes/apuntes_transformers.pdf), dos páginas elaboradas a partir de la clase. | La página 1 trata atención y la página 2, codificación posicional y máscara causal. |
 | Apunte sobre el encoder | [El bloque del encoder](ejercicio4/apuntes/bloque_del_encoder.pdf), una página. | Autoatención, red feed-forward y Add & Norm. Fuente docente, pp. 22 y 36–37. |
 | Apunte sobre el decodificador | [Del decodificador al próximo token](ejercicio4/apuntes/decodificador_y_prediccion.pdf), una página. | Atención cruzada, logits, softmax y generación autorregresiva. Fuente docente, pp. 22 y 40–44. |
 | Diapositivas de Transformers | [Clase 1 · Introducción a Transformers](<../docs/Clase 1 - Introducción a Transformers.pdf>), 70 páginas, 2026. | Primera comparación de diapositivas sobre la misma unidad. |
@@ -59,13 +59,12 @@ PYTHONPATH=tp3/ejercicio2 .venv/bin/python tp3/ejercicio4/indexar_apuntes.py \
 | Variante | Corpus | Pregunta |
 | --- | --- | --- |
 | Base | VTT de Embeddings, Transformers y Fine-tuning. | ¿Cuánta evidencia recupera G4 con el corpus del ejercicio 2? |
-| Con apuntes | Mismos VTT más el PDF de prueba de Transformers. | ¿Qué criterios adicionales se respaldan al incorporar apuntes? |
-| Con tres apuntes | Mismos VTT más los tres PDFs de Transformers. | ¿Qué evidencia aportan los apuntes adicionales de encoder y decodificador? |
+| Con apuntes | Mismos VTT más los tres PDFs de Transformers. | ¿Qué criterios adicionales se respaldan al incorporar todos los apuntes disponibles? |
 | Con apuntes y diapositivas | Mismos VTT y apuntes más diapositivas. | ¿Qué aportan las diapositivas sobre el corpus con apuntes? |
 
-Por objetivo se congela el audio transcripto, la consulta original y sus tres subconsultas. Las variantes usan la misma expansión, cinco candidatos por consulta, deduplicación, el mismo CrossEncoder y siete chunks finales. Se mantienen el prompt y el snapshot de GPT‑4.1 de G4, temperatura 0 y hasta 1.000 tokens de salida. La única variable experimental es el conjunto de fuentes disponibles. El formato de las citas se resuelve por código con el mismo criterio para las tres variantes. [Configuración del ejercicio 2](ejercicio2/README.md)
+Por objetivo se congela el audio transcripto, la consulta original y sus tres subconsultas. Las variantes usan la misma expansión, cinco candidatos por consulta, deduplicación, el mismo CrossEncoder y siete chunks finales. Se mantienen el prompt y el snapshot de GPT‑4.1 de G4, temperatura 0 y hasta 1.000 tokens de salida. La única variable experimental es el conjunto de fuentes disponibles. El formato de las citas se resuelve por código con el mismo criterio en cada variante. [Configuración del ejercicio 2](ejercicio2/README.md)
 
-**Casos.** Usar el Caso 01 para verificar que una corrida con VTT sigue funcionando. Para comparar corpus, preparar al menos dos pares nuevos de objetivo y video. Empezar con Transformers y dejar por escrito qué criterio se espera, dónde lo respalda la clase y qué estado le corresponde según el video antes de ejecutar. Usar los mismos criterios y denominadores en las tres variantes. Registrar también qué evidencia existe en cada corpus para distinguir falta de material, fallo de búsqueda y fallo del generador.
+**Casos.** Usar el Caso 01 como control de integración. Empezar la comparación de corpus con un par nuevo de objetivo y video sobre Transformers, y sumar otro par en una prueba posterior para revisar si el resultado se repite. Para cada caso, registrar el criterio, la evidencia académica y el estado esperado del video antes de ejecutar. Usar los mismos criterios y denominadores para todas las variantes de ese caso. Registrar qué evidencia existe en cada corpus para distinguir falta de material, fallo de búsqueda y fallo del generador.
 
 ## 4. Evaluación y registro
 
@@ -77,4 +76,4 @@ Por objetivo se congela el audio transcripto, la consulta original y sus tres su
 
 Guardar por caso las fuentes y sus hashes, los rankings, los siete chunks enviados, el informe y la evaluación. Para cada criterio que cambia, mostrar el pasaje que se ganó o se perdió y si el informe lo usó. Priorizar que aumente el Context Recall y revisar si los criterios adicionales se traducen en estados y citas más sólidos. Registrar el costo adicional de indexar y la longitud real del contexto.
 
-**Primer piloto.** El apunte de dos páginas está cargado. El siguiente paso es comparar los VTT solos contra los VTT con el apunte, ambos con `k=7`. Después se compara `k=7` con `k=10` sobre un mismo ranking ampliado, si hay al menos diez candidatos distintos. Las diapositivas quedan para una comparación posterior.
+**Primer piloto.** El [Caso 02 de Transformers](ejercicio4/evaluacion/caso_02_transformers.md) tiene un objetivo nuevo, el VTT de Whisper y una pauta de tres criterios anotada antes de la búsqueda. La propuesta inicial sumaba un PDF para medir su aporte individual. La comparación acordada usa todos los apuntes disponibles para medir cómo funciona el RAG con el corpus ampliado. Se comparará `openai_i4` con `openai_e4_apuntes_ampliado`, ambos con `k=7`, y se generará un informe por variante usando la misma transcripción. La búsqueda recorre toda la colección sin filtro por fuente. Después se compara `k=7` con `k=10` sobre un mismo ranking ampliado, si hay al menos diez candidatos distintos. Las diapositivas quedan para una comparación posterior.

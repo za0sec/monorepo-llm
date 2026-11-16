@@ -623,3 +623,5 @@ Se comprobó con respuestas simuladas que el modo básico usa una sola consulta,
 ### Continuación en el ejercicio 4
 
 El corpus de VTT de I4 se conserva como referencia. La colección ampliada suma tres apuntes de Transformers y tiene 638 chunks: 623 VTT y 15 PDF. Se verificaron los IDs y los localizadores del PDF al reabrir Chroma. La comparación de recuperación queda pendiente. [Configuración y carga](../roadmap_ejercicio4.md#carga-de-los-tres-apuntes)
+
+El primer piloto comparará el corpus base contra el corpus con los tres apuntes usando el [Caso 02 de Transformers](../ejercicio4/evaluacion/caso_02_transformers.md). Se preparó su VTT con el código de Whisper del ejercicio 2 y se validaron 219 segmentos. La pauta anticipa cobertura de Q, K y V, cobertura parcial del cálculo y falta de evidencia sobre atención con varias cabezas. Ambas variantes usarán ese VTT y `k=7`. Los resultados de recuperación y generación quedan pendientes.

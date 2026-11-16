@@ -633,3 +633,5 @@ Se seleccionaron 105 diapositivas de cinco clases previas a RAG. El corpus final
 Se reunieron los seis VTT docentes en `ejercicio4/transcripciones/`. Cada copia coincide byte a byte con su original y pasa el lector VTT. La tabla distingue los tres ya indexados en I4 de los tres pendientes. [Inventario de transcripciones](../roadmap_ejercicio4.md#transcripciones-docentes)
 
 Se completó la carga de texto de ejercicio 4 en `openai_e4_texto`. Se reutilizaron 638 chunks y se añadieron 519 de los tres VTT pendientes y 6 de los dos apuntes nuevos. El total es 1.163 chunks. Se verificaron los metadatos y la persistencia al reabrir Chroma. [Configuración y validación](../roadmap_ejercicio4.md#carga-de-los-seis-vtt-y-cinco-apuntes)
+
+El piloto de imágenes del ejercicio 4 comparó texto seleccionable, Apple Vision OCR y descripciones de GPT‑4.1 sobre ocho páginas. El Context Recall@7 quedó en 0/2 en los tres brazos. La descripción conservó la fórmula pero el fragmento quedó octavo. La colección principal conserva la carga textual de 1.163 chunks. [Auditoría del piloto](../ejercicio4/evaluacion/piloto_imagenes.md)

@@ -126,4 +126,6 @@ Guardar por caso las fuentes y sus hashes, los rankings, los chunks enviados, el
 
 **Primer piloto completado.** El [Caso 02 de Transformers](ejercicio4/evaluacion/caso_02_transformers.md) comparó `openai_i4` con `openai_e4_apuntes_ampliado`, ambos con `k=7`, la misma transcripción y búsqueda sin filtro por fuente. La propuesta inicial sumaba un PDF para medir su aporte individual. La prueba sumó los tres apuntes para medir el efecto del corpus ampliado. Context Recall@7 pasó de 0/3 a 1/3 y Context Precision@7 quedó en 14,3 % en ambas variantes. [Resultados y auditoría](ejercicio4/evaluacion/resultado_caso_02_apuntes.md)
 
-**Siguiente paso.** Definir la prueba de extracción de imágenes de las diapositivas. Después de decidir cómo indexarlas, verificar que el programa recupere y cite VTT, apuntes y diapositivas, y comparar valores de `k` sobre el corpus final.
+**Piloto de imágenes completado.** Se probaron texto seleccionable, OCR y descripción sobre ocho páginas con dos recortes. El Context Recall@7 quedó en 0/2 en las tres variantes. La descripción recuperó la relación general entre encoder y decoder y transcribió la fórmula de coseno en un chunk que quedó octavo. [Configuración y resultados](ejercicio4/evaluacion/piloto_imagenes.md)
+
+**Siguiente paso.** Verificar si conservar la fórmula y el título en el mismo chunk mejora su recuperación. Revisar también la descripción de las flechas de los diagramas antes de decidir cómo incorporar esas fuentes al corpus final.

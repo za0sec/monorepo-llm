@@ -16,10 +16,12 @@ El modo predeterminado es **avanzado**. Genera tres subconsultas, busca con ella
 
 **`--modo basico`** recupera directamente los siete chunks más cercanos al objetivo, como en G2. El mismo generador recibe el objetivo original, la transcripción y los pasajes seleccionados.
 
+**`--corpus completo`** usa `openai_e4_completo` con VTT, apuntes y diapositivas. En modo avanzado trae diez candidatos por consulta y envía al generador los siete primeros después del reranking. La corrida parte del MP3 y requiere el manifiesto local `tp3/ejercicio4/data/carga_completa.json`. [Carga del corpus](../roadmap_ejercicio4.md#carga-de-las-105-diapositivas) · [Comando y resultado con Tokenización](../ejercicio4/evaluacion/cierre_caso_04_mp3.md)
+
 ## Insumos locales
 
 - **Caso 01.** Su MP3 original está en `evaluacion/casos/caso_01/audio.mp3` y va por fuera de Git. En otro checkout, colocar ahí una copia del audio o pasar la ruta de un audio propio. El [VTT de referencia](evaluacion/casos/caso_01/transcripcion.vtt) se usa para reconstruir G1. El comando integrado vuelve a transcribir el audio.
-- **Índice académico.** Se usa la colección `openai_i4` de Chroma y su `ranking.json`. La ruta predeterminada es `tp3/ejercicio2/data/experimentos/i4/`. Para reconstruirlo a partir de los VTT docentes, seguir la [reproducción de I4](experimentos.md#i4--modelo-de-embeddings) y de su baseline de I3. Se puede indicar otra ubicación del índice de I4 con `--indice`.
+- **Índice académico.** La colección predeterminada es `openai_i4` con los VTT del ejercicio 2. La base de Chroma y el `ranking.json` de I4 se guardan en `tp3/ejercicio2/data/experimentos/i4/`. El corpus completo usa otra colección de esa misma base. Con `--indice` se puede indicar otra ubicación del directorio de I4. [Reproducción de I4](experimentos.md#i4--modelo-de-embeddings)
 - **Reranker.** El modo avanzado usa el snapshot de `cross-encoder/ms-marco-MiniLM-L6-v2` fijado en G4. Si falta, descargarlo en la caché esperada:
 
   ```bash
@@ -57,7 +59,7 @@ El comando imprime la ruta del informe. Cada ejecución usa una carpeta nueva en
 | --- | --- |
 | `transcripcion.vtt` | Transcripción y tiempos devueltos por Whisper. |
 | `entrada.json` | Hashes de las fuentes, objetivo, parámetros, consultas generadas, rankings y mensajes exactos del generador. |
-| `gpt41/informe.md` | Informe para el estudiante, con los tiempos de las citas. |
+| `gpt41/informe.md` | Informe para el estudiante, con páginas o tiempos de las citas y un aviso si algún ID está ausente en la entrada. |
 | `gpt41/informe_crudo.md` y `gpt41/corrida.json` | Texto original, revisión del modelo, tokens, motivo de fin e IDs inválidos. |
 
 Si falla una llamada, el comando devuelve un error y conserva los archivos ya guardados. Si `entrada.json` quedó grabada, se puede repetir solo la generación con `generar_g1.py gpt41 --entrada <archivo> --carpeta <directorio-nuevo>`.

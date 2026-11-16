@@ -4,17 +4,14 @@ import argparse
 from hashlib import sha256
 from pathlib import Path
 
-import chromadb
-from chromadb.config import Settings
-
 from comparar_apuntes import RUTA_CASO, VECINOS
 from comparar_embeddings import MODELO_OPENAI, obtener_vectores
 from evaluar_video import SNAPSHOT
 from generar_g1 import CARPETA as CARPETA_E2
 from generar_g1 import armar_mensajes, generar_gpt41, guardar_informe, guardar_json
-from indexar_diapositivas import CARPETA, INDICE_I4, REPO, leer, leer_chunks_base
+from indexar_diapositivas import CARPETA, INDICE_I4, REPO, leer
 from preparar_transcripcion import leer_vtt
-from recuperar_g2 import cliente_openai, consultar_vectores
+from recuperar_g2 import abrir_corpus_completo, cliente_openai, consultar_vectores
 from recuperar_g3 import consultas_expandidas, expandir, intercalar
 from rerankear_g4 import reordenar
 
@@ -45,26 +42,6 @@ CASOS_NUEVOS = {
         "lenguaje y en qué parte del sistema actúa cada riesgo",
     ),
 }
-
-
-def abrir_corpus():
-    m = leer(MANIFIESTO)
-    base = REPO / m["manifiesto_base"]
-    if sha256(base.read_bytes()).hexdigest() != m["sha256_manifiesto_base"]:
-        raise ValueError("Cambió el manifiesto de texto del corpus completo.")
-    i4 = (INDICE_I4 / "ranking.json").read_bytes()
-    chunks = leer_chunks_base(i4, leer(base)) + m["chunks_diapositivas"]
-    por_id = {c["id"]: c for c in chunks}
-    ruta = INDICE_I4 / "chroma"
-    if not (ruta / "chroma.sqlite3").is_file():
-        raise ValueError("Falta la base persistente de Chroma.")
-    db = chromadb.PersistentClient(path=str(ruta), settings=Settings(anonymized_telemetry=False))
-    coleccion = db.get_collection(m["coleccion"], embedding_function=None)
-    if (set(coleccion.get(include=[])["ids"]) != por_id.keys()
-            or len(chunks) != len(por_id) or len(chunks) != m["conteo"]["total"]
-            or coleccion.configuration["hnsw"]["space"] != m["distancia"]):
-        raise ValueError("La colección no coincide con el corpus registrado.")
-    return coleccion, por_id, m
 
 
 def preparar_ranking(salida, caso, coleccion, por_id, m, vecinos_por_consulta, control, consultas_previas):
@@ -157,7 +134,7 @@ def cargar_caso(numero, prompt):
 
 
 def comparar(salida, vecinos_por_consulta, control, numero):
-    coleccion, por_id, m = abrir_corpus()
+    coleccion, por_id, m, _ = abrir_corpus_completo(MANIFIESTO, INDICE_I4)
     prompt = (CARPETA_E2 / "g1/prompt.md").read_text(encoding="utf-8").rstrip("\n")
     config, ruta_vtt, cantidad_segmentos, consultas_previas = cargar_caso(numero, prompt)
     caso = {k: config[k] for k in ("objetivo", "nivel", "gpt41", "max_tokens_salida")}

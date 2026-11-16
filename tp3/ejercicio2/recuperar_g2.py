@@ -32,6 +32,33 @@ def abrir_indice(control):
     return coleccion, i4, por_id
 
 
+def leer_chunks_base(i4, base):
+    if hashlib.sha256(i4).hexdigest() != base["sha256_ranking_i4"]:
+        raise ValueError("El registro de I4 cambió desde la carga de texto.")
+    return json.loads(i4)["chunks"] + base["chunks_pdf"] + base["chunks_vtt_adicionales"]
+
+
+def abrir_corpus_completo(ruta_manifiesto, directorio_i4):
+    contenido = ruta_manifiesto.read_bytes()
+    manifiesto = json.loads(contenido)
+    base = (REPO / manifiesto["manifiesto_base"]).read_bytes()
+    if hashlib.sha256(base).hexdigest() != manifiesto["sha256_manifiesto_base"]:
+        raise ValueError("Cambió el manifiesto de texto del corpus completo.")
+    i4 = (directorio_i4 / "ranking.json").read_bytes()
+    chunks = leer_chunks_base(i4, json.loads(base)) + manifiesto["chunks_diapositivas"]
+    por_id = {chunk["id"]: chunk for chunk in chunks}
+    ruta = directorio_i4 / "chroma"
+    if not (ruta / "chroma.sqlite3").is_file():
+        raise ValueError("Falta la base persistente de Chroma.")
+    db = chromadb.PersistentClient(path=str(ruta), settings=Settings(anonymized_telemetry=False))
+    coleccion = db.get_collection(manifiesto["coleccion"], embedding_function=None)
+    if (set(coleccion.get(include=[])["ids"]) != por_id.keys()
+            or len(chunks) != len(por_id) or len(chunks) != manifiesto["conteo"]["total"]
+            or coleccion.configuration["hnsw"]["space"] != manifiesto["distancia"]):
+        raise ValueError("La colección no coincide con el corpus registrado.")
+    return coleccion, por_id, manifiesto, hashlib.sha256(contenido).hexdigest()
+
+
 def cliente_openai(timeout=30):
     clave = dotenv_values(CARPETA.parent / ".env").get("OPENAI_API_KEY")
     if not clave:
@@ -39,11 +66,11 @@ def cliente_openai(timeout=30):
     return OpenAI(base_url=API_OPENAI, api_key=clave, max_retries=0, timeout=timeout)
 
 
-def buscar(coleccion, i4, por_id, cliente, consultas, k):
+def buscar(coleccion, indice, por_id, cliente, consultas, k):
     vectores, uso = obtener_vectores(cliente, MODELO_OPENAI, consultas)
     campos = ("modelo_respuesta", "dimensiones")
-    if any(uso[campo] != i4["uso_openai"][campo] for campo in campos):
-        raise ValueError("El embedding de consulta no coincide con I4.")
+    if any(uso[campo] != indice["uso_openai"][campo] for campo in campos):
+        raise ValueError("El embedding de consulta no coincide con el índice.")
     return consultar_vectores(coleccion, por_id, vectores, k), uso
 
 

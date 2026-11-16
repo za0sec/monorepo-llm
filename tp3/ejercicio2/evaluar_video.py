@@ -10,7 +10,7 @@ from openai import APIConnectionError, APIStatusError
 
 from generar_g1 import CARPETA, DATOS, armar_mensajes, generar_gpt41, guardar_informe, guardar_json
 from preparar_transcripcion import leer_vtt
-from recuperar_g2 import abrir_indice, buscar, cliente_openai
+from recuperar_g2 import abrir_corpus_completo, abrir_indice, buscar, cliente_openai
 from recuperar_g3 import consultas_expandidas, expandir, intercalar
 from rerankear_g4 import MODELO as MODELO_RERANKER
 from rerankear_g4 import reordenar
@@ -24,23 +24,25 @@ SNAPSHOT = (
     / "snapshots" / REVISION_RERANKER
 )
 K = 7
+MANIFIESTO_COMPLETO = CARPETA.parent / "ejercicio4/data/carga_completa.json"
 
 
 def recuperar_clase(cliente, indice, caso, modo, snapshot):
-    coleccion, i4, por_id = indice
+    coleccion, configuracion, por_id = indice
     objetivo = caso["objetivo"]
-    detalle = {"modo": modo, "consulta": objetivo, "k": K, "distancia": i4["distancia"]}
+    detalle = {"modo": modo, "consulta": objetivo, "k": K, "distancia": configuracion["distancia"]}
     consultas, por_consulta = [objetivo], K
     if modo == "avanzado":
         expansion = expandir(cliente, caso)
         consultas = consultas_expandidas(caso, expansion)
         detalle["expansion"] = expansion
-        por_consulta = 5
+        por_consulta = 10 if "manifiesto_corpus" in caso else 5
 
-    rankings, uso = buscar(coleccion, i4, por_id, cliente, consultas, por_consulta)
+    detalle["resultados_por_consulta"] = por_consulta
+    rankings, uso = buscar(coleccion, configuracion, por_id, cliente, consultas, por_consulta)
     candidatos = intercalar(rankings)
     if len(candidatos) < K:
-        refuerzo, uso_refuerzo = buscar(coleccion, i4, por_id, cliente, [objetivo], K)
+        refuerzo, uso_refuerzo = buscar(coleccion, configuracion, por_id, cliente, [objetivo], K)
         por_chunk = {chunk["id"]: chunk for chunk in candidatos}
         for chunk in refuerzo[0]:
             por_chunk.setdefault(chunk["id"], chunk)
@@ -55,9 +57,20 @@ def recuperar_clase(cliente, indice, caso, modo, snapshot):
 
 
 def evaluar(audio, caso, modo, snapshot, salida):
-    ruta_indice = Path(caso["indice_i4"]) / "ranking.json"
-    huella_indice = sha256(ruta_indice.read_bytes()).hexdigest()
-    indice = abrir_indice({"configuracion_experimental": caso, "sha256_ranking_i4": huella_indice})
+    directorio_i4 = Path(caso["indice_i4"])
+    if "manifiesto_corpus" in caso:
+        coleccion, por_id, manifiesto, huella = abrir_corpus_completo(
+            Path(caso["manifiesto_corpus"]), directorio_i4,
+        )
+        if coleccion.name != caso["coleccion"]:
+            raise ValueError("El manifiesto no corresponde al corpus completo.")
+        configuracion = {"distancia": manifiesto["distancia"], "uso_openai": manifiesto["uso_embeddings"]}
+        indice = coleccion, configuracion, por_id
+        procedencia = {"sha256_manifiesto_corpus": huella}
+    else:
+        huella = sha256((directorio_i4 / "ranking.json").read_bytes()).hexdigest()
+        procedencia = {"sha256_ranking_i4": huella}
+        indice = abrir_indice({"configuracion_experimental": caso, **procedencia})
     prompt = (CARPETA / "g1/prompt.md").read_text(encoding="utf-8").rstrip("\n")
     cliente = cliente_openai(timeout=120)
 
@@ -80,7 +93,7 @@ def evaluar(audio, caso, modo, snapshot, salida):
         "configuracion_experimental": caso,
         "transcripcion": asr,
         "sha256_video": sha256(vtt).hexdigest(),
-        "sha256_ranking_i4": huella_indice,
+        **procedencia,
         "recuperacion": recuperacion,
         "clase": clase,
         "video": video,
@@ -102,6 +115,10 @@ def main():
     parser.add_argument("objetivo")
     parser.add_argument("audio", type=Path)
     parser.add_argument("--modo", choices=("avanzado", "basico"), default="avanzado")
+    parser.add_argument(
+        "--corpus", choices=("vtt", "completo"), default="vtt",
+        help="Usar solo los VTT del ejercicio 2 o el corpus completo del ejercicio 4.",
+    )
     parser.add_argument("--indice", type=Path, default=DATOS.parent / "i4")
     parser.add_argument("--snapshot", type=Path, default=SNAPSHOT)
     parser.add_argument("--salida", type=Path, help="Directorio nuevo para guardar el informe y su auditoría.")
@@ -121,6 +138,8 @@ def main():
         "max_tokens_salida": 1000,
         "gpt41": {"modelo": "gpt-4.1-2025-04-14", "temperatura": 0},
     }
+    if args.corpus == "completo":
+        caso.update(coleccion="openai_e4_completo", manifiesto_corpus=str(MANIFIESTO_COMPLETO))
     if args.salida is None:
         carpeta = CARPETA / "data/ejecuciones"
         carpeta.mkdir(parents=True, exist_ok=True)

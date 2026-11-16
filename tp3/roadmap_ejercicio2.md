@@ -93,7 +93,7 @@ En el contraste posterior, diez resultados por consulta llevaron la fórmula al 
 
 La validación con el Caso 02 de Transformers dio 2/3 estados correctos con `k=7` y 1/3 con `k=8`. La fórmula de atención quedó duodécima en ese ranking. [Resultados por criterio](ejercicio4/evaluacion/caso_02_k_completo.md)
 
-El contraste del ejercicio 4 usó cuatro objetivos nuevos con VTT de Whisper y criterios manuales redactados antes de ejecutar el RAG. Se mantiene `k=7` como referencia del flujo. Tras probar una variante del prompt con el ranking fijo, se conserva G1 y se agrega un aviso para citas inexistentes. Sigue verificar un informe desde MP3 con el corpus completo. [Comparación de k](ejercicio4/evaluacion/k_corpus_completo_seis_casos.md) · [Ajuste del informe](ejercicio4/evaluacion/ajuste_prompt_informe.md)
+El contraste del ejercicio 4 usó cuatro objetivos nuevos con VTT de Whisper y criterios manuales redactados antes de ejecutar el RAG. Se mantiene `k=7` como referencia del flujo. Tras probar una variante del prompt con el ranking fijo, se conserva G1 y se agrega un aviso para citas inexistentes. El comando admite el corpus completo con `--corpus completo` y quedó verificado desde el MP3 del Caso 04. [Comparación de k](ejercicio4/evaluacion/k_corpus_completo_seis_casos.md) · [Ajuste del informe](ejercicio4/evaluacion/ajuste_prompt_informe.md) · [Prueba de punta a punta](ejercicio4/evaluacion/cierre_caso_04_mp3.md)
 
 [ej1]: ejercicio1/Grupo03-ej1-TP3.md
 [archivo]: recorrido_experimental.md

@@ -21,7 +21,7 @@ from comparar_imagenes import (
 from comparar_splitters import TAMANO
 from generar_g1 import guardar_json
 from indexar_apuntes import CARPETA, INDICE_I4, REPO, crear_splitter, escribir_coleccion, registros
-from recuperar_g2 import cliente_openai
+from recuperar_g2 import cliente_openai, leer_chunks_base
 
 
 BASE = CARPETA / "data/carga_texto.json"
@@ -204,12 +204,6 @@ def indexar(nombre, salida, cache):
     }
     escribir_coleccion(db, nombre, base["distancia"], {**existentes, **registros_nuevos}, salida, resultado)
     print(f"{nombre}: {resultado['conteo']['total']} chunks.", flush=True)
-
-
-def leer_chunks_base(i4, base):
-    if sha256(i4).hexdigest() != base["sha256_ranking_i4"]:
-        raise ValueError("El registro de I4 cambió desde la carga de texto.")
-    return json.loads(i4)["chunks"] + base["chunks_pdf"] + base["chunks_vtt_adicionales"]
 
 
 def main():

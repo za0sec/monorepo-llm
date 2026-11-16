@@ -1,5 +1,7 @@
 # TP3 · Plan del ejercicio 4
 
+[Resumen del estado del RAG, configuración y métricas](estado_rag.md)
+
 ## Objetivo de la iteración
 
 Completar el corpus académico de las clases previas a RAG con **VTT, apuntes de ejemplo y diapositivas docentes**. En el Caso 01, G4 llevó al generador respaldo completo para 3 de 5 criterios. Algunos faltantes provenían de la selección de candidatos y el generador también omitió un criterio con evidencia disponible. Sobre el corpus completo se compararán configuraciones de recuperación y se medirá si la evidencia adicional llega al informe. [G4](ejercicio2/experimentos.md#g4--expansión-con-reranking-de-los-candidatos-de-g3) · [Consigna, p. 3](../docs/RAG/tp3.pdf)
@@ -156,4 +158,4 @@ Guardar por caso las fuentes y sus hashes, los rankings, los chunks enviados, el
 
 **Ajuste del informe.** Se probaron dos corridas con los mismos contextos de `k=7`. La variante eliminó una cita inexistente en Razonamiento y corrigió la etiqueta de data poisoning, con una baja de 5/6 a 4/6 en estados correctos entre ambos casos. Se conserva el prompt de G1 y se agrega al informe el aviso para IDs inexistentes. [Comparación y auditoría](ejercicio4/evaluacion/ajuste_prompt_informe.md)
 
-**Siguiente paso.** Conectar el corpus completo al comando de objetivo y MP3 y verificar el recorrido de audio a informe con `k=7` y diez candidatos por consulta.
+**Cierre técnico.** Se conectó el corpus completo al comando de objetivo y MP3 con `--corpus completo`. El Caso 04 de Tokenización verificó el recorrido desde Whisper hasta el informe, con diez resultados por consulta, reranking y `k=7`. El informe detectó la omisión de los IDs y acertó 2/3 estados, con todas sus referencias localizables. Se mantienen el corpus, el prompt y la configuración de recuperación como referencia de entrega. [Prueba de punta a punta](ejercicio4/evaluacion/cierre_caso_04_mp3.md)

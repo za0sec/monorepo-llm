@@ -87,6 +87,10 @@ El primer piloto del ejercicio 4 incorporó tres apuntes y completó la comparac
 
 El corpus `openai_e4_completo` ya contiene los 1.163 chunks de texto anteriores y 321 de las 105 diapositivas. Sigue conectarlo al evaluador y comparar valores de `k` con el corpus fijo. [Carga y verificación](roadmap_ejercicio4.md#carga-de-las-105-diapositivas)
 
+Sobre `openai_e4_completo` se compararon tres cortes del mismo ranking para el Caso 01. Se conserva `k=7` como referencia y sigue comparar el número de candidatos por consulta. [Resultados del ejercicio 4](ejercicio4/evaluacion/caso_01_k_completo.md)
+
+En el contraste posterior, diez resultados por consulta llevaron la fórmula al top 7. El corte `k=8` acertó cuatro de cinco estados con menos tokens que `k=12`. Sigue validar esa configuración con otro objetivo. [Contraste de búsqueda ampliada](ejercicio4/evaluacion/caso_01_k_completo.md#diez-candidatos-por-consulta)
+
 [ej1]: ejercicio1/Grupo03-ej1-TP3.md
 [archivo]: recorrido_experimental.md
 [bitacora]: ejercicio2/experimentos.md

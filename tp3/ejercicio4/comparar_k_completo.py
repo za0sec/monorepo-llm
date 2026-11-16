@@ -1,0 +1,144 @@
+"""Compara distintos cortes de un solo ranking para el Caso 01."""
+
+import argparse
+from hashlib import sha256
+from pathlib import Path
+
+import chromadb
+from chromadb.config import Settings
+
+from comparar_apuntes import VECINOS
+from comparar_embeddings import MODELO_OPENAI, obtener_vectores
+from evaluar_video import SNAPSHOT
+from generar_g1 import CARPETA as CARPETA_E2
+from generar_g1 import armar_mensajes, generar_gpt41, guardar_informe, guardar_json
+from indexar_diapositivas import CARPETA, INDICE_I4, REPO, leer, leer_chunks_base
+from preparar_transcripcion import leer_vtt
+from recuperar_g2 import cliente_openai, consultar_vectores
+from recuperar_g3 import consultas_expandidas, expandir, intercalar
+from rerankear_g4 import reordenar
+
+
+CORTES = (7, 8, 10, 12)
+MANIFIESTO = CARPETA / "data/carga_completa.json"
+
+
+def abrir_corpus():
+    m = leer(MANIFIESTO)
+    base = REPO / m["manifiesto_base"]
+    if sha256(base.read_bytes()).hexdigest() != m["sha256_manifiesto_base"]:
+        raise ValueError("Cambió el manifiesto de texto del corpus completo.")
+    i4 = (INDICE_I4 / "ranking.json").read_bytes()
+    chunks = leer_chunks_base(i4, leer(base)) + m["chunks_diapositivas"]
+    por_id = {c["id"]: c for c in chunks}
+    ruta = INDICE_I4 / "chroma"
+    if not (ruta / "chroma.sqlite3").is_file():
+        raise ValueError("Falta la base persistente de Chroma.")
+    db = chromadb.PersistentClient(path=str(ruta), settings=Settings(anonymized_telemetry=False))
+    coleccion = db.get_collection(m["coleccion"], embedding_function=None)
+    if (set(coleccion.get(include=[])["ids"]) != por_id.keys()
+            or len(chunks) != len(por_id) or len(chunks) != m["conteo"]["total"]
+            or coleccion.configuration["hnsw"]["space"] != m["distancia"]):
+        raise ValueError("La colección no coincide con el corpus registrado.")
+    return coleccion, por_id, m
+
+
+def preparar_ranking(salida, caso, coleccion, por_id, m, vecinos_por_consulta, control):
+    ruta = salida / "ranking.json"
+    huella = sha256(MANIFIESTO.read_bytes()).hexdigest()
+    if control and (control["sha256_manifiesto"], control["configuracion"], control["reranker"]["revision"]) != (
+        huella, caso, SNAPSHOT.name,
+    ):
+        raise ValueError("El control corresponde a otro corpus, objetivo o reranker.")
+    expansion_control = control["expansion"] if control else None
+    if ruta.exists():
+        previo = leer(ruta)
+        if (previo["sha256_manifiesto"], previo["configuracion"], previo["reranker"]["revision"]) != (
+            huella, caso, SNAPSHOT.name,
+        ) or previo["resultados_por_consulta"] != vecinos_por_consulta:
+            raise ValueError("El ranking guardado pertenece a otra configuración.")
+        if expansion_control and previo["expansion"] != expansion_control:
+            raise ValueError("El ranking guardado usa otra expansión.")
+        return previo
+    cliente = cliente_openai(timeout=120)
+    ruta_expansion = salida / "expansion.json"
+    expansion = expansion_control
+    if expansion is None:
+        expansion = leer(ruta_expansion) if ruta_expansion.is_file() else expandir(cliente, caso)
+    consultas = consultas_expandidas(caso, expansion)
+    guardar_json(ruta_expansion, expansion)
+    vectores, uso = obtener_vectores(cliente, MODELO_OPENAI, consultas)
+    if any(uso[c] != m["uso_embeddings"][c] for c in ("modelo_respuesta", "dimensiones")):
+        raise ValueError("Los embeddings de consulta deben coincidir con el corpus completo.")
+    vecinos = consultar_vectores(coleccion, por_id, vectores, vecinos_por_consulta)
+    if control:
+        cantidad_control = control["resultados_por_consulta"]
+        prefijos = [[c["id"] for c in ranking[:cantidad_control]] for ranking in vecinos]
+        ids_control = [[c["id"] for c in r["resultados"]] for r in control["rankings"]]
+        if prefijos != ids_control:
+            raise ValueError("Los prefijos de Chroma no reprodujeron los resultados del control.")
+    candidatos = intercalar(vecinos)
+    orden, auditoria = reordenar(caso["objetivo"], candidatos, SNAPSHOT)
+    resultado = {
+        "configuracion": caso, "sha256_manifiesto": huella, "distancia": m["distancia"],
+        "expansion": expansion, "uso_embeddings": uso, "resultados_por_consulta": vecinos_por_consulta,
+        "rankings": [{"consulta": q, "resultados": r} for q, r in zip(consultas, vecinos)],
+        "reranker": auditoria, "orden_final": orden,
+    }
+    guardar_json(ruta, resultado)
+    return resultado
+
+
+def comparar(salida, vecinos_por_consulta, control):
+    coleccion, por_id, m = abrir_corpus()
+    config = leer(CARPETA_E2 / "g1/caso.json")
+    caso = {k: config[k] for k in ("objetivo", "nivel", "gpt41", "max_tokens_salida")}
+    caso["coleccion"] = coleccion.name
+    ruta_vtt = REPO / config["video_vtt"]
+    vtt = ruta_vtt.read_bytes()
+    segmentos = leer_vtt(ruta_vtt, vtt)
+    if len(segmentos) != config["segmentos_video_esperados"]:
+        raise ValueError("El VTT no tiene los segmentos esperados del Caso 01.")
+    video = {f"V{i}": segmento for i, segmento in enumerate(segmentos, 1)}
+    prompt = (CARPETA_E2 / "g1/prompt.md").read_text(encoding="utf-8").rstrip("\n")
+    salida.mkdir(parents=True, exist_ok=True)
+    ranking = preparar_ranking(salida, caso, coleccion, por_id, m, vecinos_por_consulta, control)
+    orden = ranking["orden_final"]
+    ks = [k for k in CORTES if k <= len(orden)]
+    if len(orden) < max(CORTES) and len(orden) not in ks:
+        ks.append(len(orden))
+    print(f"{len(orden)} candidatos únicos. Cortes: {ks}.", flush=True)
+    huella_ranking = sha256((salida / "ranking.json").read_bytes()).hexdigest()
+    for k in ks:
+        carpeta = salida / f"k{k}"
+        carpeta.mkdir(exist_ok=True)
+        clase = {f"C{i}": c for i, c in enumerate(orden[:k], 1)}
+        entrada = {
+            "configuracion_experimental": caso, "k": k, "sha256_ranking": huella_ranking,
+            "sha256_video": sha256(vtt).hexdigest(), "video": video, "clase": clase,
+            "mensajes": armar_mensajes(caso, prompt, clase, video),
+        }
+        ruta = carpeta / "entrada.json"
+        destino = carpeta / "gpt41"
+        if ruta.exists() and leer(ruta) != entrada:
+            raise ValueError(f"La entrada previa de k={k} difiere del ranking o del prompt.")
+        if not ruta.exists():
+            guardar_json(ruta, entrada)
+        if destino.exists():
+            if leer(destino / "corrida.json")["sha256_entrada"] != sha256(ruta.read_bytes()).hexdigest():
+                raise ValueError(f"El informe previo de k={k} corresponde a otra entrada.")
+            continue
+        informe, auditoria = generar_gpt41(entrada)
+        guardar_informe(destino, entrada, ruta.read_bytes(), informe, auditoria)
+        print(f"k={k}: informe guardado ({auditoria['motivo_fin']}).", flush=True)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--salida", type=Path, required=True)
+    parser.add_argument("--vecinos", type=int, default=VECINOS, help="Resultados de Chroma por consulta.")
+    parser.add_argument("--control", type=Path, help="ranking.json con la expansión y los resultados de referencia.")
+    args = parser.parse_args()
+    if args.vecinos < 1:
+        parser.error("--vecinos debe ser positivo.")
+    comparar(args.salida, args.vecinos, leer(args.control) if args.control else None)

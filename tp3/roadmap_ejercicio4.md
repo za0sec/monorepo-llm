@@ -146,4 +146,8 @@ Guardar por caso las fuentes y sus hashes, los rankings, los chunks enviados, el
 
 **Contraste de prompts de visión.** El prompt que pidió pares de origen y destino ordenó el flujo del diagrama, pero volvió a omitir la flecha al bloque específico del decoder. La fórmula mantuvo el puesto 8. Se conserva el prompt anterior para las descripciones. [Resultados por consulta](ejercicio4/evaluacion/piloto_imagenes.md#comparación-de-prompts-de-descripción)
 
-**Siguiente paso.** Conectar `openai_e4_completo` al evaluador y volver a medir la posición de la fórmula y de los demás pasajes al probar distintos valores de `k`.
+**Comparación de k con el corpus completo.** En el Caso 01 quedaron nueve candidatos únicos. Se probaron `k=7`, `k=8` y `k=9` sobre el mismo ranking. Los tres cortes respaldaron dos de cinco criterios y obtuvieron tres estados correctos. Los puestos 8 y 9 repetían evidencia y el fragmento con la fórmula no entró en la búsqueda inicial. [Resultados por criterio](ejercicio4/evaluacion/caso_01_k_completo.md)
+
+**Búsqueda ampliada.** En el Caso 01, traer diez candidatos por consulta elevó los candidatos únicos de 9 a 16 y llevó al primer puesto el apunte que contiene la fórmula del coseno. Con `k=7`, Context Recall subió de 2/5 a 3/5. En el ranking ampliado, `k=8` y `k=12` acertaron cuatro estados, frente a tres con `k=7` y `k=10`. [Resultados por criterio](ejercicio4/evaluacion/caso_01_k_completo.md#diez-candidatos-por-consulta)
+
+**Siguiente paso.** Validar diez candidatos por consulta y los cortes `k=7` y `k=8` con otro objetivo y video.

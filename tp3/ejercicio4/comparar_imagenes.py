@@ -24,6 +24,7 @@ from rerankear_g4 import reordenar
 
 SLIDES = CARPETA / "slides"
 PILOTO = CARPETA / "data/experimentos/piloto_imagenes"
+PILOTO_FORMATOS = CARPETA / "data/experimentos/piloto_diapos_completas"
 PAGINAS = {"clase_01_transformers.pdf": [22, 25, 27, 30, 36], "clase_02_embeddings.pdf": [31, 32, 33]}
 # Recortes x, y, ancho y alto en píxeles al renderizar a 1800 × 1014.
 RECORTES = {"transformers-22": (130, 140, 1518, 658), "embeddings-32": (114, 408, 1576, 442)}
@@ -40,6 +41,14 @@ PROMPT_VISION = (
     "Indica si alguna parte es ilegible y evita agregar información externa."
 )
 PROMPT_FORMATOS = PROMPT_VISION.replace("este recorte de una diapositiva académica", "esta imagen de material académico")
+PROMPT_FLECHAS = PROMPT_FORMATOS.replace(
+    "Si hay un diagrama, indica qué conectan y hacia dónde apuntan las flechas visibles.",
+    "Si hay un diagrama, seguí las flechas visibles desde el inicio hasta la punta. "
+    "Priorizá las que conectan grupos distintos. Escribí esas conexiones en líneas separadas "
+    "con el formato «origen → destino». Si la punta llega a un componente dentro de un grupo, "
+    "nombrá ese componente con su etiqueta exacta y no solo el grupo. "
+    "Si la punta no permite identificar el destino, indicalo.",
+)
 
 
 def renderizar_pagina(archivo, fisica, prefijo, recorte=()):
@@ -185,6 +194,30 @@ def comparar_pagina(salida, piloto):
     evaluar_variantes(salida, insumos["paginas"], variantes, cliente)
 
 
+def comparar_prompt(salida, piloto):
+    insumos = json.loads((piloto / "preparacion.json").read_bytes())
+    if (salida / "chroma").exists():
+        raise ValueError("La comparación requiere una carpeta sin un índice previo.")
+    salida.mkdir(parents=True, exist_ok=True)
+    cliente = cliente_openai(timeout=120)
+    variantes = {"prompt_control": [], "prompt_flechas": []}
+    imagenes = {}
+    for id_, medios in insumos["imagenes"].items():
+        figura = medios["pagina"]
+        ruta_control = piloto / f"{id_}-pagina-descripcion.json"
+        if not ruta_control.is_file():
+            raise ValueError(f"Falta la descripción de control de {id_}.")
+        control = describir(cliente, ruta_control, figura, PROMPT_FORMATOS)
+        copyfile(piloto / figura["archivo"], salida / figura["archivo"])
+        nuevo = describir(cliente, salida / f"{id_}-flechas-descripcion.json", figura, PROMPT_FLECHAS)
+        meta = {campo: figura[campo] for campo in ("fuente", "pagina")}
+        variantes["prompt_control"].append((id_, control, {**meta, "metodo": "descripcion_pagina"}))
+        variantes["prompt_flechas"].append((id_, nuevo, {**meta, "metodo": "descripcion_flechas"}))
+        imagenes[id_] = {**figura, "sha256_control": sha256(ruta_control.read_bytes()).hexdigest()}
+    guardar_json(salida / "preparacion.json", {"paginas": insumos["paginas"], "imagenes": imagenes})
+    evaluar_variantes(salida, insumos["paginas"], variantes, cliente)
+
+
 def evaluar_variantes(salida, paginas, variantes, cliente):
     splitter, contar = crear_splitter()
     base = fragmentar(paginas, splitter, contar)
@@ -221,12 +254,14 @@ def evaluar_variantes(salida, paginas, variantes, cliente):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("accion", choices=("preparar", "comparar", "comparar-pagina"))
+    parser.add_argument("accion", choices=("preparar", "comparar", "comparar-pagina", "comparar-prompt"))
     parser.add_argument("--salida", type=Path, required=True)
-    parser.add_argument("--piloto", type=Path, default=PILOTO, help="Carpeta con el piloto de recortes.")
+    parser.add_argument("--piloto", type=Path, help="Carpeta del piloto que se usa como control.")
     args = parser.parse_args()
     if args.accion == "comparar-pagina":
-        comparar_pagina(args.salida.resolve(), args.piloto.resolve())
+        comparar_pagina(args.salida.resolve(), (args.piloto or PILOTO).resolve())
+    elif args.accion == "comparar-prompt":
+        comparar_prompt(args.salida.resolve(), (args.piloto or PILOTO_FORMATOS).resolve())
     else:
         (preparar if args.accion == "preparar" else comparar)(args.salida.resolve())
 

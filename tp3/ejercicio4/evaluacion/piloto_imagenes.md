@@ -81,3 +81,31 @@ PYTHONPATH=tp3/ejercicio2 .venv/bin/python tp3/ejercicio4/comparar_imagenes.py c
 ```
 
 [Rankings de ambos formatos](../data/experimentos/piloto_diapos_completas/resultados.json) · [Descripción de la página de coseno](../data/experimentos/piloto_diapos_completas/embeddings-32-pagina-descripcion.json) · [Descripción de la página de Transformers](../data/experimentos/piloto_diapos_completas/transformers-22-pagina-descripcion.json)
+
+## Comparación de prompts de descripción
+
+Se reutilizan las dos imágenes de diapositiva completa y las descripciones previas como control. Se cambia únicamente la instrucción sobre diagramas. El modelo debe seguir las flechas desde el inicio hasta la punta, priorizar las conexiones entre grupos y escribir el origen y destino de cada una con las etiquetas de los componentes específicos. Se aplica la misma instrucción a las dos diapositivas y se conservan el modelo, sus parámetros, la instrucción para fórmulas, el texto seleccionable de ocho páginas, las consultas, la pauta, el splitter, el reranker y `k=7`.
+
+> Si hay un diagrama, seguí las flechas visibles desde el inicio hasta la punta. Priorizá las que conectan grupos distintos. Escribí esas conexiones en líneas separadas con el formato «origen → destino». Si la punta llega a un componente dentro de un grupo, nombrá ese componente con su etiqueta exacta y no solo el grupo. Si la punta no permite identificar el destino, indicalo.
+
+### Resultados por consulta
+
+| Consulta | Prompt de control | Prompt de flechas |
+| --- | --- | --- |
+| ¿Cómo se calcula la similitud coseno entre dos embeddings? | Fórmula correcta en el puesto 8. Recall 0/1, Precision 0 %. | Fórmula correcta en el puesto 8. Recall 0/1, Precision 0 %. |
+| ¿Qué bloque conecta el encoder con el decoder? | Relación general en el puesto 1. Recall 0/1, Precision 100 %. | Relación general en el puesto 1. Recall 0/1, Precision 100 %. |
+
+**Transformers, página 22.** El prompt nuevo produjo una lista de pares y describió el flujo interno de las capas. Escribió `ENCODER n → DECODER n` y omitió la flecha diagonal que llega al bloque intermedio de atención multi-cabeza del decoder. La anotación de precisión reconoce el vínculo general como evidencia parcial. El recall queda en cero porque falta el destino específico en la descripción.
+
+**Embeddings, página 32.** La instrucción nueva conservó la fórmula correcta. El chunk con la fórmula volvió a quedar octavo, fuera de los siete seleccionados en ambas variantes.
+
+Cada colección tiene 12 chunks. Se verificó que coinciden las huellas de las imágenes, los ocho chunks base y el top 7 del control anterior. Al reabrir Chroma se comprobaron los textos, los metadatos y los vectores. Las dos descripciones nuevas usaron 2.526 tokens de entrada y 335 de salida. El lote común de embeddings usó 1.423 tokens de entrada.
+
+**Decisión.** Conservar el prompt de control para las descripciones. El formato de pares mejoró la organización del texto, pero dejó la misma evidencia incompleta para las dos consultas. La posición de la fórmula se volverá a medir al probar `k` en el corpus completo.
+
+```bash
+PYTHONPATH=tp3/ejercicio2 .venv/bin/python tp3/ejercicio4/comparar_imagenes.py comparar-prompt \
+  --salida tp3/ejercicio4/data/experimentos/piloto_prompt_flechas_repeticion
+```
+
+[Descripción nueva de Transformers](../data/experimentos/piloto_prompt_flechas/transformers-22-flechas-descripcion.json) · [Descripción nueva de Embeddings](../data/experimentos/piloto_prompt_flechas/embeddings-32-flechas-descripcion.json) · [Rankings de ambos prompts](../data/experimentos/piloto_prompt_flechas/resultados.json)

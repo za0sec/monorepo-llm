@@ -130,4 +130,6 @@ Guardar por caso las fuentes y sus hashes, los rankings, los chunks enviados, el
 
 **Contraste de formato visual.** Con la misma configuración para recorte y diapositiva completa, la fórmula subió del puesto 11 al 8. Ambas variantes obtuvieron Context Recall@7 de 0/2 y Context Precision@7 de 50 %. La descripción de página completa agregó el título y contexto visual, con la fórmula en un chunk separado. [Resultados del contraste](ejercicio4/evaluacion/piloto_imagenes.md#comparación-de-recorte-y-diapositiva-completa)
 
-**Siguiente paso.** Verificar si conservar la fórmula y el título en el mismo chunk mejora su recuperación. Revisar también la descripción de las flechas de los diagramas antes de decidir cómo incorporar esas fuentes al corpus final.
+**Contraste de prompts de visión.** El prompt que pidió pares de origen y destino ordenó el flujo del diagrama, pero volvió a omitir la flecha al bloque específico del decoder. La fórmula mantuvo el puesto 8. Se conserva el prompt anterior para las descripciones. [Resultados por consulta](ejercicio4/evaluacion/piloto_imagenes.md#comparación-de-prompts-de-descripción)
+
+**Siguiente paso.** Completar el corpus con las diapositivas y volver a medir la posición de la fórmula y de los demás pasajes al probar distintos valores de `k`.

@@ -13,8 +13,9 @@ from preparar_transcripcion import REPO, leer_vtt
 CARPETA = Path(__file__).resolve().parent
 DATOS = CARPETA / "data/experimentos/g1"
 CACHE = CARPETA / "data/modelos"
-CITAS = re.compile(r"\[([CV]\d+)\]")
-CITAS_EN_INFORME = re.compile(r"\[([CV]\d+(?:(?:\s*[,;–-]\s*|\s+)[CV]\d+)*)\]")
+IDS_CITA = re.compile(r"\b[CV]\d+\b")
+CITAS_EN_INFORME = re.compile(r"\[(?=[CV]\d+\b)[^\]\n|]+\]|\b[CV]\d+\b")
+GRUPO_CITAS = re.compile(r"[CV]\d+(?:(?:\s*[,;–-]\s*|\s+)[CV]\d+)*")
 
 
 def guardar_json(ruta, datos):
@@ -148,7 +149,7 @@ def ubicar_citas(informe, entrada):
     fuentes = {**entrada["clase"], **entrada["video"]}
 
     def ubicar(cita):
-        id_ = cita[1]
+        id_ = cita[0]
         if id_ not in fuentes:
             return cita[0]
         fuente = fuentes[id_]
@@ -157,12 +158,15 @@ def ubicar_citas(informe, entrada):
             return f"[{id_}, {nombre}p. {fuente['pagina']}]"
         return f"[{id_}, {nombre}{fuente['inicio']}–{fuente['fin']}]"
 
-    ids = {
-        id_
-        for grupo in CITAS_EN_INFORME.findall(informe)
-        for id_ in re.findall(r"[CV]\d+", grupo)
-    }
-    return CITAS.sub(ubicar, informe), sorted(ids - fuentes.keys())
+    def ubicar_referencia(cita):
+        texto = cita[0]
+        ids = texto[1:-1] if texto.startswith("[") else texto
+        if not GRUPO_CITAS.fullmatch(ids):
+            return texto
+        return IDS_CITA.sub(ubicar, ids)
+
+    ids_invalidos = sorted(set(IDS_CITA.findall(informe)) - fuentes.keys())
+    return CITAS_EN_INFORME.sub(ubicar_referencia, informe), ids_invalidos
 
 
 def guardar_informe(destino, entrada, contenido, informe, metadatos):
@@ -171,6 +175,12 @@ def guardar_informe(destino, entrada, contenido, informe, metadatos):
         referencias = ", ".join(f"`{id_}`" for id_ in invalidas)
         informe_ubicado = (
             f"> **Requiere revisión.** Hay citas sin fuente en la entrada ({referencias}).\n\n"
+            + informe_ubicado
+        )
+    else:
+        informe_ubicado = (
+            "> **Verificá las citas.** Este informe se generó automáticamente. "
+            "Abrí las fuentes para confirmar que respaldan lo que dice el informe.\n\n"
             + informe_ubicado
         )
     destino.mkdir()

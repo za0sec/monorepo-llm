@@ -1,0 +1,1662 @@
+WEBVTT
+
+1
+00:00:03.410 --> 00:00:22.260
+Marina Fuster: Entonces vamos a charlar un pelín de algunas cosas específicas de lo que son estas 3 etapas, aunque ya medio que fuimos cubriendo lo que es nightsers antes lo repasamos, pero ya espero que a todos les haya quedado claro. El tema que son
+
+2
+00:00:22.280 --> 00:00:45.309
+Marina Fuster: lo importante es la licencia de vocabulario dividir en las unidades de procesamiento. Y suele estar este estas 3 cosas en cover de Cover y el train a ver si aparece con esa nomenclatura. Pero no es más que las funciones que van de una cosa a la otra. Y el train si bien no es Traindy, un modelo se refiere al proceso mediante el cual se va a definir ese vocabulario que ahí lo vamos a ver.
+
+3
+00:00:45.720 --> 00:01:02.929
+Marina Fuster: Estos son un ejemplo. Bien, ¿cuál es la diferencia con el medio? Esto también se debería haber quedado más o menos claro. El tokenizer en realidad es partir en unidades más pequeñas. Mientras que el algoritmo de Meding sabemos que es este vector denso que busca capturar cierta representación de interés.
+
+4
+00:01:02.930 --> 00:01:09.480
+Marina Fuster: Y lo que me interesa entrar acá con Cachito es el tema de tipos de tokens. Yo no sé si se ve o quedó muy chiquito.
+
+5
+00:01:09.540 --> 00:01:29.360
+Marina Fuster: Tenemos los toques básicos que son aquellos que representan. Las unidades del corpus de texto no pueden ser palabras, son palabras, etcétera. Y ahí tenemos los tokens especiales o reservados que del lado del desarrollador o de quien modela el El Lem
+
+6
+00:01:29.400 --> 00:01:47.279
+Marina Fuster: los usa para cosas especiales. Si, por ejemplo, acá abajo hay un ejemplo de si yo le quiero definir qué cosas son parte del de como el sistema? ¿qué cosas son las que dice el usuario que cosas son las que dice el asistente. Este es de 1 de Gpt, 4
+
+7
+00:01:47.280 --> 00:02:03.250
+Marina Fuster: medio guiejardo. Pero fíjense que tiene el instart de inputness. ¿no? Y tiene Ok, la parte de system tenés Esto la parte de user tenés esto, y así sucesivamente. Ok, que otros tokens les parecen especiales, que son importantes
+
+8
+00:02:06.950 --> 00:02:09.799
+Marina Fuster: e off en no faena perfecto.
+
+9
+00:02:10.590 --> 00:02:13.270
+Marina Fuster: ¿qué otra cosa más la que más se pueden usar.
+
+10
+00:02:21.820 --> 00:02:26.519
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Puede haber un token que te diga este Prompt tiene un archivo adjunto.
+
+11
+00:02:30.610 --> 00:02:41.269
+Marina Fuster: Como poder. Podrías, o sea, puedes hacer lo que quieras con los toques especiales, porque lo por qué lo decís, o sea, ¿qué te estás imaginando.
+
+12
+00:02:43.570 --> 00:02:49.140
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y porque el el archivo también se va a tener que convertir en tokens. De alguna forma tengo que saber dónde empieza y dónde termina.
+
+13
+00:02:51.440 --> 00:03:06.019
+Marina Fuster: Bien. Fíjate que vos decís el archivo, por por ejemplo, cuando usas ni idea, chiquitín, chat y le subís un archivo o cuando usaste, no sé de curso o no lo que venga y le subís un archivo. Y lo
+
+14
+00:03:06.580 --> 00:03:22.130
+Marina Fuster: bien perfecto. Ese caso eso me interesa, porque todo lo que es tools y cosas que puede ejecutar el agente también tiene que estar delimitado una forma, o sea yo como agente, como como sabe, el programa que de repente tenés que
+
+15
+00:03:22.220 --> 00:03:34.740
+Marina Fuster: ir a llamar una Api de Google y buscar algo o ejecutar un script o leer un documento o etcétera. Si todas esas cosas en lo que es el output
+
+16
+00:03:34.740 --> 00:03:42.289
+Marina Fuster: del modelo se pueden ir delimitando con cosas especiales que son parte del entrenamiento para que el modelo sepa cuándo las tiene que usar.
+
+17
+00:03:42.290 --> 00:03:58.280
+Marina Fuster: Sí, Entonces, al principio, los especiales o reservados funcionaban un poco más como esto, separadores Endo File delimitar bien que partes del usuario que partes del asistente que eso, aparte, daba lugar a que se dieran ciertos tipos de ataques.
+
+18
+00:03:58.280 --> 00:04:02.580
+Marina Fuster: Pero hoy por hoy, el uso es bastante más extendido
+
+19
+00:04:02.670 --> 00:04:11.949
+Marina Fuster: porque los modelos se volvieron también más capaces. Sí, entonces la parte de tokens especiales es importante.
+
+20
+00:04:12.840 --> 00:04:16.720
+Marina Fuster: ¿cuál es el algoritmo de toquenización
+
+21
+00:04:17.060 --> 00:04:28.260
+Marina Fuster: como inicial que se usa y el mismo. El de Google tiene la misma idea por detrás, aunque aunque sea un poquito distinto. Se llama Dp E que es By Pair Encoring.
+
+22
+00:04:28.490 --> 00:04:44.089
+Marina Fuster: que en la parte de entrenamiento va a tratar de armar nuevos toques de acuerdo a la frecuencia de aparición de esos toques. Entonces.
+
+23
+00:04:44.700 --> 00:04:55.849
+Marina Fuster: ¿cómo es que funciona? Y después vemos un par de cositas que ocurren? Supóngase que yo tengo un corpus de texto. Mi corpus de texto va a ser esta frase. Hola, hoy tengo mucha hambre. Si
+
+24
+00:04:55.850 --> 00:05:05.619
+Marina Fuster: lo que termina ocurriendo es que yo esto lo termino pasando a U, T, a Fate, Si, entonces que son del 0 a los 55.
+
+25
+00:05:05.620 --> 00:05:14.850
+Marina Fuster: Entonces fíjense, esta va a ser la codificación, ésta va a ser la secuencia la del final. Entonces lo que hace este algoritmo es ir fijándose
+
+26
+00:05:14.910 --> 00:05:25.560
+Marina Fuster: cuáles son las los pares que aparecen más frecuentemente. Si es como que va a barrer esta esta frase o este corpus.
+
+27
+00:05:25.740 --> 00:05:44.910
+Marina Fuster: la oración, y se va a fijar 72, 11 aparece una vez 100, 11 100, 8, aparece bla, bla, bla. Y por ejemplo, acá como tengo muchos emojis de hamburguesa. La la combinación, 100, 59 141 aparece más que cualquier otra.
+
+28
+00:05:45.040 --> 00:05:47.289
+Marina Fuster: No lo conté, pero creo que sí.
+
+29
+00:05:47.440 --> 00:06:03.699
+Marina Fuster: Entonces lo que va a hacer es merojear esos 2. Sí, entonces 159 141 pasa a convertirse en 1 nuevo, 256. Yo tenía el 0. Al 255 Okay le agregó este nuevo toque a mi vocabulario y lo que
+
+30
+00:06:04.430 --> 00:06:06.930
+Marina Fuster: es reemplazar
+
+31
+00:06:06.950 --> 00:06:19.009
+Marina Fuster: en ese corpus, fíjense que me empezaron a aparecer los 256 donde antes, había otros. Y eso es lo que yo voy a hacer repetidas veces, no el mismo procedimiento que hice. Acá
+
+32
+00:06:19.010 --> 00:06:37.000
+Marina Fuster: lo vuelvo a hacer. Va a ser otro. El par que más veces me aparezca. Es más, lo más probable es que sea 2, 56, 148, Porque, bueno, esto sigue siendo el emoji, y lo vuelvo a reemplazar. Y así sucesivamente. Sí, Entonces, de acuerdo a las frecuencias que yo voy teniendo. En algún momento voy a.
+
+33
+00:06:37.000 --> 00:06:37.319
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, Sí.
+
+34
+00:06:38.540 --> 00:06:39.370
+Marina Fuster: Sí.
+
+35
+00:06:40.040 --> 00:06:43.169
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Cómo pasas del U. T, F, Ocho a los números de abajo de todo.
+
+36
+00:06:44.210 --> 00:06:45.090
+Marina Fuster: A estos.
+
+37
+00:06:45.600 --> 00:06:46.180
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+38
+00:06:47.290 --> 00:06:51.930
+Marina Fuster: O sea, vos u T, F, Ocho tenés del 0 al 2, 55, no.
+
+39
+00:06:52.660 --> 00:06:56.460
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: ¿son los números. Sí, Sí, está bien.
+
+40
+00:06:56.460 --> 00:07:02.029
+Marina Fuster: Sí, Sí, Sí, sí. Lo que pasa es un el índice entre ese rango. Nada más.
+
+41
+00:07:03.290 --> 00:07:12.279
+Marina Fuster: Bien, entonces esto es lo que yo voy a ir haciendo sucesivas veces hasta que de repente yo. Bueno, basta. Este es mi
+
+42
+00:07:12.680 --> 00:07:14.429
+Marina Fuster: vocabulario y fin.
+
+43
+00:07:14.770 --> 00:07:15.970
+Marina Fuster: ¿pero ¿qué pasa.
+
+44
+00:07:16.160 --> 00:07:23.799
+Marina Fuster: Si bien esto funciona muy bien en la práctica, vamos a abrir esto, trae bastantes
+
+45
+00:07:24.140 --> 00:07:34.660
+Marina Fuster: cosas e ineficiencias que después se tienen que resolver en el modelo? ¿no? Porque fíjense la palabra. Egg: No
+
+46
+00:07:34.770 --> 00:07:51.249
+Marina Fuster: que forma un solo, toquen, ¿sí? ¿pero ¿qué pasa cuando yo hago el o hago o hago el es el mismo, si fíjense que, como el merge de distintos
+
+47
+00:07:51.310 --> 00:07:55.650
+Marina Fuster: caracteres, se va haciendo por frecuencia en el corpus.
+
+48
+00:07:56.670 --> 00:08:15.220
+Marina Fuster: Esto después, cuando yo lo corro en mi data, es común para cosas que significan exactamente lo mismo. Yo voy a tener distintos toques. Si entonces el modelo después tiene que aprender, que esto es lo mismo que esto, que es lo mismo, que esto, que es lo mismo que esto sí cuando aparezca en un contexto, Si yo digo hello
+
+49
+00:08:15.580 --> 00:08:25.929
+Marina Fuster: Angel, no todo esto cuando yo esté calculando atención y etcétera, etcétera. Tengo que modelar que este token es lo mismo que estos 2,
+
+50
+00:08:26.130 --> 00:08:38.880
+Marina Fuster: o creo que son 3. En realidad sí que estos 3 o que estos 2 de acá y así sucesivamente. Y esto no pasa solamente con esto, sino con un montón de cosas, por ejemplo.
+
+51
+00:08:39.669 --> 00:08:56.849
+Marina Fuster: si se si se acuerdan, no sé si los llegaron a usar los modelos más viejos, pero todo lo que era programar. Fíjense que si yo hago una función en Python, este es un 2, 3, 4 de, no sé hello
+
+52
+00:08:56.930 --> 00:09:01.209
+Marina Fuster: X, unos nombres buenísimos junto, 3, 4, 5, 6, 7, 8
+
+53
+00:09:01.390 --> 00:09:06.790
+Marina Fuster: X. Fíjense. Todos los tokens que yo me estoy comiendo para
+
+54
+00:09:07.350 --> 00:09:12.970
+Marina Fuster: una función de 2 líneas, y todo esto después se tiene que calcular la tensión. Entonces.
+
+55
+00:09:13.390 --> 00:09:30.979
+Marina Fuster: más allá de lo que venga a ser el aprox de bueno, voy merciando de acuerdo a la frecuencia. También. A medida que avanzaron, se empiezan a tomar decisiones de diseño, como, por ejemplo, todos estos espacios se calculan juntos si empiezan a representar un único toque. Si yo pongo 1 más moderno.
+
+56
+00:09:31.330 --> 00:09:33.099
+Marina Fuster: creo que este es del 4.
+
+57
+00:09:33.440 --> 00:09:42.510
+Marina Fuster: No estoy segura. Bueno, fíjense que esto que venía a hacer todos estos espacios, pasó a ser un único token o 2 algo así.
+
+58
+00:09:43.160 --> 00:09:57.560
+Marina Fuster: Okay. Entonces empiezan a mejorar otros aspectos como lo que son tareas de programación, entonces esta parte es full importante para la performance Downstream de lo que a mí me interesa
+
+59
+00:09:58.310 --> 00:09:59.840
+Marina Fuster: alguna duda con esto
+
+60
+00:10:02.950 --> 00:10:04.909
+Marina Fuster: más o menos como funciona por atrás.
+
+61
+00:10:07.940 --> 00:10:09.690
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No.
+
+62
+00:10:10.460 --> 00:10:15.779
+Marina Fuster: Bien. Perfecto. Entonces, acá. Para que se den una idea de qué es lo que se termina haciendo por atrás.
+
+63
+00:10:15.930 --> 00:10:32.070
+Marina Fuster: Eso es lo que vimos Recién Esto se los dejo porque son algunas aclaraciones de lo que es el La parte de toquenización. Es lo que estábamos recién que sí te puede pasar, que son muchas variaciones de la misma palabra, y eso después lo tenés que modelar. Entonces estás
+
+64
+00:10:32.070 --> 00:10:44.069
+Marina Fuster: de alguna forma desperdiciando capacidad. Y por otro lado, algo que sí empezó a aparecer son lo que le llamaron Glitch Tokens que lo que terminaba pasando es que
+
+65
+00:10:44.640 --> 00:10:50.989
+Marina Fuster: ocasionaban comportamientos raros en el modelo. ¿y
+
+66
+00:10:51.650 --> 00:10:56.520
+Marina Fuster: qué creen que puede estar pasando acá por detrás? ¿qué les parece que quizás
+
+67
+00:10:58.770 --> 00:11:01.189
+Marina Fuster: ocurrió, o sea, viendo lo que vimos
+
+68
+00:11:02.090 --> 00:11:05.920
+Marina Fuster: de cómo es el modelo y cómo es el proceso de tokenización.
+
+69
+00:11:07.340 --> 00:11:13.260
+Marina Fuster: Y de paso, Me tomo un mate que se les ocurre.
+
+70
+00:11:15.230 --> 00:11:23.079
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y son tokens que se mapean a otras cosas del vocabulario. Son palabras que se mapean a palabras del vocabulario que no son.
+
+71
+00:11:25.980 --> 00:11:31.349
+Marina Fuster: ¿quieres ser un pelín más específico? ¿a qué le llamaste? Se mapeen.
+
+72
+00:11:31.850 --> 00:11:36.449
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, son palabras del lenguaje natural
+
+73
+00:11:36.590 --> 00:11:39.590
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: que después el sistema de gasto que Niza
+
+74
+00:11:39.710 --> 00:11:45.170
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: y las convierte en fragmentos de vocabulario que no tienen nada que ver con el significado real de la palabra.
+
+75
+00:11:47.440 --> 00:11:49.489
+Marina Fuster: O sea, vos. Lo que me decís es que, por ejemplo.
+
+76
+00:11:49.730 --> 00:11:55.050
+Marina Fuster: esto que es solid ball magical que.
+
+77
+00:11:55.050 --> 00:11:58.750
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No terminan de distribuir, no terminan nada.
+
+78
+00:11:59.980 --> 00:12:00.580
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Mhm.
+
+79
+00:12:00.580 --> 00:12:02.450
+Marina Fuster: Vos decís que.
+
+80
+00:12:02.480 --> 00:12:07.339
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Que se mapean. Una palabra distinta a eso, a la que yo, a la que debería ser.
+
+81
+00:12:08.870 --> 00:12:15.440
+Marina Fuster: Igual. Hay una salvedad. Ojo que en
+
+82
+00:12:16.090 --> 00:12:22.059
+Marina Fuster: no es que vos puedas a través del elencoude del tokenizador.
+
+83
+00:12:23.310 --> 00:12:26.860
+Marina Fuster: No es que vos vayas directamente a mapearlo
+
+84
+00:12:27.010 --> 00:12:30.909
+Marina Fuster: a 1 que no tiene nada que ver, ¿no? O sea, si yo.
+
+85
+00:12:31.070 --> 00:12:35.870
+Marina Fuster: por ejemplo, o sea, vos, lo que estás diciendo, porque por ahí no no estoy entendiendo bien a lo que
+
+86
+00:12:36.020 --> 00:12:46.359
+Marina Fuster: Mhm. Supongo salir de Cold Magic Card, No, que es que se hace 1 solo.
+
+87
+00:12:47.600 --> 00:12:51.000
+Marina Fuster: Es un solo toque y se mapea a este token.
+
+88
+00:12:51.110 --> 00:12:53.870
+Marina Fuster: No es que va a parar otros tokens
+
+89
+00:12:58.380 --> 00:13:01.020
+Marina Fuster: cuando hago como de texto a Token.
+
+90
+00:13:01.720 --> 00:13:09.450
+Marina Fuster: Es más, What's discreen, No, así es como se mapea.
+
+91
+00:13:09.770 --> 00:13:18.860
+Marina Fuster: como se se asocia ahí. Puso Julieta se termina asociando a tokens que no tienen nada que ver, te referías a esto o te referís a otra cosa.
+
+92
+00:13:20.450 --> 00:13:25.039
+JULIETA TECHENSKI: O sea, lo que yo pensé que pasaba, es como que
+
+93
+00:13:25.890 --> 00:13:35.129
+JULIETA TECHENSKI: con esto de bueno, esta palabra signifi es lo mismo que esto. Lo que lo que pensé que estaba pasando. Pero bueno, creo que no por lo que dijiste recién.
+
+94
+00:13:35.140 --> 00:13:46.459
+JULIETA TECHENSKI: pero lo que terminé pensando es eso de que, por ejemplo, una palabra así erróneamente se termina pensando y estás preguntando, distribute. No sé qué era distribución, no me acuerdo, que era.
+
+95
+00:13:46.820 --> 00:13:50.199
+Marina Fuster: Distrito, Sí, no importa distribuido todo lo que venga a hacer bien.
+
+96
+00:13:52.030 --> 00:13:59.479
+Marina Fuster: o sea, va va un poco más por ahí, fíjense que ¿quién es el que termina pensando que esta palabra refiere a eso.
+
+97
+00:13:59.630 --> 00:14:06.279
+Marina Fuster: El modelo, o sea, el que hace la generación de texto es el que termina procesando este Token.
+
+98
+00:14:06.540 --> 00:14:14.930
+Marina Fuster: Soy Gol Magical. No puede ser precisamente que no esté en el set de entrenamiento de que el set de entrenamiento de quién no
+
+99
+00:14:22.290 --> 00:14:39.930
+Marina Fuster: del modelo. Bien. Y ahí hay algo muy interesante, que es que el token iser no tiene el mismo conjunto de entrenamiento que el modelo Sí, más allá de que, igual esto podría ser un problema igual si el Token estuviera en el modelo, pero ahí está. Pero muy poquito
+
+100
+00:14:40.400 --> 00:14:53.319
+Marina Fuster: te puede quedar sin entrenar o muy poco entrenado. O sea, suponete que vos en lo que es el tokenizador. Tenés un conjunto que no es tan representativo de lo que es. Después tu modelo.
+
+101
+00:14:53.430 --> 00:15:02.309
+Marina Fuster: Esto te va a quedar sin entrenar. Y te va a terminar diciendo cualquier cosa, si es más en lo que es el espacio de
+
+102
+00:15:02.320 --> 00:15:14.540
+Marina Fuster: de de tokens. Cuando los ves como en medios, hay una región donde hay un montón de tokens que hacen que el modelo dispare para cualquier lado. ¿sí? Porque precisamente pasa esto
+
+103
+00:15:14.610 --> 00:15:29.140
+Marina Fuster: son tokens que no se entrenaron tanto, que quizá estaban muy presentes en lo que era la parte del tokenizer. Y eso después no se traduce en lo que es el Corpus de Internet. Si este es un ejemplo, ahí les dejé un link si les interesa chusmear
+
+104
+00:15:29.140 --> 00:15:37.270
+Marina Fuster: que hay más. Pero bueno, dan como un montón de lugar a situaciones como graciosas, esto pasa cada vez menos.
+
+105
+00:15:37.530 --> 00:15:52.110
+Marina Fuster: Pero bueno, es algo natural de la tokenización de que vos vas a tener regiones que no están tan exploradas cuando pasas a entrenar con el corpus. Y es parte de la explotación que se usa para lograr que el modelo no se comporte como debería
+
+106
+00:15:52.770 --> 00:16:10.469
+Marina Fuster: bien esto para ver un poquito, cosas que pueden causar problemas. Y esto un poquito para cerrar lo que es organización traídos de lo que viene a ser agrandar el vocabulario en verde es lo que es a favor en rojo. Es lo que viene a ser
+
+107
+00:16:10.470 --> 00:16:15.040
+Marina Fuster: un poco en contra de agrandarlo. Sí
+
+108
+00:16:15.430 --> 00:16:27.370
+Marina Fuster: medio que esto ya lo tomamos casi todo, excepto el último punto de la parte roja, que es que el modelo tiene menos tiempo para pensar con muchísimas comillas, pero lo retomamos en la clase 4.
+
+109
+00:16:27.470 --> 00:16:31.610
+Marina Fuster: Creo que es la 4, lo cambiamos. Así que no estoy segura bien.
+
+110
+00:16:31.790 --> 00:16:35.980
+Marina Fuster: ¿Alguna pregunta de eso? Ah, mira, justo acá como usuario. ¿qué me conviene.
+
+111
+00:16:36.630 --> 00:16:39.430
+Marina Fuster: ¿Qué les conviene a ustedes más de unos toques.
+
+112
+00:16:52.200 --> 00:16:56.019
+Marina Fuster: algo que prefieran de más menos tokens.
+
+113
+00:16:58.190 --> 00:17:06.359
+Marina Fuster: voy a darle a mi modelo que le dé billones de palabras, un tipo de subcontrata.
+
+114
+00:17:06.380 --> 00:17:22.659
+Marina Fuster: Bueno, acá para adelantar un poquito, porque se me va la hora, les conviene, o sea, en general, a 1 le conviene menos tokens. Por eso hay muchos quilomas con el tema de cambio de idioma, porque los idiomas que están poco representados consumen muchos tokens Es mucho más caro usarlo.
+
+115
+00:17:22.660 --> 00:17:37.809
+Marina Fuster: Y bueno, y en general, por eso, cuando ustedes le hablan a un agente o algo, suelen funcionar mejor en inglés, todo lo que es código. El El lenguaje predominante es en inglés. Entonces, nada. Esta es la razón por la cual.
+
+116
+00:17:37.880 --> 00:17:41.179
+Marina Fuster: en esos lenguajes es que funcionan mejor los modelos.
+
+117
+00:17:41.240 --> 00:17:48.560
+Marina Fuster: porque la toquenización y la forma de manejar las palabras tiene que ver con el dataset de la tokenización.
+
+118
+00:17:48.620 --> 00:17:53.109
+Marina Fuster: que nunca está muy explícito. Entonces nadie sabe muy bien qué es lo que hay ahí adentro
+
+119
+00:17:53.110 --> 00:18:13.139
+Marina Fuster: para investigar y que lo chus meen, si les interesa, esto es un poco cómo se buscan definir los tamaños de vocabulario, que siempre fue muy como obscuro. Y esto salió hace un par de años para uniformar un poco. Y por otro lado, nosotros mismos que pasamos a up fake, y después iban marchando los tokens.
+
+120
+00:18:13.140 --> 00:18:22.379
+Marina Fuster: Bueno, meta sacó una arquitectura donde argumenta que ese proceso de tokenización, que da lugar a muchos problemas
+
+121
+00:18:22.460 --> 00:18:28.530
+Marina Fuster: no es lo mejor y que directamente puedes usar Youtube y face y hacer algo del lado del modelo al que le interesa. Lo pueden cambiar.
+
+122
+00:18:28.900 --> 00:18:31.619
+Marina Fuster: Bien, ahora vamos a pasar a lo que es emerys.
+
+123
+00:18:32.360 --> 00:18:50.210
+Marina Fuster: Esto ya lo fuimos viendo con la motivación cómo representar el significado de una palabra. Voy a usar palabras como reemplazo de unidad lingüística, Puede ser palabra, documento, su palabra, etcétera, etcétera. Me interesan un montón de cosas que caen bajo un campo que se llama lexical Semántics.
+
+124
+00:18:50.480 --> 00:18:57.440
+Marina Fuster: Y lo que es Vectores Matics, que es como este precursor de Mains surge de 2 ideas
+
+125
+00:18:57.940 --> 00:19:08.759
+Marina Fuster: que la primera sigue motivando, lo que es la mayoría de los algoritmos de embering inclusive los modernos que lo que dice es You Know a World by the Company y Tips.
+
+126
+00:19:09.100 --> 00:19:16.180
+Marina Fuster: Esta frase, que son famosas, pero prácticamente lo único que dice es que es muy probable de que vos puedas entender
+
+127
+00:19:16.260 --> 00:19:21.670
+Marina Fuster: la palabra de la que estás hablando. Viendo el contexto, no una ventana al contexto.
+
+128
+00:19:21.690 --> 00:19:24.370
+Marina Fuster: Eso por un lado, y por el otro.
+
+129
+00:19:24.370 --> 00:19:43.090
+Marina Fuster: tenemos el primer como experimento donde este señor Osgood decidió usar un vector en R 3 para representar palabras. Si esto antes se hacía a mano. Quien decía Valencia Araus sabe que no sé a qué refiere, y Dominals eran humanos que coreaban del 1 al 10.
+
+130
+00:19:43.160 --> 00:19:52.490
+Marina Fuster: Yo hacía alguna manipulación con esos números. Llamémosle el promedio o lo que fuera. Y ese vector era mi palabra
+
+131
+00:19:52.630 --> 00:19:53.590
+Marina Fuster: Josh.
+
+132
+00:19:54.120 --> 00:19:56.100
+Marina Fuster: Pero después teníamos
+
+133
+00:19:56.100 --> 00:20:15.640
+Marina Fuster: ese. Es como un ejemplo muy pequeñito. Después empezaron a aparecer las primeras implementaciones. Por ejemplo, yo podía querer tener vectores para representar documentos en el espacio, ¿no? Entonces, ¿qué hacía? Me fijaba todas las palabras que estaban en ese documento las contaba. Y esa era la representación de mi documento.
+
+134
+00:20:15.640 --> 00:20:18.550
+Marina Fuster: o puede hacer lo mismo con palabras.
+
+135
+00:20:18.960 --> 00:20:29.229
+Marina Fuster: Me fijaba en un corpus de texto. No se definía que mi contexto eran 4: la ventana de 4 4 hacia atrás. Cuatro hacia delante me fijo, palabras aparecen juntas.
+
+136
+00:20:29.400 --> 00:20:32.310
+Marina Fuster: cuáles no. Y me quedan estas matrices.
+
+137
+00:20:32.610 --> 00:20:38.340
+Marina Fuster: Y el chiste era que si yo veía estos vectores en el espacio.
+
+138
+00:20:38.340 --> 00:20:46.970
+Marina Fuster: el ángulo entre esos vectores. Hablamos de esto como medida de similitud. Me podría decir que
+
+139
+00:20:46.970 --> 00:21:00.349
+Marina Fuster: qué palabras por ahí eran parecidas o no. Fíjense acá. Que digital e information las toman como muy parecidas, porque el ángulo es muy chiquito, a pesar de que information aparece muchísimas más veces Por eso la magnitud es más grande.
+
+140
+00:21:00.470 --> 00:21:03.199
+Marina Fuster: Pero esto vendría a ser como las primeras implementaciones.
+
+141
+00:21:03.440 --> 00:21:07.560
+Marina Fuster: Ahora, ¿qué problema le ven a este tipo de abroch.
+
+142
+00:21:14.990 --> 00:21:17.359
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, acá, lo que estás anotando es
+
+143
+00:21:17.490 --> 00:21:20.989
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Cuántas veces aparece una palabra al lado de la otra.
+
+144
+00:21:22.630 --> 00:21:23.040
+Marina Fuster: Claro.
+
+145
+00:21:23.040 --> 00:21:25.439
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Entonces no sirve.
+
+146
+00:21:27.130 --> 00:21:28.439
+Marina Fuster: Como para grupos de 3.
+
+147
+00:21:28.690 --> 00:21:34.190
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, si tengo 3 palabras que están siempre una al lado de la otra. No creo que me funcione También esto.
+
+148
+00:21:35.760 --> 00:21:37.910
+Marina Fuster: ¿por qué no, o sea yo.
+
+149
+00:21:37.910 --> 00:21:38.920
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Un día.
+
+150
+00:21:38.920 --> 00:21:39.410
+Marina Fuster: También.
+
+151
+00:21:39.410 --> 00:21:40.470
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: De tintas.
+
+152
+00:21:41.380 --> 00:21:48.879
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Tengo la asociación. Tengo, como tengo 3 campos y solo los puedo asociar de 2. Entonces
+
+153
+00:21:49.540 --> 00:21:55.440
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No, la máquina no va a entender que es 1, 2 y 3 va a tener 1, 2, 2 y 3, 1 y 3.
+
+154
+00:21:59.280 --> 00:22:00.729
+Marina Fuster: No te estoy entendiendo.
+
+155
+00:22:02.060 --> 00:22:05.080
+Marina Fuster: ¿estás haciendo? Sí.
+
+156
+00:22:05.710 --> 00:22:09.050
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Pero si vos tenés una cadena de 3 palabras que estás siempre.
+
+157
+00:22:09.470 --> 00:22:14.229
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: no sé si va a entender que esas 3 palabras van siempre juntas.
+
+158
+00:22:14.450 --> 00:22:16.820
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Solo va a entender Grupos de 2.
+
+159
+00:22:18.210 --> 00:22:21.629
+Marina Fuster: No, no es que acá no es. No es que sea
+
+160
+00:22:22.010 --> 00:22:36.940
+Marina Fuster: o sea, si obvio vos. Lo vas a tener lo contás como de a 2, porque es la fila por la columna, pero vos definís una ventana ponele que yo digo la pala me centro en cada palabra, a medida que voy barriendo.
+
+161
+00:22:36.940 --> 00:22:42.770
+Marina Fuster: y la ventana es de 4 elementos. Me fijo hacia atrás, 4 y hacia adelante.
+
+162
+00:22:43.170 --> 00:22:49.569
+Marina Fuster: ¿no? Entonces las 4 que aparecen hacia atrás Suman 1 ponele que aparece
+
+163
+00:22:49.740 --> 00:22:57.879
+Marina Fuster: de teira in the Computer. Y la ventana es 4. Data con Computer va a contar.
+
+164
+00:23:02.780 --> 00:23:06.259
+Marina Fuster: Y si aparece 20 veces en el documento de la misma forma.
+
+165
+00:23:06.720 --> 00:23:18.569
+Marina Fuster: va a contar 20 veces, entonces la ventana es lo que te permite, que que no es que miras como solamente de a 2, sino que vas mirando como una sliding Window, por así decirlo.
+
+166
+00:23:20.600 --> 00:23:22.070
+Marina Fuster: recobras. Sí.
+
+167
+00:23:22.110 --> 00:23:22.840
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+168
+00:23:24.300 --> 00:23:28.459
+Marina Fuster: Si si me dio delay perdón.
+
+169
+00:23:28.900 --> 00:23:35.250
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No, no pasa nada, que si el corpus es medio corto, te vas a quedar, o depende mucho de también de la
+
+170
+00:23:35.470 --> 00:23:40.439
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: de cómo está escrito el texto, porque tal vez tiene relaciones que no se siguen después en
+
+171
+00:23:40.810 --> 00:23:42.030
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: en la vida real.
+
+172
+00:23:43.580 --> 00:23:59.429
+Marina Fuster: Bien, perfecto. Eso es una desventaja. Depende mucho del corpus de cómo está escrito el texto. Quizás sí hay cosas como en dependencia larga, que son importantes y no lo estás contabilizando eso recontra. ¿qué otra por ahí desventaja
+
+173
+00:24:00.050 --> 00:24:01.680
+Marina Fuster: que esas son válidas?
+
+174
+00:24:11.680 --> 00:24:17.749
+Marina Fuster: ¿qué pasa cuando yo hago palabras a palabras o término término. Se le dice también.
+
+175
+00:24:22.690 --> 00:24:25.480
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No entiendo qué decís con termino termino. Se ¿Se es esto.
+
+176
+00:24:26.850 --> 00:24:43.189
+Marina Fuster: Es cuadrático? Sí, Sí. Terminó término. Me refiero a esto como que me fijo para cada palabra con cuales aparece en el contexto en la dimensión del vocabulario. Bien, no solamente eso es, o sea, es cuadrático la dimensión del vocabulario, sino que hay muchas cosas que
+
+177
+00:24:43.310 --> 00:24:56.609
+Marina Fuster: nunca van a aparecer juntas. Y esta matriz va a ser súper esparza. O sea, si yo tengo un corpus grande, este tipo de matrices se me queda súper corta, por lo que menciona Juan Ignacio y porque
+
+178
+00:24:56.890 --> 00:25:02.360
+Marina Fuster: hay palabras que, o sea, muchas cosas, me quedan en 0. Entonces
+
+179
+00:25:02.360 --> 00:25:17.959
+Marina Fuster: los vectores tienen mucho espacio vacío. La frecuencia sola no te alcanza porque aparece el mismo problema que vimos en la demo como la palabra de tanto en inglés como en español, que van a tener mucha representación.
+
+180
+00:25:18.180 --> 00:25:21.890
+Marina Fuster: ¿y qué palabras caso con palabras que se usan muy poco. ¿sí?
+
+181
+00:25:22.170 --> 00:25:37.590
+Marina Fuster: Entonces ahí es donde aparece el tema de los Emedings, que son vectores dimensionales y que ellos suele asociarse a que son vectores densos. No, yo tengo como una especie de representación más comprimida que estas matrices. Es falsas, que son las primeras implementaciones. Si.
+
+182
+00:25:37.950 --> 00:25:57.289
+Marina Fuster: como mido, la similitud puede usar una métrica como similitud coseno, es la única, no tiene sus ventajas, pero también tiene sus defectos. Por ejemplo, si a mí me importa la magnitud del vector porque me representa algo importante: el medir la similitud coseno me aplana esa
+
+183
+00:25:57.310 --> 00:26:03.130
+Marina Fuster: esa importancia. Por ejemplo, si yo tengo, bueno.
+
+184
+00:26:04.670 --> 00:26:10.769
+Marina Fuster: alguien que mira series, y en la X tengo series románticas
+
+185
+00:26:10.830 --> 00:26:27.509
+Marina Fuster: y en la I tengo series de terror. Soy, No conozco ninguna serie de terror. Bueno, la persona que mire 100 románticas y 100 de terror va a tener la misma similitud con 0 que la que mira 1 con una, no.
+
+186
+00:26:28.020 --> 00:26:47.999
+Marina Fuster: ¿por qué el vector apunta. Pues así, entonces, Fíjense que en este caso yo quizás estoy tratando como iguales 2 puntos en el espacio que son sumamente distintos. Uno es adicto a ver series, y el otro vio algo un poco de cada cosa. Si entonces
+
+187
+00:26:48.060 --> 00:26:58.289
+Marina Fuster: similitud con seno, se puede usar. Fíjense que en la otra en realidad está. Bueno, porque si yo tengo, no sé una palabra que no se usa mucho como escarlata y
+
+188
+00:26:58.290 --> 00:27:13.979
+Marina Fuster: rojo rojo se usó un montón escarlata, ¿no? Entonces ahí quizás la frecuencia no me importa tanto escarlata. Es un sinónimo de rojo, entonces tienen sus ventajas y desventajas depende de donde las uso, pero nos vamos a conformar con quedarnos con la similitud con 0. Por ahora.
+
+189
+00:27:14.490 --> 00:27:32.880
+Marina Fuster: entonces tengo 3 tipos de lo que son emerix, los emedis estáticos, los emedis dinámicos y los Leart Emerys. Los L Ert son los que charlamos en la demo. No, Yo tengo una tabla con parámetros a reaccionar, y los entreno junto al modelo. Y si
+
+190
+00:27:32.880 --> 00:27:47.049
+Marina Fuster: quizás no es una categoría que aparezca muy frecuente. Se suele referir a esos emails que yo uso en el contexto del otro modelo. No me sirven mucho por fuera. Ahora, lo que me va a interesar es la distinción entre esta cuestión del estático y el dinámico de
+
+191
+00:27:47.050 --> 00:27:56.960
+Marina Fuster: el estático. La característica principal es que mantiene el valor fijo. O sea, yo tengo una instancia de entrenamiento y de aprender los emails, pero una vez que terminé.
+
+192
+00:27:57.050 --> 00:28:01.550
+Marina Fuster: El emeding va a ser siempre el mismo para la palabra. Si, por ejemplo.
+
+193
+00:28:02.090 --> 00:28:06.270
+Marina Fuster: yo tengo un algoritmo de estática en Beit, si yo tengo estas 2 frases
+
+194
+00:28:07.560 --> 00:28:17.709
+Marina Fuster: que comí pizza o que la pizza era asquerosa. El embelle para pizza va a ser el mismo. Se va a posicionar ahí? Sí,
+
+195
+00:28:17.970 --> 00:28:32.650
+Marina Fuster: En cambio, los dinámicos van a cambiar de valor dependiendo del contexto en esta en la instancia particular, entonces el ejemplo sería algo así. No supongamos que el eje X se relaciona con qué tan rico es la comida.
+
+196
+00:28:32.830 --> 00:28:40.709
+Marina Fuster: Si yo tengo la frase que la pizza era asquerosa. Bueno, yo esperaría que el impeding no sea el mismo que
+
+197
+00:28:41.120 --> 00:28:44.829
+Marina Fuster: la pizza común, que se asocia como que es más rica.
+
+198
+00:28:45.050 --> 00:28:47.200
+Marina Fuster: Bien, eso estamos.
+
+199
+00:28:48.900 --> 00:28:50.049
+Marina Fuster: Es decir.
+
+200
+00:28:50.050 --> 00:28:50.670
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, Sí.
+
+201
+00:28:51.580 --> 00:29:01.939
+Marina Fuster: Bien buenísimo, entonces medio que la Id. La idea fundamental trata de capturar esto, que charlábamos de
+
+202
+00:29:02.820 --> 00:29:14.049
+Marina Fuster: la frase que vos. Vas a conocer el significado de la palabra o el mapeo de la palabra, de acuerdo al contexto. Entonces veamos 1 de los estáticos, que se llama
+
+203
+00:29:14.530 --> 00:29:16.060
+Marina Fuster: Skidcrum.
+
+204
+00:29:16.470 --> 00:29:30.059
+Marina Fuster: que es de una familia que se llama world to Beck. Creo que el Paper está al final, si a alguno le interesa. Y la idea muy básica es que yo voy a tener un modelo que lo voy a entrenar con pares pares positivos y pares negativos.
+
+205
+00:29:30.060 --> 00:29:37.020
+Marina Fuster: ¿cómo definen los pares positivos? Bueno, estuvimos charlando bastante de esta ventana de contexto que yo eligiendo. Entonces
+
+206
+00:29:37.030 --> 00:29:45.380
+Marina Fuster: yo voy a definir una ventana 5, y cuando la palabra aparezca con las otras en ese contexto.
+
+207
+00:29:45.490 --> 00:30:04.319
+Marina Fuster: agarro ambas. Y digo, es un par positivo, por otro lado, que sería este item B, lo que es el par negativo. Selecciona palabra y agarra una random de todo el vocabulario. Eso vendría a ser el negativo. Y lo que puedo hacer es un clasificador que me distinga entre lo que son pares positivos y pares negativos.
+
+208
+00:30:04.320 --> 00:30:06.130
+Marina Fuster: Acá W, C,
+
+209
+00:30:06.130 --> 00:30:22.040
+Marina Fuster: La W por Word. Y la C es por context si quiere decir que la de la izquierda es la palabra en la que me estoy centrando y la de las letras del contexto. Y en este tipo de en este Squithgram, los parámetros que me quedan son los que uso como embebyns.
+
+210
+00:30:22.120 --> 00:30:32.390
+Marina Fuster: entonces esquemáticamente un poco como se ve. Este blog está bastante bueno si lo quieren chumbear. Fíjense que mi input al principio tiene un 1
+
+211
+00:30:32.620 --> 00:30:44.200
+Marina Fuster: con la palabra que yo considero. World, Sí, y voy a tener 2 matrices. La primera, que dice W Input es la que va a tener los envivings como filas, si
+
+212
+00:30:44.320 --> 00:30:46.010
+Marina Fuster: que se refieren a
+
+213
+00:30:46.330 --> 00:30:52.440
+Marina Fuster: la palabra como world, como como se entrada sí. Y por otro lado, esta matriz que tengo acá
+
+214
+00:30:52.830 --> 00:30:56.870
+Marina Fuster: es la que va a tener los embeles como columnas.
+
+215
+00:30:57.100 --> 00:31:02.060
+Marina Fuster: pero refiriéndose como contexto, ¿sí? Entonces lo que voy haciendo
+
+216
+00:31:02.320 --> 00:31:19.920
+Marina Fuster: va a ser calcular. Bueno, este es mi vector, estoy centrándome en la palabra pases y The hijo son parte del contexto, o sea, son positivos. Entonces hago me agarro la fila de ese de ese medio que es este que está. Acá Y después lo que hago es
+
+217
+00:31:19.920 --> 00:31:27.640
+Marina Fuster: el producto de estas 2 para obtener todos los escorts, o sea, todas las probabilidades, en realidad
+
+218
+00:31:27.790 --> 00:31:30.410
+Marina Fuster: no acaba de nacer. Sí, todas las probabilidades.
+
+219
+00:31:30.430 --> 00:31:44.550
+Marina Fuster: Entonces fíjense que tanto esta como esta yo las quiero en 1, sí, O sea, estos son como 2 ejemplos separados, pero está como todo justo junto. Entonces yo quiero estas 2 que las reconozca como positivas.
+
+220
+00:31:44.560 --> 00:31:50.909
+Marina Fuster: Entonces lo que voy a hacer es calcular la pérdida de eso y ajustar los pesos
+
+221
+00:31:51.000 --> 00:31:55.239
+Marina Fuster: de acuerdo a ese error que tuve entonces
+
+222
+00:31:55.350 --> 00:32:14.820
+Marina Fuster: esquemáticamente lo que empieza a pasar, porque fíjense que el el dot product que yo hago, o sea, este de acá entre el embel y el w output. Ese producto interno también es una métrica de similitud, o sea, la similitud coseno que la definimos así. Fíjense que es el producto dividido en la norma de los vectores.
+
+223
+00:32:14.890 --> 00:32:22.889
+Marina Fuster: pero el producto en sí que es una operación que hacemos constantemente en todos los modelos. También es una métrica de similitud.
+
+224
+00:32:22.980 --> 00:32:41.570
+Marina Fuster: Entonces lo que yo estoy haciendo acá en este algoritmo, que es un poco más simple Cuando hago este producto y me fijo estos valores y los trato de ajustar como para que los naranjas se acerquen a 1 lo que estoy haciendo, es decir, Che. Quiero que subas el dot product entre el embelle de la palabra
+
+225
+00:32:41.570 --> 00:32:49.819
+Marina Fuster: y le being del contexto que eso. Lo que va a terminar haciendo es que supongamos que el verde es la palabra, se acerque, o
+
+226
+00:32:50.180 --> 00:32:53.050
+Marina Fuster: los del contexto, que son ejemplos positivos.
+
+227
+00:32:53.230 --> 00:33:05.700
+Marina Fuster: Y caso contrario, acá yo digo: bueno, quiero que los que no eran ejemplos me los vayas hacia 0, o sea, achiques el dot product, que quiere decir que vayas alejando
+
+228
+00:33:05.910 --> 00:33:11.479
+Marina Fuster: si las cosas del contexto que no están apareciendo, y es así como se van
+
+229
+00:33:12.040 --> 00:33:15.680
+Marina Fuster: ajustando los vectores iterativamente para
+
+230
+00:33:15.890 --> 00:33:30.450
+Marina Fuster: tener en medings estáticos. Pero fíjense que lo que yo después termino usando es esta, matriz, por ejemplo, no. Esta es la matriz de los Emedings como palabra. Entonces está por ahí, la tiro
+
+231
+00:33:30.470 --> 00:33:37.720
+Marina Fuster: o las combino se puede usar distinto. Pero supongamos que la tiro me quedo con esta y listo, ya tengo mis emerys.
+
+232
+00:33:37.780 --> 00:33:41.579
+Marina Fuster: Y eso es la parte estática, porque yo, una vez que termine.
+
+233
+00:33:41.690 --> 00:33:45.209
+Marina Fuster: me olvidé de todo esto y lo único que tengo es
+
+234
+00:33:45.660 --> 00:33:57.119
+Marina Fuster: una matriz en la cual, si a mí me aparece esta frase: pizza, busco, Ok, la fila para pizza, la fila para Eight Fin Sim.
+
+235
+00:33:59.110 --> 00:34:02.599
+Marina Fuster: Esto más o menos se entendió el Statik.
+
+236
+00:34:09.350 --> 00:34:11.919
+Marina Fuster: Sí. Ok. Entonces
+
+237
+00:34:12.650 --> 00:34:18.099
+Marina Fuster: no me interesa tanto el Static como quizás va a ser un poco más interesante, el Dynamic.
+
+238
+00:34:18.550 --> 00:34:22.339
+Marina Fuster: ¿Qué se les ocurre que podemos usar como Dynamic Empevin.
+
+239
+00:34:29.940 --> 00:34:31.219
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Como que podemos usar.
+
+240
+00:34:32.770 --> 00:34:42.280
+Marina Fuster: Que bueno, acá en el Static usamos estas matrices que con el prado las vamos acercando y bla, bla, bla etcétera.
+
+241
+00:34:42.520 --> 00:34:54.170
+Marina Fuster: ¿qué cosa que hemos estado viendo se podría usar como herramienta para lograr y un.
+
+242
+00:34:54.540 --> 00:34:59.340
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Me suena como que de atención para captar el resto del mensaje.
+
+243
+00:35:01.410 --> 00:35:12.380
+Marina Fuster: Bien, o sea, si el en la dinámica impeding funciona de acuerdo al contexto. Va bien. Va por ahí la parte de atención, pero un poco más general. ¿qué es lo que
+
+244
+00:35:13.370 --> 00:35:17.640
+Marina Fuster: todavía no usamos? ¿qué es lo que nos falta?
+
+245
+00:35:18.570 --> 00:35:24.719
+Marina Fuster: Darle El uso un poco más abarcativo que la capa de atención
+
+246
+00:35:27.170 --> 00:35:37.149
+Marina Fuster: no worlto be es la familia de modelos estáticos. Skate Gran Cybou es
+
+247
+00:35:37.710 --> 00:35:43.399
+Marina Fuster: es una familia, que es de los medios estáticos. A no ser que hayan incluido algo dinámico.
+
+248
+00:35:45.060 --> 00:35:47.100
+Marina Fuster: Y no me has enterado. Es posible.
+
+249
+00:35:52.790 --> 00:36:00.640
+Marina Fuster: Bueno, avanzo nuestro amigo que quedó de la clase. Uno. Esta es la imagen que había presentado de Euge.
+
+250
+00:36:00.760 --> 00:36:06.430
+Marina Fuster: Lo que podemos usar es un encoder only transformer Sí.
+
+251
+00:36:07.120 --> 00:36:12.840
+Marina Fuster: ¿y por qué podíamos usar un encuder only transformer como Dynamic en Bedding?
+
+252
+00:36:15.960 --> 00:36:22.320
+Marina Fuster: ¿qué tenía de distinto que me puede ser muy útil en esta instancia.
+
+253
+00:36:24.320 --> 00:36:32.489
+Marina Fuster: porque puede mirar hacia delante también, bien porque el engo drownlis se caracteriza porque la idea es entender qué
+
+254
+00:36:32.490 --> 00:36:54.179
+Marina Fuster: tanto hacia adelante como hacia atrás con que otros Tokens está interaccionando lo que yo le estoy dando al transformer. Si se acuerdan en el ejemplo de traducción. Ustedes tenían su parte en Cover y su parte de cover. Y la parte del engobern parte del chiste era que recibía al principio toda la frase que yo después quiero traducir
+
+255
+00:36:54.180 --> 00:37:02.050
+Marina Fuster: ¿Por qué? Porque esa parte logra mirar hacia adelante y hacia atrás, construir una representación vectorial.
+
+256
+00:37:02.460 --> 00:37:07.939
+Marina Fuster: Espero útil para que después la parte del Icoder pueda ir generando
+
+257
+00:37:08.030 --> 00:37:16.909
+Marina Fuster: la frase que yo quiero ir traduciendo. Sí, Ese es un poco el rol en el ejemplo de traducción del Encoder, de la parte izquierda del Encoder
+
+258
+00:37:16.910 --> 00:37:28.460
+Marina Fuster: que se conecta con el de cover y bla, bla, bla. Pero nada nos impide deshacernos de toda la parte del ecoder y usar el incoder solamente para crear un espacio de medio. Si
+
+259
+00:37:28.720 --> 00:37:34.820
+Marina Fuster: entonces vamos a mirar un pelín más en detalle Vert, que es el
+
+260
+00:37:35.020 --> 00:37:42.160
+Marina Fuster: el Encoder. Es un poco como por excelencia tradicional que está basado en Transformers.
+
+261
+00:37:42.850 --> 00:37:47.500
+Marina Fuster: ¿alguno chupeó este paper o vio algún videíto de Bert?
+
+262
+00:37:54.490 --> 00:37:59.480
+Marina Fuster: No, Bueno, entonces avancemos y
+
+263
+00:37:59.700 --> 00:38:12.050
+Marina Fuster: vamos a ver 3 cosas básicas que son las que importan. Cuando se trata de ver. Primero lo que ya dijeron que dijo Juan Bautista: el tema de la atención. Ahí no hay mucho misterio, o sea.
+
+264
+00:38:12.190 --> 00:38:16.179
+Marina Fuster: en lugar de aplicar ese menos infinito que era la máscara.
+
+265
+00:38:16.470 --> 00:38:33.229
+Marina Fuster: No hago nada y listo, O sea, las matrices. W. Q. W, es lo mismo. Tengo que aprenderlas de la misma forma. Lo único que no estoy haciendo es clavar ese menos infinito para que después me vaya a 0. Entonces, atención bidireccional perfecto.
+
+266
+00:38:33.520 --> 00:38:44.739
+Marina Fuster: Ahora, las tareas de predicción, si cambian porque yo antes tenía Next token predicción, entonces claramente tenía la cuestión enmascarada. Ahora, en lo que es ver
+
+267
+00:38:44.740 --> 00:38:58.600
+Marina Fuster: original, hay 2 tareas de predicción. La primera se llama next sentens predicción. Y la segunda se llama Mlm e al Mast Language Modeling, que me comí una L en el modeling.
+
+268
+00:38:58.670 --> 00:39:00.910
+Marina Fuster: Después le agrego entonces
+
+269
+00:39:01.270 --> 00:39:09.590
+Marina Fuster: nexent de predicción. Voy a ir un poco rápido porque no es la que me interesa tanto, pero fíjense lo siguiente: ¿ven más o menos el
+
+270
+00:39:09.810 --> 00:39:15.800
+Marina Fuster: el cosito o se ve muy, muy chiquito. No sé cómo están ustedes de de la pantalla.
+
+271
+00:39:15.800 --> 00:39:16.380
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, claro.
+
+272
+00:39:16.380 --> 00:39:17.040
+Marina Fuster: ¿no?
+
+273
+00:39:17.580 --> 00:39:26.570
+Marina Fuster: Bien. Perfecto. Entonces fíjense lo siguiente: acá abajo que te dice. Bueno, esto es lo que yo le voy a alimentar a el
+
+274
+00:39:27.160 --> 00:39:36.570
+Marina Fuster: el encoder. Si tengo esta serie de tokens, estas de acá color mentalizar era.
+
+275
+00:39:37.370 --> 00:39:52.159
+Marina Fuster: tengo esta serie de tokens que es la primera frase y esta serie tokens, que es la segunda frase y charlando un poco de los tokens especiales. Tengo este es especial que se llama C Ls: Este es especial que se llama separador. Sí,
+
+276
+00:39:52.770 --> 00:40:08.659
+Marina Fuster: como yo entreno la parte de nexentance prediction. El chiste es que este token que va acá que va a tener se meding y etcétera, etcétera. Yo lo voy a ir alimentando por acá si este token puede mirar a los otros.
+
+277
+00:40:08.830 --> 00:40:21.870
+Marina Fuster: ¿sí? Pero lo que va a tratar de definir acá es 1 si estas frases son continuas. O es como si tiene sentido que la frase de siga la A o Zero si no.
+
+278
+00:40:22.200 --> 00:40:38.629
+Marina Fuster: ese es el rol de la parte de next sentents, predicciones. Fíjense que esto, que está acá. Está todo tachado, pero fíjense que esto es un embebding, o sea, porque yo tengo el C. L. S. Plu Blue. Paso por todos los tokens. Y acá me quedó un vectorcito
+
+279
+00:40:39.050 --> 00:40:41.930
+Marina Fuster: para yo llegar a un 0, Uno.
+
+280
+00:40:42.070 --> 00:40:54.310
+Marina Fuster: acabo de tener, no sé una capa que esté conectada a estas neuronas y que la salida sea una sola, Sí, en realidad es que nos vendría, sino que es directamente estas conexiones. Sí,
+
+281
+00:40:54.510 --> 00:41:06.970
+Marina Fuster: Entonces, con esta esta única neurona, digo 0, 1 una probabilidad o lo que fuera. Pero bueno, esto lo que es Nexel Temps Prediction entender si las oraciones entre ellas tienen relación.
+
+282
+00:41:07.290 --> 00:41:11.129
+Marina Fuster: Ahora, ¿cuál es la tarea que a mí me interesa, que es la de M. L. M:
+
+283
+00:41:12.330 --> 00:41:30.240
+Marina Fuster: Lo que voy a hacer acá es enmascarar pedazos de la oración que yo voy a darle al transformer Sí, cuanto es más caro eso variable para ajustar en el paper ponen 15 por 100 como los enmascaron. Eso ahí es un poquito más interesante, porque
+
+284
+00:41:30.310 --> 00:41:46.569
+Marina Fuster: fíjense que un 80 por 100 de ese 15 le pongo el Token Mask, que es otro toque, en especial donde es como que yo no veo el Token. Por otro lado, un 10 por 100 es Random y el otro 10 por 100 es exactamente el mismo.
+
+285
+00:41:48.240 --> 00:41:53.150
+Marina Fuster: Esto quizás es mucho pedir, pero la pregunta a alguno se le ocurre
+
+286
+00:41:53.400 --> 00:42:02.689
+Marina Fuster: ¿Por qué cuando yo en más, cuando yo aplico, la más. No quiero quizás aplicar siempre la más, o sea, el chiste acá va a ser. Si yo tengo una más.
+
+287
+00:42:03.110 --> 00:42:03.970
+Marina Fuster: no
+
+288
+00:42:05.550 --> 00:42:20.079
+Marina Fuster: pongámosle Acá Tengo una más, y esto alimento a través del encoder. Al final voy a querer que me diga 1 o lo más cercano a 1. Y la palabra dis en este caso no this viene a reemplazar la másca.
+
+289
+00:42:20.680 --> 00:42:23.999
+Marina Fuster: pero no siempre quiero ponerla más. No sé si alguno
+
+290
+00:42:24.680 --> 00:42:32.210
+Marina Fuster: quiere tirarse al lance de por qué tendría el 10 por 100, random 10 por 100 idénticos y no 100 por 100.
+
+291
+00:42:34.140 --> 00:42:36.520
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Porque las personas, cuando escriben, se equivocan.
+
+292
+00:42:37.280 --> 00:42:41.950
+Marina Fuster: Muy bien. Esa es una a favor de cuál.
+
+293
+00:42:42.960 --> 00:42:45.510
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sea a favor de de Random.
+
+294
+00:42:46.340 --> 00:42:56.380
+Marina Fuster: Perfecto. Entonces, a favor de Random, la gente se equivoca. Entonces quiero contemplar que eso va a ocurrir porque a favor de idénticos.
+
+295
+00:42:58.390 --> 00:42:59.370
+Marina Fuster: También
+
+296
+00:43:12.730 --> 00:43:22.390
+Marina Fuster: avanzo porque ya son las 9 por las dudas, pero es un poco una combinación, o sea, por un lado idénticos, porque yo quiero asegurarme de que en ningún momento
+
+297
+00:43:22.460 --> 00:43:40.889
+Marina Fuster: o en ninguna posición, no tengo también lo mismo que está puesto, porque porque en la distribución real, o sea, cuando yo me vaya del entrenamiento más no va a aparecer. Y entonces voy a tener un balance entre que a veces está el token real y a veces
+
+298
+00:43:41.010 --> 00:43:47.619
+Marina Fuster: o la gente se equivoca. O lo que yo no quiero que el modelo aprenda es que
+
+299
+00:43:47.640 --> 00:43:51.640
+Marina Fuster: confíe demasiado en que si el Token está,
+
+300
+00:43:51.640 --> 00:44:11.619
+Marina Fuster: es porque es ese, sino que aprenda también incorporar información del contexto, entonces es un balance entre esas 3 cosas y por un lado, además, es el que te empuja efectivamente tener que averiguar cuál es el Token, que está ahí, y el la combinación de 10 por 100, rando al 10 por 100 idéntico es cubrir
+
+301
+00:44:11.620 --> 00:44:13.519
+Marina Fuster: 1, equivocaciones.
+
+302
+00:44:13.520 --> 00:44:31.169
+Marina Fuster: 2, que el modelo no se base tanto en la información que viene y que contemple que siempre tiene que tratar de incorporar el contexto; y tercero, que la distribución real A mí no me va a parecer nunca más, y por ahí tampoco me aparecen equivocaciones, sino simplemente el texto.
+
+303
+00:44:31.240 --> 00:44:39.680
+Marina Fuster: Entonces estas son las 2 tareas que se combinan para lo que es entrenamiento en Sp: Y Mlm.
+
+304
+00:44:40.100 --> 00:44:43.300
+Marina Fuster: ¿Alguna pregunta acá. Más o menos, o vamos.
+
+305
+00:44:45.390 --> 00:44:46.070
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Todo bien, pero.
+
+306
+00:44:47.950 --> 00:44:54.700
+Marina Fuster: Perfecto. Lo último muy simple es el tema de los inputs. Y nosotros antes le dábamos el corpus.
+
+307
+00:44:54.710 --> 00:45:06.129
+Marina Fuster: Acá Hay que hacer algo un poquito más sofisticado, en el sentido de que yo tengo que armar, que tengo que poner cls. Tengo que agarrar 2 oraciones a veces que sean continuas a veces que no
+
+308
+00:45:06.140 --> 00:45:15.350
+Marina Fuster: separarlas por un separator. Y bueno, al final, también tengo que hacer algo un poco más complejo con la función de pérdida, porque está combinando los 2,
+
+309
+00:45:15.700 --> 00:45:16.730
+Marina Fuster: pero
+
+310
+00:45:17.110 --> 00:45:32.839
+Marina Fuster: algo que es muy feliz para nosotros en el cuestión en la cuestión de espacios de meding, de algoritmos de Meding es que yo en realidad no necesito la parte de nexentance predicción, porque esto se hace así con
+
+311
+00:45:32.840 --> 00:45:43.649
+Marina Fuster: en el Paper. Bueno, justo, El Paper de Berta original tiene como fin que la arquitectura sea apropiada para un montón de
+
+312
+00:45:43.690 --> 00:45:55.709
+Marina Fuster: tareas post. Si es como la arquitectura base y yo después, quizás quiero hacer resumir, o cuestión, anstering o otras cosas. Entonces, por ejemplo, para lo que es cubanai
+
+313
+00:45:55.710 --> 00:46:03.899
+Marina Fuster: entender la relación entre oraciones que son continuas o no me sirve. Sí, pero si yo estoy armando un espacio de en medio donde lo que quiero hacer es
+
+314
+00:46:04.390 --> 00:46:05.430
+Marina Fuster: y
+
+315
+00:46:05.810 --> 00:46:23.059
+Marina Fuster: ver la representación en el espacio de las distintas palabras, o lo que sea que esté considerando que tengo, no necesito hacer un excedente expedition con tener mlm, que es la que me da esto de Chia aprende del contexto ¿De ¿De qué se trata esta palabra con eso ya está.
+
+316
+00:46:23.190 --> 00:46:39.859
+Marina Fuster: Entonces es algo que se puede simplificar ahí abajo. Les dejé por las dudas si lo necesitan, el Paper, donde hay como una comparación de muchos vert. Y están los que no usan Nsp, sino que solo usan Mlm: Bien.
+
+317
+00:46:40.080 --> 00:46:57.369
+Marina Fuster: esto es un poco lo que es la dinamica, y es lo que más se usa hoy por hoy. O sea, estos emeding son bastante mejores que los que son estáticos. Si el costo de diferencia no es un impedimento Okay, porque acá tengo que hacer un fip. Howard. Entonces quizás
+
+318
+00:46:57.490 --> 00:47:06.129
+Marina Fuster: tengo alguna aplicación donde eso me es muy caro, y el stating en medio. Es una buena opción, porque solamente un look up. Y nos vimos.
+
+319
+00:47:06.470 --> 00:47:08.990
+Marina Fuster: Así que no es como para descartarlo. Tampoco
+
+320
+00:47:09.430 --> 00:47:12.180
+Marina Fuster: Bien, alguna pregunta de esto, sino
+
+321
+00:47:13.700 --> 00:47:20.160
+Marina Fuster: lentamente. Nos vamos acercando al final todo bien.
+
+322
+00:47:20.890 --> 00:47:23.280
+Marina Fuster: Ya deseando subir al final
+
+323
+00:47:23.460 --> 00:47:31.190
+Marina Fuster: bien, es lo último y va a ser medio cortito, porque creo que esta clase es como muy ping pong de temas.
+
+324
+00:47:31.500 --> 00:47:35.260
+Marina Fuster: ¿por qué? Porque yo no Leencogin fue relevante.
+
+325
+00:47:36.300 --> 00:47:41.599
+Marina Fuster: Esto no me acuerdo si lo llamamos la primera clase, la verdad.
+
+326
+00:47:41.970 --> 00:47:45.220
+Marina Fuster: Pero bueno, lo repito un poco brevemente.
+
+327
+00:47:45.630 --> 00:47:59.909
+Marina Fuster: No sé si sabían o lo charlamos o se acuerdan, el estado del arte previo a lo que es transformers, era redes neuronales recurrentes, no importa cual más o menos compleja. Pero la idea general es que la con la
+
+328
+00:48:01.010 --> 00:48:04.729
+Marina Fuster: la variable tiempo o la variable secuencia
+
+329
+00:48:04.730 --> 00:48:21.939
+Marina Fuster: se daba por hacer lo que se llaman Roland outs sucesivos de la red. O sea, yo hacía un fifoware y la representación interna que se generaba la alimentaba en otro de la red y así sucesivamente. Entonces, en lugar de tener un embeding que yo le sumo a mi lector.
+
+330
+00:48:22.470 --> 00:48:38.059
+Marina Fuster: las la longitud de la secuencia implicaba que yo tenía que ir alimentando ese Estado interno a lo largo de despliegues sucesivos de la red despliegues sucesivos. Me refiero a agarro la misma red y también a un software. Sí, entonces.
+
+331
+00:48:38.560 --> 00:48:57.319
+Marina Fuster: en codor de cover ya existía atención, mecanismo. Ya existía de todo el resto que los email que sos bla, bla, bla. Todo eso ya existía. Entonces el atention y sol unir viene de que no necesito la parte recurrente, o sea, con atención, posicionar el coding y mi Mp Estoy Jose.
+
+332
+00:48:57.530 --> 00:49:04.670
+Marina Fuster: Entonces, ¿qué nos interesa de positional en Coding 2 cosas: Uno: ¿cómo declaramos esas posiciones? Y 2,
+
+333
+00:49:04.790 --> 00:49:13.929
+Marina Fuster: ¿Cómo impacta el posicional en coding en la generalización. Y acá hay 2 aspectos importantes. Cuando yo estoy pensando en generalizar 1
+
+334
+00:49:14.190 --> 00:49:21.470
+Marina Fuster: que hay un transformer. Hay un límite dado por el transformer. Sí.
+
+335
+00:49:22.010 --> 00:49:24.010
+Marina Fuster: ¿a qué me refiero. Con esto
+
+336
+00:49:24.340 --> 00:49:32.410
+Marina Fuster: yo puedo tener el algoritmo de positional en codi más generalizable de la Tierra, pero el transformer
+
+337
+00:49:32.990 --> 00:49:37.270
+Marina Fuster: se tiene que bancar en su estructura de atención y M. L. Ps.
+
+338
+00:49:37.400 --> 00:49:52.180
+Marina Fuster: Poder procesar eso sí, o poder interpretar eso por una cuestión computacional de que yo tengo que armar la matriz de atención que si eso me explota, es un problema y por una cuestión de parámetros también. Si entonces.
+
+339
+00:49:52.340 --> 00:50:04.219
+Marina Fuster: por un lado, si yo eso por ahí no tengo tanto control, no de de hasta dónde el transformer con sus propios parámetros llega a procesar todo, Pero a mí lo que sí me interesa es que el límite
+
+340
+00:50:04.220 --> 00:50:22.120
+Marina Fuster: no venga tanto por el lado del positional en Covid: Sí, Y eso al principio quizás no era tanto un problema, pero últimamente los modelos consumen cada vez más contexto. Entonces la parte posicional en Coding se vuelve más relevante también. O sea, yo tengo que tener estrategias, viola generalizables de posición en Covid.
+
+341
+00:50:23.360 --> 00:50:28.609
+Marina Fuster: Esto es un mini representación. ¿de
+
+342
+00:50:28.720 --> 00:50:31.780
+Marina Fuster: qué pasa si yo lo hago de forma muy Naif.
+
+343
+00:50:32.320 --> 00:50:41.550
+Marina Fuster: que antes tenía una diapositiva que mostraba esto? Creo que era o agregarle el número entero de la posición
+
+344
+00:50:41.590 --> 00:50:53.340
+Marina Fuster: o una fracción, algo por el estilo. Ya no no me acuerdo, pero nada Lo que yo básicamente quiero tener en mente para para ver lo visual es que si yo le sumo el
+
+345
+00:50:53.470 --> 00:51:09.489
+Marina Fuster: el al el E. M. B ing the Positional Ecoding, el Mbajing original. No se me destruye que lo que está mostrando este gráfico, el de la izquierda le está sumando los learn positional Ecodins de la demo ¿no? Entonces. Fíjense que yo tengo el la parte más
+
+346
+00:51:09.710 --> 00:51:17.549
+Marina Fuster: clara. En realidad es donde arranca Y a medida que lo voy moviendo se me va corriendo. Pero fíjense que
+
+347
+00:51:17.930 --> 00:51:27.040
+Marina Fuster: si bien tampoco sé si esto es ideal o no dio. Fíjense que quedó más o menos en la región, y le pedí, en cambio, si yo lo hago de una forma muy naif
+
+348
+00:51:27.170 --> 00:51:33.420
+Marina Fuster: pierdo completamente el significado de mi embay original. Eso, por un lado, algo que siempre que tener en cuenta
+
+349
+00:51:34.830 --> 00:51:38.469
+Marina Fuster: alguna pregunta sobre eso, no sé si pasa un poco rápido
+
+350
+00:51:40.940 --> 00:51:44.259
+Marina Fuster: o algo que no se haya entendido de la parte de generalización.
+
+351
+00:51:46.750 --> 00:51:49.839
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Lo podrías repetir. No me quedó del todo claro.
+
+352
+00:51:51.050 --> 00:51:53.160
+Marina Fuster: Esto o esto.
+
+353
+00:51:53.300 --> 00:51:55.269
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No, no. La La parte de generalización.
+
+354
+00:51:56.250 --> 00:52:02.620
+Marina Fuster: Ah bien que con la parte de generalización, lo que me refiero es que en
+
+355
+00:52:02.910 --> 00:52:13.480
+Marina Fuster: la generali la generalización, de acuerdo a lo que es procesar una secuencia larga te importa desde el punto de vista del transformer en sí sin la parte de
+
+356
+00:52:13.660 --> 00:52:26.680
+Marina Fuster: en beding y positional ecodin Me refiero más a la parte de atención y parámetros del Mlp. Sea Vos ahí podés tener una limitante de que quizás el Transformer no llega a incorporar
+
+357
+00:52:27.320 --> 00:52:31.180
+Marina Fuster: toda la información que vos tenés en la secuencia. No fíjate que vos
+
+358
+00:52:31.360 --> 00:52:44.660
+Marina Fuster: tenés como ese ese embeding que viaja por el residuo stream en el Transformer, al cual vas modificando cuando incorpora atención de otros Tokens cuando pasa por e el M L. P. E incorpora datos
+
+359
+00:52:44.660 --> 00:52:53.479
+Marina Fuster: de de Internet, por así decirlo, y así sucesivamente. Entonces ese ese vector que va viajando para el residuo stream. También tiene un límite.
+
+360
+00:52:53.480 --> 00:53:02.069
+Marina Fuster: O sea, vos no podés ahí incorporar la información infinita. Entonces, una limitación de la generalización de secuencia va a venir por el lado del transformer
+
+361
+00:53:02.210 --> 00:53:12.490
+Marina Fuster: ponerle que de eso vos no tenés control. Si te estás mirando solo el posicional en código. Pero lo que sí te quieres asegurar es que el algoritmo que uses de Positional Engoding
+
+362
+00:53:12.540 --> 00:53:22.559
+Marina Fuster: es lo suficientemente general para que los problemas que quizás tenga el transformer de generalización no vengan por el porque vos elegiste
+
+363
+00:53:22.690 --> 00:53:27.300
+Marina Fuster: una mala estrategia de positional en coding sí.
+
+364
+00:53:28.670 --> 00:53:30.050
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí, Ahora, Sí. Gracias.
+
+365
+00:53:30.800 --> 00:53:48.899
+Marina Fuster: Bien perfecto. Y todo esto sin meterme en la parte de cómputo. O sea, eso es otra cosa. Bien, entonces Este se fue el que vimos el absolute positional. Encoding. Se llama antes. Lo vimos como solo positional, pero es absoluto si no es relativo a nada. O sea, yo tengo este cálculo fijo. Cada dimensión
+
+366
+00:53:48.900 --> 00:53:51.410
+Marina Fuster: hago la cuenta y listo.
+
+367
+00:53:51.740 --> 00:53:56.780
+Marina Fuster: Entonces, ¿cuál es la motivación de esta cuenta. Sí
+
+368
+00:53:56.980 --> 00:54:04.850
+Marina Fuster: que parece un poco oscura. Al principio. Fíjense, este es un grafito que muestra de las posiciones 0 a 50
+
+369
+00:54:04.950 --> 00:54:23.550
+Marina Fuster: como van cambiando los valores. Si yo estoy tomando la parte de seno, si y fíjense que lo que termina pasando es que las dimensiones, esto 0 50 vendría a ser si el medio fuera de 50 dimensiones en el paper, el 512. Sí, fíjense que
+
+370
+00:54:23.800 --> 00:54:39.269
+Marina Fuster: las dimensiones más bajas tienen cambios muy bruscos de una posición a la otra, ¿no? Entonces eso me va a servir para cuando yo estoy procesando reconocer que 2 tokens están
+
+371
+00:54:39.410 --> 00:54:47.089
+Marina Fuster: son distintos, ¿no? Pero fíjense que igual, Yo me puedo dar cuenta de que esos toques, que son distintos
+
+372
+00:54:47.650 --> 00:54:50.280
+Marina Fuster: y que están en posiciones distintas, igual
+
+373
+00:54:50.440 --> 00:55:03.989
+Marina Fuster: por ahí están más o menos cerca, porque a medida que voy avanzando en las dimensiones, voy modelando relaciones de mayor distancia. ¿no? Fíjense que la número 16 es esta curva.
+
+374
+00:55:03.990 --> 00:55:11.990
+Marina Fuster: entonces quizás todos estos van subiendo un poco de valor que es muy distinto de los que están acá. Fíjense que la de 32
+
+375
+00:55:12.400 --> 00:55:16.530
+Marina Fuster: va subiendo un poco más levemente y la de 60. Y 2.
+
+376
+00:55:16.690 --> 00:55:32.050
+Marina Fuster: Bueno, ese sentido se me fue. Está como por afuera del gráfico, pero fíjense que si se mantiene casi estable, entonces las distintas dimensiones de el vector de posicional en coging. Me están tratando de modelar y dar una señal
+
+377
+00:55:32.050 --> 00:55:39.370
+Marina Fuster: sobre Ok, algunos relaciones de corta distancia, otros relaciones de más larga distancia, sí. Entonces quizás
+
+378
+00:55:39.670 --> 00:55:47.010
+Marina Fuster: yo tengo una secuencia de un 1 000 000. Y el embeding me puede dar información de que quizás
+
+379
+00:55:47.820 --> 00:56:02.800
+Marina Fuster: tales tokens están muy lejos, si que no, que prácticamente las que son de cercanía. No les voy a dar mucha bola, sino que están muy lejos. Entonces, un poco la idea de jugar con las frecuencias es eso ir modelando relaciones de distinta distancia.
+
+380
+00:56:03.810 --> 00:56:04.690
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Entonces.
+
+381
+00:56:04.690 --> 00:56:05.080
+Marina Fuster: Pereza.
+
+382
+00:56:05.080 --> 00:56:07.550
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Tener el peor dimensión más grande posible.
+
+383
+00:56:12.390 --> 00:56:17.560
+Marina Fuster: Qué opinas, o sea que.
+
+384
+00:56:17.560 --> 00:56:24.779
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Con un mes muy grande. Puedo ubicar relaciones entre palabras que estén muy lejos, pero también puedo encontrar relaciones que en verdad no existen.
+
+385
+00:56:27.970 --> 00:56:29.339
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, mencioné de perro.
+
+386
+00:56:29.340 --> 00:56:31.000
+Marina Fuster: Eso es.
+
+387
+00:56:31.000 --> 00:56:32.759
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Catorce palabras! ¿qué.
+
+388
+00:56:35.360 --> 00:56:50.840
+Marina Fuster: No. Ese es un buen punto. Lo que vos decís de por ahí. Estoy agregando ruido porque estás tratando de modelar algo de ni idea. Pero vos decís, me conviene tener un vector cada vez más grande, que es, L, ¿Qué es lo que te limita esa idea.
+
+389
+00:56:51.370 --> 00:56:52.499
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y el Transformer.
+
+390
+00:56:53.810 --> 00:57:01.270
+Marina Fuster: Bien perfecto, o sea el justo, el tamaño de ese vector, y
+
+391
+00:57:02.200 --> 00:57:20.309
+Marina Fuster: un paso más adelante de todo lo que tenés que hacer te afecta directamente todo, no solo la performance a nivel no solo el costo computacional, sino también la performance, Entonces, tenés un vector muy, muy, muy largo, más de lo que necesitas. Eso también es malo, porque va a ser
+
+392
+00:57:20.550 --> 00:57:22.790
+Marina Fuster: propenso a ver fitiar.
+
+393
+00:57:23.180 --> 00:57:25.629
+Marina Fuster: Entonces tampoco puedes hacer algo infinito.
+
+394
+00:57:31.240 --> 00:57:32.030
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Ahora, Sí.
+
+395
+00:57:33.230 --> 00:57:47.499
+Marina Fuster: Bien, Perfecto. Igual Muy buena la pregunta, porque si en teoría el vos tener más espacio, si cada una de esas dimensiones va modelando de distinta relación de distinta de distinto plazo, por así decirlo.
+
+396
+00:57:47.670 --> 00:57:50.360
+Marina Fuster: 1 pensaría que lo puedes seguir extendiendo.
+
+397
+00:57:50.980 --> 00:58:06.490
+Marina Fuster: Y esto porque es de interés procesar secuencias largas. Eso ya un poco más allá de la teoría, ustedes lo van experimentando, que todo lo que tiene que ver con razonamiento. Se correlaciona muy directamente con
+
+398
+00:58:06.640 --> 00:58:25.850
+Marina Fuster: el uso de muchos tokens. Si los niveles de razonamiento, cuando están resolviendo un problema en general. Las estrategias que vamos a ver más adelante de razonamiento que se usan implica que las secuencias sean más largas. Entonces, a mí me interesa poder generalizar eso. Bien. Sí,
+
+399
+00:58:26.470 --> 00:58:32.660
+Marina Fuster: son 20 y 20. Quiero enfocarme un poco. Ahora en el D. P.
+
+400
+00:58:33.110 --> 00:58:41.050
+Marina Fuster: Acá medio que un poco termina, lo que es Positional Engoding. Esto es para que entiendan un poco la motivación de de lo del tema de frecuencias.
+
+401
+00:58:41.310 --> 00:58:59.629
+Marina Fuster: Lo voy a retomar en la clase que vemos un poco más, lo que se hace a nivel industria de laboratorios, 2 avances muy importantes que igual los explico después. Pero por si alguno quiere ir cambiando el primero, Mixter of Express, donde la idea es
+
+402
+00:59:00.130 --> 00:59:09.470
+Marina Fuster: tener muchos parámetros en el modelo. Es beneficioso porque me permite generalizar mejor a conjuntos de datos más grandes.
+
+403
+00:59:09.720 --> 00:59:25.170
+Marina Fuster: pero inferencia pesadilla, o sea, con los modelos cada vez más grandes que hay. Es mucho. Es muy costoso hacer inferencia, porque ahora todo el mundo los usa muy intensivamente, entonces una forma de ser muy eficiente en la parte de diferencia.
+
+404
+00:59:25.170 --> 00:59:34.730
+Marina Fuster: sin renunciar a los parámetros es mix surf experts. Esa es la motivación, y el otro es retrory positional. Encoging Recién les presenté 1 que era
+
+405
+00:59:34.730 --> 00:59:53.190
+Marina Fuster: bueno. Yo le presenté lo monta en la clase, 1 que era el clásico, que es absoluto. Pero esta idea de modelar relaciones de corto de corta distancia y de larga distancia es interesante, pero tiene la desventaja de que si yo tengo la frase, el perro azul a
+
+406
+00:59:53.640 --> 01:00:04.619
+Marina Fuster: al principio de un texto o en el medio de un texto o al final de un texto. El modelo igual tiene que entender cómo se relacionan esas palabras en las distintas partes, porque esto no
+
+407
+01:00:04.760 --> 01:00:23.119
+Marina Fuster: es absoluto. Cada posición tiene lo suyo. Fin. Entonces lo que vamos a ver un poquito después de cómo generaliza en modelos más grandes es esta cuestión de Roster Positional Ecoding, que incluye un componente de contemplar cuando las cosas son relativas. En la secuencia.
+
+408
+01:00:24.240 --> 01:00:42.279
+Marina Fuster: voy a cerrar por acá lo que es la clase. Acá les queda. La bibliografía está separado por secciones. Lo que nadie se ve y posición en el Covi, los que tienen estrellitas, porque a mí me parece que son los que están buenos para chupear si les interesa acá recomendaciones. Si alguno quiere chusmear
+
+409
+01:00:42.390 --> 01:00:53.279
+Marina Fuster: acá recomendaciones de estar al día con las noticias. Creo que este blog es bastante ameno, y a mí me agrada que sea una vez por semana para no saturarme.
+
+410
+01:00:53.630 --> 01:01:11.649
+Marina Fuster: Y por último, esto es como video sugerido a los que les interesa un poco la parte más interpretable, ese vídeo de blue One Brown Está bueno, pregunta abierta que el disparador de la clase que viene. Fíjense o traten de reflexionar que lo
+
+411
+01:01:11.920 --> 01:01:30.700
+Marina Fuster: los modelos que vimos de generación no tienen ningún incentivo per se para hacer lo que hacen hoy los modelos, instrucciones. Reshoring bla, bla, bla. Entonces pregunta abierta: ¿por qué es que los modelos funcionan así hoy? ¿y qué vemos la clase próxima, toda la parte de
+
+412
+01:01:30.910 --> 01:01:36.390
+Marina Fuster: transfer learning No, Eso va a la 4 perdón. Toda la parte de
+
+413
+01:01:36.570 --> 01:01:43.369
+Marina Fuster: por qué los modelos hoy funcionan como deberían funcionar, que te ayudan y que resuelven, y que bla bla
+
+414
+01:01:43.680 --> 01:01:44.570
+Marina Fuster: Poco eso.
+
+415
+01:01:44.760 --> 01:01:48.330
+Marina Fuster: Y en fin, voy a parar alguna duda.
+

@@ -2,7 +2,7 @@
 
 ## Objetivo de la iteración
 
-Medir cuánto aporta agregar **apuntes de estudiantes y diapositivas de clase** al corpus de VTT del ejercicio 2. En el Caso 01, la configuración G4 llevó al generador respaldo completo para 3 de 5 criterios. Algunos faltantes provenían de la selección de candidatos y el generador también omitió un criterio con evidencia disponible. El corpus ampliado permite comprobar si nuevas fuentes recuperables aportan definiciones, fórmulas o ejemplos y si el generador los usa en el informe. La consigna pide documentar la limitación, la modificación y los resultados antes y después. [G4](ejercicio2/experimentos.md#g4--expansión-con-reranking-de-los-candidatos-de-g3) · [Consigna, p. 3](../docs/RAG/tp3.pdf)
+Completar el corpus académico de las clases previas a RAG con **VTT, apuntes de ejemplo y diapositivas docentes**. En el Caso 01, G4 llevó al generador respaldo completo para 3 de 5 criterios. Algunos faltantes provenían de la selección de candidatos y el generador también omitió un criterio con evidencia disponible. Sobre el corpus completo se compararán configuraciones de recuperación y se medirá si la evidencia adicional llega al informe. [G4](ejercicio2/experimentos.md#g4--expansión-con-reranking-de-los-candidatos-de-g3) · [Consigna, p. 3](../docs/RAG/tp3.pdf)
 
 ## 1. Seleccionar las fuentes
 
@@ -11,16 +11,42 @@ Medir cuánto aporta agregar **apuntes de estudiantes y diapositivas de clase** 
 | Apuntes de prueba | [Apuntes de Transformers](ejercicio4/apuntes/apuntes_transformers.pdf), dos páginas elaboradas a partir de la clase. | La página 1 trata atención y la página 2, codificación posicional y máscara causal. |
 | Apunte sobre el encoder | [El bloque del encoder](ejercicio4/apuntes/bloque_del_encoder.pdf), una página. | Autoatención, red feed-forward y Add & Norm. Fuente docente, pp. 22 y 36–37. |
 | Apunte sobre el decodificador | [Del decodificador al próximo token](ejercicio4/apuntes/decodificador_y_prediccion.pdf), una página. | Atención cruzada, logits, softmax y generación autorregresiva. Fuente docente, pp. 22 y 40–44. |
-| Diapositivas de Transformers | [Clase 1 · Introducción a Transformers](<../docs/Clase 1 - Introducción a Transformers.pdf>), 70 páginas, 2026. | Primera comparación de diapositivas sobre la misma unidad. |
-| Diapositivas de Fine-tuning | [Clase 3 · Transfer Learning & Finetuning](<../docs/Clase 3 - Transfer Learning & Finetuning.pdf>), 77 páginas, 2026. | Siguiente unidad con diapositivas disponibles. Registrar si para esa unidad se consiguen apuntes preexistentes. |
-| Diapositivas de Embeddings | [Clase 2 · Transformación de Texto a Embeddings](<../docs/Clase 2 - Transformación de Texto a Embeddings(1).pdf>), 65 páginas. La portada dice 73.64 y 2025. | Verificar si corresponde al material usado en 73.69 antes de incluirlo en la comparación principal. |
+| Apunte de Embeddings | [Similitud coseno y magnitud](ejercicio4/apuntes/similitud_coseno_y_magnitud.pdf), una página. | Ejemplo numérico de producto escalar y similitud coseno al escalar un vector. Pendiente de indexación. |
+| Apunte de Fine-tuning | [Feature extraction y fine-tuning](ejercicio4/apuntes/feature_extraction_y_fine_tuning.pdf), una página. | La misma tarea de clasificación con encoder congelado o ajustando sus últimas capas. Pendiente de indexación. |
 
-Transformers es el primer tema porque tenemos un apunte de prueba y diapositivas de la misma clase. El PDF derivado sobre embeddings de `output/pdf/` se preparó con el Caso 01 ya conocido y queda como antecedente del prototipo. El apunte de Transformers se preparó a partir de la clase, antes de definir las consultas del piloto.
+### PDF originales de las diapositivas
+
+| Selección del ejercicio 4 | PDF docente original en `docs/` | Qué se conservó |
+| --- | --- | --- |
+| [Clase 1 · Transformers](ejercicio4/slides/clase_01_transformers.pdf), 25 de 70 páginas. | [Clase 1 - Introducción a Transformers.pdf](<../docs/Clase 1 - Introducción a Transformers.pdf>) | Arquitectura, posición, atención, encoder, decoder y entrenamiento. |
+| [Clase 2 · Embeddings](ejercicio4/slides/clase_02_embeddings.pdf), 24 de 65 páginas. | [Clase 2 - Transformación de Texto a Embeddings(1).pdf](<../docs/Clase 2 - Transformación de Texto a Embeddings(1).pdf>), edición 73.64 de 2025. | Tokenización, similitud, representaciones estáticas y contextuales, Skip-gram y BERT. |
+| [Clase 3 · Fine-tuning](ejercicio4/slides/clase_03_fine_tuning.pdf), 22 de 77 páginas. | [Clase 3 - Transfer Learning & Finetuning.pdf](<../docs/Clase 3 - Transfer Learning & Finetuning.pdf>) | Transferencia, feature extraction, ajuste fino, destilación, SFT, RLHF y DPO. |
+| [Clase 4 · Reasoning y producción](ejercicio4/slides/clase_04_reasoning_y_produccion.pdf), 18 de 61 páginas. | [Clase 4 - LLMs y desarrollo en producción (1).pdf](<../docs/Clase 4 - LLMs y desarrollo en producción (1).pdf>) | Escalado en inferencia, RLVR, etapas de desarrollo de un LLM y codificación posicional. |
+| [Clase 6 · AI Safety](ejercicio4/slides/clase_06_ai_safety.pdf), 16 de 68 páginas. | [Clase 6 - AI Safety (1).pdf](<../docs/Clase 6 - AI Safety (1).pdf>), edición 73.64 de 2026. | Riesgos, alineamiento, robustez e interpretabilidad. |
+
+### Transcripciones docentes
+
+Los seis archivos de `ejercicio4/transcripciones/` son copias idénticas de los VTT de `docs/`. Se validaron con el lector del ejercicio 2.
+
+| VTT | Tema | Segmentos | Estado en Chroma |
+| --- | --- | ---: | --- |
+| [transformers.VTT](ejercicio4/transcripciones/transformers.VTT) | Transformers | 754 | Indexado en I4 |
+| [embeddings_2.VTT](ejercicio4/transcripciones/embeddings_2.VTT) | Embeddings | 415 | Indexado en I4 |
+| [finetuning.VTT](ejercicio4/transcripciones/finetuning.VTT) | Transfer Learning y Fine-tuning | 829 | Indexado en I4 |
+| [embeddings_1.VTT](ejercicio4/transcripciones/embeddings_1.VTT) | Demo de Embeddings | 398 | Pendiente |
+| [reasoningmodels.VTT](ejercicio4/transcripciones/reasoningmodels.VTT) | Modelos de razonamiento | 543 | Pendiente |
+| [ai_safety.VTT](ejercicio4/transcripciones/ai_safety.VTT) | AI Safety | 620 | Pendiente |
+
+`docs/RAG/` es material de referencia para el desarrollo del TP. `LLMs - Apuntes.pdf` queda fuera de la selección.
+
+Los apuntes de Embeddings y Fine-tuning contienen ejemplos didácticos elaborados a partir de los VTT docentes y, para Fine-tuning, de sus diapositivas. Cada PDF se revisó visualmente y se comprobó que `pypdf` extrae su contenido.
+
+Se prepararon 105 diapositivas de 341 páginas disponibles. La selección conserva explicaciones, fórmulas y ejemplos. Se dejaron fuera portadas, agendas, anuncios de demos, referencias sin desarrollo y repeticiones. El [manifiesto de diapositivas](ejercicio4/slides/manifiesto.json) registra los originales, las huellas y la correspondencia entre el orden de las páginas de cada selección y su posición en el PDF original. En las páginas originales 13 y 17 de Fine-tuning, `pypdf` devuelve glifos no codificables en UTF-8 junto al texto válido. La carga debe descartar esos glifos antes de tokenizar.
 
 ## 2. Incorporar PDFs con páginas citables
 
 1. Registrar cada PDF en un manifiesto con título, tipo de fuente, ruta y SHA‑256. Mantener los VTT e índices del ejercicio 2 como referencia.
-2. Extraer solo texto por página con `pypdf`, como en el notebook de la cátedra. Guardar el número de página del archivo desde 1 antes de descartar páginas sin texto. El contenido gráfico queda fuera del índice. [Notebook del reporte ONU, celda 8](../docs/RAG/UN_Report_Advanced_RAG.ipynb)
+2. Extraer solo texto por página con `pypdf`, como en el notebook de la cátedra. Para diapositivas, resolver la página del PDF original con el manifiesto. Para apuntes, guardar el número de página del archivo desde 1 antes de descartar páginas sin texto. El contenido gráfico queda fuera del índice. [Notebook del reporte ONU, celda 8](../docs/RAG/UN_Report_Advanced_RAG.ipynb)
 3. Aplicar el splitter recursivo de G4 dentro de cada página, con un máximo de 160 tokens medidos por MiniLM y 10 de solapamiento. La metadata de cada chunk PDF contiene `fuente`, `tipo_fuente` y `pagina`. Cada chunk tiene su propio ID y texto. Los chunks VTT conservan sus tiempos.
 4. Guardar cada variante en su propia colección Chroma, con el mismo `text-embedding-3-small`, 1.536 dimensiones y distancia coseno. Verificar que los chunks de VTT coincidan entre variantes y registrar el número de chunks por tipo de fuente.
 5. Resolver las referencias del generador desde los metadatos. Una cita PDF muestra el nombre del documento y su página. Una cita VTT muestra el nombre y el intervalo. Verificar con un ejemplo de cada tipo que el localizador permite encontrar la evidencia.
@@ -56,15 +82,9 @@ PYTHONPATH=tp3/ejercicio2 .venv/bin/python tp3/ejercicio4/indexar_apuntes.py \
 
 ## 3. Comparación controlada
 
-| Variante | Corpus | Pregunta |
-| --- | --- | --- |
-| Base | VTT de Embeddings, Transformers y Fine-tuning. | ¿Cuánta evidencia recupera G4 con el corpus del ejercicio 2? |
-| Con apuntes | Mismos VTT más los tres PDFs de Transformers. | ¿Qué criterios adicionales se respaldan al incorporar todos los apuntes disponibles? |
-| Con apuntes y diapositivas | Mismos VTT y apuntes más diapositivas. | ¿Qué aportan las diapositivas sobre el corpus con apuntes? |
+El corpus del ejercicio 4 incluirá los seis VTT, los cinco apuntes y los cinco PDF de diapositivas seleccionadas. El primer contraste previsto sobre ese corpus compara distintos valores de `k`, con `k=7` como referencia. Por objetivo se congela el audio transcripto y se usa el mismo ranking de G4, con la consulta original, sus tres subconsultas, cinco candidatos por consulta, deduplicación y el mismo CrossEncoder. Se mantienen el prompt y el snapshot de GPT‑4.1 de G4, temperatura 0 y hasta 1.000 tokens de salida. Los valores de `k` se eligen después de revisar el ranking del corpus final. [Configuración del ejercicio 2](ejercicio2/README.md)
 
-Por objetivo se congela el audio transcripto, la consulta original y sus tres subconsultas. Las variantes usan la misma expansión, cinco candidatos por consulta, deduplicación, el mismo CrossEncoder y siete chunks finales. Se mantienen el prompt y el snapshot de GPT‑4.1 de G4, temperatura 0 y hasta 1.000 tokens de salida. La única variable experimental es el conjunto de fuentes disponibles. El formato de las citas se resuelve por código con el mismo criterio en cada variante. [Configuración del ejercicio 2](ejercicio2/README.md)
-
-**Casos.** Usar el Caso 01 como control de integración. Empezar la comparación de corpus con un par nuevo de objetivo y video sobre Transformers, y sumar otro par en una prueba posterior para revisar si el resultado se repite. Para cada caso, registrar el criterio, la evidencia académica y el estado esperado del video antes de ejecutar. Usar los mismos criterios y denominadores para todas las variantes de ese caso. Registrar qué evidencia existe en cada corpus para distinguir falta de material, fallo de búsqueda y fallo del generador.
+**Casos.** Usar el Caso 01 como control de integración y el Caso 02 como diagnóstico. Sumar otro par de objetivo y video para revisar si el resultado se repite. Para cada caso, registrar el criterio, la evidencia académica y el estado esperado del video antes de ejecutar. Usar los mismos criterios y denominadores para todas las configuraciones de ese caso.
 
 ## 4. Evaluación y registro
 
@@ -74,8 +94,8 @@ Por objetivo se congela el audio transcripto, la consulta original y sus tres su
 | Recuperación | Context Recall y Context Precision sobre los chunks finales. Registrar qué tipos de fuente entran y si aportan evidencia nueva o repetida. |
 | Informe | Acierto de estados, citas localizables y con respaldo, Answer Faithfulness, relevancia manual y completitud. |
 
-Guardar por caso las fuentes y sus hashes, los rankings, los siete chunks enviados, el informe y la evaluación. Para cada criterio que cambia, mostrar el pasaje que se ganó o se perdió y si el informe lo usó. Priorizar que aumente el Context Recall y revisar si los criterios adicionales se traducen en estados y citas más sólidos. Registrar el costo adicional de indexar y la longitud real del contexto.
+Guardar por caso las fuentes y sus hashes, los rankings, los chunks enviados, el informe y la evaluación. Para cada criterio que cambia, mostrar el pasaje que se ganó o se perdió y si el informe lo usó. Priorizar que aumente el Context Recall y revisar si los criterios adicionales se traducen en estados y citas más sólidos. Registrar el costo de indexar y la longitud real del contexto.
 
 **Primer piloto completado.** El [Caso 02 de Transformers](ejercicio4/evaluacion/caso_02_transformers.md) comparó `openai_i4` con `openai_e4_apuntes_ampliado`, ambos con `k=7`, la misma transcripción y búsqueda sin filtro por fuente. La propuesta inicial sumaba un PDF para medir su aporte individual. La prueba sumó los tres apuntes para medir el efecto del corpus ampliado. Context Recall@7 pasó de 0/3 a 1/3 y Context Precision@7 quedó en 14,3 % en ambas variantes. [Resultados y auditoría](ejercicio4/evaluacion/resultado_caso_02_apuntes.md)
 
-**Siguiente contraste.** Comparar `k=7` con `k=10` sobre los mismos 11 candidatos reordenados de la colección mixta. La fórmula quedó octava. Después, verificar el resultado en otro objetivo y evaluar las diapositivas en una comparación separada.
+**Siguiente paso.** Cargar las fuentes pendientes en la colección del ejercicio 4 y verificar que el programa recupere y cite VTT, apuntes y diapositivas. En el piloto anterior, la fórmula quedó octava. Con el corpus completo se revisará qué valor de `k` alcanza para llevar la evidencia al informe.

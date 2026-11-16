@@ -1,0 +1,3318 @@
+WEBVTT
+
+1
+00:00:00.030 --> 00:00:01.220
+Marina Fuster: Bueno.
+
+2
+00:00:02.880 --> 00:00:13.469
+Marina Fuster: hoy lo que vamos a ver Post, cómo se entrena el transformer es un poco toda la etapa de transferlarning y It Turing.
+
+3
+00:00:13.470 --> 00:00:23.500
+Marina Fuster: Vamos a ver un poco qué es este área, cuáles son las distintas formas de hacerlo. Y después vamos a ver cómo se aplican a los modelos de lenguaje que usan ustedes hoy.
+
+4
+00:00:24.020 --> 00:00:36.190
+Marina Fuster: Entonces vamos a arrancar con un mini repaso. Yo les voy a mostrar para antes de que se pongan a leer. Yo les voy a mostrar distintos por ahí escenarios. Y la idea es que me contesten porque estaría pasando eso.
+
+5
+00:00:36.560 --> 00:00:50.810
+Marina Fuster: El primer escenario es: yo. Tengo 2 frases. Una dice hasta el momento Flori, o sea, después de que me moví a flor, me mudé a Florida, todos los modelo después que se mudó a Florida, todos los
+
+6
+00:00:50.810 --> 00:01:02.660
+Marina Fuster: fines de semana le gustaba ir A, y estas son las next token prodigions. Por otro lado, la de la derecha dice hasta el momento. Seattle, weekend to Go y todas estas predicciones.
+
+7
+00:01:02.750 --> 00:01:08.289
+Marina Fuster: Entonces, ¿de dónde vienen estas predicciones? Y por qué la diferencia.
+
+8
+00:01:11.540 --> 00:01:15.120
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y porque Florida tiene mucho más costa que que Seattle
+
+9
+00:01:16.750 --> 00:01:24.150
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: con que lo hayas entrenado. Las palabras de mar están más asociadas con Florida y las palabras de montaña están más asociadas con Seatt.
+
+10
+00:01:24.790 --> 00:01:41.410
+Marina Fuster: Bien, Perfecto. Sumamos que el entrenamiento es un corpus tradicional, no con variado en Internet. Entonces, decis, Bueno, Florida está asociada a ciertas cosas y atle a otras. Ahora, estas token predicciones, no sobre que
+
+11
+00:01:42.080 --> 00:01:44.279
+Marina Fuster: en B in están actuando.
+
+12
+00:01:49.680 --> 00:01:52.120
+Marina Fuster: o sea, son las Next: Ton predicciones.
+
+13
+00:01:52.820 --> 00:01:54.179
+Marina Fuster: ¿para qué palabra.
+
+14
+00:01:55.360 --> 00:01:59.010
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y para no, no bien.
+
+15
+00:01:59.010 --> 00:02:06.329
+Marina Fuster: Para la última no. Y por otro lado, como como el modelo sabe, o donde se
+
+16
+00:02:07.160 --> 00:02:12.999
+Marina Fuster: estudia más o menos que esta información está almacenada porque ¿cómo sabe el modelo que
+
+17
+00:02:13.340 --> 00:02:22.940
+Marina Fuster: swiming phishing surfing están más asociadas a Florida que hakkin camping, etcétera.
+
+18
+00:02:23.500 --> 00:02:25.769
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y eso nos viene del corpus de entrenamiento.
+
+19
+00:02:26.620 --> 00:02:32.429
+Marina Fuster: Bien. Pero ¿qué parte en el Transformer está más asociada
+
+20
+00:02:32.700 --> 00:02:35.580
+Marina Fuster: a que esto sea lo que que el modelo almacena.
+
+21
+00:02:36.360 --> 00:02:37.899
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y la capa de auto atención.
+
+22
+00:02:41.740 --> 00:02:45.239
+Marina Fuster: Alguno tiene alguna otra opinión o algo más que quiera decir.
+
+23
+00:02:55.820 --> 00:03:02.639
+Marina Fuster: Cri cri desde ahí un par de segundos. Lo que me lleva a tomarme un minimate.
+
+24
+00:03:05.570 --> 00:03:07.599
+Marina Fuster: No hay ideas ninguno.
+
+25
+00:03:09.400 --> 00:03:14.120
+Marina Fuster: Si pregunto que no es la capa de atención, ¿Cuál otra me queda, no tengo muchas opciones.
+
+26
+00:03:22.910 --> 00:03:40.060
+Marina Fuster: Bueno, por las dudas. Avanzó. Esto se asocia con que se almacena en el M. L. P, Los la información de Internet, o sea, los datos asociados a cosas o, por ejemplo, el 8 de que Florida es un lugar en Estados Unidos que está cerca de la costa. Toda esa información
+
+27
+00:03:40.330 --> 00:03:41.420
+Marina Fuster: sí
+
+28
+00:03:41.490 --> 00:04:00.689
+Marina Fuster: aproximadamente se analiza o se estima que está almacenada en los pesos o codificada en los pesos de los centrales multicapa. Esto no es 100 por 100 como limpio. Por otro lado, la capa de atención vendría a ser la que mueve la información. Y bueno es la que reconoce que que Florida es el
+
+29
+00:04:00.710 --> 00:04:08.850
+Marina Fuster: el el token, que más afecta, lo que después termina produciéndose como Next Token, predicción.
+
+30
+00:04:09.340 --> 00:04:20.360
+Marina Fuster: Bien, acá tenemos otro escenario donde supongamos que yo tengo una Api a la que le pego con un texto, o sea, se lo mando. Y digo, bueno, resumime este documento ¿no?
+
+31
+00:04:20.660 --> 00:04:34.769
+Marina Fuster: Y fíjense que en el de la izquierda es un documento en inglés que tiene 320 palabras, y el de la derecha es el hindi o hindi, y tiene 280 palabras, y el costo es diferente. ¿por qué se da esta situación.
+
+32
+00:04:37.270 --> 00:04:41.689
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Me parece que es porque entrenarlo en un idioma que no sea inglés.
+
+33
+00:04:41.950 --> 00:04:43.080
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Cuesta más.
+
+34
+00:04:43.510 --> 00:04:49.069
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No sé si es porque hay menos material de entrenamiento o es más complicado
+
+35
+00:04:49.570 --> 00:04:58.219
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: entrenar en un lenguaje que no sea inglés, pero acá. Sí. No No sé muy bien, ¿por qué no? No funciona también con un lenguaje que no sea el que tiene más vocabulario.
+
+36
+00:04:59.240 --> 00:05:05.419
+LUCAS CAMPOLI: No tiene que ver con lo de los tokens que en otro idioma son más tokens. Entonces se termina
+
+37
+00:05:05.600 --> 00:05:06.789
+LUCAS CAMPOLI: está costando más.
+
+38
+00:05:08.000 --> 00:05:16.690
+Marina Fuster: Bien tiene que ver con eso. Hay Ignacio. No sé que quisiese decir con está menos representado o menos representado donde y quien.
+
+39
+00:05:17.940 --> 00:05:25.289
+IGNACIO PEDEMONTE BERTHOUD: No era. Creo que era eso de los tokens. Lo habíamos visto la otra clase. El hecho de que esté menos representado, digamos, en el set de entrenamiento.
+
+40
+00:05:26.920 --> 00:05:30.260
+Marina Fuster: Bien en el set de entrenamiento de toquenización.
+
+41
+00:05:30.800 --> 00:05:31.720
+IGNACIO PEDEMONTE BERTHOUD: Claro.
+
+42
+00:05:32.150 --> 00:05:50.829
+Marina Fuster: Bien, ahí puso Juan bautista los algoritmos de tokenización suele estar más orientados al inglés o algo así. Perfecto. Esto La consecuencia de esto no está precisamente en el modelo, sino en lo que mencionan del algoritmo de toquenización. Yo tengo un algoritmo que se acuerdan? ¿cómo se llamaba el que vimos.
+
+43
+00:05:50.850 --> 00:05:54.380
+Marina Fuster: que es una de las 2 variantes más grandes?
+
+44
+00:05:54.560 --> 00:06:02.329
+Marina Fuster: Alguno ¿Se acuerda? B B Perfecto, My perencoling que lo que analiza es qué tan frecuentes aparecen
+
+45
+00:06:02.800 --> 00:06:21.370
+Marina Fuster: pares de caracter de caracteres o de de u t exacto y los va marceando, entonces el hecho de que sean muchos más tokens y me cueste más caro, o sea, el el modelo. Si esto es el si el documento de la derecha es más corto, Lo que me está ocasionando más costo, en realidad es que son más tokens, que es como la
+
+46
+00:06:21.550 --> 00:06:27.669
+Marina Fuster: la unidad de procesamiento del modelo y lo que a mí me cuesta plata, Sí, Entonces bien, esa parte de la tokenización.
+
+47
+00:06:28.400 --> 00:06:47.759
+Marina Fuster: Ahora, este escenario son 2 slides. Supongamos que yo tengo un algoritmo de Envedí no como un Engogrowlie, como lo que vieron lo que vimos en la primera y segunda clase con Verd. Y yo tengo un montón de cláusulas que son o documentos u oraciones en este caso y las puedo
+
+48
+00:06:48.380 --> 00:06:55.509
+Marina Fuster: pasar por este algoritmo de Bering y serían vectores en el espacio. No supongamos que yo tengo esta eso. Se entendió por
+
+49
+00:06:55.860 --> 00:06:57.220
+Marina Fuster: bien, ¿no?
+
+50
+00:06:57.870 --> 00:06:59.089
+Marina Fuster: Los 2 son.
+
+51
+00:07:02.160 --> 00:07:04.479
+Marina Fuster: Podrías subir la presentación? sí,
+
+52
+00:07:04.650 --> 00:07:11.059
+Marina Fuster: supongamos que yo tengo perdón, termino esto y ahí lo subo. Supongamos que yo tengo esto. Las.
+
+53
+00:07:11.060 --> 00:07:12.599
+Eugenia Sol Piñeiro: Estuvo mientras así seguís.
+
+54
+00:07:12.600 --> 00:07:29.289
+Marina Fuster: Ah, vale, Perfecto. Sí, Fíjate sacarle lo oculto que puse un 1 000 000 de dólares. Supongamos que tengo esta searchwai, no que tengo que encontrar todas las cláusulas donde cualquiera de las 2 de las 2 partes
+
+55
+00:07:29.290 --> 00:07:40.199
+Marina Fuster: va a terminar en lagrimament dando 90 días de aviso por escrito y me trae estas 3 opciones.
+
+56
+00:07:40.540 --> 00:08:00.470
+Marina Fuster: Sí, en verde estaría la resaltada la que yo quiero. Pero fíjense que las otras tienen una similitud mayor, ese 0 94 0 92. Podría ser, por ejemplo, una similitud o seno, no esa que vimos la clase anterior, que es el ángulo entre los gosen Benings. Si entonces
+
+57
+00:08:01.000 --> 00:08:05.230
+Marina Fuster: ¿por qué podría pasar esta situación.
+
+58
+00:08:10.230 --> 00:08:12.510
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y lo que pasa es que ahí estás pidiendo
+
+59
+00:08:13.710 --> 00:08:23.270
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: como que acá está más la atención que le pone más atención a Terminator ratad notes que a la cantidad que está entre paréntesis o nanti.
+
+60
+00:08:24.760 --> 00:08:32.450
+Marina Fuster: Bien, o sea, lo que me estás diciendo es que todo el resto del texto tiene más peso
+
+61
+00:08:33.270 --> 00:08:37.320
+Marina Fuster: para el embering no que los números.
+
+62
+00:08:38.850 --> 00:08:39.390
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+63
+00:08:40.640 --> 00:09:00.520
+Marina Fuster: Bien. Y ahí un pequeño detalle, o sea, está bien. Fíjense que lo que yo estoy comparando es el embedding de la cuery contra la embel de los elementos. Y lo que decís vos es que quizás, si yo tengo un algoritmo de embed basado en un encogedor lee transformer
+
+64
+00:09:00.630 --> 00:09:18.810
+Marina Fuster: que quizás es un poco más general que mi caso súper específico Por ahí me pasan estas cosas, no donde el la tercer oración, al tener este surving obligations Supply, quizás incorporado en el contexto, hace que miembro sea menos parecido.
+
+65
+00:09:19.040 --> 00:09:33.070
+Marina Fuster: Este email de esta cuenta y que está acá? Sí, porque las otras 2 es como que el texto es prácticamente el mismo, o sea, está enfocando más en el texto tal cual que en estas sutilezas, como lo que has mencionabas de la cantidad de días.
+
+66
+00:09:33.480 --> 00:09:35.290
+Marina Fuster: Eso se entendió.
+
+67
+00:09:35.490 --> 00:09:41.790
+Marina Fuster: Eso es algo que a mí me puede pasar. Si mi algoritmo de Meding no está entrenado
+
+68
+00:09:42.120 --> 00:09:45.559
+Marina Fuster: o no es lo suficientemente específico para mi caso de uso.
+
+69
+00:09:45.870 --> 00:09:48.219
+Marina Fuster: eso más o menos quedó claro.
+
+70
+00:09:52.070 --> 00:09:58.779
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí. Entonces lo que está pasando acá es que el número no no no recupera suficiente atención
+
+71
+00:09:59.030 --> 00:10:01.000
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: como para contrarrestar todo lo demás.
+
+72
+00:10:02.080 --> 00:10:02.920
+Marina Fuster: Sí,
+
+73
+00:10:03.220 --> 00:10:16.589
+Marina Fuster: no necesariamente. Es una cuestión solo de la atención, porque esta este texto pasa por todo el encobrol en transformer y vos al final tenés un embeding No, entonces
+
+74
+00:10:17.740 --> 00:10:32.769
+Marina Fuster: puede ser algo de la atención, como también puede ser cosas que vayas incorporando en las capas de multilider perceptor, que también afectan al embebeing que va como viajando por ese por ese camino residual, por así decirlo.
+
+75
+00:10:36.770 --> 00:10:39.280
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Okay, entonces puede ser también del M. L. P.
+
+76
+00:10:39.650 --> 00:10:44.079
+Marina Fuster: Sí es del del transformer en general.
+
+77
+00:10:44.090 --> 00:10:47.890
+Marina Fuster: de qué cosas tienen más peso para el envenenado.
+
+78
+00:10:47.890 --> 00:11:06.979
+Marina Fuster: Si los números o no vos igual estos Vos Tenés, un algoritmo de Medeling, que es, por ejemplo, transformer podrías agarrar un transformer que funcione más o menos bien y seguirlo entrenando para que sea súper específico a lo que vos querés, por ejemplo, acá tratarías de entrenarlo para asegurarte que la cuestión de la cantidad de días.
+
+79
+00:11:06.980 --> 00:11:08.349
+Marina Fuster: Se ha
+
+80
+00:11:08.830 --> 00:11:19.069
+Marina Fuster: una parte fuerte del entrenamiento, entonces tratar de especializarlo en tu caso de uso, que sería este, pero en principio sí es un comportamiento de transformer. En general.
+
+81
+00:11:20.860 --> 00:11:26.089
+Marina Fuster: bien alguna pregunta de las clases anteriores, o estamos para arrancar
+
+82
+00:11:31.110 --> 00:11:33.809
+Marina Fuster: algo que les haya quedado en el tintero
+
+83
+00:11:34.730 --> 00:11:37.430
+Marina Fuster: o se entendió todo, absolutamente todo.
+
+84
+00:11:39.630 --> 00:11:46.419
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: A mí me quedó un poco en el tintero. El tema de me gustaría poder ver el simulador de de transformers corriendo.
+
+85
+00:11:46.520 --> 00:11:48.130
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No encontré 1. Todavía
+
+86
+00:11:48.350 --> 00:11:56.990
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: estuve tratando de entender la parte matemática de cómo funciona todo. Y creo que la entendí bien, pero si me sa salta alguna duda, te voy a, te voy a.
+
+87
+00:11:56.990 --> 00:12:01.020
+Marina Fuster: Ok, ¿A qué le llamas el Simulador de transformer corriendo.
+
+88
+00:12:01.420 --> 00:12:11.229
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No, porque a mí me gustaría ver un mini simulador de no sé, Ent entra un string y se convierte en Token que se convierte en el deding.
+
+89
+00:12:11.490 --> 00:12:15.040
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y después quiero ver los las matrices multiplicándose.
+
+90
+00:12:15.950 --> 00:12:21.530
+Marina Fuster: Ok, recomendación Ahí no es un simulador, pero lo puedes hacer a mano en un papel
+
+91
+00:12:22.080 --> 00:12:28.030
+Marina Fuster: con un ejemplo muy, muy chiquito. Yo entiendo que es una fiaca, pero eso a veces ayuda.
+
+92
+00:12:28.030 --> 00:12:32.629
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Una vez que hice tras multiplicación de matrices, estaba usando un barrijo.
+
+93
+00:12:33.160 --> 00:12:39.180
+Marina Fuster: Bueno, yo te doy la solución que te aseguro, vas a estar sin tan buen rato. Y.
+
+94
+00:12:39.180 --> 00:12:39.920
+Eugenia Sol Piñeiro: Es bastante.
+
+95
+00:12:39.920 --> 00:12:41.300
+Marina Fuster: En la matriz.
+
+96
+00:12:41.300 --> 00:12:48.339
+Eugenia Sol Piñeiro: La puedes hacer de última en un colabo o en un notebook o algo así. Pero también tienen la demo que subimos que un poco está bien, no está
+
+97
+00:12:48.570 --> 00:12:54.750
+Eugenia Sol Piñeiro: tan tan desglosada este matriz, pero sí está bastante desglosada, que ves de stream y poco.
+
+98
+00:12:54.750 --> 00:12:55.510
+Marina Fuster: Ponele de.
+
+99
+00:12:55.510 --> 00:12:57.000
+Eugenia Sol Piñeiro: May.
+
+100
+00:12:57.700 --> 00:13:04.740
+Marina Fuster: Sí ponele Checkpoints si querés para ir viendo algo que pone la mí, me ayumotones
+
+101
+00:13:05.120 --> 00:13:08.510
+Marina Fuster: sin ir paso a paso, imprimiendo todo lo que son las shapes.
+
+102
+00:13:08.560 --> 00:13:20.759
+Marina Fuster: Como to todas las formas de las distintas matrices, siento que ayuda porque te ayuda a visualizar un poco que se va multiplicando con que ¿Y qué es el embwen que va capa a capa?
+
+103
+00:13:20.760 --> 00:13:31.199
+Marina Fuster: ¿cuál es la parte de la G, ¿Cuál no, donde se concatenan que sería otra opción justo con los parámetros que tenés van a ser matrices muy grandes de última achicarlo todo.
+
+104
+00:13:31.370 --> 00:13:38.589
+Marina Fuster: Y y por ahí anda paso a paso, viendo las distintas rapes como va evolucionando. Eso por ahí puede ayudar.
+
+105
+00:13:40.610 --> 00:13:48.709
+Marina Fuster: pero sí el El es es cuestión de sentarse y o hacer un ejemplo escrito, o verlo muy paso a paso.
+
+106
+00:13:49.690 --> 00:13:56.110
+Marina Fuster: Y si encontrás un simulador, compartírnoslo. Porque, bien.
+
+107
+00:13:56.270 --> 00:14:13.520
+Marina Fuster: ¿qué es lo que vamos a ver hoy? No, dentro de todo lo que es Transferirarning y Fanturing. Vamos a hacer un mini recordatorio de que era esto del informe learning. Después vamos a entrar en lo que es la definición y el área de transfer learning porque nos interesa hoy algo. Se llama Hhh Framework. Vamos a ver
+
+108
+00:14:13.520 --> 00:14:30.839
+Marina Fuster: superviseum y rein force m learning Rock human Feedback que es esto de Lhf. Y hoy no vamos a dar todo, Pero Riff, de que son los Visualn y Models. ¿y qué es lo que involucra hacer de un modelo que no es resoning a 1 Carnis Sony.
+
+109
+00:14:31.210 --> 00:14:33.970
+Marina Fuster: Entonces, ¿qué se acuerdan de Reinformsement? Learning
+
+110
+00:14:42.130 --> 00:14:42.820
+Marina Fuster: cri cri.
+
+111
+00:14:42.840 --> 00:14:48.199
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Informe The Learning era cuando le decíamos al le damos feedback constantemente al
+
+112
+00:14:48.680 --> 00:14:52.330
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: la de Transformers, ¿no? O sea, es algo que lo metíamos de vuelta al input.
+
+113
+00:14:53.980 --> 00:15:00.039
+Marina Fuster: Olvidémonos del tema transformer. No voy a hablar de transformers hasta un ratillo.
+
+114
+00:15:00.730 --> 00:15:05.670
+Marina Fuster: Vos Decís que le damos feedback a algo.
+
+115
+00:15:05.770 --> 00:15:13.030
+Marina Fuster: El modelo aprende una política en base a interacciones con el medio. Ok, eso se acerca un poquito más, tenemos
+
+116
+00:15:13.510 --> 00:15:32.359
+Marina Fuster: modelo, o no podemos tener otra cosa. Llamémoslo sí, modelo. El agente también puede ser. Estaba esta cuestión de agentes en reforza learning Entonces tenemos el modelo que aprende una política en base a interacciones con el medio, y te acordás que era esto de política.
+
+117
+00:15:39.570 --> 00:15:43.489
+Marina Fuster: acciones mencionadas. Claro, la política es.
+
+118
+00:15:45.240 --> 00:15:57.029
+Marina Fuster: ¿es eso sí, va un poco por ahí esto que Decís Juan Ignacio está bien. En el tema de acciones. La política va a ser lo que a vos te determina. Si yo estoy en estado.
+
+119
+00:15:57.170 --> 00:16:16.779
+Marina Fuster: qué acción tomo, No para cada estado en el que yo me puedo encontrar cómo me voy a comportar. Eso es lo que me va a decir la política y, por otro lado, que dice Joaquín, tocar el cable pelado Duele. Entonces no toco el cable pelado. Bien, perfecto aparece lado. Entonces hay varias como ideas bases de donde viene la idea de aprendizaje por refuerzo
+
+120
+00:16:16.860 --> 00:16:23.939
+Marina Fuster: cercano a lo que decías o Joaquín. Esto de el aprendizaje biológico por premios y castigos
+
+121
+00:16:23.940 --> 00:16:37.239
+Marina Fuster: de ese famoso perro de Pavlov que salivaba cuando le mostraba la comida, etcétera. Y que es esta frase de carles anstics de que si aprendes por carrout, es decir, por recompensa o por balazos.
+
+122
+00:16:37.530 --> 00:16:43.249
+Marina Fuster: Hay otra idea base bastante interesante de la perspectiva del aprendizaje
+
+123
+00:16:43.350 --> 00:17:00.609
+Marina Fuster: automático, puse y supervisado, pero de de la perspectiva de aprendizaje automático en general. Fíjense que cuando nosotros estamos en aprendizaje supervisado, nosotros queremos aprender una F, que es lo que termina modelando nuestra
+
+124
+00:17:00.610 --> 00:17:07.359
+Marina Fuster: red neuronal. Si estamos usando una red neuronal, pero tenemos nuestros datos y las etiquetas de esos datos.
+
+125
+00:17:07.690 --> 00:17:18.370
+Marina Fuster: ¿no? Entonces, algo central a lo que es reinform learning es que yo no tengo estos datos. Si no tengo
+
+126
+00:17:18.430 --> 00:17:29.499
+Marina Fuster: la información con la cual yo le alimento el modelo, le digo cómo se tiene que comportar, va preparation. Y punto. Entonces, algo central de la información online es que yo voy a tener que generar estos datos.
+
+127
+00:17:30.120 --> 00:17:43.539
+Marina Fuster: Por otro lado, otra tercera perspectiva está más conectada a la nomenclatura que usamos en si, a más que nada, en la primera parte donde tenemos un agente que interactúa con el ambiente y obtiene feedback del mismo
+
+128
+00:17:43.720 --> 00:18:01.579
+Marina Fuster: los que hicieron la materia fuera más o menos algo les suena. No nos vamos a meter en profundidad, pero es como para que tengan la intuición o reinform learning y no vieron nada. Sí. Sí. Ah, listo. Perfecto. Entonces es un área que viene de varias ideas base se puede interpretar desde distintas maneras.
+
+129
+00:18:01.760 --> 00:18:21.049
+Marina Fuster: Y lo que sí nosotros vamos a tomar de este área es la definición de Estados, acciones, una función de transición, una función de recompensa y la política. La observaciones, no vamos a simplificar y no le vamos a dar mucha volada. Entonces, ¿qué es lo que yo voy a tener? Yo voy a tener un agente
+
+130
+00:18:21.050 --> 00:18:25.740
+Marina Fuster: que ejecuta acciones, y en cada Estado en el que está, elige una acción.
+
+131
+00:18:25.740 --> 00:18:33.000
+Marina Fuster: Esa acción tiene algún impacto en un ambiente. Y, como bien dijeron, yo voy a recibir una recompensa
+
+132
+00:18:33.310 --> 00:18:44.640
+Marina Fuster: recibiría una observación en los casos en los que quizás no tengo acceso a observar absolutamente todo en mi ambiente. Por ejemplo.
+
+133
+00:18:45.290 --> 00:19:02.630
+Marina Fuster: el buscaminas. Podría ser un escenario donde yo voy recibiendo observaciones, No, A medida que yo voy eligiendo. Se me abre como un espacio. No No tengo la visibilidad completa, pero nosotros vamos a simplificar de que tenemos acceso a lo que es
+
+134
+00:19:02.630 --> 00:19:07.140
+Marina Fuster: el ambiente y no no recibo observaciones, sino que solo recibo la recompensa
+
+135
+00:19:07.430 --> 00:19:15.239
+Marina Fuster: y cómo voy eligiendo la política. ¿sí? Y entonces esta cuestión de que lo que yo voy a querer es maximizar la recompensa.
+
+136
+00:19:16.460 --> 00:19:24.310
+Marina Fuster: Entonces, si se acuerdan, acá está el amigo Socoban que usted es esto, ¿Cómo lo resolvían? Decía.
+
+137
+00:19:31.600 --> 00:19:37.990
+Marina Fuster: sí, exactamente Ese es un poco. Esa es otra de las interpretaciones en
+
+138
+00:19:38.740 --> 00:19:55.210
+Marina Fuster: a estrellas, bien perfecto a estrellas, o sea, con algoritmos de búsqueda, no haciendo métodos de búsqueda hasta que mi Pc saque 1 también. Por ahí ahí le faltaba optimizar la implementación. Entonces Teníamos algoritmos de búsqueda con los cuales yo
+
+139
+00:19:55.270 --> 00:20:05.039
+Marina Fuster: me construía la solución. Y por ejemplo, no sé a estrella, me encontraba la óptima, sí, pero fíjense que
+
+140
+00:20:05.730 --> 00:20:24.170
+Marina Fuster: los algoritmos de búsqueda. Quizás se me quedan un poco cortos así tal cual es los mismos cuando tenemos una función de transición que no es necesariamente determinística. No imagínense que en este escenario yo tengo que si me muevo por toda esta región.
+
+141
+00:20:24.170 --> 00:20:28.209
+Marina Fuster: sí, cada vez que yo quiero ejecutar una acción con un
+
+142
+00:20:28.490 --> 00:20:35.070
+Marina Fuster: 50 por 100 de probabilidad ejecuto lo que quiero y el resto 50 por 100. Hago Algo random
+
+143
+00:20:35.140 --> 00:20:46.379
+Marina Fuster: ¿no? Entonces toda esta región es súper estocástica, y a mí me va a costar mucho llegar más allá de que el camino más corto es hacia la derecha. Si.
+
+144
+00:20:46.410 --> 00:20:59.910
+Marina Fuster: en cambio, si yo me muevo sobre la izquierda, digamos que es súper determinístico, Si entonces fíjense que en este tipo de esquemas donde el ambiente no se comporta de una forma estática.
+
+145
+00:20:59.910 --> 00:21:24.819
+Marina Fuster: La solución óptima quizás no es la mejor, porque son pocas las veces que yo en realidad llego a esa instancia. Entonces esto se podría modelar como un problema de informe Learning, donde, por exploración, quizás el agente encuentra que es mucho mejor directamente irme para este lado, porque siempre que voy para este lado, llego a donde quiero. Si, Y no me pasa que quizás la caja me queda contra una pared por
+
+146
+00:21:24.820 --> 00:21:29.950
+Marina Fuster: que por alguna acción estocástica terminé empujando la caja contra la pared.
+
+147
+00:21:30.160 --> 00:21:32.090
+Marina Fuster: Eso más o menos se entendió.
+
+148
+00:21:38.310 --> 00:21:41.380
+Marina Fuster: Sí. Bien, ¿qué sería acá? El Estado?
+
+149
+00:21:42.740 --> 00:21:45.149
+Marina Fuster: ¿qué podrían definir como Estado, por ejemplo.
+
+150
+00:21:45.420 --> 00:21:49.099
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y podemos definir como estaba la posición de de la cajita.
+
+151
+00:21:50.160 --> 00:21:50.560
+Marina Fuster: A jugar.
+
+152
+00:21:51.090 --> 00:21:52.589
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: De la cajita del jugador.
+
+153
+00:21:53.490 --> 00:21:56.180
+Marina Fuster: Bien cuáles serían las acciones.
+
+154
+00:21:57.420 --> 00:22:01.320
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y las acciones es mover el jugador o mover la cajita depende
+
+155
+00:22:02.180 --> 00:22:08.680
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: como que cuando lo hicimos, me acuerdo que habíamos preguntado si teníamos si el jugador se movía gratis o no.
+
+156
+00:22:09.020 --> 00:22:10.940
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: y nos dijeron, depende.
+
+157
+00:22:11.920 --> 00:22:15.470
+Marina Fuster: Ok, simplifiquemos A: bueno.
+
+158
+00:22:15.840 --> 00:22:20.800
+Marina Fuster: más allá de si es gratis o no, o sea, cuáles son las cosas que el jugador puede hacer acá.
+
+159
+00:22:21.290 --> 00:22:22.070
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Pues.
+
+160
+00:22:22.070 --> 00:22:22.470
+Marina Fuster: Social.
+
+161
+00:22:22.470 --> 00:22:23.979
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Puede moverse o empujar una caja.
+
+162
+00:22:25.500 --> 00:22:32.329
+Marina Fuster: Bien, supongamos que empujar una caja es lo mismo que moverse, no porque te estás moviendo en una dirección, Podemos ver esa simplificación.
+
+163
+00:22:34.340 --> 00:22:35.300
+Marina Fuster: ¿no?
+
+164
+00:22:37.060 --> 00:22:48.959
+Marina Fuster: O sea, si yo estoy acá arriba del todo y me muevo aquí abajo, sería como moverme hacia abajo de ella para empujo la caja, pero sería moverme hacia abajo, Bien, transición. ¿qué es lo que sería acá?
+
+165
+00:22:50.380 --> 00:22:52.430
+Marina Fuster: ¿cuál sería la función de transición.
+
+166
+00:22:56.520 --> 00:22:59.360
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y la función de transmisión sería moverse.
+
+167
+00:22:59.990 --> 00:23:02.979
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: o sea, pasas de un ex de un actor de un cuadradito a otro.
+
+168
+00:23:03.260 --> 00:23:20.930
+Marina Fuster: Bien perfecto. En el caso del zocoman tradicional, la función de transición vendría a ser simplemente o que paso a un lado a otro en esta versión estocástica que mencioné que podría ser más difícil para resolver con algoritmo de búsqueda la función de transición. Podría decirme, no sé
+
+169
+00:23:21.310 --> 00:23:25.479
+Marina Fuster: en en toda esta región si te movés hacelo con
+
+170
+00:23:25.790 --> 00:23:40.019
+Marina Fuster: tanto por 100 de probabilidad hacia dónde quiero y tanta porción de probabilidades en lugar Random, y que toda esta parte es la trivial, no me muevo. Si paseo en esto del otro fin. Entonces eso podría ser una posible función de transición.
+
+171
+00:23:40.290 --> 00:23:41.699
+Marina Fuster: La recompensa.
+
+172
+00:23:42.530 --> 00:23:43.610
+Marina Fuster: ¿qué sería.
+
+173
+00:23:45.940 --> 00:23:52.789
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y la recompensa sería que baje una función heurística que te cuenta cuán cerca estás del del objetivo.
+
+174
+00:23:54.840 --> 00:23:56.200
+Marina Fuster: En.
+
+175
+00:23:57.990 --> 00:23:59.590
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea.
+
+176
+00:23:59.590 --> 00:24:00.710
+Marina Fuster: Cómo.
+
+177
+00:24:00.710 --> 00:24:02.559
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O llegar directamente al objetivo.
+
+178
+00:24:03.390 --> 00:24:14.960
+Marina Fuster: Sí podría darse, como no es necesariamente una heurística que te estima el costo, sino que
+
+179
+00:24:15.370 --> 00:24:24.409
+Marina Fuster: la recompensa en en general se suele modelar para desincentivar lo que vos querés e incentivar lo que querés, como que la perspectiva del costo
+
+180
+00:24:24.410 --> 00:24:37.299
+Marina Fuster: es bien desde la parte de algoritmos de búsqueda donde vos tenés algo muy claro: que quieres minimizar el costo, por ejemplo, o tener ciertos algoritmos que te dan esta garantía del menor costo posible. Acá La función de recompensa
+
+181
+00:24:37.500 --> 00:24:45.479
+Marina Fuster: se modela de acuerdo a cosas que vos querés incentivar, por ejemplo, si vos no querés que la gente esté dando vueltas
+
+182
+00:24:45.920 --> 00:25:03.690
+Marina Fuster: así por el tablero hasta encontrar la caja, porque en realidad pensé que la gente ni sabe que tiene que empujar la caja, o sea, no sabe nada al respecto. Entonces, si vos quisieras desincentivar que que la gente esté yendo para un lado y para el otro, y así le podrías poner una penalización negativa. Chiquita, por ejemplo.
+
+183
+00:25:03.850 --> 00:25:08.780
+Marina Fuster: podría ser ponerle el peso total de un machine mínimo entre caja y lugares vacío.
+
+184
+00:25:10.990 --> 00:25:18.409
+Marina Fuster: Y para porque estoy pensando, podría ser ponerle el peso total de un macho y mínimo entre cajas.
+
+185
+00:25:19.730 --> 00:25:26.550
+Marina Fuster: No entiendo a qué a qué le o sea querés tirar un ejemplo, como numérico. No sé para este caso. No entiendo bien a qué te referís.
+
+186
+00:25:29.850 --> 00:25:33.419
+Juan Ignacio Cantarella: Sí. A ver. No sé si se me escucha ahí.
+
+187
+00:25:33.420 --> 00:25:34.050
+Marina Fuster: Sí, Sí.
+
+188
+00:25:34.050 --> 00:25:44.059
+Juan Ignacio Cantarella: Lo que yo es tomada las cajas y los lugares y mandó una arista de todas las cajas a todos los lugares donde el peso de la arista es tipo
+
+189
+00:25:44.310 --> 00:25:48.680
+Juan Ignacio Cantarella: la distancia, cómo se dice? L 1, ¿no?
+
+190
+00:25:49.850 --> 00:25:59.690
+Juan Ignacio Cantarella: Y si vos te agarras un matching perfecto de esto, que te mapee una caja con exactamente un lugar, y tomas el de mínimo peso.
+
+191
+00:26:00.890 --> 00:26:02.949
+Juan Ignacio Cantarella: No sé, era una idea nomás.
+
+192
+00:26:02.950 --> 00:26:03.550
+Marina Fuster: No, no.
+
+193
+00:26:03.550 --> 00:26:04.040
+Juan Ignacio Cantarella: Que no.
+
+194
+00:26:04.040 --> 00:26:06.489
+Marina Fuster: Está perfecto en el sentido de.
+
+195
+00:26:06.490 --> 00:26:06.840
+Juan Ignacio Cantarella: Dice.
+
+196
+00:26:06.840 --> 00:26:16.940
+Marina Fuster: Lo que querés proponer, pero sigue siendo algo por lo que entendí, no como muy asociado a que vos querés estimar lo que te estaría falta faltando
+
+197
+00:26:17.170 --> 00:26:20.139
+Marina Fuster: como para para lograr el meter la caja.
+
+198
+00:26:20.140 --> 00:26:21.560
+Juan Ignacio Cantarella: Claro, claro.
+
+199
+00:26:21.800 --> 00:26:34.930
+Marina Fuster: Bien la recompensa en realidad está un poquito más socie más asociada con lo que vos querés ir penalizando o recompensando durante la dinámica de juego, no
+
+200
+00:26:35.120 --> 00:26:47.849
+Marina Fuster: si se mete en estado sin salida lo castigas, sí o lo castigas o directamente. Lo que podes hacer es terminar lo que se llama un episodio acá en lo que es el informe Learning. Lo que se suele hacer es que cada gente
+
+201
+00:26:48.040 --> 00:26:59.800
+Marina Fuster: juega entre comillas muchos episodios. Es decir, se hacen como muchos arranques del juego. Y lo que podría pasar es que si vos llegas a un a un lugar sin salida.
+
+202
+00:26:59.800 --> 00:27:15.960
+Marina Fuster: terminase el episodio, ¿no? Y por ejemplo, esto de a medida que vos vas tomando pasos. Quizás eso te una reward negativa, o sea, todo el tiempo estar yendo a un lado para el otro. Se acumularía en un montón de Rewards negativas.
+
+203
+00:27:15.960 --> 00:27:22.609
+Marina Fuster: y quizás el hecho de llegar a meter una caja en un objetivo te da una reward positiva, ¿no?
+
+204
+00:27:22.720 --> 00:27:35.160
+Marina Fuster: Entonces no es necesariamente una estimación del costo y armar esta función de recompensa es súper difícil y en la clase que viene no la otra. Vamos a ver un montón de cosas que pueden ocurrir
+
+205
+00:27:35.160 --> 00:27:43.179
+Marina Fuster: por tener una función de recompensa, pero en realidad lo que vos te estaría indicando es que te penalizo y qué te
+
+206
+00:27:43.180 --> 00:27:57.499
+Marina Fuster: como incentivo a que haga, Si eso es lo que modelaría la función de recompensa. Fíjense que en algoritmos de búsqueda 1 lo que hace en realidad es como una estimación de costo. Y en base a eso está decidiendo qué nuevos explorar
+
+207
+00:27:57.530 --> 00:28:03.900
+Marina Fuster: es distinto si se mete a eso, es lo que decía recién. Si se mete en un estado sin salida lo castigas.
+
+208
+00:28:03.900 --> 00:28:21.730
+Marina Fuster: Bien, entonces tenemos la función de recompensa, que es lo que a mí me va a permitir que una gente explore, sí y en base a la recompensa que recibió por el episodio o a medida que fue explorando, va a ir encontrando que acciones en cada Estado son mejores que otras.
+
+209
+00:28:22.370 --> 00:28:27.040
+Marina Fuster: Y, por último, la política que ya sabemos que sería, acá por ejemplo.
+
+210
+00:28:32.970 --> 00:28:33.840
+Marina Fuster: sí.
+
+211
+00:28:34.010 --> 00:28:34.989
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: El qué perdón.
+
+212
+00:28:35.630 --> 00:28:36.949
+Marina Fuster: La política.
+
+213
+00:28:39.060 --> 00:28:44.030
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y la política que aprende es acercar la caja al al al goal lo más posible.
+
+214
+00:28:45.440 --> 00:28:48.739
+Marina Fuster: Una podría ser? ¿cómo dijiste de nuevo.
+
+215
+00:28:49.640 --> 00:28:53.419
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Mover la caja lo más cercano posible al al objetivo.
+
+216
+00:28:54.490 --> 00:29:12.920
+Marina Fuster: Bien ojo que la política, como como concreto, lo que te dice, es para cada Estado en el que yo me puedo encontrar que hacer o qué es lo mejor que puedo hacer. No dice una. Podría hacer siempre mover la caja más cercana al lugar vacío más cercano. Ok.
+
+217
+00:29:12.920 --> 00:29:21.280
+Marina Fuster: Sí, quis quizás es un poquito como más. Por extensión, lo que estamos llamando, porque en realidad, la política, lo que considera es
+
+218
+00:29:21.280 --> 00:29:28.529
+Marina Fuster: yo a gente me encuentro acá que es lo mejor que puedo hacer estando acá ir a la derecha, ir abajo? Bueno, no puedo hacer más nada
+
+219
+00:29:28.590 --> 00:29:36.939
+Marina Fuster: y fin! Por otro lado, ¿qué pasa si yo estoy? Acá ¿Qué es lo mejor que puedo hacer ir a la derecha, a la izquierda o abajo. La política
+
+220
+00:29:37.160 --> 00:29:55.030
+Marina Fuster: debería decirme, para cada una de esas cosas que es lo que yo quiero hacer. Fíjense que si el problema, el ambiente es muy complejo, Yo, en realidad, si hago esto por extensión me explota, sí hay algo que se llama.
+
+221
+00:29:55.390 --> 00:30:11.499
+Marina Fuster: No sé si se acuerdan, porque lo vemos en en si, A, pero las clases fueron cambiando un poco donde yo tengo esto, que yo les digo una tabla, no una tabla que me dice para tal estado, ¿Cuál es la mejor acción que puedo tomar. Y eso es lo que hago.
+
+222
+00:30:11.650 --> 00:30:24.729
+Marina Fuster: Pero para cosas más complejas, tener una tabla en realidad me termina resultando muy ineficiente. Y lo que se suele hacer es que la política esté modelada por una red neuronal. Y ahí es donde se conecta un poco
+
+223
+00:30:24.850 --> 00:30:27.990
+Marina Fuster: con redes neuronales, como la primer conexión.
+
+224
+00:30:29.070 --> 00:30:32.289
+Marina Fuster: Bien, ¿qué es lo que nos va a interesar a nosotros
+
+225
+00:30:32.450 --> 00:30:39.109
+Marina Fuster: de lo que es? Aprendizaje por refuerzo. Nos va a interesar esta perspectiva de que nosotros no tenemos
+
+226
+00:30:39.500 --> 00:30:58.619
+Marina Fuster: los X y los Y para hacer este mapeo, y vamos a ver ciertos problemas donde tener esta información es sumamente cara, Entonces yo puedo tener un esquema de informe learning y tratar de llegar a lo que quiero, en lugar de usar aprendizaje supervisado o semi supervisado
+
+227
+00:30:58.880 --> 00:30:59.720
+Marina Fuster: Bien.
+
+228
+00:31:01.020 --> 00:31:07.950
+Marina Fuster: alguna pregunta hasta acá ah, les decía acá, el link que deberían tener ustedes acceso a una playlist que tiene Rodri. Decía.
+
+229
+00:31:08.440 --> 00:31:18.449
+Marina Fuster: creo que la clase es bastante vieja, pero la clase reforce My learning es bastante tradicional. Así que nada el que lo quiere repasar. Ahí tiene el link para chusmearla.
+
+230
+00:31:19.520 --> 00:31:20.550
+Marina Fuster: Perfecto.
+
+231
+00:31:20.980 --> 00:31:32.289
+Marina Fuster: ¿qué es esto? De transfer learning. ¿alguna vez escucharon este concepto? Lo de reinforma learning se lo guardan en el bolsillo. Lo vamos a ver un rato. Pero ¿qué ¿Es esto de transferning? ¿alguna vez escuchado en este concepto?
+
+232
+00:31:34.200 --> 00:31:35.980
+Marina Fuster: No, no
+
+233
+00:31:41.140 --> 00:31:48.629
+Marina Fuster: tiene algo que ver con los modelos? Bien, Sí, tiene que ver algo con eso va por ahí. La mano. Entonces
+
+234
+00:31:48.870 --> 00:32:03.060
+Marina Fuster: transfer Learning es un campo que junta conjunto de técnicas que ahora las van a ver y les van a aparecer súper conocidas, creo. Pero donde la definición, como más general es a
+
+235
+00:32:03.290 --> 00:32:07.880
+Marina Fuster: que yo agarro o uso el conocimiento
+
+236
+00:32:07.880 --> 00:32:23.910
+Marina Fuster: o codificación en los pesos, en realidad obtenido por un modelo con un conjunto de datos para una tarea que la podamos llamar, la tarea base. Y eso mismo que yo aprendí lo reutilizo y me sirve para mejorar el rendimiento o eficiencia de otro modelo, sí
+
+237
+00:32:23.910 --> 00:32:27.610
+Marina Fuster: que puede ser para con otro conjunto de datos para otra tarea.
+
+238
+00:32:29.020 --> 00:32:32.740
+Marina Fuster: Esto estamos más o menos
+
+239
+00:32:36.020 --> 00:32:52.869
+Marina Fuster: bien 2 detalles. Fíjense que dice que se puede mejorar el rendimiento o la eficiencia. Entonces lo que es el campo de Transfularning tiene, por un lado, el rendimiento significa que la performance final de ese modelo va a terminar siendo mejor usando esta estrategia que si yo lo hubiera hecho
+
+240
+00:32:52.870 --> 00:33:06.759
+Marina Fuster: desde el principio con un esquema tradicional de aprendizaje supervisado. Eso es a lo que se refiere con rendimiento y eficiencia. Se refiere a que el costo que yo voy a tener para lograr un modelo Bueno, en esta segunda tarea.
+
+241
+00:33:06.770 --> 00:33:16.180
+Marina Fuster: en cómputo o tiempo de entrenamiento, lo que sea, va a ser más bajo si uso transferirning que que si arrancó de 0. Ok.
+
+242
+00:33:16.330 --> 00:33:24.089
+Marina Fuster: Entonces acá tenemos un ejemplo donde este es un ejemplo real que encontré, que me parece bastante cómodo. ¿qué sé yo
+
+243
+00:33:24.240 --> 00:33:33.879
+Marina Fuster: bastante curioso, donde agarran un montón de tweets que tienen algún emoji de ex y entrenan un modelo que lo que hace es un
+
+244
+00:33:33.930 --> 00:33:48.429
+Marina Fuster: emoji predicción, no de ese tuit. Lo que trata de hacer es capturar la emocionalidad del texto y predecir que emoji iba en ese tuit. ¿no? Entonces la idea es que lo que a mí me queda internamente: los pesos codificados. Es
+
+245
+00:33:49.010 --> 00:34:02.599
+Marina Fuster: una especie de representación más abstracta o de procesamiento de texto. Cuando yo estoy tratando de capturar una valoración emocional, entonces agarran este modelo y los mismos pesos los usan como base
+
+246
+00:34:02.630 --> 00:34:12.310
+Marina Fuster: para agarrar comentarios de Youtube y hacer distintos tipos de clasificaciones. Fíjense que lo que yo hice es sacarle la última capa de softmas que lo que hacía era
+
+247
+00:34:12.520 --> 00:34:15.470
+Marina Fuster: predecir cuál era el próximo emoji.
+
+248
+00:34:15.480 --> 00:34:28.480
+Marina Fuster: Y en lugar, le puse o algo binario que me dice si el comentario es positivo o negativo o yo inclusive, podría tenerlo acá como sentimental análisis que no sé. Tengo 5 categorías
+
+249
+00:34:28.480 --> 00:34:36.120
+Marina Fuster: enojado feliz, Triste. Harto. No sé, y hago la clasificación de alguna de esas
+
+250
+00:34:36.210 --> 00:34:46.160
+Marina Fuster: sí, pero ¿Cuál es la diferencia con finduning? Ajá? Ninguna fietuning es una de las formas de hacer. Transferirme
+
+251
+00:34:48.960 --> 00:35:06.620
+Marina Fuster: bien. Perfecto. El tema es el finduning. Es como la más clásica y es la más conocida. Pero hay otras técnicas que caen bajo este mismo campo que todas se relacionan con lo mismo, No, como yo transfiero conocimiento de un modelo a otro. Sí,
+
+252
+00:35:06.890 --> 00:35:14.779
+Marina Fuster: bien, es más, Hay como todo un acuerdo, hay todo un área más vieja
+
+253
+00:35:14.890 --> 00:35:19.789
+Marina Fuster: de transferencia, de conocimiento simbólico y con simbólico. Me refiero a algo más.
+
+254
+00:35:20.020 --> 00:35:24.589
+Marina Fuster: ya programático o más explícito y se trata de ver si
+
+255
+00:35:24.670 --> 00:35:43.290
+Marina Fuster: se podría también transferir conocimiento de esa forma en un modelo o, por ejemplo, algo que el otro día chemeaba que alguien trataba de hacer era los transformers. Hay partes de los circuitos de atención que se asocian, que es X, funcionalidad, que la puedes programar, entonces che puedo yo
+
+256
+00:35:43.290 --> 00:35:57.430
+Marina Fuster: sacar esa parte del transformer y enchufarle algo que es conocimiento simbólico o programático, y lograr tener un transformer como más baratito, porque algunas cosas están como pre computadas y
+
+257
+00:35:57.480 --> 00:36:12.550
+Marina Fuster: usar el resto. No. Esa sería una una forma de transfer Learning. Nosotros la más asociada y la más clásica en realidad es cruzar conocimiento entre modelos, pero hay distintas variantes. Es un área bastante amplia.
+
+258
+00:36:13.790 --> 00:36:18.519
+Marina Fuster: Bien, entonces tenemos este transforming. Y nosotros vamos a ver 3.
+
+259
+00:36:18.620 --> 00:36:25.160
+Marina Fuster: Lo más clásico que es Feature Extraction Fanduing y Knowledge Destilation sí,
+
+260
+00:36:25.160 --> 00:36:44.479
+Marina Fuster: ahora andamos por lo que es Feature Extraction. Y esto se asocia con la idea de representation learning, que es lo que plantea esto de representation learning. Bueno, la tesis o la expectativa de que los datos como yo, los consumo no necesariamente tienen la mejor representación.
+
+261
+00:36:44.480 --> 00:36:47.670
+Marina Fuster: Sí, quizás yo tengo una tassette con
+
+262
+00:36:47.760 --> 00:37:00.980
+Marina Fuster: cosas super redundantes con datos que no son más que ruido y en realidad no aportan demasiado a la tarea que yo estoy tratando de aprender. O quizás no sé como imagen. No es lo mejor. Y quizás me conviene
+
+263
+00:37:01.360 --> 00:37:13.940
+Marina Fuster: tener alguna otra representación, entonces representationardo y dice, bueno, quizás existe una mejor representación de los datos y te conviene aprender esa mejor representación, y eso usarlo para entrenar otro modelo y
+
+264
+00:37:14.280 --> 00:37:17.399
+Marina Fuster: resolver la tarea que quieras. Por ejemplo.
+
+265
+00:37:17.750 --> 00:37:28.270
+Marina Fuster: si se acuerdan de la opencoder, algo que Uds. Tenían era este espacio latente no se acuerdan un poquito como era el entrenamiento del opencoder, así como, a grandes rasgos.
+
+266
+00:37:33.510 --> 00:37:34.050
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No.
+
+267
+00:37:36.400 --> 00:37:38.470
+Marina Fuster: Alguno que más o menos se acuerde.
+
+268
+00:37:40.000 --> 00:37:41.770
+Marina Fuster: ¿cuál era el
+
+269
+00:37:45.500 --> 00:37:47.430
+Marina Fuster: el chiste del Out Encoder.
+
+270
+00:37:54.050 --> 00:37:58.369
+Eugenia Sol Piñeiro: De Tp. Cinco se acuerdan arquitecturas.
+
+271
+00:37:58.910 --> 00:37:59.410
+Marina Fuster: Y el.
+
+272
+00:37:59.410 --> 00:38:00.210
+Eugenia Sol Piñeiro: De en.
+
+273
+00:38:00.630 --> 00:38:05.620
+Marina Fuster: El B A E era una versión más sofisticada del auto encoder tradicional.
+
+274
+00:38:05.740 --> 00:38:08.829
+Marina Fuster: Pero ¿qué era, qué era lo que yo estaba tratando de
+
+275
+00:38:09.130 --> 00:38:11.830
+Marina Fuster: de aprender que un poco está en el dibujo.
+
+276
+00:38:21.770 --> 00:38:27.879
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: O sea, me acuerdo, sí de que que había un espacio latente que vos le pasabas las fotos, las fotos se me apeaban en el espacio de la gente.
+
+277
+00:38:27.990 --> 00:38:30.460
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Pero ahora mismo no me acuerdo ¿Cómo era el enviscamiento con eso.
+
+278
+00:38:30.950 --> 00:38:43.950
+Marina Fuster: Una representación sí, más que el algoritmo de menor dimensión. Creo que era bien como comprimir algo y de comprimir, y que quede igual bien un poco entre lo que fueron diciendo entre los 3.
+
+279
+00:38:43.970 --> 00:38:55.570
+Marina Fuster: Yo quiero pasar mi dato que tiene X: dimensionalidad, comprimirla en un espacio en general más chico, hay opción de más grande. Pero vamos a simplificar, no más chico
+
+280
+00:38:55.570 --> 00:39:13.249
+Marina Fuster: y que de ese espacio más chico, yo pueda reconstruir o descomprimir y que quede igual no. Entonces, si yo puedo hacer esa transformación a chico y reconstruyó con una pérdida lo suficientemente chiquita quiere decir que de la información que yo tengo en el medio que tiene menos dimensiones.
+
+281
+00:39:13.250 --> 00:39:27.279
+Marina Fuster: Tengo todo lo que necesito para reconstruir el dato original. ¿sí? Y quizás esa representación que yo tengo en el medio, es 1. Tiene menos parámetros, porque es en menos dimensiones. Y la puede usar para otro modelo
+
+282
+00:39:27.390 --> 00:39:29.200
+Marina Fuster: para aprender algo
+
+283
+00:39:29.520 --> 00:39:39.779
+Marina Fuster: invento. Yo tengo imágenes y quiero hacer, no sé identificación de personas. Quizás hacerlo en base a la imagen. Sola
+
+284
+00:39:40.000 --> 00:39:51.979
+Marina Fuster: me es ineficiente porque por ahí levanta cosas como los fondos, si es de día, si es de noche, etcétera. Entonces, quizás, si yo hago alguna estrategia como usaron el auto encoder.
+
+285
+00:39:52.160 --> 00:40:05.489
+Marina Fuster: Este es un ejemplo falopa, pero digo, si hago alguna estrategia, bueno, comprimo estas imágenes en un espacio más pequeño donde yo espero que me quede información importante. Espero que las cosas como
+
+286
+00:40:05.490 --> 00:40:13.090
+Marina Fuster: el fondo y eso sea lo que se reconstruye peor, porque en realidad no me importa. Y ese esa dimensionalidad más pequeña es lo que
+
+287
+00:40:13.090 --> 00:40:19.590
+Marina Fuster: termino usando, o sea, mis datos representados en esa dimensionalidad, lo que usó después para entrenar otro modelo y
+
+288
+00:40:20.390 --> 00:40:24.010
+Marina Fuster: resolver una tarea de identificación de personas.
+
+289
+00:40:24.470 --> 00:40:35.909
+Marina Fuster: Más o menos entendió la idea de lo que es feature extraction. Fíjense que no estoy reutilizando pisos, sino que estoy reutilizando alguna representación que aprendí con otro modelo
+
+290
+00:40:37.350 --> 00:40:41.700
+Marina Fuster: que es distinto de Uy.
+
+291
+00:40:42.590 --> 00:40:49.630
+Marina Fuster: Esto de acá donde yo directamente agarraba la red literal y la usaba Okay.
+
+292
+00:40:50.430 --> 00:40:54.579
+Marina Fuster: ¿qué cosa vimos nosotros? Que se puede usar para ficha extracción.
+
+293
+00:40:58.490 --> 00:41:00.939
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y en el Cover y en el aut en Cover.
+
+294
+00:41:02.480 --> 00:41:08.730
+Marina Fuster: ¿no? Bueno. Pero más allá del auto en común, o sea, de la materia de las cosas que vimos en la clase 1 y 2.
+
+295
+00:41:12.890 --> 00:41:28.879
+Marina Fuster: Creo que hace algo así para sacar en Medings, Bien, o sea, vos podrías agarrar los embeddings no y usarlos para entrenar a otro modelo para alguna tarea. No sé de clasificación o lo que fuera.
+
+296
+00:41:29.220 --> 00:41:37.090
+Marina Fuster: entonces estarías usando lo que aprendiste con word. Y después te quedas a esa representación perfecto que otro más
+
+297
+00:41:49.650 --> 00:41:53.019
+Marina Fuster: que era como la versión, un poquito más sofisticada de Worlto Eck.
+
+298
+00:41:55.610 --> 00:41:57.239
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: En el código imposicional.
+
+299
+00:41:59.090 --> 00:42:04.940
+Marina Fuster: O sea, el No sé a qué te refieres con el lenguado en posicional. El lenguado de nonlie transformer.
+
+300
+00:42:05.280 --> 00:42:07.070
+Marina Fuster: No sé si te referías a eso.
+
+301
+00:42:07.270 --> 00:42:10.419
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No. Yo estaba pensando en el en el algoritmo en vez de.
+
+302
+00:42:13.720 --> 00:42:19.959
+Marina Fuster: En pero qué? Qué? ¿qué algoritmo Worldweis, Por ejemplo.
+
+303
+00:42:19.960 --> 00:42:22.429
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No, el del de C No, Sí. Cose. No estaba pensando en cualquier cosa.
+
+304
+00:42:22.430 --> 00:42:38.200
+Marina Fuster: Eso es positional encoding. No, eso es como un un módulo dentro de lo que es la arquitectura de transformer. Pero el positial encoding en realidad no estás aprendiendo ninguna representación. En realidad, es algo que le agregas a
+
+305
+00:42:38.320 --> 00:42:41.879
+Marina Fuster: a un vector para mantener este sentido de posición.
+
+306
+00:42:42.880 --> 00:42:47.019
+Marina Fuster: pero es como muy, muy concreto de la arquitectura Transformer
+
+307
+00:42:47.100 --> 00:43:04.269
+Marina Fuster: lo que sí podrías usar como como representations más útiles es el embading que obtenes a través de un encoder only transformer. Sí, como por ejemplo, el que vimos ver, se puede usar para agarrar el email y usarlo en otro modelo.
+
+308
+00:43:05.090 --> 00:43:11.730
+Marina Fuster: Y este otro modelo no necesariamente es solo recibe el embelle, puede recibir el embebí más un montón de cosas. Sí,
+
+309
+00:43:12.410 --> 00:43:20.849
+Marina Fuster: bien, esto es lo que es ficha de extraction. ¿qué es el fin Turing? Lo más cercano a lo que vimos en el ejemplo que Lucas preguntaba
+
+310
+00:43:20.850 --> 00:43:42.229
+Marina Fuster: fighting agarro los pesos de un modelo y los utilizo para otro, y acá se pueden hacer distintas cosas. Se puede entrenar todo el modelo. Con mi conjunto de datos se puede solamente sacar la última capa y ajustar los pesos de la última capa. Ahí depende un poco del traidoff entre cuanto computing tengo, y cuánto yo necesito en realidad para
+
+311
+00:43:42.230 --> 00:43:47.170
+Marina Fuster: actualizar para llegar a la tarea que quiero. Y fíjense acá. Un caso
+
+312
+00:43:47.180 --> 00:43:52.170
+Marina Fuster: interesante. ¿en qué? ¿en qué situación a mí me podría servir hacer fin?
+
+313
+00:43:53.210 --> 00:43:55.500
+Marina Fuster: ¿por qué no arranco yo de 0?
+
+314
+00:43:56.720 --> 00:43:57.840
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Está de plata.
+
+315
+00:43:58.910 --> 00:43:59.840
+Marina Fuster: Cómo.
+
+316
+00:44:00.170 --> 00:44:01.790
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Dale plata. Arrancarse.
+
+317
+00:44:02.030 --> 00:44:05.560
+Marina Fuster: Perfecto. Una es, sale plata. Pero ¿qué pasa con
+
+318
+00:44:06.240 --> 00:44:12.679
+Marina Fuster: la tarea de la derecha? No, la tarea a la cual yo me quiero adaptar qué puede pasar
+
+319
+00:44:12.960 --> 00:44:14.349
+Marina Fuster: con esa tarea
+
+320
+00:44:14.600 --> 00:44:28.500
+Marina Fuster: más allá de que salga plata, arrancar de 0, porque me podría dar un peor rendimiento. Supongamos que tenemos todo el compute del mundo del mundo entero y no me importa la plata ni el tiempo que voy a tardar en entrenarlo.
+
+321
+00:44:28.990 --> 00:44:30.819
+Marina Fuster: ¿qué otra cosa podría
+
+322
+00:44:31.170 --> 00:44:37.909
+Marina Fuster: resultar en que me dio una peor performance el modelo de la derecha. Si yo arranco solo con la linfo de la derecha
+
+323
+00:44:51.810 --> 00:45:01.160
+Marina Fuster: y no vaya, no alguna idea No están pensando
+
+324
+00:45:04.830 --> 00:45:06.520
+Marina Fuster: bien. La pregunta es
+
+325
+00:45:06.710 --> 00:45:25.959
+Marina Fuster: una de las razones por las cuales 1 hace fin tuning, es decir, reutiliza pesos, es porque es más barato. No, Yo ya tengo ciertos pesos entrenados y quizás es como un buen punto de partida para otra tarea. ¿no? Yo entrene para una tarea base y me estoy moviendo a una tarea nueva.
+
+326
+00:45:26.140 --> 00:45:38.819
+Marina Fuster: Pero hay otra cuestión que no necesariamente tiene que ver con ahorrar tiempo de entrenamiento. Y la pregunta es si yo tuviera plata infinita tiempo infinito para entrenarlo. ¿qué otra cosa hay?
+
+327
+00:45:38.940 --> 00:45:47.290
+Marina Fuster: Puede provocar que sea mejor una estrategia de finkuning de un modelo pre entrenado, en lugar de arrancar desde 0?
+
+328
+00:45:49.520 --> 00:45:51.009
+Marina Fuster: Esa es la pregunta
+
+329
+00:45:58.100 --> 00:46:01.619
+Marina Fuster: capaz. ¿puedes reducir la dimensionalidad de quién
+
+330
+00:46:11.860 --> 00:46:16.599
+Marina Fuster: en la dimensionalidad o la cantidad de parámetros.
+
+331
+00:46:21.340 --> 00:46:22.830
+Marina Fuster: La cantidad de parámetros
+
+332
+00:46:24.770 --> 00:46:34.520
+Marina Fuster: Okay no no guárdatela para la próxima la idea, pero en este caso no no apunta necesariamente a ahorrarte cantidad de parámetros
+
+333
+00:46:34.720 --> 00:46:41.309
+Marina Fuster: en Fíjense que lo que te puede pasar es que vos tengas una tarea muy específica donde tenés
+
+334
+00:46:41.500 --> 00:46:53.580
+Marina Fuster: pocos datos de entrenamiento. No supongamos que supongamos que quieren predecir alguna enfermedad, ¿no? Y tienen un montón de imágenes médicas
+
+335
+00:46:53.850 --> 00:47:10.949
+Marina Fuster: montón y a 100 200 1 000 imágenes médicas, pero solo un subconjunto muy chico es el que tienen etiquetado, no que que dicen. Bueno, tal muestra cierta enfermedad, tal enfermedad B o nada. Y ese subconjunto es muy pequeño.
+
+336
+00:47:11.500 --> 00:47:30.680
+Marina Fuster: A veces es mejor hacer una primera instancia donde yo puedo entrenar un modelo con un montón de datos y que ese modelo aprenda representaciones útiles o que logre aprender la distribución de los datos como tales, no la distribución de los datos como imágenes.
+
+337
+00:47:31.060 --> 00:47:45.790
+Marina Fuster: Pero en la segunda, o sea, cuando pasa la etapa de fagtuning, lo estoy ajustando para que me reconozca dentro de esa distribución que ya aprendió, porque había un montón de datos a clasificar específicamente que tal imagen
+
+338
+00:47:45.990 --> 00:47:59.650
+Marina Fuster: tiene enfermedad A o B o nada con distinta probabilidad. Si yo directamente arranco con un modelo donde lo que le estoy pidiendo es aprender la representación más hacer la clasificación.
+
+339
+00:47:59.700 --> 00:48:23.399
+Marina Fuster: Si el modelo es muy grande, lo más probable es que se me exceda la cantidad de parámetros y haya mucho marketing, pero así y todo, o sea, lo que yo puedo aprender en cuanto a a las características de las imágenes, va a ser mucho menor Si yo tengo un dato más chiquito que que si previamente vi un montón de imágenes. Y fíjense que esto es un poco lo que pasa con los modelos de lenguaje. Si en una primera instancia
+
+340
+00:48:23.400 --> 00:48:25.220
+Marina Fuster: yo lo que estoy haciendo
+
+341
+00:48:25.230 --> 00:48:32.430
+Marina Fuster: es agarrar un corpus gigante sin enfocarme en nada particular. Y lo que estoy tratando es capturar
+
+342
+00:48:32.470 --> 00:48:50.350
+Marina Fuster: la distribución del del lenguaje o del contenido en Internet, o como lo quieran llamar. Sí, Estoy aprendiendo un montón de cosas, de el lenguaje escrito en distintos idiomas en Internet, etcétera. No necesariamente este después puedo usar eso para resolver alguna tarea más específica.
+
+343
+00:48:50.640 --> 00:48:52.760
+Marina Fuster: Se entiende esa distinción.
+
+344
+00:48:55.850 --> 00:49:01.880
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Entonces, si vos lo empezás ya con los datos del anterior, como que podes usar todo lo que aprendiste del anterior
+
+345
+00:49:02.340 --> 00:49:04.140
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: y no cometer los mismos errores.
+
+346
+00:49:05.290 --> 00:49:11.060
+Marina Fuster: Sí, No sé que sería o a qué le llamas no cometer los mismos errores.
+
+347
+00:49:11.750 --> 00:49:24.709
+Marina Fuster: pero el punto de partida del modelo que vos tenés pre entrenado es probablemente mucho mejor que el aleatorio. Si el entrenamiento estuvo bien y vos tenías una cantidad
+
+348
+00:49:24.710 --> 00:49:32.729
+Marina Fuster: suficiente de datos, de los cuales tu segunda tarea está en una distribución como parecida, ¿no?
+
+349
+00:49:32.750 --> 00:49:38.320
+Marina Fuster: En ese caso, ya tenés un montón de información aprendida que la puedes reutilizar
+
+350
+00:49:38.790 --> 00:49:51.760
+Marina Fuster: y ajustar lo necesario con una capa al final nueva que te haga la clasificación, ajustar esa capa de la clasificación, para identificar qué, si es tratar enfermedades, etcétera.
+
+351
+00:49:57.740 --> 00:49:58.670
+Marina Fuster: Bien.
+
+352
+00:50:00.420 --> 00:50:15.760
+Marina Fuster: acá hay un ejemplo, por si quieren chusmear como para que no sea todo modelos de lenguaje. Es un modelo en realidad que procesa audio. Y fíjense que éste apunta un poco a lo que estábamos recién es un modelo base que está entrenado con 960 h.
+
+353
+00:50:15.760 --> 00:50:26.960
+Marina Fuster: Y para lo que se use es para faitunearlo para clasificar 14 Moods y la data que usan es mucho menor. Son 7 000 samplers de 30 s
+
+354
+00:50:27.260 --> 00:50:42.990
+Marina Fuster: que no sé cuántas horas son, pero no debe llegar a las 100 h. Entonces este es un ejemplo de, bueno, yo agarro algo que tiene mucho cuerpo de datos, y sobre eso. Hay un video para hacer clasificación de algo que a mí me interesa.
+
+355
+00:50:43.550 --> 00:50:50.330
+Marina Fuster: Bien, El último es Transferhability, Em: Perdón. El último es igual. No entiendo cómo en los pesos
+
+356
+00:50:52.840 --> 00:51:04.280
+Marina Fuster: no, no estás preguntando algo tonto como para como un los pesos de un modelo que entrenas para una tarea te terminan sirviendo para la vez si es re distinta. Bueno, ahí dijiste algo muy clave.
+
+357
+00:51:04.360 --> 00:51:20.909
+Marina Fuster: esto. Este este tipo de transfer laarning en realidad no te funciona. Si las tareas son distintas o mismo, por ejemplo, suponete que vos estás con imágenes médicas ¿no?
+
+358
+00:51:21.110 --> 00:51:30.440
+Marina Fuster: Y vos tenés un modelo pre entrenado que se entrenó con 200 000 imágenes médicas de 64 por 64. Si vos para tu tarea
+
+359
+00:51:30.550 --> 00:51:38.549
+Marina Fuster: nueva. Tenés este nuevo conjunto de datos, pero esos datos son de una distribución muy distinta. Por ejemplo.
+
+360
+00:51:38.680 --> 00:52:02.629
+Marina Fuster: todas las imágenes tienen muy poca luz. Entonces, como que ves ves una diferencia palpable entre lo que era la distribución de entrenamiento y esta del nuevo entrenamiento, podríamos llamarlo Si eso es muy distinto, es probable que hacer algo como solamente ponerle una capa al final y tratar de clasificar, no te funcione también porque vos aprendiste una distribución de imágenes que quizás están
+
+361
+00:52:02.660 --> 00:52:08.330
+Marina Fuster: iluminadas, se tomaron de cierta forma, etcétera, y venís con algo totalmente nuevo.
+
+362
+00:52:08.800 --> 00:52:19.070
+Marina Fuster: y eso es probable que te funcione peor que que si vos venís con algo similar. Y lo mismo pasa cuando la tarea del final es muy distinta. Si vos optimizaste para
+
+363
+00:52:20.280 --> 00:52:23.050
+Marina Fuster: no se me ocurre un ejemplo, pero
+
+364
+00:52:24.240 --> 00:52:28.519
+Marina Fuster: si yo optimizo imágenes para reconocer.
+
+365
+00:52:29.020 --> 00:52:32.410
+Marina Fuster: No sé gatos, y después le pido
+
+366
+00:52:32.600 --> 00:52:50.389
+Marina Fuster: con esos mismos pesos que me segmento. Todos los animales del mundo, las tareas son muy distintas. ¿no? Entonces ahí quizás la representación que yo aprendí al principio está muy overfitiada a ver un gato y nada más. Todo lo que es animales en general, no tiene ni idea.
+
+367
+00:52:50.610 --> 00:52:59.890
+Marina Fuster: O sea, tiene que ser para un conjunto y una tarea parecida. Sí, y eso es algo que se estudia empíricamente. Lo que tiene toda el área de fingirning en particular es que no hay
+
+368
+00:53:00.520 --> 00:53:09.500
+Marina Fuster: hay un framework precisamente formal de por qué esto funciona y hasta qué punto funciona o no en lo que son redes. Dip.
+
+369
+00:53:09.760 --> 00:53:15.100
+Marina Fuster: Entonces sí, hay estudios que te dicen? Bueno.
+
+370
+00:53:15.550 --> 00:53:35.200
+Marina Fuster: ¿qué tan generales son los features que aprende una red neuronal al principio versus hacia el final. ¿no? Entonces hay estudios que te dicen que al principio no sé en clasificación de imágenes, se aprenden cosas como reconocimiento de bordes de colores, etcétera, cosas que quizás son genéricas un montón de tareas para imágenes.
+
+371
+00:53:35.200 --> 00:53:36.480
+Marina Fuster: Entonces, si vos
+
+372
+00:53:36.510 --> 00:53:46.370
+Marina Fuster: recortas la red para tu nueva tarea más hacia el final, no estás perdiendo todos esos pitchers generales que aprendiste al principio. Entonces hay hay varios papers que te dan
+
+373
+00:53:46.670 --> 00:53:52.670
+Marina Fuster: una una idea de cómo vos tenés que reutilizar la red. ¿y
+
+374
+00:53:52.860 --> 00:54:00.969
+Marina Fuster: qué pasa si la tarea no es parecida o si es parecida y en base a eso que tanto mejor funciona, Pero no es algo como tan
+
+375
+00:54:01.250 --> 00:54:04.239
+Marina Fuster: formal a eso es a lo que voy.
+
+376
+00:54:05.840 --> 00:54:14.029
+Marina Fuster: Y Joaquín dice: voy a poner el clasificador de imágenes de abejas a ver resultados de análisis de sangre.
+
+377
+00:54:14.550 --> 00:54:23.700
+Marina Fuster: Claro, exactamente ahí tenéis 2 cosas totalmente distintas. Entonces la probabilidad de éxito, esperamos que sea baja
+
+378
+00:54:24.480 --> 00:54:38.369
+Marina Fuster: perfecto. Entonces vamos al último, que es no lege destilation y porque tiene un asterisco porque no suele aparecer bajo lo que es transfer learning, sino que se trata como un área separada que si no les transfer
+
+379
+00:54:38.370 --> 00:54:46.199
+Marina Fuster: Pero lo puse acá porque bajo la definición que usamos no exististellation caería eso. Por si se lo encuentran en algún otro lado.
+
+380
+00:54:46.200 --> 00:54:48.179
+Marina Fuster: entonces la dinámica acá.
+
+381
+00:54:48.340 --> 00:54:56.349
+Marina Fuster: Alguien había mencionado, No les installation. No sé quién era si querés contar que te acordás o conocés.
+
+382
+00:54:56.520 --> 00:54:58.050
+Marina Fuster: Estoy tratando de buscar.
+
+383
+00:54:58.180 --> 00:55:02.449
+Marina Fuster: Lo había mencionado, pero me encuentro.
+
+384
+00:55:05.710 --> 00:55:06.580
+Marina Fuster: Mhm.
+
+385
+00:55:06.590 --> 00:55:15.439
+Marina Fuster: Me sonaba nada más. A. Ok: Bueno, básicamente lo que tenemos en no les dislation. Es un esquema Teacher Student no
+
+386
+00:55:15.440 --> 00:55:29.709
+Marina Fuster: donde yo tengo un modelo más grande, con más parámetros que lo entrene para una tarea. Y lo que quiero hacer es lograr que un modelo estudie en general. Es más chiquito más simple, aprenda lo que aprendió el modelo más grande
+
+387
+00:55:30.190 --> 00:55:35.389
+Marina Fuster: le suena este setting de algo que hayan hecho antes.
+
+388
+00:55:36.000 --> 00:55:37.110
+Marina Fuster: Encías
+
+389
+00:55:43.580 --> 00:55:53.390
+Marina Fuster: a ver si alguno se acuerda el de fraude. No era eso. Big Modern Perfecto. Teme 2. Casi. Tb: 3. Bien. Perfecto. Ustedes lo que hicieron encía era
+
+390
+00:55:54.160 --> 00:56:10.979
+Marina Fuster: una como versión muy simple. De Están regritando. No sé si escuchan afuera de mi apartamento. Lo que hicieron en sí era una versión muy simple de Knollege Destilation. Tenían un big model que en realidad ustedes nunca conocieron ni tuvieron acceso. Pero ese Big model agarraba transacciones
+
+391
+00:56:10.980 --> 00:56:16.270
+Marina Fuster: que podían ser fraude o no. Y lo que te terminaba dando era una probabilidad de
+
+392
+00:56:16.270 --> 00:56:27.180
+Marina Fuster: o un score de bueno lo que lo que le daba esa transacción para 1 decidir si era fraude o no. Entonces lo que se hace en no les instalation Para los que no se acuerdan o no lo vieron.
+
+393
+00:56:27.520 --> 00:56:45.349
+Marina Fuster: Es entrenar el el Timey Model no en las leyes del Dataced, sino en el output de el modelo más grande entre comillas, mejor sí. Y en lugar de ello, decir Bueno, yo di ceros, 6.
+
+394
+00:56:45.370 --> 00:56:51.669
+Marina Fuster: Hago para el error. Uno: menos Cero, 6. Hago 0, 8, menos 0, 6.
+
+395
+00:56:52.390 --> 00:56:54.860
+Marina Fuster: ¿cuál sería, o sea, qué recuerdan o
+
+396
+00:56:55.090 --> 00:57:02.629
+Marina Fuster: cuál es la intuición que pueden tener sobre por qué es mejor entrenar con lo que me dice big model que lo que me dice en la taset de fraude.
+
+397
+00:57:07.660 --> 00:57:13.300
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Que es mucho más fácil conseguir los datos de Big Model que hacer toda la exploración del Datoet de fraude.
+
+398
+00:57:14.040 --> 00:57:15.599
+Marina Fuster: Cómo, cómo, cómo perdón.
+
+399
+00:57:16.080 --> 00:57:20.380
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Que es mucho más barato pedir la big model que hacer boxer análisis de fraude.
+
+400
+00:57:22.680 --> 00:57:39.690
+Marina Fuster: Pero ¿a qué te llamas el análisis de fraude? Porque yo acá lo que dice Froad Dataset, esos datos. Yo los tengo. No tengo Cada una de estas filas vendría a ser un Times Tim que compro que no bla, bla, bla y una ley Bell que me dice 1 0, si fue fraude o no.
+
+401
+00:57:40.180 --> 00:57:47.840
+Marina Fuster: Big Model en realidad implica que yo tengo que pasar cada una de estas filas y obtener
+
+402
+00:57:48.150 --> 00:58:00.209
+Marina Fuster: el score entonces en cuestión de que es más barato o no. En realidad es más barato levantar los datos del dataced que pasarlos por el Big model obtener el score y eso usarlo.
+
+403
+00:58:05.940 --> 00:58:11.709
+Marina Fuster: Perdón, me río porque no saben el caos que hay afuera lo último que está pasando da un poco de miedo.
+
+404
+00:58:12.060 --> 00:58:13.330
+Marina Fuster: En
+
+405
+00:58:16.690 --> 00:58:21.260
+Marina Fuster: hay una especie de rebelión Bueno.
+
+406
+00:58:22.630 --> 00:58:36.479
+Marina Fuster: entrenas, el Tinymoll, con los resultados que devolvió el entrenamiento. Claro, el esquema Vos entrenaste el bing Model en algún momento de tu vida, ¿no? Y confías en que funciona relativamente bien, que las probabilidades que te dan son
+
+407
+00:58:36.660 --> 00:58:37.720
+Marina Fuster: buenas.
+
+408
+00:58:37.770 --> 00:58:52.490
+Marina Fuster: Y en lugar de entrenar directamente con las labels que Vos tenías en tu conjunto, datos de 1 0 agarras lo que te dice el big model. Y contra eso, entrenas contra la probabilidad que te dio el Big Model. Entonces el costo se mide entre la diferencia de lo que te dio el Big Model.
+
+409
+00:58:52.490 --> 00:58:58.019
+Marina Fuster: Y lo que dice el Time y Model No necesariamente la ley del original, que sería un esquema
+
+410
+00:58:58.080 --> 00:59:00.649
+Marina Fuster: tradicionales, supervise.
+
+411
+00:59:12.210 --> 00:59:20.080
+Marina Fuster: Yo, en el intercambio hice algo parecido, pero combinabas el resultado varios modelos para promediar y reducir errores.
+
+412
+00:59:20.440 --> 00:59:28.370
+Marina Fuster: Vos decís como al final de todo, o sea, seas como algo llamada ensambles en No sé cómo se dice, pero ensamble
+
+413
+00:59:37.290 --> 00:59:39.039
+Marina Fuster: a eso te te referías.
+
+414
+00:59:40.780 --> 00:59:50.659
+Marina Fuster: No me acuerdo tanto, pero ponerle que sí ojo que por ahí es algo distinto en en el sentido de que ahora, si puedo parar, porque esto me está
+
+415
+00:59:51.190 --> 00:59:55.740
+Marina Fuster: molestando, que no tengo la esto y
+
+416
+00:59:55.840 --> 00:59:59.329
+Marina Fuster: no. Sí, me parece ojo que por un lado, o sea.
+
+417
+00:59:59.790 --> 01:00:05.550
+Marina Fuster: lo que vos me estás diciendo. Por lo que entiendo es yo tengo modelo a modelo B,
+
+418
+01:00:05.860 --> 01:00:23.199
+Marina Fuster: modelo C. Y lo que estás haciendo es la misma transacción. Pasarla por todos estos modelos, cada 1 de estos me va a dar un valor. Y todo esto lo junto no como para decir, bueno, incorporo información de distintos modelos, y no me fío de un solo modelo. Eso es lo que vos me estás diciendo.
+
+419
+01:00:23.630 --> 01:00:30.979
+Marina Fuster: Entiendo que se a veces se llama así no ensemble de como los outbooks de distintos modelos
+
+420
+01:00:31.570 --> 01:00:33.590
+Marina Fuster: a ese comportamiento te referís.
+
+421
+01:00:36.360 --> 01:00:55.079
+Marina Fuster: no después entrenar suma, Ok, perfecto. Bueno, entonces vendría a ser parecido que lo que estás diciendo. Pero imagínate que en lugar de tratar de reducir el error, lo hago con un solo modelo, ponele que yo digo no yo, en este modelo, Confío como si fuera el último día de mi vida, entonces no no hago todo esto directamente
+
+422
+01:00:55.140 --> 01:01:00.679
+Marina Fuster: agarro este resultado y lo uso para entrenar este modelo más chiquito.
+
+423
+01:01:01.940 --> 01:01:13.050
+Marina Fuster: La pregunta acá de lo que es Nolex Inspiration es que hay una razón por la cual esto se hace de esta forma. Como has dicho Student y yo no agarro, o sea, se usan para cosas distintas.
+
+424
+01:01:13.480 --> 01:01:28.489
+Marina Fuster: No, no necesariamente para cosas distintas. O sea, vos podrías tener este esquema que vos me dijiste, ¿no? Y yo, tener acá como un resultado final: poner que era 0, 8 0, 7 más 0, 82,
+
+425
+01:01:28.690 --> 01:01:46.120
+Marina Fuster: y ponerle que lo divido a lo promedio no. Y me da 0, 80 y no más bajo 70. Y algo. Y esto lo uso para entrenar el modelo. Más chiquito es lo mismo Solamente que acá es como que estás integrando información de 3 modelos
+
+426
+01:01:46.330 --> 01:01:51.949
+Marina Fuster: mejores, más grandes. Y acá está solamente tomando la información de 1.
+
+427
+01:01:52.090 --> 01:01:55.040
+Marina Fuster: O sea, es como si acá en un tendrías e n igual a 1.
+
+428
+01:01:55.620 --> 01:01:58.809
+Marina Fuster: Pero por lo que entendí, o sea, es la es la misma situación.
+
+429
+01:02:01.120 --> 01:02:06.400
+Marina Fuster: No es necesariamente para cosas distintas en
+
+430
+01:02:06.840 --> 01:02:14.670
+Marina Fuster: acá para avanzar un poquito. La razón de por qué esto es mejor que yo directamente agarrar estas leys.
+
+431
+01:02:14.950 --> 01:02:24.369
+Marina Fuster: Y hasta qué punto puedes usar destellation Bueno, eso depende mucho de
+
+432
+01:02:25.280 --> 01:02:44.380
+Marina Fuster: este modelo, que es lo que tengas como representación adentro de este modelo. Y este que otra capacidad vos le des, Eso es bastante empírico. Si de base, tienen que ser modelos que tengan la misma capacidad de representación. ¿a qué voy con esto? Por ejemplo, si yo agarro una red neuronal
+
+433
+01:02:44.700 --> 01:03:05.149
+Marina Fuster: que cumpla esto del universal aproximation. Sirven y yo puedo representar en teoría, cualquier función. Yo voy a querer que mi Ticni Model se comporte de manera parecida. No es decir que que yo tenga cierta expectativa de que lo que voy a representar es similar. Esto, Por ejemplo, si yo hago un transformers, yo agarro un transformar de 400 billones.
+
+434
+01:03:05.150 --> 01:03:17.339
+Marina Fuster: No voy a agarrar para un modelo chiquito, una red neuronal así nomás probablemente agarré un transformer más chiquito como para yo tener cierta expectativa de que se va a trasladar el comportamiento?
+
+435
+01:03:17.340 --> 01:03:22.170
+Marina Fuster: ¿sí? Y acá hay una cuestión de
+
+436
+01:03:22.690 --> 01:03:25.529
+Marina Fuster: qué tanto yo lo puedo reducir. En cuanto a
+
+437
+01:03:26.010 --> 01:03:39.129
+Marina Fuster: no sé si he escuchado alguna vez hablar de las scalling, los donde yo quizás puedo decir, bueno, para tal compute con tantos datos y tantos parámetros. Yo puedo alcanzar cierta luz de mi modelo. No.
+
+438
+01:03:39.170 --> 01:03:57.470
+Marina Fuster: yo tampoco me puedo escapar mucho de eso. Sí, entonces eso me podría llegar a dar una especie como de de umbral de decir, bueno con un modelo más chiquito. Quizás esto es más o menos lo que yo puedo tener como expectativa de llegar alimentándolo de un modelo más grande.
+
+439
+01:03:57.490 --> 01:04:04.340
+Marina Fuster: pensé que era otra pregunta, pero es algo bastante empírico, y que vas probando
+
+440
+01:04:04.610 --> 01:04:11.120
+Marina Fuster: hasta hasta dónde te da el modelo más chiquito y dónde te satura, por así decirlo, En
+
+441
+01:04:12.660 --> 01:04:15.900
+Marina Fuster: eso queda más o menos claro.
+
+442
+01:04:16.220 --> 01:04:31.050
+Marina Fuster: Por ejemplo, lo que vimos en Cia es un ejemplo bastante irreal, porque el Daimy Model era un percepción simple que por como está armado, el data se puede, pero no es algo que vas a hacer, porque la representación de cualquier modelo más grande es completamente distinta.
+
+443
+01:04:34.500 --> 01:04:38.100
+Marina Fuster: poco. Eso en
+
+444
+01:04:40.030 --> 01:04:57.330
+Marina Fuster: bien avanzo con esto, como que quiero quiero cerrar la idea porque es importante para lo que es de inspiration en general en Installation. Si Vos tenés acceso a la probabilidad del modelo más grande. Eso es lo que más te conviene, porque fíjense que lo que es este 0 coma 8.
+
+445
+01:04:57.420 --> 01:05:00.239
+Marina Fuster: No supongamos que es esta transacción
+
+446
+01:05:00.710 --> 01:05:08.700
+Marina Fuster: que está etiquetada como fraude, pero yo tengo 0, coma, 8 de probabilidad. Fíjense que el 0 coma 8. Si es
+
+447
+01:05:08.880 --> 01:05:25.470
+Marina Fuster: una buena estimación de la probabilidad, me da mucha más información a mí que el 1 directo sí, porque porque quizás el fraude es: hay una buena chance que sea fraude, pero por ahí tiene ciertas características
+
+448
+01:05:25.650 --> 01:05:31.950
+Marina Fuster: de transacciones comunes, y eso es lo que evita que en lugar de ser 0, 9,
+
+449
+01:05:32.320 --> 01:05:38.499
+Marina Fuster: en lugar de eso, sea 0 8. Lo mismo. Si yo, por ejemplo, digamos que el Big model me devuelve 0, 6.
+
+450
+01:05:38.740 --> 01:05:51.750
+Marina Fuster: Quizás esto era fraude, pero era un fraude que se recontra. Parecía a algo normal, entonces la probabilidad es mucho más baja Si yo trato de ver esto con estas leyes que son como Hard Labels.
+
+451
+01:05:52.080 --> 01:05:56.929
+Marina Fuster: Tengo menos información en ese 1 que lo que tengo en este 0 6.
+
+452
+01:05:57.200 --> 01:05:59.300
+Marina Fuster: Por eso no les dislation
+
+453
+01:06:00.160 --> 01:06:12.290
+Marina Fuster: ideal o clásico. Trata de agarrar las probabilidades del modelo más grande y no necesariamente el resultado, sino las probabilidades, y usar eso para entrenar modelos más chicos, sí.
+
+454
+01:06:12.410 --> 01:06:16.250
+Marina Fuster: Y es esto lo que se usan en lo que son
+
+455
+01:06:16.290 --> 01:06:32.649
+Marina Fuster: los el el en providers vieron que de repente sale tal modelo y de repente hay versiones más baratas si lo que se puede hacer es no le inspiration. Y si yo internamente tengo acceso a la distribución de probabilidades del vocabulario, esto es el vocabulario.
+
+456
+01:06:33.170 --> 01:06:43.360
+Marina Fuster: Entrenar sobre esta distribución de probabilidades es mucho mejor o me da mucha más información que entrenar sobre el texto ya producido.
+
+457
+01:06:44.240 --> 01:06:45.720
+Marina Fuster: Eso queda claro.
+
+458
+01:06:47.600 --> 01:06:48.270
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+459
+01:06:49.070 --> 01:06:58.279
+Marina Fuster: Bien cosa. Entonces mencionamos que éste sería como el escenario idóneo si yo tuviera acceso ¿cuál es
+
+460
+01:06:58.410 --> 01:07:09.180
+Marina Fuster: el otro como la la otra instancia de no les installation es agarrar directamente el texto generado por un modelo o los como el
+
+461
+01:07:09.310 --> 01:07:27.709
+Marina Fuster: el auto final generado por el modelo y usar eso para entrenar otro modelo? ¿sí? Y fíjense que sobre esto quizás lo escucharon en alguna noticia, o lo que sea. Es más, me sorprendió que esto es bastante reciente, pero hay mucho de
+
+462
+01:07:28.310 --> 01:07:40.569
+Marina Fuster: como competencia o que se denuncian entre laboratorios, porque tal uso los outputs de otro modelo para entrenar sus propios modelos, ¿no? Entonces, si yo soy
+
+463
+01:07:40.790 --> 01:07:55.590
+Marina Fuster: laboratorio a y tengo un modelo estado del arte? Nada. Los amigos chinos supuestamente estaban afuera. Bueno, nada impide a otro laboratorio, a o sea, nada impide. No se supone que no se puede hacer, pero yo puedo generar respuestas de esos modelos como mucho más capaces
+
+464
+01:07:55.760 --> 01:08:01.600
+Marina Fuster: y usarlos para entrenar mis modelos, no que en este caso, ¿con qué lo entrenaría?
+
+465
+01:08:06.660 --> 01:08:08.569
+Marina Fuster: ¿cómo hago esta operación.
+
+466
+01:08:10.760 --> 01:08:15.759
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y tendrías que tomar el out out del modelo a
+
+467
+01:08:16.040 --> 01:08:19.639
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: hacer toque de inserción en Beding. Hacerlo al modelo B.
+
+468
+01:08:20.490 --> 01:08:29.300
+Marina Fuster: Bien, perfecto. ¿sabes lo que vimos antes. Esto es, hago Next token predicción en este texto, lo trato como si fuera mi corpus y ajusto mi modelo? B: Sí.
+
+469
+01:08:29.300 --> 01:08:29.660
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Mhm.
+
+470
+01:08:29.660 --> 01:08:34.070
+Marina Fuster: Entonces, este es como la otra cara de no les destination.
+
+471
+01:08:34.189 --> 01:08:48.049
+Marina Fuster: Esta es mejor, Pero fíjense que acá hay una restricción en la cual yo tengo que 1 tener acceso a las probabilidades. Y 2, no me puedo desligar de que necesito tener el mismo vocabulario. Si estoy entrenando en la distribución final.
+
+472
+01:08:48.050 --> 01:08:59.039
+Marina Fuster: yo esto tranquilamente, puedo tener mi propio vocabulario, Mi propia forma de toquenización y mi última capa, tener el tamaño que yo quiera, con lo que yo quiera y hacer una especie de next token predicción.
+
+473
+01:08:59.990 --> 01:09:02.350
+Marina Fuster: Bien.
+
+474
+01:09:02.510 --> 01:09:21.030
+Marina Fuster: algunas de las ventajas, puse la técnica Fing, un pero algunas en realidad son para ambos, que es reducir costos computacionales, te permite iterar más rápido. Ahora hay un montón de prototipos o cosas que 1 puede agarrar un modelo de hugginface o en su momento ya no se puede, si podíamos enseñar modelos de Open en
+
+475
+01:09:21.029 --> 01:09:25.570
+Marina Fuster: esto, te permite aprovechar modelos preexistentes. Si yo tengo un modelo
+
+476
+01:09:25.630 --> 01:09:31.470
+Marina Fuster: accesible de open a entrenado en el corpus de Internet y quiero hacer alguna tarea relacionada al contexto.
+
+477
+01:09:31.500 --> 01:09:49.260
+Marina Fuster: Me agarro a ese modelo. Lo Faytuneo y probablemente ande mejor que si yo me pongo a ver cómo aprendo la distribución del texto, etcétera, etcétera, requiere menor cantidad de datos. Sí, esto también es parte de lo que te permite aprovechar los modelos. Y
+
+478
+01:09:49.590 --> 01:09:59.729
+Marina Fuster: bueno, esto en realidad es parte de la dinámica de la solución de
+
+479
+01:09:59.840 --> 01:10:24.729
+Marina Fuster: los escenarios donde yo tengo distributional. Shift distributional. Shift se refiere a se refiere a cuando la distribución va cambiando con el tiempo. No Imagínense el problema de fraude en cía. Lo vimos como muy acotado a un instante en el tiempo. Pero ¿qué es lo característico de fraude que la gente hace fraude de distintas maneras. A medida que vos vas agregando restricciones o formas de identificar ese fraude
+
+480
+01:10:24.730 --> 01:10:28.259
+Marina Fuster: no una vez que ya no lo podes, hacer buscas otra forma de hacerlo.
+
+481
+01:10:28.260 --> 01:10:39.180
+Marina Fuster: Ese Buscar otras formas de hacerlo o medio juego del gato del ratón ocasionan distribuirse una shift. Los datos van cambiando con el tiempo, entonces fireturing serían 2:
+
+482
+01:10:39.530 --> 01:10:45.190
+Marina Fuster: seguir entrenando el modelo que ya tenés entrenado para que se ajuste a nuevos escenarios de fraude.
+
+483
+01:10:46.190 --> 01:10:47.070
+Marina Fuster: Bien.
+
+484
+01:10:47.210 --> 01:11:01.920
+Marina Fuster: Acá hay una mini demo que no la vamos a ver porque ya son 8 y 20. Para el que quiera chusmear, es una demo re mini recorta donde se faintunea un modelo verd que ver es el modelo que vimos la clase pasada que se puede usar para
+
+485
+01:11:01.920 --> 01:11:11.980
+Marina Fuster: fichar extraction. O también yo podría agarrar el modelo. Y la última parte, ponerle alguna capa de clasificación, el que lo quiere choquear
+
+486
+01:11:12.270 --> 01:11:18.189
+Marina Fuster: lo pueden chumpear. Y esto es extra para el que quizás quiera entender un poquito más
+
+487
+01:11:18.500 --> 01:11:24.349
+Marina Fuster: a fondo ciertas ideas. Son 3 papers hiper selectivos
+
+488
+01:11:24.640 --> 01:11:28.560
+Marina Fuster: de lo que es transfer learning. Hay un 1 000 000
+
+489
+01:11:28.830 --> 01:11:45.310
+Marina Fuster: que cada 1 por ahí muestra una idea importante de lo que es transferlesing como disciplina. El primero es esta cuestión de que yo puedo usar los datos de forma no supervisada para ajustar los pesos en un principio no es lo que yo hago con el el Lem
+
+490
+01:11:45.700 --> 01:11:58.430
+Marina Fuster: al principio que entreno en este corpus que nada está etiquetado, o sea, es un supervive fide, un porque en el nexto que proyection. Yo sé lo próximo que viene, pero se se toma como un self superbike.
+
+491
+01:11:58.430 --> 01:12:09.069
+Marina Fuster: La segunda idea, bueno, este es el Payper para que lo quieras. La segunda idea es esto de que ya los chavalamos. Puedo tomar los pesos de una red y usarlos para otra tar tarea relacionada.
+
+492
+01:12:09.070 --> 01:12:20.409
+Marina Fuster: que es este segundo paper, que hace un poco esta distinción entre la expresión simbólica más concreta y la transferencia directa de pesos, donde yo no sé qué significan esos pesos, pero los transfiere igual.
+
+493
+01:12:20.420 --> 01:12:30.340
+Marina Fuster: Y la tercera es esto que charlábamos un poquito antes de que los Fichers se distribuyen de una forma, una forma más de generales a específicos hacia la tarea.
+
+494
+01:12:30.390 --> 01:12:43.379
+Marina Fuster: Eso no es nada muy fantástico. O sea, si ustedes lo piensan en las capas del final. Yo es donde calculo el error. Con respecto a una tarea particular, entonces la derivada del error en ese en esas últimas capas
+
+495
+01:12:43.380 --> 01:12:53.979
+Marina Fuster: es más grande. Si a medida que yo voy haciendo bad, prop se me va como minimizando el gradiente, entonces es esperable que lo que estamos al principio sea un poco más general.
+
+496
+01:12:53.980 --> 01:13:06.600
+Marina Fuster: pero este paper está bueno porque muestra ciertas de estas cuestiones con capas convolucionales que quizás son más visuales y a veces está más interesante de ver que lo que es otras redes que precisamente un poquito más abstractas.
+
+497
+01:13:07.130 --> 01:13:15.030
+Marina Fuster: Bien, eso es extra. No lo vamos a ver, porque si no, no terminamos más, ahora quieren hacer un Break: Yo paso una hora y 20,
+
+498
+01:13:17.980 --> 01:13:21.620
+Marina Fuster: por favor. Ok, vamos a parar esto.
+
+499
+01:13:23.810 --> 01:13:26.660
+Marina Fuster: Si quieren, sigamos
+
+500
+01:13:27.540 --> 01:13:36.190
+Marina Fuster: bueno, cuestión que todo lo que es Transfer Learning. La idea acá es charlar un poquito. ¿cuál es la motivación? No
+
+501
+01:13:36.840 --> 01:13:44.770
+Marina Fuster: si Si nosotros agarramos los modelos que vimos en clase 1 y 2. Y les damos estos prontos ustedes.
+
+502
+01:13:44.880 --> 01:13:46.789
+Marina Fuster: o sea, ¿qué es lo que esperarían
+
+503
+01:13:55.330 --> 01:14:01.350
+Marina Fuster: al modelo tal cual está entrenado, que es una.
+
+504
+01:14:01.350 --> 01:14:08.429
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Con el primero, responde más o menos bien con el segundo, explota con el tercero, no perdón. Con el primero, explota. El segundo responde bien.
+
+505
+01:14:08.930 --> 01:14:10.480
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: El tercero explota.
+
+506
+01:14:11.010 --> 01:14:17.470
+Marina Fuster: Pero porque me da curiosidad porque el segundo es el que va bien y el primero y el tercero explota.
+
+507
+01:14:17.470 --> 01:14:21.440
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Seguramente tenga asociado a Presidente algún nombre
+
+508
+01:14:22.090 --> 01:14:27.169
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: y depende de cuando hayas entrenado, tal vez de Diana. Pero si decís
+
+509
+01:14:28.620 --> 01:14:31.120
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: de President. Como solo hay 1.
+
+510
+01:14:32.430 --> 01:14:34.789
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No te vas ni con políticos e ingleses. Me parece.
+
+511
+01:14:36.270 --> 01:14:44.960
+Marina Fuster: Okay. Hay unas antes de esa. Hay una. Hay una sutileza un poco más que que cuál es el comportamiento esperado de un modelo
+
+512
+01:14:45.830 --> 01:14:58.820
+Marina Fuster: que se entrenó de la forma en la que lo entrenamos, que es Next Token, predicción sobre un corpus de datos sacado de Internet crudo, al menos en principio, sumamos que es como crudo
+
+513
+01:14:58.950 --> 01:15:02.639
+Marina Fuster: datos de Internet, qué forma tienen los
+
+514
+01:15:02.850 --> 01:15:14.550
+Marina Fuster: los datos de Internet. Si yo doy esto, si yo pienso en estos cuerpos de estos pedacitos de texto, donde yo esperaría verlos en Internet o o en qué formato.
+
+515
+01:15:16.380 --> 01:15:17.799
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y en formato, texto.
+
+516
+01:15:19.020 --> 01:15:25.850
+Marina Fuster: Bien en formato texto, pero más específicamente en Internet, son las cosas
+
+517
+01:15:25.850 --> 01:15:48.809
+Marina Fuster: claro, en forma de artículos, en forma de no de ejemplos de resolución de cosas en algún libro de texto, etcétera. Esta es la forma de los datos de Internet. Entonces, la motivación de lo que vimos antes del chiste de Transferning se da para llevar esto, que es lo que nosotros esperaríamos de un modelo pre entrenado, se dice, pre entrenado hasta esta primera instancia
+
+518
+01:15:49.010 --> 01:15:58.070
+Marina Fuster: y queremos llevarlo a lo que es el comportamiento. En principio, olvidémonos de los risonimodes, pero en principio lo queremos llevar a
+
+519
+01:15:58.200 --> 01:16:16.290
+Marina Fuster: Ahora, estos artículos están todos hechos con iar. Sí, ahí hay una cuestión interesante que se llama colapso modal. Mejor después la charlamos que no me quiero enviar. Claro, ahí hay hay un hay un un resultado teórico donde si vos entrenas con
+
+520
+01:16:16.330 --> 01:16:31.560
+Marina Fuster: una distribución que cada vez se va más colapsando, Porque claramente, cuando vos entrenas un modelo, hay cosas que dejas afuera de la distribución o que o que no modelas del todo bien. Entonces ahí se produce la situación, llama colapso modal, que era algo parecido a lo que pasaba con las redes. A:
+
+521
+01:16:31.560 --> 01:16:37.750
+Marina Fuster: Pero bueno, para no irnos a entrenar con la guía siempre, no. Bueno, esa es la moraleja.
+
+522
+01:16:37.750 --> 01:16:45.830
+Marina Fuster: Entonces yo quiero llevarlo a este esquema, no es decir, pasar del que regurgita a Shakespeare a que haga muchas cosas que nos interesan.
+
+523
+01:16:45.840 --> 01:16:49.630
+Marina Fuster: Al pre entrenado, se le llama Foundation Model.
+
+524
+01:16:49.680 --> 01:16:57.959
+Marina Fuster: En realidad viene un poco de No es que no sea útil per se, sino que es el modelo de las fundacional. Es al que 1 se refiere. Cuando
+
+525
+01:16:58.050 --> 01:17:04.620
+Marina Fuster: decimos: bueno, somos ese mismo modelo que tiene bien aprendida, la distribución de los datos para
+
+526
+01:17:05.100 --> 01:17:15.699
+Marina Fuster: un montón de distintas tareas, como asistente, como agente, que nos ayuda a codear, etcétera, etcétera. Sí, Y todo esto lo vamos a hacer con nuestro amigo.
+
+527
+01:17:16.170 --> 01:17:32.479
+Marina Fuster: Algunas desventajas de la Fundational Models, La primera más que una desventaja. En realidad es una cuestión de funcionamiento. No sé si tanto acá, pero no se comporta como un asistente de facto, o sea, s ni bien salió del horno. Entonces eso yo lo tengo que acomodar. Pero más importante
+
+528
+01:17:32.480 --> 01:17:40.859
+Marina Fuster: está el tema de las alucinaciones, es decir, que produce contenidos que no necesariamente es verídico o que es inventado simplemente porque
+
+529
+01:17:40.860 --> 01:17:50.360
+Marina Fuster: el comportamiento es cercano a un auto completado. Por otro lado, problemas de privacidad, por lo que vimos en principio, nada le impide regurgitar datos
+
+530
+01:17:50.380 --> 01:17:57.909
+Marina Fuster: personales que quizás haya en Internet. Por más de que hay un esfuerzo de filtrar en Lataset todo lo que espía. De ahí
+
+531
+01:17:58.140 --> 01:18:10.059
+Marina Fuster: podría estar liquiado y nada le impide regurgitarlo. Por otro lado, lo que es contenido ofensivo violento. Puede ser Full Nazi.
+
+532
+01:18:10.890 --> 01:18:24.440
+Marina Fuster: El Foundational Model vendría a ser el que entrenamos en las clases. Uno y 2 no yo agarrón de Codorn y Transformer lo entreno en ese corpus gigante con Next Token predicción. Y ahí me quedo un modelo
+
+533
+01:18:24.440 --> 01:18:32.019
+Marina Fuster: que me aprendió la distribución del corpus, pero que todavía no lo tengo orientado a ninguna tarea en particular. Ese sería el Fundational Model
+
+534
+01:18:37.100 --> 01:18:38.130
+Marina Fuster: Okay
+
+535
+01:18:40.760 --> 01:18:56.810
+Marina Fuster: Ok, perfecto. Bueno, otra de las desventajas. Esto de facilitar actividades dañinas en Internet. Hay un montón de información. Yo lo puedo pedir como construir una bomba o otras cosas dañinas. Y en principio, la información me la va a dar, o me la va a regurgitar, etcétera.
+
+536
+01:18:57.030 --> 01:19:06.780
+Marina Fuster: mini detalle esto justo porque Rodri mandó una charla por Mail. Pero los faunationals models no son siempre de texto. Si un faunational modern puede ser
+
+537
+01:19:06.800 --> 01:19:18.810
+Marina Fuster: un modelo entrenado en un corpus de datos muy grande que después se use para distintas tareas en otros dominios, por ejemplo, Acá es 1 que
+
+538
+01:19:18.810 --> 01:19:33.940
+Marina Fuster: lo que trata de de aprender o la distribución que trata de aprender son datos de Ege. Si no sé si estoy chamus o no, porque la charla no la vi todavía. Pero digo, es un ejemplo de que el Fundational Model no está atado al dominio de
+
+539
+01:19:34.190 --> 01:19:36.300
+Marina Fuster: suelo aprender texto. Sí,
+
+540
+01:19:37.370 --> 01:19:46.030
+Marina Fuster: no puedo esperar a que los agentes de I A reemplacen a los esclavos de los scam Centers en el sudeste asiático.
+
+541
+01:19:47.460 --> 01:19:54.869
+Marina Fuster: en decir, los que te mandan para escamiarte o que es camp centrs.
+
+542
+01:19:55.640 --> 01:20:02.480
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Son Call Center Truchos son ciudades enteras que funcionan como call center trucho. Pensé que ya los conocías.
+
+543
+01:20:02.600 --> 01:20:03.950
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: pero no seguí con la clase.
+
+544
+01:20:04.530 --> 01:20:06.689
+Marina Fuster: Okay, No, No, no lo conozco
+
+545
+01:20:06.750 --> 01:20:20.790
+Marina Fuster: bien. Entonces, bueno, estas son algunas de las desventajas. Entonces parte de lo que es el fin Va a cumplir con cierta deshidrata o características que a mí me interesan del modelo que se propusieron en 2 021 no son todas.
+
+546
+01:20:20.800 --> 01:20:27.630
+Marina Fuster: Son un framework. Como muy general que se dice que es. H. H. H. El full honest y Hard Less
+
+547
+01:20:28.260 --> 01:20:40.579
+Marina Fuster: sí son medio. Self Explanatory. Pero yo es esto lo que voy a querer de un modelo? Sí, pero fíjense que esto es bastante ambiguo también. ¿qué significa ser Hamless? Cuando no te tengo que dar una respuesta o cuando sí.
+
+548
+01:20:40.580 --> 01:20:57.390
+Marina Fuster: Cuándo tengo que ser honesto y cuándo no, cuándo. Tengo que ayudarte o no. Eso que mencionaba Joaquín de el cuento de la abuela que le decís al modelo para que diga cómo construir una bomba. Bueno, todo esto es lo que yo voy a tratar de protegerme usando estrategias de fightturing.
+
+549
+01:20:57.840 --> 01:20:59.260
+Marina Fuster: ¿cómo lo implementamos?
+
+550
+01:20:59.920 --> 01:21:13.530
+Marina Fuster: Este es el Paypane básico. Todavía no hablamos de modelos de razonamiento, por lo menos lo repito, pero este es el papel básico de un modelo puesto en producción, como lo era Chanchi Pity o Cloud o
+
+551
+01:21:13.670 --> 01:21:19.500
+Marina Fuster: u otro en 20 23, por así decirlo, sí,
+
+552
+01:21:19.870 --> 01:21:35.780
+Marina Fuster: Y este medio, un meme donde el chiste es que el modelo base se entrena en un corpus de datos gigante. Yo aprendo esa distribución y las otras 2 instancias son mucho más chiquitas en cuanto a tiempo de entrenamiento. Si entonces
+
+553
+01:21:35.780 --> 01:21:46.100
+Marina Fuster: lo que yo termino haciendo es moverme a una distribución donde el modelo se comporta como asistente. Primero que es esto de instrucción Turing y después
+
+554
+01:21:46.100 --> 01:22:02.109
+Marina Fuster: tengo una instancia donde uso reinform learning. Por eso lo vimos que lo que me va a dar es la cuestión de las preferencias del modelo que yo voy a querer esquematizar de forma cercana lo que son las preferencias humanas
+
+555
+01:22:02.210 --> 01:22:05.089
+Marina Fuster: que equis a las preferencias humanas
+
+556
+01:22:05.250 --> 01:22:14.090
+Marina Fuster: de un sector de la sociedad, no porque no es lo mismo lo que yo doy por Ok, acá. Que lo que se da por en
+
+557
+01:22:14.870 --> 01:22:18.850
+Marina Fuster: no sé Suiza, Mongolia, Australia, Ok.
+
+558
+01:22:19.200 --> 01:22:21.610
+Marina Fuster: Entonces este es el pipeline básico
+
+559
+01:22:22.520 --> 01:22:26.949
+Marina Fuster: que son estas 2 instancias de supervisoring y R L Hf.
+
+560
+01:22:27.080 --> 01:22:40.389
+Marina Fuster: En general, todo esto a veces se trata como el Pipeland de Rhf, pero no es necesariamente correcto. Si vamos a usar de referencia, un paper que salió de
+
+561
+01:22:40.390 --> 01:22:52.279
+Marina Fuster: instruk chipitín, que es la versión de openega donde aplicaron este pade plan. Y es un poco el estándar. Si lo que voy a hacer primero es algo muy sencillo donde lo que voy a hacer es
+
+562
+01:22:52.640 --> 01:23:00.420
+Marina Fuster: agarro un montón de Proms que se seleccionan quizás de datos históricos que tenía open a sobre gente que usaba su
+
+563
+01:23:00.420 --> 01:23:14.130
+Marina Fuster: sus modelos. Y tengo gente humana que lo que hace es responder esos pronts como si fuera un asistente. Si con lineamientos le dan a cada 1 de los etiquetadores lineamientos y responden al pront.
+
+564
+01:23:14.130 --> 01:23:20.629
+Marina Fuster: Entonces el modelo después recontenta, te dice Shure Is Bla, Bla, Bla, Bla Bla, y se comporta como una asistente
+
+565
+01:23:20.950 --> 01:23:34.579
+Marina Fuster: y acá no hay nada muy misterioso. Es supervisor sobre este conjunto de datos, que es chiquito. No sé si tiene 30 000 ejemplos. Una cosa así, alguna pregunta sobre esto. Y Entonces me tomo el monte.
+
+566
+01:23:35.750 --> 01:23:40.570
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Entonces ellos toman unos proms Cualquiera se los pasan a una persona.
+
+567
+01:23:40.720 --> 01:23:47.020
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: la persona escribe la respuesta, y esa respuesta se trata como el el objetivo del entrenamiento. Sería.
+
+568
+01:23:47.560 --> 01:23:55.740
+Marina Fuster: Claro, como vimos antes que yo, tenía el corpus toquenizado. Y lo que hacía era predecir el próximo Token. Acá es como si tuviera.
+
+569
+01:23:55.900 --> 01:24:03.390
+Marina Fuster: le alimenta el pront al modelo, O sea, perdí mi ancastá
+
+570
+01:24:03.860 --> 01:24:13.270
+Marina Fuster: Si este es el modelo, no y el modelo, el prompt es explaine. The Moon le digo, el explaine de Moon.
+
+571
+01:24:13.960 --> 01:24:32.120
+Marina Fuster: No, esto es lo que el alimento toque guisado y bla, bla bla y acá en el vocabulario. Yo lo que voy a querer predecir es lo primero que escribió esta persona que en este caso es Sam, o sea, el Next Toquin, que voy a esperar que la red me diga, es, no sé, Sam. Pongámosle.
+
+572
+01:24:32.140 --> 01:24:36.800
+Marina Fuster: entonces hubo la probabilidad de esto es el clásico Next to Cambridiction.
+
+573
+01:24:37.300 --> 01:24:48.270
+Marina Fuster: Solo que acá tengo una demostración de cómo yo quiero que el modelo se comporte de forma asistente, por así decirlo, o healful.
+
+574
+01:24:54.190 --> 01:24:59.790
+Marina Fuster: Eso quedó claro, más o menos.
+
+575
+01:25:00.380 --> 01:25:03.250
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Lo del S. F. T, Sí.
+
+576
+01:25:03.690 --> 01:25:04.870
+Marina Fuster: Bien, Perfecto.
+
+577
+01:25:05.500 --> 01:25:22.020
+Marina Fuster: Entonces este Pt es lo primero. ¿qué es lo que yo gano con esto? Un modelo que cuando yo le pregunto algo me contesta. Sí, esto no era tan obvio. Cuando salió el primer chat chiquitín. El primero, primero, muy, muy viejo.
+
+578
+01:25:22.600 --> 01:25:35.810
+Marina Fuster: qué es la segunda parte, y acá aparece algo que no es específico de modelos de lenguaje que se llama llama Rhf, donde tenemos informes. M Learning from, human feedback. Entonces
+
+579
+01:25:36.430 --> 01:25:45.820
+Marina Fuster: recuerden que para qué nos servía la reforma del Armenia, habíamos charlado que la perspectiva que nos interesaba, era está donde yo no tenía los datos. Equis. Si yo no sé bien
+
+580
+01:25:45.820 --> 01:25:57.810
+Marina Fuster: qué es lo que quiero que el modelo me conteste o no sé bien qué es lo que quiero que la gente haga, sino que quiero que consiga la mejor recompensa posible. Entonces porque es bueno para nuestro escenario.
+
+581
+01:25:58.250 --> 01:26:16.990
+Marina Fuster: Hellful, pudimos modelarlo con personas que demuestran el comportamiento en base a un prompt. Pero ¿qué significan las preferencias humanas, o sea, cuando una respuesta es mejor que otra. Cuando una respuesta es menos dañina que otra. Todas esas cosas son un poco más sutiles si y modelar
+
+582
+01:26:17.870 --> 01:26:36.790
+Marina Fuster: 1 un conjunto de datos que se comporte de esa forma de esa manera, es difícil y al mismo tiempo modelar un objetivo explícito que me diga: Che. Esto es bueno o esto es malo. También es difícil entonces reformar la información human feedback. Lo que nos va a permitir hacer es, de forma indirecta.
+
+583
+01:26:37.010 --> 01:26:40.529
+Marina Fuster: Yo voy a tener algo que me escorea
+
+584
+01:26:40.740 --> 01:27:01.159
+Marina Fuster: cuando una respuesta está alineada o no. Esta idea del alineamiento la vamos a retomar en un par de clases, pero alineamiento. Me refiero a que el co del modelo se comporte de acuerdo a nuestras preferencias, sí o a nuestro código de ética, por así decirlo. Entonces, por un lado, nos va a permitir definir de manera indirecta lo que significa estar alineado.
+
+585
+01:27:01.260 --> 01:27:08.509
+Marina Fuster: Por otro lado, no va a requerir feedback experto si no es lo mismo tener que armarle a alguien que genere respuestas
+
+586
+01:27:08.630 --> 01:27:11.569
+Marina Fuster: del ámbito bioquímica, versus
+
+587
+01:27:11.700 --> 01:27:29.460
+Marina Fuster: cosas de alineamiento, como che si te pregunto si puedes matar a alguien, me tienes que decir que no. Eso no requiere feedback experto. Y lo que tiene característica. Esta estrategia: reforma line human feedback es que es escalable? Sí. ¿y ¿dónde está el chiste? ¿dónde está el He man feedback si se acuerdan, nin yo tenía.
+
+588
+01:27:29.980 --> 01:27:32.389
+Marina Fuster: no me queda claro cómo funciona. Perfecto.
+
+589
+01:27:32.650 --> 01:27:42.129
+Marina Fuster: Lo que yo voy a tener es lo siguiente: primero, la definición de lo que era reinform learning. Yo voy a tener un ambiente, ¿sí? Y voy a tener acá a.
+
+590
+01:27:42.150 --> 01:27:57.789
+Marina Fuster: llamémosle agente, voy a tener un agente que ejecuta acciones en este ambiente y la función de recompensa que ahora vamos a tomarlo como una black box. Si la función de recompensa me va a decir cuál es la recompensa de eso que yo generé.
+
+591
+01:27:57.960 --> 01:28:03.540
+Marina Fuster: Sí, El chiste de R. Lhf es que esta caja negra
+
+592
+01:28:03.980 --> 01:28:10.560
+Marina Fuster: que funciona como una black box. Por ahora se entrena con human Feelback. Sí,
+
+593
+01:28:11.860 --> 01:28:13.879
+Marina Fuster: hasta ahí quedamos más o menos claro.
+
+594
+01:28:15.410 --> 01:28:19.399
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Entonces los que deciden si la recompensa es positiva o negativa, son los usuarios.
+
+595
+01:28:20.130 --> 01:28:24.329
+Marina Fuster: Indirectamente. Sí, ¿Por qué a ver?
+
+596
+01:28:24.850 --> 01:28:28.560
+Marina Fuster: Quiero ver si tengo Ahora, acá.
+
+597
+01:28:30.190 --> 01:28:37.569
+Marina Fuster: No vamos un poco más atrás y explico acá? ¿cómo es que cada una de las cosas terminan ocurriendo.
+
+598
+01:28:37.570 --> 01:28:40.680
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Porque me parece un ojo de cada respuesta para decir si es buena o mala.
+
+599
+01:28:41.230 --> 01:28:42.290
+Marina Fuster: Cómo, cómo.
+
+600
+01:28:42.290 --> 01:28:47.309
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Esto es lo que me parece acá abajo de cada respuesta para decir, la respuesta estuvo bien, la respuesta estuvo mal.
+
+601
+01:28:47.310 --> 01:28:59.510
+Marina Fuster: Bueno, viste cuando pasaba eso, A veces eso se recolecta viste cuando tenías 2 para comparar. Bueno, eso se usa para entrenar un modelo de recompensa.
+
+602
+01:29:01.580 --> 01:29:05.989
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y ese predictor de recompensa es un modelo, o es una función que se altera.
+
+603
+01:29:06.230 --> 01:29:10.789
+Marina Fuster: Es un modelo más Ahí vi lo que puso Lucas. Esto va a ser un modelo más. En Rlhf.
+
+604
+01:29:11.510 --> 01:29:12.530
+Marina Fuster: Es más
+
+605
+01:29:12.730 --> 01:29:24.179
+Marina Fuster: esto, el agente va a ser mi transformer, no, que ahora me contesta como un asistente. Este va a ser mi asistente en esta instancia, la acción va a ser generar un token.
+
+606
+01:29:24.180 --> 01:29:36.140
+Marina Fuster: ¿sí? Y la la re world en realidad va a ser sobre la respuesta que me generó. Entonces, yo te digo, puedo matar a alguien? ¿sí? Podés matar a alguien me fijo. ¿qué recompensa tiene eso? ¿no?
+
+607
+01:29:36.230 --> 01:29:39.269
+Marina Fuster: Entonces La idea es que esta recompensa que fue
+
+608
+01:29:39.460 --> 01:29:53.360
+Marina Fuster: pre entrenada siguiendo el human feedback me va a dar una recompensa muy baja. Si yo te digo, si acá, tenés la mejor forma de matar a alguien dar subjetivo, No, Eso no sería lo correcto. Bla, bla, bla, bla, Sí,
+
+609
+01:29:54.940 --> 01:29:59.210
+Marina Fuster: eso es un poco como el esquema general, y el chiste es que
+
+610
+01:29:59.720 --> 01:30:11.480
+Marina Fuster: se estudió que no necesitas tanto human feedback para tener un modelo que sea lo suficientemente general para después hacer este look de entrenamiento. Entonces quizás
+
+611
+01:30:11.590 --> 01:30:15.210
+Marina Fuster: yo le pagué a ciertas personas un tiempo
+
+612
+01:30:15.250 --> 01:30:33.230
+Marina Fuster: entre en este modelo, logré más o menos alinearlo, y después a escala a los usuarios. Les pedí que mejor me comparen cuál les pareció mejor. Y así gratis. Con obtuve más que una feedback para seguir entrenando mi reward predictor. Pero eso sería un poco como el el look. Si
+
+613
+01:30:34.020 --> 01:30:40.430
+Marina Fuster: bien entonces ¿cómo vendría a ser la definición de
+
+614
+01:30:41.260 --> 01:30:47.480
+Marina Fuster: el el el escenario del transformer, que se entrena para estar alineado y comportarse de manera feliz
+
+615
+01:30:47.800 --> 01:31:07.759
+Marina Fuster: en un esquema de informe. Los Estados, o sea, el estado actual, es el pront más todo lo que generé hasta el momento, las acciones es trivial. Es generar un token. La transición, las funciones de transición de atención podía hacer esto. Acá la verdad acá también es trivial, pero no nos importa, es literal.
+
+616
+01:31:07.800 --> 01:31:25.810
+Marina Fuster: Tengo la secuencia y transición no a tener este nuevo toque en la función de recompensa es lo que es interesante que es este black box que, como bien dijo Lucas, va a ser otro modelo. Las observaciones, no le vamos a dar bola porque en realidad, el Estado total, o sea, lo que fuimos generando es
+
+617
+01:31:26.020 --> 01:31:45.920
+Marina Fuster: el ambiente, por así decirlo, y la política va a estar dada por lo que hace el modelo. ¿no? Fíjense para un Estado particular, es decir, broma, secuencia que fui generando me va a decir qué acción tomar, o sea que toquen sampliar. Sí, entonces esos son un poco los elementos de la Información Lighting aplicados a este problema.
+
+618
+01:31:46.960 --> 01:31:51.390
+Marina Fuster: Y para eso se usan un grupo de
+
+619
+01:31:51.640 --> 01:32:07.269
+Marina Fuster: de algoritmos que se llaman bipio o proximal policy optimization, que están basados en el gradiente todo lo que es, con redes neuronales. Queremos lo mayor posible actualizarlo a través de algo que se parezca a gradiente descendente. Y usamos
+
+620
+01:32:07.270 --> 01:32:11.700
+Marina Fuster: bandprop, nuestro mejor amigo que por ahí. Ya lo detesto.
+
+621
+01:32:12.410 --> 01:32:17.579
+Marina Fuster: Entonces este va a ser como un ejemplo muy simplificado de qué es lo que pasa Como
+
+622
+01:32:17.740 --> 01:32:27.949
+Marina Fuster: no, no vale mucho la pena meternos tan a fondo las matemáticas. Estos son la verdad que larguísimos, pero un poco. La idea sí. De lo que yo voy a querer hacer es.
+
+623
+01:32:28.180 --> 01:32:42.450
+Marina Fuster: si a mí me lleva un pronto, y la respuesta está mal. Si lo que yo voy a tratar es maximizar. Recordemos que estamos maximizando la recompensa que me da un reward model. Entonces lo que yo me voy a fijar es cheque recompensa le de esta frase.
+
+624
+01:32:42.450 --> 01:32:57.319
+Marina Fuster: Bueno, en este caso es negativa. Si el Reward model es relativamente bueno, yo voy a querer que le dé una mala reward. Sí, Entonces esto lo multiplico por el logaritmo de la política va a ser la parte de soft más
+
+625
+01:32:57.320 --> 01:33:13.430
+Marina Fuster: de decir, yes a esta frase, entonces toda esta cuenta me da 0 9 99. Fíjense que si yo esto este logaritmo, lo hago sobre una probabilidad más. Chiquita, esto va a ser un número negativo más grande. Si no sé si se acuerdan.
+
+626
+01:33:13.490 --> 01:33:15.490
+Marina Fuster: pero la forma del logaritmo es así.
+
+627
+01:33:15.780 --> 01:33:31.549
+Marina Fuster: Entonces yo lo que voy a querer es caerme por esta parte al asignarle en X, una pues que borre bien Al asignarle en X una probabilidad este 0 más chiquitita. ¿no? Si estoy más grande por ahí, estoy, No sé por acá
+
+628
+01:33:32.290 --> 01:33:42.990
+Marina Fuster: entonces el negativo con el negativo se me va a ir. Y esto me va a quedar más grande, que es lo que yo estoy queriendo hacer: maximizar. Le puse Jota, y no los
+
+629
+01:33:43.150 --> 01:33:54.970
+Marina Fuster: por esto de que queremos maximizar. En general, no se suele asociar a minimización, pero esto es como muy simplificado. ¿qué es lo que yo estoy haciendo. No ponderando
+
+630
+01:33:56.070 --> 01:34:05.379
+Marina Fuster: la probabilidad de que mi modelo me dé esa respuesta con la recompensa, ¿sí? Y eso es lo que me va a terminar
+
+631
+01:34:05.620 --> 01:34:15.139
+Marina Fuster: busqueando a que si la respuesta es mala, la recompensa sea mala, entonces voy a querer minimizar esa esa probabilidad, y viceversa. El otro caso.
+
+632
+01:34:17.470 --> 01:34:21.249
+Marina Fuster: la idea intuitiva más o menos, se entendió
+
+633
+01:34:22.130 --> 01:34:25.140
+Marina Fuster: de por qué está este modelo de recompensa
+
+634
+01:34:25.540 --> 01:34:28.559
+Marina Fuster: que yo voy a hacer algo muy parecido a
+
+635
+01:34:28.900 --> 01:34:34.440
+Marina Fuster: algo basado en el gradiente para actualizar los pesos. Esa idea, más o menos.
+
+636
+01:34:34.710 --> 01:34:36.570
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: La recompensa es un modelo.
+
+637
+01:34:38.080 --> 01:34:40.290
+Marina Fuster: Porque la recompensa es un modelo.
+
+638
+01:34:40.450 --> 01:34:41.080
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+639
+01:34:41.750 --> 01:34:49.109
+Marina Fuster: Vos acá como red función de recompensa, podrías 1, tener una fórmula, no. O sea, yo te doy un prono con una secuencia
+
+640
+01:34:49.390 --> 01:34:53.169
+Marina Fuster: tengo una fórmula fija y recibo un número.
+
+641
+01:34:54.160 --> 01:34:59.589
+Marina Fuster: ahí. Ignoremos la parte del modelo. Eso está claro que yo podría tener una función cualquiera.
+
+642
+01:34:59.830 --> 01:35:00.600
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+643
+01:35:00.980 --> 01:35:08.719
+Marina Fuster: Bien, pero ¿qué función programas para darme recompensas
+
+644
+01:35:08.830 --> 01:35:16.519
+Marina Fuster: sobre proms y respuestas, No, O sea, con que vos programas para decirme frente a este pront
+
+645
+01:35:16.720 --> 01:35:27.119
+Marina Fuster: decirme: no con gentileza. Es mejor decirme, no, no te voy a contestar o frente a este promo que me pide sustancias químicas.
+
+646
+01:35:27.240 --> 01:35:31.769
+Marina Fuster: No dártelas ver suicidártelas. ¿cómo vos programas. Eso.
+
+647
+01:35:34.010 --> 01:35:37.060
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y tendrías que usar un modelo o pedirle a alguien que te lo haga.
+
+648
+01:35:38.080 --> 01:35:44.069
+Marina Fuster: Bien, hay 2 cosas que dijiste. Primero, podrías usar un modelo. Eso es lo que estamos haciendo. No.
+
+649
+01:35:44.070 --> 01:36:01.019
+Marina Fuster: no sabemos qué hacer entonces? Metemos una red neuronal que aproxime más o menos lo que queremos? Sí, porque no tenemos la forma explícita de hacerlo eso por un lado, y lo otro que dijiste es: le podemos pedir a alguien que nos lo haga, pero no nosotros, pero yo podría tener
+
+650
+01:36:01.060 --> 01:36:13.109
+Marina Fuster: un grupo gigante de humanos cual producto de software y algoritmo que en realidad, por detrás, tiene un ejército de humanos resolviendo un problema
+
+651
+01:36:13.170 --> 01:36:16.860
+Marina Fuster: que me den un número, No, Yo les doy una rúbrica
+
+652
+01:36:17.170 --> 01:36:34.390
+Marina Fuster: y les digo: si se puede hacer una acción peligrosa, devolverme menos 100 Si evitó contestar cuando de Promter era malo devolveme 80, y podría tener humanos que ante cada pregunta, y cada respuesta le evalúan y me dan un número.
+
+653
+01:36:34.960 --> 01:36:36.829
+Marina Fuster: su también es una opción.
+
+654
+01:36:39.030 --> 01:36:44.169
+Marina Fuster: No. O sea, tenemos las 3 opciones o lo programo, algo más explícito.
+
+655
+01:36:44.590 --> 01:36:58.119
+Marina Fuster: o tengo los humanos que me dan la recompensa, o tengo algo como un modelo donde yo puedo tratar de generalizar sobre el espacio de pronto y respuestas, y a eso, asignarle un número.
+
+656
+01:37:04.590 --> 01:37:05.490
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+657
+01:37:05.970 --> 01:37:23.859
+Marina Fuster: Okay. Entonces de esas 3 opciones, la de los humanos en en vivo es inescalable. O sea, no voy a tener un ejército de humanos que me vayan es coreando. Cuando yo quiero entrenar la de programática para cosas como alineamiento. Es muy difícil de especificar
+
+658
+01:37:23.860 --> 01:37:27.109
+Marina Fuster: y de contemplar las situaciones.
+
+659
+01:37:27.710 --> 01:37:38.240
+Marina Fuster: Por otro lado, lo más cercano que tenemos como herramienta, algo que logre generalizar, un cierto comportamiento en base a un conjunto de datos es usar otro modelo.
+
+660
+01:37:40.120 --> 01:37:50.510
+Marina Fuster: Por ahí hay más que desconozco, pero esos serían un poco como como los distintos escenarios. Entonces, por eso yo termino usando como función de recompensa otro modelo.
+
+661
+01:37:50.840 --> 01:38:04.860
+Marina Fuster: porque necesito algo que yo, durante entrenamiento a medida que yo recibo, probamos y voy generando respuestas. Se los puedo mandar a algo que me dé una señal numérica. Decir, eso es bueno o es malo para yo poder tener mi look de reforma en learning.
+
+662
+01:38:08.570 --> 01:38:09.759
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Ahora, Sí. Gracias.
+
+663
+01:38:10.190 --> 01:38:11.680
+Marina Fuster: Okay. Perfecto.
+
+664
+01:38:12.990 --> 01:38:14.850
+Marina Fuster: Entonces esto es un poco.
+
+665
+01:38:15.240 --> 01:38:26.410
+Marina Fuster: ¿qué es lo que se está tratando de hacer, aunque tiene muchísimas ganas, y le interesa. Acá Hay como unas mini aclaraciones de el paper, que es cada cosa, en realidad
+
+666
+01:38:26.890 --> 01:38:36.640
+Marina Fuster: lo dejo acá para a quien le importa si hay un detalle que es esto de la Kl Penalty. Algunos se acuerdan que era la divergencia. K. L.
+
+667
+01:38:38.840 --> 01:38:39.430
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No.
+
+668
+01:38:40.110 --> 01:38:40.730
+Marina Fuster: Mhm.
+
+669
+01:38:41.020 --> 01:38:49.969
+Marina Fuster: Todo lo que era de estadística y de probabilidad? Siento que la respuesta siempre es no. Alguien más se acuerda más o menos Kyle.
+
+670
+01:38:51.240 --> 01:38:54.140
+Marina Fuster: donde aparecía. ¿y para qué? Más o menos
+
+671
+01:38:56.860 --> 01:39:09.630
+Marina Fuster: apareció en el Bae. Apareció en Gun. Era la forma perfecta. La forma de comparar 2 distribuciones, o sea, la divergencia? K. L. Es una métrica que me dice entre 2 distribuciones de probabilidad. ¿qué tan cercanas son
+
+672
+01:39:09.630 --> 01:39:20.130
+Marina Fuster: 0, vendría a ser que son iguales. Sí, Entonces, ¿por qué este está acá L Penalti que aparece acá y en un montón de lugares cuando yo estoy haciendo high uning.
+
+673
+01:39:20.330 --> 01:39:25.420
+Marina Fuster: Fíjense que la K L va a ser comparar la distribución del modelo que voy
+
+674
+01:39:25.560 --> 01:39:35.240
+Marina Fuster: fantuneando contra el modelo que yo tenía como base. No que era este asistente super kamikaze que me va a responder lo que yo quiera.
+
+675
+01:39:35.340 --> 01:39:51.650
+Marina Fuster: Entonces lo que me permite la K. L es que yo me voy al como modelo, me voy a alinear, o sea, voy a ajustar los pesos para ese alineamiento, pero si me penalizan que la divergencia K. L sea grande, eso va a implicar que lo voy a tratar de hacer de una forma
+
+676
+01:39:51.650 --> 01:39:56.990
+Marina Fuster: en que la distribución nueva no se aleje tanto de la vieja.
+
+677
+01:39:57.090 --> 01:40:14.980
+Marina Fuster: ¿por qué? Porque la vieja tenía un montón de propiedades que a mí me interesaban, o sea, se comportaba muy bien en la distribución del Corpus. Funcionaba muy bien como asistente. Yo no quiero deshacer todas esas capacidades. Entonces, en general, en lo que es fanduing de modelos.
+
+678
+01:40:14.980 --> 01:40:27.289
+Marina Fuster: más que nada, el en suele aparecer de alguna forma una penalidad para no irme tan lejos del modelo en el cual me encuentro. Sí, y eso también hace que
+
+679
+01:40:27.500 --> 01:40:30.789
+Marina Fuster: muchos de los comportamientos del modelo
+
+680
+01:40:31.070 --> 01:40:36.529
+Marina Fuster: estén como rooteados o estén anclados en lo que fue el pre entrenamiento, que es
+
+681
+01:40:37.000 --> 01:40:52.210
+Marina Fuster: la parte de todo el proceso de un modelo de lenguaje donde más se configuran los pesos. Todas las otras etapas sucesivas van a seguir teniendo cambios, pero la idea es que los las actualizaciones de los pesos sean menores que lo que fue el preding
+
+682
+01:40:52.210 --> 01:40:59.519
+Marina Fuster: Sí, esto como sitenote de que la penalidad a relev es algo que se usa bastante.
+
+683
+01:40:59.730 --> 01:41:09.690
+Marina Fuster: no solo acá sino en un montón de otros esquemas de machine learning cuando yo quiero asegurarme de que no me voy tan lejos de mi modelo original. Es un poco el Take Away.
+
+684
+01:41:10.170 --> 01:41:23.010
+Marina Fuster: Bien. Entonces, volviendo a lo que es Rhf, teníamos nuestro asistente. Y los pasos, 2 y 3 de todo este Payplanne son 1, recolectar los datos que voy a usar para mi Reward Modern.
+
+685
+01:41:23.210 --> 01:41:34.449
+Marina Fuster: Son las 9. Así que no me voy a meter mucho en eso, pero lo que se suele hacer es agarrar el modelo que es asistente darle un prompt.
+
+686
+01:41:34.570 --> 01:41:51.640
+Marina Fuster: sacar 4 respuestas, y el humano lo que va a hacer es ordenar esas respuestas? Sí, y con ese orden no se va a decir la respuesta. C Es mejor que la A, que es mejor que la D, que es mejor que la B, Y con ese orden, Yo voy a armar pares de que es mejor que el otro y entrenar el Reward modern.
+
+687
+01:41:52.070 --> 01:42:11.390
+Marina Fuster: vamos a simplificarlo ahí. Entonces tengo mi reward model y se pasos. Y en el paso. Tres: hago lo que llamamos antes del look de reform learning. Si voy a tener un Bronx, el modelo va a ser una respuesta. Todo eso se lo voy a dar al rival model que me va a decir, pulgar para arriba o pulgar para abajo y usando algún algoritmo
+
+688
+01:42:11.690 --> 01:42:18.439
+Marina Fuster: que tenga la estrategia o la posibilidad de usar gradiente descendente. Actualizo los pesos, sí
+
+689
+01:42:19.110 --> 01:42:23.150
+Marina Fuster: usando la derivada del error bla, bla, bla, bla, Bien.
+
+690
+01:42:23.480 --> 01:42:32.679
+Marina Fuster: alguna pregunta más o menos. Esto es para aclarar que la recompensa es un modelo política. Es un modelo para que se lleven un poco. Ese mapeo
+
+691
+01:42:32.810 --> 01:42:38.229
+Marina Fuster: no era la forma de. Co: Ah, todo bien perfecto.
+
+692
+01:42:39.470 --> 01:42:57.380
+Marina Fuster: Este paper. No lo vamos a ver. En realidad lo dejo acá porque Andropic casi al mismo tiempo saca su forma de hacer el real. Hf. Ellos no usan supervise fideuning para Helfall, sino que directamente todo lo hacen con reforcement learning Y sí, hay una parte de la discusión, la tensión entre objetivos.
+
+693
+01:42:57.380 --> 01:43:01.969
+Marina Fuster: ¿por qué pongo este paper? Uno? Porque la forma de hacer esto
+
+694
+01:43:02.210 --> 01:43:20.789
+Marina Fuster: no es única. Sí, yo, en teoría, o sea, si tuviera datos infinitos sobre lo que quiero tranquilamente. Hago superbikes, fide tunin, sí, O sea, eso es una opción. Hago superbikes para hamles faraones, bla, bla, bla.
+
+695
+01:43:21.240 --> 01:43:39.420
+Marina Fuster: acá. Ellos decidieron no usar Supervisand Uning para Hellfull y ver como la dinámica de la reforma learning modelaba los distintos objetivos, y hay algo muy tangible que sí hay siempre tensión entre las cosas que yo le voy pidiendo a los modelos y para los cuales voy optimizando?
+
+696
+01:43:39.420 --> 01:43:42.200
+Marina Fuster: ¿sí? Y esto se va a ver
+
+697
+01:43:42.400 --> 01:43:44.639
+Marina Fuster: a medida que 1 sigue avanzando.
+
+698
+01:43:44.780 --> 01:43:52.400
+Marina Fuster: Entonces, paper como alternativa de otra forma para hacerlo, Sí, por otro lado.
+
+699
+01:43:52.630 --> 01:44:09.929
+Marina Fuster: acá. Causan reformas learning en el anterior learning Para todo esto es lo que es modelar: objetivos difíciles. Necesito sí, o sí reinform learning. La respuesta es no. Apareció después otra estrategia que se llama deebio alguno. La escucho mencionar
+
+700
+01:44:10.000 --> 01:44:16.860
+Marina Fuster: porque se hizo bastante conocida mientras me tomo un mate porque me muero solo mencionar Okay
+
+701
+01:44:18.010 --> 01:44:24.510
+Marina Fuster: B, P, o vendría a ser como la versión de aprendizaje supervisado para
+
+702
+01:44:24.650 --> 01:44:33.919
+Marina Fuster: modelar preferencias en un modelo, ¿sí? Y lo que terminan haciendo es algo en realidad muy parecido a lo que hacen
+
+703
+01:44:34.260 --> 01:44:45.400
+Marina Fuster: acá para entrenar el modelo de recompensas, Sí, o sea, lo que van a hacer en D. P, o es agarrar para distintos. Pronto, van a generar con el modelo 2 respuestas.
+
+704
+01:44:45.400 --> 01:44:57.389
+Marina Fuster: Y sí, va a haber humanos que te etiquetan. ¿cuál es mejor que la otra? Entonces, una se va a llamar Winner o Chosen, y la otra se va a llamar bluser o rechet. Y la función
+
+705
+01:44:57.670 --> 01:45:04.679
+Marina Fuster: de los acá si hay minimización la función de los lo que va a hacer es contemplar
+
+706
+01:45:04.750 --> 01:45:14.729
+Marina Fuster: la relación relativa entre esas 2 respuestas. Entonces va a tratar de subir la probabilidad de la chousen y bajar la probabilidad de la recheté.
+
+707
+01:45:14.770 --> 01:45:31.600
+Marina Fuster: Pero todo esto lo hace en un esquema de superbikes fanturing. Si un poco como que el chiste de este Paper es que si vos haces esto en el modelo directamente, implícitamente, estás modelando algo similar a lo que modela? Rlh: F
+
+708
+01:45:31.600 --> 01:45:36.530
+Marina Fuster: Sí, pero usando solamente supervike fide tuning que
+
+709
+01:45:36.570 --> 01:45:52.550
+Marina Fuster: quizás no se aprecia porque no lo echábamos en profundidad, pero supervive fide tuning En este esquema tienen menos parámetros y está mejor entendida la convergencia del proceso de entrenamiento de fighting versus lo que es reinford learning, entonces
+
+710
+01:45:52.730 --> 01:45:54.420
+Marina Fuster: medio que es regla
+
+711
+01:45:54.710 --> 01:46:02.189
+Marina Fuster: rulo. Fan que si podés ser supervisor tuning en el bar de reinform learning en realidad te conviene, sí,
+
+712
+01:46:02.670 --> 01:46:12.279
+Marina Fuster: pero no todo es color de rosa. O sea, si bien hay una estrategia que es superbikes Fand, un para lo que es modelado de preferencias Paper
+
+713
+01:46:12.950 --> 01:46:25.889
+Marina Fuster: Hay 2 cosas que no tiene que van a ser importantes después. Una no tiene exploración, o sea yo cuando hago esto, que sampleo 2 respuestas y un humano me dice cuál es mejor. Y cuál es otra todo eso es como previo
+
+714
+01:46:26.170 --> 01:46:44.180
+Marina Fuster: al entrenamiento de preferencias. Entonces yo tengo un Dataset. Con eso entreno fin. No tengo mayor recompensa, No nada. Uso eso para entrenar, entonces no tengo esta situación como de de juegos y de generar episodios donde el modelo va explorando respuestas
+
+715
+01:46:44.430 --> 01:47:02.379
+Marina Fuster: y en base a la Reward, que obtiene un modelo, va ajustando su comportamiento. Yo estoy haciendo, O sea, estoy moviendo la distribución a algo muy explícito, que es mi conjunto de entrenamiento. Entonces, por un lado, esto no tiene exploración y, por otro lado, yo no tengo un reward model que pueda inspeccionar tampoco
+
+716
+01:47:02.380 --> 01:47:18.419
+Marina Fuster: cuando yo quizás tenga algunos problemas de preferencias o quiera seguir como entrenando mi reward model para que sea mejor en Deep. Yo no lo tengo. Yo tengo que volver a armarme ese dato, hacer The supervise y seguir haciendo. S. F, T, sobre el modelo.
+
+717
+01:47:18.720 --> 01:47:33.119
+Marina Fuster: pero la ventaja, o sea, si ustedes están haciendo un proyecto ustedes en su casa, La ventaja es que pipi o tiene un montón de hiper parámetros que no tienen que configurar, mientras que P o no es más similar a lo que 1 suele hacer
+
+718
+01:47:33.740 --> 01:47:39.069
+Marina Fuster: bueno cosas que nos interesan medir, que son importantes para lo que es. Rlhf
+
+719
+01:47:39.290 --> 01:47:52.320
+Marina Fuster: Bailation Raid: es decir, cuántas veces un Bronx que no debería haber sido contestado. Fue contestado de la forma que no queremos y, por otro lado, false al rey que también quiero que baje y tiene que ver con
+
+720
+01:47:52.320 --> 01:48:03.070
+Marina Fuster: yo. Tenía un pron benigno y no me contestas. ¿sí? Cuando en realidad me podrías haber dado una respuesta. Esas son las 2 cosas que a 1 le interesa medir en principio con R. L. Hf.
+
+721
+01:48:03.670 --> 01:48:06.690
+Marina Fuster: Alguna pregunta hasta acá creo que fui un poco muy rápido.
+
+722
+01:48:13.310 --> 01:48:16.019
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: No me queda del todo claro cómo funciona el Dpo.
+
+723
+01:48:17.140 --> 01:48:21.540
+Marina Fuster: En Bbo. Lo podés pensar cómo
+
+724
+01:48:23.750 --> 01:48:31.739
+Marina Fuster: vos tenés viste en el entrenamiento normal. Vos Tenés tu modelo. Y al final tenés una función de costo que era la de Nexo Grapration.
+
+725
+01:48:32.070 --> 01:48:41.659
+Marina Fuster: Era como el pre entrenamiento. Después hiciste. Supervivecien para Helful que también es con Stoken prediction, ¿no? Y se te volvió tu asistente.
+
+726
+01:48:42.020 --> 01:49:01.009
+Marina Fuster: vivió en lugar de usar esa misma función de costo que vas a minimizar, y que es de la tarea o del objetivo nexo que previsión vas a usar otra función de costo. Pero el resto del esquema de entrenamiento es igual, lo único que vas a cambiar es la función de costo. Si
+
+727
+01:49:01.010 --> 01:49:09.220
+Marina Fuster: que, en lugar de ser nexo, que predicción, lo que va a tomar como input son pares de respuestas a un mismo pronto.
+
+728
+01:49:10.170 --> 01:49:12.250
+Marina Fuster: No, eso, en principio.
+
+729
+01:49:12.840 --> 01:49:13.480
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+730
+01:49:13.860 --> 01:49:29.079
+Marina Fuster: Bien. Y la característica de este par de respuestas al mismo promp es que sí o sí vos vas a saber cuando tengas armado el datase, cuál es mejor que la otra. ¿cuál es la que yo sí quiero que mi modelo diga y ¿Cuál es la que yo no quiero que mi modelo diga
+
+731
+01:49:29.850 --> 01:49:31.060
+Marina Fuster: hasta ahí vamos.
+
+732
+01:49:31.310 --> 01:49:32.070
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Sí.
+
+733
+01:49:32.270 --> 01:49:34.790
+Marina Fuster: Bien, entonces
+
+734
+01:49:35.520 --> 01:49:45.189
+Marina Fuster: esta esta etiquetación, de cuál es la que yo quiero y la que no es sólo hacen humanos, o sea, antes de contratar gente que hizo esta comparación de cual yo quiero igual. No
+
+735
+01:49:45.400 --> 01:50:00.720
+Marina Fuster: una vez que yo tengo eso, lo que voy a hacer es usar una función de costo que simplificada es esta que está acá donde lo que yo analizo es la resta entre un término
+
+736
+01:50:00.820 --> 01:50:10.639
+Marina Fuster: sobre la que yo sí quiero. Si está este, dice el término Showsen vendría a ser una cuenta sobre la respuesta que yo sí quiero menos
+
+737
+01:50:10.660 --> 01:50:24.070
+Marina Fuster: una cuenta sobre la respuesta que no quiero. Sí. Y podríamos pensar que este término es proporcional a la probabilidad de elegir esa respuesta. ¿sí? Entonces, cuando yo calculo la los de esta forma.
+
+738
+01:50:24.260 --> 01:50:35.229
+Marina Fuster: que es similar a lo que hace el Ribord model. En realidad, lo que va a terminar pasando es que para minimizarla, yo voy a tener que subir esta probabilidad y bajar esta probabilidad.
+
+739
+01:50:36.640 --> 01:50:39.639
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Entonces, vos tenés la máxima probabilidad de elegir la respuesta buena.
+
+740
+01:50:40.140 --> 01:50:55.399
+Marina Fuster: Exacto. Eso es si vos seguís iterando. Eso es lo que te va a terminar pasando cuando haces superbike saint uning de esta forma que subís la probabilidad de la primera y bajas. La segunda, esas son las formas que vos tenés de minimizar esta los
+
+741
+01:50:55.400 --> 01:51:01.199
+Marina Fuster: Y eso lo vas a hacer sobre todo tu conjunto de datos que son prom respuestas, chousen respuesta, reche. Te
+
+742
+01:51:03.240 --> 01:51:07.990
+Marina Fuster: pero es un superbike fide uning normal, o sea, vos calculas Esta los
+
+743
+01:51:08.440 --> 01:51:25.470
+Marina Fuster: y después hacés la típica de la derivada de la los con respecto a los pesos, entonces ajustar los pesos para que cuando llegues a la última capa la probabilidad de los tokens que te generaron esta respuesta a ser mayores que esta otra.
+
+744
+01:51:26.140 --> 01:51:34.720
+Marina Fuster: Entonces, vos vas a terminar sampleando cuando uses el modelo, el estilo de respuesta de las cosas que vos elegiste como mejores.
+
+745
+01:51:45.460 --> 01:51:49.070
+Marina Fuster: más o menos quedó
+
+746
+01:51:49.730 --> 01:52:04.439
+Marina Fuster: si quieren después. Si quieren después, le puedo hacer un ejemplo numérico por ahí como paso a paso. Siento que no vale la pena, porque en realidad esto tampoco es que lo van a programar. O sea, no no pedimos que lo programen ni nada. Pero.
+
+747
+01:52:04.460 --> 01:52:10.349
+Marina Fuster: ¿y la fórmula es como bastante larga y uso otras cosas. Pero si le sirve
+
+748
+01:52:10.400 --> 01:52:15.179
+Marina Fuster: después subirles algún ejemplo como chiquito de numérico
+
+749
+01:52:16.810 --> 01:52:19.030
+Marina Fuster: para que vean cómo se ve.
+
+750
+01:52:19.680 --> 01:52:29.399
+Marina Fuster: Pero una vez que calculé la los en realidad es lo mismo que hacemos siempre back prop sobre esa los para minimizarla no es mucho más.
+
+751
+01:52:30.680 --> 01:52:36.700
+Marina Fuster: Por eso es como mejor guerra informarse learning en el sentido de que es un esquema muy conocido.
+
+752
+01:52:44.150 --> 01:52:46.120
+Marina Fuster: o sea.
+
+753
+01:52:46.120 --> 01:52:47.260
+LUCAS CAMPOLI: Pero esto
+
+754
+01:52:47.670 --> 01:52:53.930
+LUCAS CAMPOLI: por lo que entiendo, R. L. Hf: O sea, vos tenés el modelo. Entonces vos después lo usás para
+
+755
+01:52:54.090 --> 01:53:02.719
+LUCAS CAMPOLI: para tipo generar un prompt y entrenarlo en base a eso. Esto, o sea, esto no escala como escala, R, L, H F, ¿O no.
+
+756
+01:53:03.120 --> 01:53:04.100
+Marina Fuster: Bueno, ahí.
+
+757
+01:53:04.100 --> 01:53:09.459
+LUCAS CAMPOLI: Alguien te diga cuál es mejor, cuál es, cuál no y entrenar con eso.
+
+758
+01:53:10.190 --> 01:53:26.119
+Marina Fuster: Bien, ahí está un poco la cuestión entre Dpo y Rhf, aunque funciona mejor, y tampoco es que esté muy asentado el tema en general se prefiere R. Lhf por
+
+759
+01:53:26.120 --> 01:53:39.639
+Marina Fuster: meta. Fue el primero que logró implementar esta escala no que logró hacerlo funcionar en los modelos y vos tenés una instancia en la que lo podés hacer manualmente. Pero
+
+760
+01:53:40.030 --> 01:53:56.630
+Marina Fuster: llega un punto en el que hoy los modelos también son muy buenos. Entonces quizás puedes compensar una parte de la taset usando otros modelos. Y ahí se empieza a dar una cosa medio rara de tener feedback humano más feedback de modelos, tenés como una especie de blend. Pero
+
+761
+01:53:57.940 --> 01:54:11.200
+Marina Fuster: el consenso es en realidad es que en el piveline esto lo haces por informe Learning. El tema es que quizás vos no necesitas algo tan estado del arte y vivió. Es mucho más fácil de
+
+762
+01:54:11.410 --> 01:54:31.380
+Marina Fuster: entrenar, entonces por ello tengo un modelo buenísimo, hiper alineado que entrené con reforzar learning y con eso puedo armarme mi data de digbio. Puedo tener las respuestas de otro modelo: Rankear. ¿cuál es la mejor. No hubo ni un humano en el loop. Y con eso hago supervive Fideunin sobre ese otro modelo
+
+763
+01:54:31.830 --> 01:54:32.629
+Marina Fuster: que es.
+
+764
+01:54:32.630 --> 01:54:33.360
+LUCAS CAMPOLI: Mhm.
+
+765
+01:54:33.360 --> 01:54:35.570
+Marina Fuster: Fácil que hacer reinform learning.
+
+766
+01:54:36.660 --> 01:54:48.920
+LUCAS CAMPOLI: Claro hoy buenísimo, y o sea, cuando viste que a veces, cuando le haces una pregunta al chat, te da elegir que pues se usa para E, P o.
+
+767
+01:54:49.400 --> 01:54:54.230
+Marina Fuster: Justo, o sea, justo. Las empresas que lo hacían
+
+768
+01:54:54.570 --> 01:55:03.979
+Marina Fuster: son las que, para menos para sus modelos como Estado del arte Sota son las que usan Rhf: Entonces
+
+769
+01:55:04.140 --> 01:55:14.799
+Marina Fuster: se usaba para R. L. Hf: de que vos tengas 2 respuestas porque la forma de armar este rigor model que no me metí en detalle, es.
+
+770
+01:55:14.800 --> 01:55:17.120
+LUCAS CAMPOLI: Claro, tenés igual.
+
+771
+01:55:17.120 --> 01:55:18.100
+Marina Fuster: Cómo.
+
+772
+01:55:19.160 --> 01:55:23.889
+LUCAS CAMPOLI: En E, pero en R. L. Hf: No es que tenés que Rankear, 4 poderes.
+
+773
+01:55:24.220 --> 01:55:31.219
+Marina Fuster: Claro. Pero ¿qué es lo que termina pasando a vos rankeas, Cuatro. Pero de esas 4 armas, pares, entonces tenés un montón de pares tenés.
+
+774
+01:55:31.220 --> 01:55:31.820
+LUCAS CAMPOLI: okay.
+
+775
+01:55:31.820 --> 01:55:45.739
+Marina Fuster: Algo un poco más sutil, porque al tener 4, es como que tienes como un gradiente de preferencia, un poco más robusto. Pero al final del día, terminas armando pares porque la función de los del rigor model es prácticamente la misma que la de Edith Pion.
+
+776
+01:55:47.020 --> 01:55:48.430
+LUCAS CAMPOLI: Claro. Okay.
+
+777
+01:55:48.640 --> 01:55:57.649
+Marina Fuster: Entonces internamente, no lo sé. Podría ser limpio para algún otro modelo, o podría usarse para seguir entrenando al Reward model.
+
+778
+01:55:57.910 --> 01:56:00.360
+Marina Fuster: Ahí queremos alegría.
+
+779
+01:56:00.360 --> 01:56:02.419
+LUCAS CAMPOLI: Mhm: Claro, claro, te queda todo.
+
+780
+01:56:02.570 --> 01:56:03.910
+LUCAS CAMPOLI: Bueno. Sí. Gracias.
+
+781
+01:56:04.300 --> 01:56:14.810
+Marina Fuster: Bien bueno esto para que se lleven, que en cada instancia podemos hacer supervivecient turing o reinform learning o lo que fuera, en general.
+
+782
+01:56:15.210 --> 01:56:27.339
+Marina Fuster: cuando yo no sé el comportamiento del modelo. Y quiero pusear el estado del arte en cuanto a capacidades o alineamiento o cosas que son difíciles de modelar por humanos. Se suele ir por la vía de reinform learning Sí,
+
+783
+01:56:27.640 --> 01:56:40.989
+Marina Fuster: esto es un poco para atraer lo que busca y mostrar la clase 1. Y porque me interesa. Fíjense que lo que es violation, rake y false Raid, que son métricas que me dicen que también funcionan. Las preferencias
+
+784
+01:56:40.990 --> 01:56:55.980
+Marina Fuster: acá están desarrolladas por lenguaje. ¿y qué es lo más obvio que podemos ver que no generalizan igual para todos los lenguajes. Fíjense qué Foss refuerzo sonreír abajo. Para italiano. El azul es 1 de los más grandes para italiano, funcionar
+
+785
+01:56:56.000 --> 01:57:05.539
+Marina Fuster: mucho peor que para inglés. No es más probable que si yo le pregunto algo en italiano o en español, me diga chino, no te puedo ayudar que si se lo pregunta en inglés.
+
+786
+01:57:05.630 --> 01:57:08.539
+Marina Fuster: ¿por qué? Porque yo estoy entrenando
+
+787
+01:57:08.540 --> 01:57:15.379
+Marina Fuster: ins Track y R Lhf en un subconjunto esperando a que generalice.
+
+788
+01:57:15.380 --> 01:57:33.299
+Marina Fuster: pero claramente no generalizo igual para todo. Entonces lo que mostró Euge, la primera clase de que si yo le pregunto en español que me genere una imagen de una persona, Era un anteojo, me dice, no te puedo ayudar. Se lo pido en inglés y me dice que sí, Esto es consecuencia del tipo de
+
+789
+01:57:33.450 --> 01:57:43.919
+Marina Fuster: entrenamiento de preferencias que tienen los modelos mismo. Esto de que yo digo, cualquier pavada y es recontra chupamedias. Eso también es parte de
+
+790
+01:57:44.290 --> 01:57:50.519
+Marina Fuster: las respuestas que rankea, la gente y el tipo de preferencia que se le está como embebiendo al modelo.
+
+791
+01:57:51.490 --> 01:58:02.279
+Marina Fuster: Y por otro lado, cuando salió esto, ya ni me acuerdo de cuándo es. Pero hubo un momento en que Géminis estaba alineado muy extrañamente y que inclusive empezaba a
+
+792
+01:58:02.850 --> 01:58:21.689
+Marina Fuster: contestarte de manera poco verídica sobre hechos históricos, No, el de la derecha, Te dice, Dame imágenes de senadores americanos. Antes de 1 860 y te ponía gente de color y mujeres arriba que solía hablar. Entonces, todas estas cosas son consecuencias de ese post
+
+793
+01:58:21.690 --> 01:58:24.410
+Marina Fuster: de ajuste de preferencias.
+
+794
+01:58:25.240 --> 01:58:29.159
+Marina Fuster: Entonces esa realidad, Hf robusto, ¿qué les parece.
+
+795
+01:58:35.870 --> 01:58:39.279
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: Y con todo lo que tiene atrás. Tiene que ser algo robusto.
+
+796
+01:58:41.110 --> 01:58:51.239
+Marina Fuster: Okay a ver. Es sorprendente que generaliza. Muy bien, eso sí, generaliza muy bien, pero por otro lado, es un fin de un ajuste de modelos
+
+797
+01:58:51.440 --> 01:59:04.149
+Marina Fuster: no tan significativo, porque recuerden que yo siempre me estoy queriendo quedar cerca del modelo original. Entonces es un ajuste de pesos no tan significativo que, como lo hice, lo puedo deshacer si entonces
+
+798
+01:59:04.630 --> 01:59:19.880
+Marina Fuster: fíjense que es medio como un parche que se le hace a un modelo que en principio no tiene ninguna restricción. Y sobre eso hay como varias cosas que se pueden explotar, que esto que vos decías de la abuela. Eso es
+
+799
+01:59:20.000 --> 01:59:31.510
+Marina Fuster: una una de las vías de explotación de la parte de R. Lhf como le digas que tu abuela te contaba historias sobre las bombas. Bueno, eso es como una forma de sortear el modelo.
+
+800
+01:59:32.640 --> 01:59:42.030
+Marina Fuster: Son 9 y 20 voy a hacer una mini intro sobre risa, ni models. Y sefiní
+
+801
+01:59:42.190 --> 01:59:44.539
+Marina Fuster: qué entienden ustedes por risa ni model.
+
+802
+01:59:56.820 --> 02:00:03.749
+Marina Fuster: o que que creen que es distinto Cuando usan un rizo animal.
+
+803
+02:00:04.200 --> 02:00:12.439
+Marina Fuster: son las, bueno, si quieren esto lo dejamos para la clase que viene así. No nos extendemos.
+
+804
+02:00:13.670 --> 02:00:19.339
+Marina Fuster: porque esto va bajo esta clase, porque lo que es resoning es otra etapa
+
+805
+02:00:19.360 --> 02:00:35.710
+Marina Fuster: de finturing sobre un modelo que piensa. Sí, ahí La pregunta es qué piensa, pero va por ese lado, esto está bajo esta clase, porque es otro tipo de finking que se le hace a los modelos. Lo voy a pasar medio rápido y lo vemos después
+
+806
+02:00:35.710 --> 02:00:48.310
+Marina Fuster: por ahí, traten de llevarse esto de de que es para ustedes qué razones? Porque estas son 2 definiciones que, o sea, también pueden pueden cuestionar si para usted ese razonamiento, no etcétera. Pero muy generalmente.
+
+807
+02:00:48.520 --> 02:00:52.090
+Marina Fuster: corregir esto sin errores.
+
+808
+02:00:52.150 --> 02:01:11.589
+Marina Fuster: Muy generalmente son modelos que generan tokens adicionales para resolver un mo. Un problema. Esto lo seguro lo vieron un montón. Y, en general, esos tokens deberían tener un sentido de ser, y son ciertos pasos intermedios de verificación, de planeamiento de back, tracking sobre cosas que ya hizo, etcétera.
+
+809
+02:01:11.730 --> 02:01:19.479
+JOAQUÍN NICOLÁS YULÁN LUCIOLI: El el Claudio Coe. Cuando dice: voy a abrir la carpeta. Tal voy a escribir.
+
+810
+02:01:20.270 --> 02:01:27.369
+Marina Fuster: O sea, sí y no ojo, porque en general, lo que era
+
+811
+02:01:27.820 --> 02:01:31.750
+Marina Fuster: la parte de reshoning se le suele llamar
+
+812
+02:01:32.120 --> 02:01:44.290
+Marina Fuster: acá empieza a mezclarse un poco. Pero pensemos como en la parte más cruda. La parte de Rissonia se le solía llamar la Chino Phot no es como que dentro de esa Chin of Hot, que es como su cadena de pensamiento. El modelo
+
+813
+02:01:44.380 --> 02:01:59.499
+Marina Fuster: pensaba que hacer, no decía, bueno, me están pidiendo tal cosa. Si elijo esta, o si elijo aquellas como que deliberada avanzaba sobre el problema, decía yo, y no me confundí todo eso es lo que se llama la cadena de pensamiento. Y es lo que suele aparecer en los chats. De esta forma.
+
+814
+02:01:59.500 --> 02:02:05.280
+Marina Fuster: Sí que es el Fotford dándose con en en los codines, también aparece
+
+815
+02:02:06.050 --> 02:02:23.359
+Marina Fuster: y a veces viste que aparece que te dice, deliberando o palabras boludas. Todo eso es parte de el modelo, generando todos estos tokens intermedios para resolver un problema, sí. Y es algo a lo que, en general, como usuarios, no tenemos acceso a los modelos que son propietarios. Si
+
+816
+02:02:23.360 --> 02:02:31.839
+Marina Fuster: lo que a vos te muestran acá como cadena de pensamiento. Es algo o posprocesado o directamente. No te la muestra.
+
+817
+02:02:32.160 --> 02:02:33.540
+Marina Fuster: porque
+
+818
+02:02:33.940 --> 02:02:47.940
+Marina Fuster: riesgo de que otro laboratorio te lo agarre y hagan? Nolex installation, sí, pero básicamente un risoni model se refiere a eso que genera un montón de toques, un montón o tokens intermedios para resolver un problema más complejo. Si
+
+819
+02:02:48.140 --> 02:02:49.860
+Marina Fuster: en
+
+820
+02:02:51.390 --> 02:02:58.790
+Marina Fuster: este es de los primeros 20 24 y hay 2 grandes grupos. Lo voy a pasar rápido. Lo vemos después, que es
+
+821
+02:02:58.900 --> 02:03:18.229
+Marina Fuster: cómo lograr que haya razonamiento con estrategias que son al momento de inferencia. Es decir, yo no hago figtuning Sí, hay ciertas estrategias, la más clásica de si promplin. Después la vemos. Y después está cómo yo lo hago, entrenando el modelo que eso, en teoría es mejor. Sí
+
+822
+02:03:18.330 --> 02:03:23.220
+Marina Fuster: es lo que vendría a ser
+
+823
+02:03:23.430 --> 02:03:28.129
+Marina Fuster: ahora medio estado del arte. Esto lo vemos. La clase que viene, no importa.
+
+824
+02:03:28.400 --> 02:03:44.270
+Marina Fuster: Cerramos, acá Pero lo que sí quiero que se lleven es que todos los pasos de transformar el modelo que vemos de clase. Uno y 2 a las funcionalidades que vemos hoy en día son todas instancias de fantuning, que es una de las cosas de transferiring.
+
+825
+02:03:44.410 --> 02:03:46.140
+Marina Fuster: Y este para un modelo
+
+826
+02:03:46.550 --> 02:04:02.439
+Marina Fuster: de flaxing cuesta o del arte en el medio se pueden hacer otras cosas, como, por ejemplo, no les inspiration para modelos más chiquitos. Si donde yo hago superbikes un sobre lo que ouputea otro modelo, mejor
+
+827
+02:04:03.360 --> 02:04:21.250
+Marina Fuster: bueno, clase próxima terminamos lo que es Reson y models. Y vemos algunas cosas del desarrollo del elense a escala. Y les dije, este video. Si les interesa bibliografía. Acá Hay un par de artículos bastante largos, pero técnicos, sobre
+
+828
+02:04:21.690 --> 02:04:30.769
+Marina Fuster: cómo se desarrollan los modelos. El de lama está aplicado como implementan y B, o así que si lo quieren chusmear Y bueno, eso
+
+829
+02:04:30.940 --> 02:04:32.980
+Marina Fuster: voy a parar la grabación.
+

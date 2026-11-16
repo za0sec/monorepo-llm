@@ -625,3 +625,9 @@ Se comprobó con respuestas simuladas que el modo básico usa una sola consulta,
 El corpus de VTT de I4 se conserva como referencia. La colección ampliada suma tres apuntes de Transformers y tiene 638 chunks: 623 VTT y 15 PDF. Se verificaron los IDs y los localizadores del PDF al reabrir Chroma. La comparación de recuperación queda pendiente. [Configuración y carga](../roadmap_ejercicio4.md#carga-de-los-tres-apuntes)
 
 El primer piloto del ejercicio 4 comparó el corpus base contra el corpus con los tres apuntes usando el [Caso 02 de Transformers](../ejercicio4/evaluacion/caso_02_transformers.md). Se reutilizó el VTT de Whisper de 219 segmentos y se fijó `k=7`. Con apuntes, Context Recall@7 pasó de 0/3 a 1/3 y Context Precision@7 quedó en 14,3 %. Se reutilizó la consulta a Chroma con soporte de metadatos PDF y se agregó el localizador por página al informe. El siguiente contraste previsto es `k=7` frente a `k=10` en la colección mixta. [Resultados y auditoría](../ejercicio4/evaluacion/resultado_caso_02_apuntes.md)
+
+Para el ejercicio 4 se prepararon dos apuntes de ejemplo de una página, de Embeddings y Fine-tuning. Se verificó la extracción de texto con `pypdf`. [Inventario de apuntes](../roadmap_ejercicio4.md#1-seleccionar-las-fuentes)
+
+Se seleccionaron 105 diapositivas de cinco clases previas a RAG. El corpus final del ejercicio 4 reunirá los VTT acordados, los cinco apuntes y los cinco PDF de diapositivas, con procedencia por página. Se compararán valores de `k` después de cargar ese corpus. [Plan actualizado](../roadmap_ejercicio4.md) · [Manifiesto de diapositivas](../ejercicio4/slides/manifiesto.json)
+
+Se reunieron los seis VTT docentes en `ejercicio4/transcripciones/`. Cada copia coincide byte a byte con su original y pasa el lector VTT. La tabla distingue los tres ya indexados en I4 de los tres pendientes. [Inventario de transcripciones](../roadmap_ejercicio4.md#transcripciones-docentes)

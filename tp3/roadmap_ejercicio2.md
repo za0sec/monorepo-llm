@@ -83,7 +83,7 @@ Por cada contraste guardar una ficha Markdown y resultados por caso en CSV o JSO
 
 **Integración verificada.** El flujo de objetivo y audio a informe Markdown usa G4 como modo avanzado y conserva G2 como modo básico. Se probó desde el MP3 del Caso 01. La validación con otros objetivos queda para el ejercicio 4. [Comando y artefactos](ejercicio2/README.md)
 
-El primer piloto del ejercicio 4 incorporó tres apuntes y completó la comparación del [Caso 02 de Transformers](ejercicio4/evaluacion/resultado_caso_02_apuntes.md). Sigue completar la colección con los seis VTT, cinco apuntes y cinco selecciones de diapositivas, y comparar valores de `k` sobre ese corpus. [Plan del ejercicio 4](roadmap_ejercicio4.md)
+El primer piloto del ejercicio 4 incorporó tres apuntes y completó la comparación del [Caso 02 de Transformers](ejercicio4/evaluacion/resultado_caso_02_apuntes.md). Los seis VTT y los cinco apuntes ya están en `openai_e4_texto`. Queda definir cómo incorporar las imágenes de las diapositivas antes de comparar valores de `k` sobre el corpus final. [Plan del ejercicio 4](roadmap_ejercicio4.md)
 
 [ej1]: ejercicio1/Grupo03-ej1-TP3.md
 [archivo]: recorrido_experimental.md

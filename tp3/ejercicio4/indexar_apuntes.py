@@ -1,4 +1,4 @@
-"""Carga apuntes PDF en una colección mixta con los VTT congelados de I4."""
+"""Carga apuntes PDF y VTT en una colección que reutiliza el índice de I4."""
 
 import argparse
 from hashlib import sha256
@@ -14,8 +14,10 @@ from pypdf import PdfReader
 from transformers import AutoTokenizer
 
 from comparar_embeddings import MODELO_OPENAI, obtener_vectores
-from comparar_splitters import MINILM_LOCAL, SEPARADORES, TAMANO, ubicar_fragmentos
-from preparar_transcripcion import REPO
+from comparar_splitters import (
+    MINILM_LOCAL, SEPARADORES, TAMANO, crear_chunks, ubicar_fragmentos, unir_segmentos,
+)
+from preparar_transcripcion import REPO, leer_vtt
 from recuperar_g2 import cliente_openai
 
 
@@ -27,11 +29,7 @@ SOLAPAMIENTO = 10
 TOLERANCIA_VECTOR = 1e-7
 
 
-def preparar_pdf(ruta):
-    contenido = ruta.read_bytes()
-    lector = PdfReader(BytesIO(contenido))
-    huella = sha256(contenido).hexdigest()
-    fuente = str(ruta.relative_to(REPO)) if ruta.is_relative_to(REPO) else str(ruta)
+def crear_splitter():
     tokenizer = AutoTokenizer.from_pretrained(str(MINILM_LOCAL), local_files_only=True)
 
     def contar(texto):
@@ -41,6 +39,15 @@ def preparar_pdf(ruta):
         separators=SEPARADORES, length_function=contar, chunk_size=TAMANO,
         chunk_overlap=SOLAPAMIENTO, keep_separator="end", strip_whitespace=False,
     )
+    return splitter, contar
+
+
+def preparar_pdf(ruta):
+    contenido = ruta.read_bytes()
+    lector = PdfReader(BytesIO(contenido))
+    huella = sha256(contenido).hexdigest()
+    fuente = str(ruta.relative_to(REPO)) if ruta.is_relative_to(REPO) else str(ruta)
+    splitter, contar = crear_splitter()
     chunks = []
     paginas = []
     for numero, pagina in enumerate(lector.pages, 1):
@@ -66,6 +73,26 @@ def preparar_pdf(ruta):
     return chunks, {"fuente": fuente, "sha256": huella, "paginas": paginas}
 
 
+def preparar_vtt(ruta, splitter, contar):
+    contenido = ruta.read_bytes()
+    huella = sha256(contenido).hexdigest()
+    fuente = str(ruta.relative_to(REPO)) if ruta.is_relative_to(REPO) else str(ruta)
+    segmentos = leer_vtt(ruta, contenido)
+    texto, tramos = unir_segmentos(segmentos)
+    chunks = crear_chunks(
+        splitter.split_text(texto), texto, tramos, contar, TAMANO, fuente, 1, SOLAPAMIENTO,
+    )
+    for numero, chunk in enumerate(chunks, 1):
+        chunk["id"] = f"vtt-{huella[:16]}-{numero}"
+        chunk["metadata"] = {
+            "fuente": fuente, "tipo_fuente": "transcripcion",
+            "inicio": chunk["inicio"], "fin": chunk["fin"], "bloques": ",".join(chunk["bloques"]),
+        }
+    return chunks, {
+        "fuente": fuente, "sha256": huella, "segmentos": len(segmentos), "chunks": len(chunks),
+    }
+
+
 def registros(coleccion):
     datos = coleccion.get(include=["documents", "metadatas", "embeddings"])
     return dict(zip(datos["ids"], zip(datos["documents"], datos["metadatas"], datos["embeddings"])))
@@ -88,7 +115,7 @@ def cargar_vtt(coleccion, base):
 
 def cargar_apuntes_previos(cliente, ruta, huella_i4, uso_i4):
     previo = json.loads(ruta.read_bytes())
-    uso_previo = previo["uso_embeddings_pdf"]
+    uso_previo = previo.get("uso_embeddings_nuevos") or previo["uso_embeddings_pdf"]
     campos = ("modelo_respuesta", "dimensiones")
     if previo["sha256_ranking_i4"] != huella_i4 or any(uso_previo[c] != uso_i4[c] for c in campos):
         raise ValueError("El manifiesto previo debe usar la misma baseline y los mismos embeddings.")
@@ -96,20 +123,31 @@ def cargar_apuntes_previos(cliente, ruta, huella_i4, uso_i4):
     if coleccion.configuration["hnsw"]["space"] != previo["distancia"]:
         raise ValueError("La distancia de la colección previa difiere de su manifiesto.")
     chunks = previo["chunks_pdf"]
+    guardados = verificar_chunks_previos(coleccion, chunks, uso_i4["dimensiones"])
+    pdfs = previo["pdfs"] if "pdfs" in previo else [previo["pdf"]]
+    verificar_fuentes_previas(pdfs)
+    return previo["coleccion"], pdfs, chunks, guardados
+
+
+def verificar_chunks_previos(coleccion, chunks, dimension):
+    if not chunks:
+        return {}
     ids = [chunk["id"] for chunk in chunks]
     datos = coleccion.get(ids=ids, include=["documents", "metadatas", "embeddings"])
     guardados = dict(zip(datos["ids"], zip(datos["documents"], datos["metadatas"], datos["embeddings"])))
     if set(ids) != guardados.keys() or len(ids) != len(guardados):
-        raise ValueError("Los IDs del apunte previo no coinciden con Chroma.")
+        raise ValueError("Los IDs de la carga previa no coinciden con Chroma.")
     for chunk in chunks:
         texto, metadata, vector = guardados[chunk["id"]]
-        if (texto, metadata) != (chunk["texto"], chunk["metadata"]) or len(vector) != uso_i4["dimensiones"]:
+        if (texto, metadata) != (chunk["texto"], chunk["metadata"]) or len(vector) != dimension:
             raise ValueError(f"El chunk previo {chunk['id']} no coincide con su manifiesto.")
-    pdfs = previo["pdfs"] if "pdfs" in previo else [previo["pdf"]]
-    for pdf in pdfs:
-        if sha256((REPO / pdf["fuente"]).read_bytes()).hexdigest() != pdf["sha256"]:
-            raise ValueError(f"El PDF previo {pdf['fuente']} cambió desde su carga.")
-    return previo["coleccion"], pdfs, chunks, {id_: guardados[id_] for id_ in ids}
+    return {id_: guardados[id_] for id_ in ids}
+
+
+def verificar_fuentes_previas(fuentes):
+    for fuente in fuentes:
+        if sha256((REPO / fuente["fuente"]).read_bytes()).hexdigest() != fuente["sha256"]:
+            raise ValueError(f"La fuente {fuente['fuente']} cambió desde su carga.")
 
 
 def escribir_coleccion(cliente, nombre, distancia, esperados, destino, manifiesto):
@@ -155,13 +193,14 @@ def escribir_coleccion(cliente, nombre, distancia, esperados, destino, manifiest
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--pdf", type=Path, action="append", help="PDF nuevo. Se puede indicar varias veces.")
-    parser.add_argument("--desde-manifiesto", type=Path, help="Carga anterior cuyos apuntes se reutilizan.")
+    parser.add_argument("--vtt", type=Path, action="append", help="VTT nuevo. Se puede indicar varias veces.")
+    parser.add_argument("--desde-manifiesto", type=Path, help="Carga anterior cuyos PDF y VTT se reutilizan.")
     parser.add_argument("--indice", type=Path, default=INDICE_I4)
     parser.add_argument("--coleccion", default="openai_e4_apuntes")
     parser.add_argument("--salida", type=Path, default=CARPETA / "data/carga_apuntes.json")
     args = parser.parse_args()
-    if args.desde_manifiesto and not args.pdf:
-        parser.error("Indicá al menos un PDF nuevo con --pdf.")
+    if args.desde_manifiesto and not (args.pdf or args.vtt):
+        parser.error("Indicá al menos una fuente nueva con --pdf o --vtt.")
     if args.salida.exists():
         parser.error("--salida debe apuntar a un archivo nuevo.")
     ruta_chroma = args.indice / "chroma"
@@ -181,30 +220,58 @@ def main():
 
     vtt = cargar_vtt(original, base)
     coleccion_previa, pdfs, chunks, apuntes = None, [], [], {}
+    fuentes_vtt, chunks_vtt = [], []
     if args.desde_manifiesto:
         coleccion_previa, pdfs, chunks, apuntes = cargar_apuntes_previos(
             cliente, args.desde_manifiesto, huella_i4, base["uso_openai"],
         )
+        anterior = json.loads(args.desde_manifiesto.read_bytes())
+        fuentes_vtt = anterior.get("vtts_adicionales", [])
+        chunks_vtt = anterior.get("chunks_vtt_adicionales", [])
+        verificar_fuentes_previas(fuentes_vtt)
+        vtt_adicionales = verificar_chunks_previos(
+            cliente.get_collection(coleccion_previa, embedding_function=None), chunks_vtt,
+            base["uso_openai"]["dimensiones"],
+        )
+        if set(vtt_adicionales) & (vtt.keys() | apuntes.keys()):
+            parser.error("La carga previa repite IDs de VTT.")
+        vtt.update(vtt_adicionales)
     ids = set(vtt) | apuntes.keys()
-    huellas = {pdf["sha256"] for pdf in pdfs}
-    nuevos = []
-    for ruta in args.pdf or [PDF_PILOTO]:
+    huellas = {fuente["sha256"] for fuente in pdfs + fuentes_vtt}
+    huellas.update(fuente["sha256_fuente"] for fuente in base["fuentes"].values())
+    pdfs_nuevos, vtts_nuevos = [], []
+    rutas_pdf = args.pdf or ([] if args.vtt else [PDF_PILOTO])
+    for ruta in rutas_pdf:
         paginas, pdf = preparar_pdf(ruta.resolve())
         ids_pdf = {chunk["id"] for chunk in paginas}
         if pdf["sha256"] in huellas or ids & ids_pdf:
             parser.error(f"El PDF {pdf['fuente']} ya está incluido o repite IDs.")
         pdfs.append(pdf)
-        nuevos.extend(paginas)
+        pdfs_nuevos.extend(paginas)
         ids.update(ids_pdf)
         huellas.add(pdf["sha256"])
+    if args.vtt:
+        splitter, contar = crear_splitter()
+        for ruta in args.vtt:
+            fragmentos, fuente = preparar_vtt(ruta.resolve(), splitter, contar)
+            ids_vtt = {chunk["id"] for chunk in fragmentos}
+            if fuente["sha256"] in huellas or ids & ids_vtt:
+                parser.error(f"El VTT {fuente['fuente']} ya está incluido o repite IDs.")
+            fuentes_vtt.append(fuente)
+            vtts_nuevos.extend(fragmentos)
+            ids.update(ids_vtt)
+            huellas.add(fuente["sha256"])
 
+    nuevos = pdfs_nuevos + vtts_nuevos
     vectores, uso = obtener_vectores(cliente_openai(), MODELO_OPENAI, [c["texto"] for c in nuevos])
     if len(vectores) != len(nuevos) or any(uso[c] != base["uso_openai"][c] for c in ("modelo_respuesta", "dimensiones")):
-        parser.error("Los embeddings del PDF deben coincidir con I4 en modelo y dimensión.")
-    apuntes.update({
+        parser.error("Los embeddings nuevos deben coincidir con I4 en modelo y dimensión.")
+    registros_nuevos = {
         c["id"]: (c["texto"], c["metadata"], np.asarray(vector, dtype=np.float32))
         for c, vector in zip(nuevos, vectores)
-    })
+    }
+    apuntes.update({c["id"]: registros_nuevos[c["id"]] for c in pdfs_nuevos})
+    vtt.update({c["id"]: registros_nuevos[c["id"]] for c in vtts_nuevos})
     manifiesto = {
         "coleccion": args.coleccion,
         "coleccion_vtt": COLECCION_I4,
@@ -213,9 +280,16 @@ def main():
         "splitter": {"tamano": TAMANO, "solapamiento": SOLAPAMIENTO, "revision_tokenizer": MINILM_LOCAL.name},
         "pdfs": pdfs,
         "conteo": {"vtt": len(vtt), "pdf": len(apuntes), "total": len(vtt) + len(apuntes)},
-        "uso_embeddings_pdf": uso,
-        "chunks_pdf": chunks + nuevos,
+        "chunks_pdf": chunks + pdfs_nuevos,
     }
+    if fuentes_vtt:
+        manifiesto.update({
+            "vtts_adicionales": fuentes_vtt,
+            "chunks_vtt_adicionales": chunks_vtt + vtts_nuevos,
+            "uso_embeddings_nuevos": uso,
+        })
+    else:
+        manifiesto["uso_embeddings_pdf"] = uso
     if len(pdfs) == 1:
         manifiesto["pdf"] = pdfs[0]
     if coleccion_previa:

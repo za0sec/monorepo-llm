@@ -631,3 +631,5 @@ Para el ejercicio 4 se prepararon dos apuntes de ejemplo de una página, de Embe
 Se seleccionaron 105 diapositivas de cinco clases previas a RAG. El corpus final del ejercicio 4 reunirá los VTT acordados, los cinco apuntes y los cinco PDF de diapositivas, con procedencia por página. Se compararán valores de `k` después de cargar ese corpus. [Plan actualizado](../roadmap_ejercicio4.md) · [Manifiesto de diapositivas](../ejercicio4/slides/manifiesto.json)
 
 Se reunieron los seis VTT docentes en `ejercicio4/transcripciones/`. Cada copia coincide byte a byte con su original y pasa el lector VTT. La tabla distingue los tres ya indexados en I4 de los tres pendientes. [Inventario de transcripciones](../roadmap_ejercicio4.md#transcripciones-docentes)
+
+Se completó la carga de texto de ejercicio 4 en `openai_e4_texto`. Se reutilizaron 638 chunks y se añadieron 519 de los tres VTT pendientes y 6 de los dos apuntes nuevos. El total es 1.163 chunks. Se verificaron los metadatos y la persistencia al reabrir Chroma. [Configuración y validación](../roadmap_ejercicio4.md#carga-de-los-seis-vtt-y-cinco-apuntes)

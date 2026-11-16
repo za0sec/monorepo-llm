@@ -11,8 +11,8 @@ Completar el corpus académico de las clases previas a RAG con **VTT, apuntes de
 | Apuntes de prueba | [Apuntes de Transformers](ejercicio4/apuntes/apuntes_transformers.pdf), dos páginas elaboradas a partir de la clase. | La página 1 trata atención y la página 2, codificación posicional y máscara causal. |
 | Apunte sobre el encoder | [El bloque del encoder](ejercicio4/apuntes/bloque_del_encoder.pdf), una página. | Autoatención, red feed-forward y Add & Norm. Fuente docente, pp. 22 y 36–37. |
 | Apunte sobre el decodificador | [Del decodificador al próximo token](ejercicio4/apuntes/decodificador_y_prediccion.pdf), una página. | Atención cruzada, logits, softmax y generación autorregresiva. Fuente docente, pp. 22 y 40–44. |
-| Apunte de Embeddings | [Similitud coseno y magnitud](ejercicio4/apuntes/similitud_coseno_y_magnitud.pdf), una página. | Ejemplo numérico de producto escalar y similitud coseno al escalar un vector. Pendiente de indexación. |
-| Apunte de Fine-tuning | [Feature extraction y fine-tuning](ejercicio4/apuntes/feature_extraction_y_fine_tuning.pdf), una página. | La misma tarea de clasificación con encoder congelado o ajustando sus últimas capas. Pendiente de indexación. |
+| Apunte de Embeddings | [Similitud coseno y magnitud](ejercicio4/apuntes/similitud_coseno_y_magnitud.pdf), una página. | Ejemplo numérico de producto escalar y similitud coseno al escalar un vector. Indexado en `openai_e4_texto`. |
+| Apunte de Fine-tuning | [Feature extraction y fine-tuning](ejercicio4/apuntes/feature_extraction_y_fine_tuning.pdf), una página. | La misma tarea de clasificación con encoder congelado o ajustando sus últimas capas. Indexado en `openai_e4_texto`. |
 
 ### PDF originales de las diapositivas
 
@@ -33,9 +33,9 @@ Los seis archivos de `ejercicio4/transcripciones/` son copias idénticas de los 
 | [transformers.VTT](ejercicio4/transcripciones/transformers.VTT) | Transformers | 754 | Indexado en I4 |
 | [embeddings_2.VTT](ejercicio4/transcripciones/embeddings_2.VTT) | Embeddings | 415 | Indexado en I4 |
 | [finetuning.VTT](ejercicio4/transcripciones/finetuning.VTT) | Transfer Learning y Fine-tuning | 829 | Indexado en I4 |
-| [embeddings_1.VTT](ejercicio4/transcripciones/embeddings_1.VTT) | Demo de Embeddings | 398 | Pendiente |
-| [reasoningmodels.VTT](ejercicio4/transcripciones/reasoningmodels.VTT) | Modelos de razonamiento | 543 | Pendiente |
-| [ai_safety.VTT](ejercicio4/transcripciones/ai_safety.VTT) | AI Safety | 620 | Pendiente |
+| [embeddings_1.VTT](ejercicio4/transcripciones/embeddings_1.VTT) | Demo de Embeddings | 398 | Indexado en `openai_e4_texto` |
+| [reasoningmodels.VTT](ejercicio4/transcripciones/reasoningmodels.VTT) | Modelos de razonamiento | 543 | Indexado en `openai_e4_texto` |
+| [ai_safety.VTT](ejercicio4/transcripciones/ai_safety.VTT) | AI Safety | 620 | Indexado en `openai_e4_texto` |
 
 `docs/RAG/` es material de referencia para el desarrollo del TP. `LLMs - Apuntes.pdf` queda fuera de la selección.
 
@@ -80,6 +80,34 @@ PYTHONPATH=tp3/ejercicio2 .venv/bin/python tp3/ejercicio4/indexar_apuntes.py \
   --salida tp3/ejercicio4/data/carga_apuntes_ampliado.json
 ```
 
+### Carga de los seis VTT y cinco apuntes
+
+`openai_e4_texto` contiene **1.163 chunks**, repartidos en 1.142 de seis VTT y 21 de cinco apuntes. La carga reutilizó 638 chunks de la colección con los tres apuntes de Transformers y calculó 525 embeddings nuevos.
+
+| Fuente nueva | Chunks |
+| --- | ---: |
+| `embeddings_1.VTT` | 138 |
+| `reasoningmodels.VTT` | 169 |
+| `ai_safety.VTT` | 212 |
+| `similitud_coseno_y_magnitud.pdf` | 3 |
+| `feature_extraction_y_fine_tuning.pdf` | 3 |
+
+El [indexador](ejercicio4/indexar_apuntes.py) admite `--vtt` y usa el lector de VTT y el splitter recursivo de I4 (160 tokens de MiniLM y 10 de solapamiento). Los VTT nuevos conservan ID de bloque e intervalo y los apuntes conservan el número de página. Se usó `text-embedding-3-small` (1.536 dimensiones, distancia coseno en Chroma). OpenAI reportó 59.797 tokens de entrada en 17 lotes. Al reabrir la colección se verificaron todos los IDs, textos y metadatos, la recuperación de un chunk mediante su vector por cada fuente nueva y la coincidencia de los vectores reutilizados con tolerancia absoluta de `1e-7`. La diferencia máxima observada al guardar fue `1,49e-8`. Las diapositivas quedan para la etapa de imágenes. [Manifiesto de carga](ejercicio4/data/carga_texto.json)
+
+Para repetir con un nombre de colección y un manifiesto nuevos:
+
+```bash
+PYTHONPATH=tp3/ejercicio2 .venv/bin/python tp3/ejercicio4/indexar_apuntes.py \
+  --desde-manifiesto tp3/ejercicio4/data/carga_apuntes_ampliado.json \
+  --vtt tp3/ejercicio4/transcripciones/embeddings_1.VTT \
+  --vtt tp3/ejercicio4/transcripciones/reasoningmodels.VTT \
+  --vtt tp3/ejercicio4/transcripciones/ai_safety.VTT \
+  --pdf tp3/ejercicio4/apuntes/similitud_coseno_y_magnitud.pdf \
+  --pdf tp3/ejercicio4/apuntes/feature_extraction_y_fine_tuning.pdf \
+  --coleccion openai_e4_texto_repeticion \
+  --salida tp3/ejercicio4/data/carga_texto_repeticion.json
+```
+
 ## 3. Comparación controlada
 
 El corpus del ejercicio 4 incluirá los seis VTT, los cinco apuntes y los cinco PDF de diapositivas seleccionadas. El primer contraste previsto sobre ese corpus compara distintos valores de `k`, con `k=7` como referencia. Por objetivo se congela el audio transcripto y se usa el mismo ranking de G4, con la consulta original, sus tres subconsultas, cinco candidatos por consulta, deduplicación y el mismo CrossEncoder. Se mantienen el prompt y el snapshot de GPT‑4.1 de G4, temperatura 0 y hasta 1.000 tokens de salida. Los valores de `k` se eligen después de revisar el ranking del corpus final. [Configuración del ejercicio 2](ejercicio2/README.md)
@@ -98,4 +126,4 @@ Guardar por caso las fuentes y sus hashes, los rankings, los chunks enviados, el
 
 **Primer piloto completado.** El [Caso 02 de Transformers](ejercicio4/evaluacion/caso_02_transformers.md) comparó `openai_i4` con `openai_e4_apuntes_ampliado`, ambos con `k=7`, la misma transcripción y búsqueda sin filtro por fuente. La propuesta inicial sumaba un PDF para medir su aporte individual. La prueba sumó los tres apuntes para medir el efecto del corpus ampliado. Context Recall@7 pasó de 0/3 a 1/3 y Context Precision@7 quedó en 14,3 % en ambas variantes. [Resultados y auditoría](ejercicio4/evaluacion/resultado_caso_02_apuntes.md)
 
-**Siguiente paso.** Cargar las fuentes pendientes en la colección del ejercicio 4 y verificar que el programa recupere y cite VTT, apuntes y diapositivas. En el piloto anterior, la fórmula quedó octava. Con el corpus completo se revisará qué valor de `k` alcanza para llevar la evidencia al informe.
+**Siguiente paso.** Definir la prueba de extracción de imágenes de las diapositivas. Después de decidir cómo indexarlas, verificar que el programa recupere y cite VTT, apuntes y diapositivas, y comparar valores de `k` sobre el corpus final.

@@ -91,6 +91,10 @@ Sobre `openai_e4_completo` se compararon tres cortes del mismo ranking para el C
 
 En el contraste posterior, diez resultados por consulta llevaron la fórmula al top 7. El corte `k=8` acertó cuatro de cinco estados con menos tokens que `k=12`. Sigue validar esa configuración con otro objetivo. [Contraste de búsqueda ampliada](ejercicio4/evaluacion/caso_01_k_completo.md#diez-candidatos-por-consulta)
 
+La validación con el Caso 02 de Transformers dio 2/3 estados correctos con `k=7` y 1/3 con `k=8`. La fórmula de atención quedó duodécima en ese ranking. [Resultados por criterio](ejercicio4/evaluacion/caso_02_k_completo.md)
+
+El próximo contraste del ejercicio 4 usa cuatro objetivos nuevos con VTT de Whisper y criterios manuales redactados antes de ejecutar el RAG. [Casos 03 a 06](ejercicio4/evaluacion/casos_03_06.md)
+
 [ej1]: ejercicio1/Grupo03-ej1-TP3.md
 [archivo]: recorrido_experimental.md
 [bitacora]: ejercicio2/experimentos.md

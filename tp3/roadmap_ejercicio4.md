@@ -124,9 +124,9 @@ Para una colección adicional, indicar otro nombre con `--coleccion` y otro mani
 
 ## 3. Comparación controlada
 
-El corpus del ejercicio 4 incluirá los seis VTT, los cinco apuntes y los cinco PDF de diapositivas seleccionadas. El primer contraste previsto sobre ese corpus compara distintos valores de `k`, con `k=7` como referencia. Por objetivo se congela el audio transcripto y se usa el mismo ranking de G4, con la consulta original, sus tres subconsultas, cinco candidatos por consulta, deduplicación y el mismo CrossEncoder. Se mantienen el prompt y el snapshot de GPT‑4.1 de G4, temperatura 0 y hasta 1.000 tokens de salida. Los valores de `k` se eligen después de revisar el ranking del corpus final. [Configuración del ejercicio 2](ejercicio2/README.md)
+El corpus completo del ejercicio 4 reúne los seis VTT, los cinco apuntes y los cinco PDF de diapositivas seleccionadas. Cada comparación de `k` parte de `k=7` como referencia. Por objetivo se congela el audio transcripto y se usa un solo ranking, obtenido con la consulta original, sus tres subconsultas, deduplicación y el CrossEncoder de G4. El contraste inicial trajo cinco candidatos por consulta y el posterior amplió la búsqueda a diez. Se mantienen el prompt y el snapshot de GPT‑4.1 de G4, temperatura 0 y hasta 1.000 tokens de salida. [Configuración del ejercicio 2](ejercicio2/README.md)
 
-**Casos.** Usar el Caso 01 como control de integración y el Caso 02 como diagnóstico. Sumar otro par de objetivo y video para revisar si el resultado se repite. Para cada caso, registrar el criterio, la evidencia académica y el estado esperado del video antes de ejecutar. Usar los mismos criterios y denominadores para todas las configuraciones de ese caso.
+**Casos.** Usar el Caso 01 como control de integración y el Caso 02 como diagnóstico. Los casos 03 a 06 amplían la evaluación a transfer learning, tokenización, modelos de razonamiento y AI Safety. Ya tienen objetivo, VTT y pauta con evidencia docente y estado esperado del video. Usar los mismos criterios y denominadores para todas las configuraciones de cada caso. [Pautas de los casos 03 a 06](ejercicio4/evaluacion/casos_03_06.md)
 
 ## 4. Evaluación y registro
 
@@ -150,4 +150,6 @@ Guardar por caso las fuentes y sus hashes, los rankings, los chunks enviados, el
 
 **Búsqueda ampliada.** En el Caso 01, traer diez candidatos por consulta elevó los candidatos únicos de 9 a 16 y llevó al primer puesto el apunte que contiene la fórmula del coseno. Con `k=7`, Context Recall subió de 2/5 a 3/5. En el ranking ampliado, `k=8` y `k=12` acertaron cuatro estados, frente a tres con `k=7` y `k=10`. [Resultados por criterio](ejercicio4/evaluacion/caso_01_k_completo.md#diez-candidatos-por-consulta)
 
-**Siguiente paso.** Validar diez candidatos por consulta y los cortes `k=7` y `k=8` con otro objetivo y video.
+**Validación con el Caso 02.** Diez resultados por consulta dejaron 23 candidatos únicos. Los cortes de `k=7` y `k=8` respaldaron por completo 0/3 criterios y acertaron 2/3 y 1/3 estados del video, respectivamente. Q, K y V y la fórmula escalada quedaron en los puestos 10 y 12. [Ranking y auditoría](ejercicio4/evaluacion/caso_02_k_completo.md)
+
+**Siguiente paso.** Comparar `k=7`, `8`, `10` y `12` sobre un solo ranking por objetivo, con el corpus completo, diez candidatos por consulta y el reranker de G4. Usar los casos 01 y 02 para completar los diagnósticos y los casos 03 a 06 para comprobar si los resultados se sostienen en otros temas. Registrar los resultados por caso antes de elegir un valor de `k`.

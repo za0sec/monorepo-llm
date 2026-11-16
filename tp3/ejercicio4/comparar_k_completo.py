@@ -1,4 +1,4 @@
-"""Compara distintos cortes de un solo ranking para el Caso 01."""
+"""Compara distintos cortes de un solo ranking del corpus completo."""
 
 import argparse
 from hashlib import sha256
@@ -7,7 +7,7 @@ from pathlib import Path
 import chromadb
 from chromadb.config import Settings
 
-from comparar_apuntes import VECINOS
+from comparar_apuntes import RUTA_CASO, VECINOS
 from comparar_embeddings import MODELO_OPENAI, obtener_vectores
 from evaluar_video import SNAPSHOT
 from generar_g1 import CARPETA as CARPETA_E2
@@ -21,6 +21,7 @@ from rerankear_g4 import reordenar
 
 CORTES = (7, 8, 10, 12)
 MANIFIESTO = CARPETA / "data/carga_completa.json"
+CONTROL_CASO_02 = CARPETA / "data/experimentos/caso_02_apuntes"
 
 
 def abrir_corpus():
@@ -43,14 +44,18 @@ def abrir_corpus():
     return coleccion, por_id, m
 
 
-def preparar_ranking(salida, caso, coleccion, por_id, m, vecinos_por_consulta, control):
+def preparar_ranking(salida, caso, coleccion, por_id, m, vecinos_por_consulta, control, consultas_previas):
     ruta = salida / "ranking.json"
     huella = sha256(MANIFIESTO.read_bytes()).hexdigest()
     if control and (control["sha256_manifiesto"], control["configuracion"], control["reranker"]["revision"]) != (
         huella, caso, SNAPSHOT.name,
     ):
         raise ValueError("El control corresponde a otro corpus, objetivo o reranker.")
-    expansion_control = control["expansion"] if control else None
+    expansion_control = consultas_previas["expansion"] if consultas_previas else None
+    if control:
+        if expansion_control and expansion_control != control["expansion"]:
+            raise ValueError("La expansión del control difiere de la expansión del caso.")
+        expansion_control = control["expansion"]
     if ruta.exists():
         previo = leer(ruta)
         if (previo["sha256_manifiesto"], previo["configuracion"], previo["reranker"]["revision"]) != (
@@ -60,14 +65,20 @@ def preparar_ranking(salida, caso, coleccion, por_id, m, vecinos_por_consulta, c
         if expansion_control and previo["expansion"] != expansion_control:
             raise ValueError("El ranking guardado usa otra expansión.")
         return previo
-    cliente = cliente_openai(timeout=120)
     ruta_expansion = salida / "expansion.json"
     expansion = expansion_control
     if expansion is None:
-        expansion = leer(ruta_expansion) if ruta_expansion.is_file() else expandir(cliente, caso)
+        expansion = (leer(ruta_expansion) if ruta_expansion.is_file()
+                     else expandir(cliente_openai(timeout=120), caso))
     consultas = consultas_expandidas(caso, expansion)
     guardar_json(ruta_expansion, expansion)
-    vectores, uso = obtener_vectores(cliente, MODELO_OPENAI, consultas)
+    if consultas_previas:
+        datos = consultas_previas["consultas"]
+        if datos["consultas"] != consultas:
+            raise ValueError("Los vectores guardados corresponden a otras consultas.")
+        vectores, uso = datos["vectores"], datos["uso"]
+    else:
+        vectores, uso = obtener_vectores(cliente_openai(timeout=120), MODELO_OPENAI, consultas)
     if any(uso[c] != m["uso_embeddings"][c] for c in ("modelo_respuesta", "dimensiones")):
         raise ValueError("Los embeddings de consulta deben coincidir con el corpus completo.")
     vecinos = consultar_vectores(coleccion, por_id, vectores, vecinos_por_consulta)
@@ -85,27 +96,50 @@ def preparar_ranking(salida, caso, coleccion, por_id, m, vecinos_por_consulta, c
         "rankings": [{"consulta": q, "resultados": r} for q, r in zip(consultas, vecinos)],
         "reranker": auditoria, "orden_final": orden,
     }
+    if consultas_previas:
+        resultado["sha256_consultas_reutilizadas"] = consultas_previas["sha256_consultas"]
     guardar_json(ruta, resultado)
     return resultado
 
 
-def comparar(salida, vecinos_por_consulta, control):
+def cargar_caso(numero, prompt):
+    if numero == "01":
+        config = leer(CARPETA_E2 / "g1/caso.json")
+        return config, REPO / config["video_vtt"], config["segmentos_video_esperados"], None
+    carpeta = CONTROL_CASO_02
+    entrada = leer(carpeta / "openai_e4_apuntes_ampliado/entrada.json")
+    expansion = carpeta / "expansion.json"
+    consultas = carpeta / "consultas.json"
+    vtt = RUTA_CASO / "transcripcion.vtt"
+    for ruta, campo in ((expansion, "sha256_expansion"), (consultas, "sha256_consultas"), (vtt, "sha256_video")):
+        if sha256(ruta.read_bytes()).hexdigest() != entrada[campo]:
+            raise ValueError(f"{ruta.name} cambió desde el control del Caso 02.")
+    if entrada["mensajes"][0]["content"] != prompt:
+        raise ValueError("El prompt difiere del que se usó en el Caso 02.")
+    previas = {
+        "expansion": leer(expansion), "consultas": leer(consultas),
+        "sha256_consultas": entrada["sha256_consultas"],
+    }
+    return entrada["configuracion_experimental"], vtt, 219, previas
+
+
+def comparar(salida, vecinos_por_consulta, control, numero):
     coleccion, por_id, m = abrir_corpus()
-    config = leer(CARPETA_E2 / "g1/caso.json")
+    prompt = (CARPETA_E2 / "g1/prompt.md").read_text(encoding="utf-8").rstrip("\n")
+    config, ruta_vtt, cantidad_segmentos, consultas_previas = cargar_caso(numero, prompt)
     caso = {k: config[k] for k in ("objetivo", "nivel", "gpt41", "max_tokens_salida")}
     caso["coleccion"] = coleccion.name
-    ruta_vtt = REPO / config["video_vtt"]
     vtt = ruta_vtt.read_bytes()
     segmentos = leer_vtt(ruta_vtt, vtt)
-    if len(segmentos) != config["segmentos_video_esperados"]:
-        raise ValueError("El VTT no tiene los segmentos esperados del Caso 01.")
+    if len(segmentos) != cantidad_segmentos:
+        raise ValueError(f"El VTT no tiene los segmentos esperados del Caso {numero}.")
     video = {f"V{i}": segmento for i, segmento in enumerate(segmentos, 1)}
-    prompt = (CARPETA_E2 / "g1/prompt.md").read_text(encoding="utf-8").rstrip("\n")
     salida.mkdir(parents=True, exist_ok=True)
-    ranking = preparar_ranking(salida, caso, coleccion, por_id, m, vecinos_por_consulta, control)
+    ranking = preparar_ranking(salida, caso, coleccion, por_id, m, vecinos_por_consulta, control, consultas_previas)
     orden = ranking["orden_final"]
-    ks = [k for k in CORTES if k <= len(orden)]
-    if len(orden) < max(CORTES) and len(orden) not in ks:
+    cortes = CORTES if numero == "01" else (7, 8)
+    ks = [k for k in cortes if k <= len(orden)]
+    if len(orden) < max(cortes) and len(orden) not in ks:
         ks.append(len(orden))
     print(f"{len(orden)} candidatos únicos. Cortes: {ks}.", flush=True)
     huella_ranking = sha256((salida / "ranking.json").read_bytes()).hexdigest()
@@ -138,7 +172,8 @@ if __name__ == "__main__":
     parser.add_argument("--salida", type=Path, required=True)
     parser.add_argument("--vecinos", type=int, default=VECINOS, help="Resultados de Chroma por consulta.")
     parser.add_argument("--control", type=Path, help="ranking.json con la expansión y los resultados de referencia.")
+    parser.add_argument("--caso", choices=("01", "02"), default="01")
     args = parser.parse_args()
     if args.vecinos < 1:
         parser.error("--vecinos debe ser positivo.")
-    comparar(args.salida, args.vecinos, leer(args.control) if args.control else None)
+    comparar(args.salida, args.vecinos, leer(args.control) if args.control else None, args.caso)

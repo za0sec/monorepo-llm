@@ -14,10 +14,12 @@ MODELO = "whisper-1"
 API_OPENAI = "https://api.openai.com/v1"
 
 
-def transcribir_archivo(cliente, audio, **opciones):
+def transcribir_archivo(cliente, audio, *, idioma="es", **opciones):
+    if idioma is not None:
+        opciones["language"] = idioma
     with audio.open("rb") as entrada:
         return cliente.audio.transcriptions.create(
-            file=entrada, model=MODELO, language="es", temperature=0, **opciones,
+            file=entrada, model=MODELO, temperature=0, **opciones,
         )
 
 

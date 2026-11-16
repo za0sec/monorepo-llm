@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cobertura de un video · TP3</title>
+<style>
+:root { color-scheme: light; font-family: system-ui, sans-serif; color: #17233a; background: #eef2f7; }
+body { margin: 0; }
+main { max-width: 68rem; padding: clamp(1rem, 5vw, 4rem); margin: auto; }
+h1 { font-size: clamp(1.75rem, 4vw, 2.7rem); margin: 0 0 .6rem; letter-spacing: -.04em; }
+form, section { background: white; padding: clamp(1rem, 3vw, 2rem); border: 1px solid #dbe2ec; border-radius: 16px; margin-top: 1.5rem; }
+label { display: block; font-weight: 650; margin-bottom: .45rem; }
+textarea, input { box-sizing: border-box; width: 100%; font: inherit; padding: .7rem; background: #f8fafc; border: 1px solid #98a7bf; border-radius: 8px; margin-bottom: 1.15rem; }
+textarea { resize: vertical; }
+button, a.descarga { display: inline-block; background: #183f8d; color: white; border: 0; border-radius: 8px; font: inherit; padding: .65rem 1rem; text-decoration: none; cursor: pointer; }
+button:disabled { opacity: .65; cursor: wait; }
+#estado { min-height: 1.4em; margin-bottom: 0; }
+#informe { overflow-x: auto; line-height: 1.55; }
+h2 { margin-top: 0; }
+table { border-collapse: collapse; width: 100%; font-size: .91rem; margin-bottom: 1rem; }
+td, th { text-align: left; vertical-align: top; padding: .65rem; border: 1px solid #dbe2ec; }
+th { background: #eff4fc; }
+blockquote { margin: 0 0 1rem; background: #fff5d7; padding: .8rem; border-radius: 8px; }
+</style>
+<main>
+  <h1>Cobertura de un video</h1>
+  <p>Evaluá qué explica un video para tu objetivo de estudio.</p>
+  <form id="formulario">
+    <label for="objetivo">Objetivo de estudio</label>
+    <textarea id="objetivo" rows="3" maxlength="1000" required placeholder="Quiero entender cómo un texto pasa a tokens, IDs y embeddings."></textarea>
+    <label for="audio">Audio del video (MP3, hasta 25 MB)</label>
+    <input id="audio" type="file" accept=".mp3,audio/mpeg" required>
+    <button id="enviar">Evaluar video</button>
+    <p id="estado" role="status"></p>
+  </form>
+  <section id="resultado" hidden aria-labelledby="titulo-informe">
+    <h2 id="titulo-informe">Informe de cobertura</h2>
+    <div id="informe"></div>
+    <a class="descarga" id="descarga" download="informe.md">Descargar Markdown</a>
+  </section>
+</main>
+<script>
+const porId = id => document.getElementById(id);
+const formulario = porId("formulario");
+const informe = porId("informe");
+let urlInforme;
+
+function mostrar(texto) {
+  informe.replaceChildren();
+  let tabla = null;
+  for (const linea of texto.split("\n")) {
+    const valor = linea.trim();
+    if (valor.startsWith("|") && valor.endsWith("|")) {
+      const celdas = valor.slice(1, -1).split("|").map(c => c.trim());
+      if (celdas.every(c => /^:?-{3,}:?$/.test(c))) continue;
+      const encabezado = !tabla;
+      if (encabezado) {
+        tabla = document.createElement("table");
+        informe.append(tabla);
+      }
+      const fila = tabla.insertRow();
+      for (const celda of celdas) {
+        const campo = document.createElement(encabezado ? "th" : "td");
+        campo.textContent = celda;
+        if (encabezado) campo.scope = "col";
+        fila.append(campo);
+      }
+      continue;
+    }
+    tabla = null;
+    if (!valor) continue;
+    const textoLimpio = valor.replace(/^>\s*|^#+\s*|\*\*/g, "");
+    const etiqueta = valor.startsWith(">") ? "blockquote" :
+      /^(para estudiar|conclusión):?$/i.test(textoLimpio) ? "h3" : "p";
+    const bloque = document.createElement(etiqueta);
+    bloque.textContent = textoLimpio;
+    informe.append(bloque);
+  }
+}
+
+formulario.addEventListener("submit", async evento => {
+  evento.preventDefault();
+  const objetivo = porId("objetivo").value.trim();
+  const audio = porId("audio").files[0];
+  const estado = porId("estado");
+  if (!objetivo || !audio || !/\.mp3$/i.test(audio.name) || audio.size === 0 || audio.size > 25000000) {
+    estado.textContent = "Ingresá un objetivo y seleccioná un MP3 de hasta 25 MB.";
+    return;
+  }
+  porId("enviar").disabled = true;
+  porId("resultado").hidden = true;
+  estado.textContent = "Transcribiendo el audio y preparando el informe…";
+  try {
+    const respuesta = await fetch("/evaluar", {
+      method: "POST",
+      headers: {"Content-Type": "application/octet-stream", "X-Objetivo": encodeURIComponent(objetivo)},
+      body: audio
+    });
+    const datos = await respuesta.json();
+    if (!respuesta.ok) {
+      estado.textContent = datos.error;
+      return;
+    }
+    mostrar(datos.informe);
+    if (urlInforme) URL.revokeObjectURL(urlInforme);
+    urlInforme = URL.createObjectURL(new Blob([datos.informe], {type: "text/markdown;charset=utf-8"}));
+    porId("descarga").href = urlInforme;
+    porId("resultado").hidden = false;
+    estado.textContent = "Informe listo.";
+    porId("resultado").scrollIntoView({block: "start"});
+  } catch {
+    estado.textContent = "Se perdió la conexión con el servidor local.";
+  } finally {
+    porId("enviar").disabled = false;
+  }
+});
+</script>
+</html>

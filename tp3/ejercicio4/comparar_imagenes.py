@@ -127,10 +127,12 @@ def describir(cliente, ruta, figura, prompt=PROMPT_VISION):
     opcion = respuesta.choices[0]
     if opcion.finish_reason != "stop" or not opcion.message.content:
         raise ValueError("La descripción de la imagen quedó incompleta.")
-    guardar_json(ruta, {
+    temporal = ruta.with_suffix(".json.tmp")
+    guardar_json(temporal, {
         "sha256": figura["sha256"], "modelo": respuesta.model, "prompt": prompt,
         "uso": respuesta.usage.model_dump(), "texto": opcion.message.content.strip(),
     })
+    temporal.replace(ruta)
     return opcion.message.content.strip()
 
 

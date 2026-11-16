@@ -85,6 +85,8 @@ Por cada contraste guardar una ficha Markdown y resultados por caso en CSV o JSO
 
 El primer piloto del ejercicio 4 incorporó tres apuntes y completó la comparación del [Caso 02 de Transformers](ejercicio4/evaluacion/resultado_caso_02_apuntes.md). Los seis VTT y los cinco apuntes ya están en `openai_e4_texto`. El [piloto de imágenes](ejercicio4/evaluacion/piloto_imagenes.md) identificó una fórmula recuperable por descripción que quedó fuera del top 7. Sigue revisar cómo llega esa evidencia al contexto final. [Plan del ejercicio 4](roadmap_ejercicio4.md)
 
+El corpus `openai_e4_completo` ya contiene los 1.163 chunks de texto anteriores y 321 de las 105 diapositivas. Sigue conectarlo al evaluador y comparar valores de `k` con el corpus fijo. [Carga y verificación](roadmap_ejercicio4.md#carga-de-las-105-diapositivas)
+
 [ej1]: ejercicio1/Grupo03-ej1-TP3.md
 [archivo]: recorrido_experimental.md
 [bitacora]: ejercicio2/experimentos.md

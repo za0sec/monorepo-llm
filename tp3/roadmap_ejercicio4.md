@@ -46,7 +46,7 @@ Se prepararon 105 diapositivas de 341 páginas disponibles. La selección conser
 ## 2. Incorporar PDFs con páginas citables
 
 1. Registrar cada PDF en un manifiesto con título, tipo de fuente, ruta y SHA‑256. Mantener los VTT e índices del ejercicio 2 como referencia.
-2. Extraer solo texto por página con `pypdf`, como en el notebook de la cátedra. Para diapositivas, resolver la página del PDF original con el manifiesto. Para apuntes, guardar el número de página del archivo desde 1 antes de descartar páginas sin texto. El contenido gráfico queda fuera del índice. [Notebook del reporte ONU, celda 8](../docs/RAG/UN_Report_Advanced_RAG.ipynb)
+2. Extraer el texto seleccionable por página con `pypdf`, como en el notebook de la cátedra. Para diapositivas, sumar la descripción visual y resolver la página del PDF original con el manifiesto. Para apuntes, guardar el número de página del archivo desde 1 antes de descartar páginas sin texto. [Notebook del reporte ONU, celda 8](../docs/RAG/UN_Report_Advanced_RAG.ipynb)
 3. Aplicar el splitter recursivo de G4 dentro de cada página, con un máximo de 160 tokens medidos por MiniLM y 10 de solapamiento. La metadata de cada chunk PDF contiene `fuente`, `tipo_fuente` y `pagina`. Cada chunk tiene su propio ID y texto. Los chunks VTT conservan sus tiempos.
 4. Guardar cada variante en su propia colección Chroma, con el mismo `text-embedding-3-small`, 1.536 dimensiones y distancia coseno. Verificar que los chunks de VTT coincidan entre variantes y registrar el número de chunks por tipo de fuente.
 5. Resolver las referencias del generador desde los metadatos. Una cita PDF muestra el nombre del documento y su página. Una cita VTT muestra el nombre y el intervalo. Verificar con un ejemplo de cada tipo que el localizador permite encontrar la evidencia.
@@ -108,6 +108,20 @@ PYTHONPATH=tp3/ejercicio2 .venv/bin/python tp3/ejercicio4/indexar_apuntes.py \
   --salida tp3/ejercicio4/data/carga_texto_repeticion.json
 ```
 
+### Carga de las 105 diapositivas
+
+La colección `openai_e4_completo` reúne **1.484 chunks**. Conserva los 1.163 de `openai_e4_texto` y suma 111 de texto seleccionable y 210 de descripciones visuales. Las 105 páginas tienen ambas representaciones. Se usó `gpt-4.1-2025-04-14` con el prompt de control del piloto, temperatura 0 y detalle alto. Las descripciones se guardaron en caché por huella de la imagen. Para los embeddings se mantuvo `text-embedding-3-small` y se reutilizaron también 12 vectores del piloto con el mismo texto.
+
+Las 103 descripciones nuevas consumieron 123.188 tokens de entrada y 16.310 de salida. Los 309 embeddings nuevos consumieron 25.839 tokens de entrada. Se reutilizaron las dos descripciones de página completa del piloto. En las páginas originales 13 y 17 de Fine-tuning se eliminó del texto extraído un total de 16 glifos que no se podían codificar en UTF‑8.
+
+Después de reabrir Chroma se verificaron los IDs, textos, metadatos, cobertura por página y método, y dimensión de los vectores. Los vectores almacenados difirieron como máximo `1,49e-8` por componente al copiarse. Una consulta técnica con un vector ya indexado recuperó el fragmento de coseno y permitió resolver su cita a la página 32 del PDF original. [Manifiesto local de la carga](ejercicio4/data/carga_completa.json) · [Indexador](ejercicio4/indexar_diapositivas.py)
+
+```bash
+PYTHONPATH=tp3/ejercicio2 .venv/bin/python tp3/ejercicio4/indexar_diapositivas.py
+```
+
+Para una colección adicional, indicar otro nombre con `--coleccion` y otro manifiesto con `--salida`. Las descripciones y los lotes de embeddings guardados se reutilizan al repetir la carga.
+
 ## 3. Comparación controlada
 
 El corpus del ejercicio 4 incluirá los seis VTT, los cinco apuntes y los cinco PDF de diapositivas seleccionadas. El primer contraste previsto sobre ese corpus compara distintos valores de `k`, con `k=7` como referencia. Por objetivo se congela el audio transcripto y se usa el mismo ranking de G4, con la consulta original, sus tres subconsultas, cinco candidatos por consulta, deduplicación y el mismo CrossEncoder. Se mantienen el prompt y el snapshot de GPT‑4.1 de G4, temperatura 0 y hasta 1.000 tokens de salida. Los valores de `k` se eligen después de revisar el ranking del corpus final. [Configuración del ejercicio 2](ejercicio2/README.md)
@@ -132,4 +146,4 @@ Guardar por caso las fuentes y sus hashes, los rankings, los chunks enviados, el
 
 **Contraste de prompts de visión.** El prompt que pidió pares de origen y destino ordenó el flujo del diagrama, pero volvió a omitir la flecha al bloque específico del decoder. La fórmula mantuvo el puesto 8. Se conserva el prompt anterior para las descripciones. [Resultados por consulta](ejercicio4/evaluacion/piloto_imagenes.md#comparación-de-prompts-de-descripción)
 
-**Siguiente paso.** Completar el corpus con las diapositivas y volver a medir la posición de la fórmula y de los demás pasajes al probar distintos valores de `k`.
+**Siguiente paso.** Conectar `openai_e4_completo` al evaluador y volver a medir la posición de la fórmula y de los demás pasajes al probar distintos valores de `k`.

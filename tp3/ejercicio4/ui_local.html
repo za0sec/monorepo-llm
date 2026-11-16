@@ -21,10 +21,21 @@ table { border-collapse: collapse; width: 100%; font-size: .91rem; margin-bottom
 td, th { text-align: left; vertical-align: top; padding: .65rem; border: 1px solid #dbe2ec; }
 th { background: #eff4fc; }
 blockquote { margin: 0 0 1rem; background: #fff5d7; padding: .8rem; border-radius: 8px; }
+#fuentes { columns: 2 16rem; }
+#fuentes div { break-inside: avoid; }
+#fuentes li { margin-bottom: .35rem; }
+#informe a, #fuentes a { color: #183f8d; text-underline-offset: .15em; }
+.vistas { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.5rem; }
+.vistas button[aria-pressed="false"] { background: #fff; color: #183f8d; box-shadow: inset 0 0 0 1px #98a7bf; }
 </style>
 <main>
   <h1>Cobertura de un video</h1>
   <p>Evaluá qué explica un video para tu objetivo de estudio.</p>
+  <nav class="vistas" aria-label="Vistas">
+    <button type="button" id="ver-evaluador" aria-controls="evaluador" aria-pressed="true">Evaluar video</button>
+    <button type="button" id="ver-archivos" aria-controls="archivos" aria-pressed="false">Archivos del corpus</button>
+  </nav>
+  <div id="evaluador">
   <form id="formulario">
     <label for="objetivo">Objetivo de estudio</label>
     <textarea id="objetivo" rows="3" maxlength="1000" required placeholder="Quiero entender cómo un texto pasa a tokens, IDs y embeddings."></textarea>
@@ -38,6 +49,11 @@ blockquote { margin: 0 0 1rem; background: #fff5d7; padding: .8rem; border-radiu
     <div id="informe"></div>
     <a class="descarga" id="descarga" download="informe.md">Descargar Markdown</a>
   </section>
+  </div>
+  <section id="archivos" hidden aria-labelledby="titulo-fuentes">
+    <h2 id="titulo-fuentes">Archivos del corpus</h2>
+    <div id="fuentes"><!-- LISTADO_FUENTES --></div>
+  </section>
 </main>
 <script>
 const porId = id => document.getElementById(id);
@@ -45,7 +61,37 @@ const formulario = porId("formulario");
 const informe = porId("informe");
 let urlInforme;
 
-function mostrar(texto) {
+for (const vista of ["evaluador", "archivos"]) {
+  porId("ver-" + vista).addEventListener("click", () => {
+    for (const panel of ["evaluador", "archivos"]) {
+      const activo = panel === vista;
+      porId(panel).hidden = !activo;
+      porId("ver-" + panel).setAttribute("aria-pressed", String(activo));
+    }
+  });
+}
+
+function enlace(texto, url) {
+  const a = document.createElement("a");
+  a.textContent = texto;
+  a.href = url;
+  a.target = "_blank";
+  a.rel = "noopener";
+  return a;
+}
+
+function agregarTexto(nodo, texto, citas) {
+  const patron = /\[(C\d+)(?:, [^\]]+)?\]/g;
+  let inicio = 0;
+  for (const cita of texto.matchAll(patron)) {
+    nodo.append(texto.slice(inicio, cita.index));
+    nodo.append(citas[cita[1]] ? enlace(cita[0], citas[cita[1]]) : cita[0]);
+    inicio = cita.index + cita[0].length;
+  }
+  nodo.append(texto.slice(inicio));
+}
+
+function mostrar(texto, citas) {
   informe.replaceChildren();
   let tabla = null;
   for (const linea of texto.split("\n")) {
@@ -61,7 +107,7 @@ function mostrar(texto) {
       const fila = tabla.insertRow();
       for (const celda of celdas) {
         const campo = document.createElement(encabezado ? "th" : "td");
-        campo.textContent = celda;
+        agregarTexto(campo, celda, citas);
         if (encabezado) campo.scope = "col";
         fila.append(campo);
       }
@@ -73,7 +119,7 @@ function mostrar(texto) {
     const etiqueta = valor.startsWith(">") ? "blockquote" :
       /^(para estudiar|conclusión):?$/i.test(textoLimpio) ? "h3" : "p";
     const bloque = document.createElement(etiqueta);
-    bloque.textContent = textoLimpio;
+    agregarTexto(bloque, textoLimpio, citas);
     informe.append(bloque);
   }
 }
@@ -101,7 +147,7 @@ formulario.addEventListener("submit", async evento => {
       estado.textContent = datos.error;
       return;
     }
-    mostrar(datos.informe);
+    mostrar(datos.informe, datos.citas);
     if (urlInforme) URL.revokeObjectURL(urlInforme);
     urlInforme = URL.createObjectURL(new Blob([datos.informe], {type: "text/markdown;charset=utf-8"}));
     porId("descarga").href = urlInforme;

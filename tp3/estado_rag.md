@@ -86,7 +86,7 @@ El informe sirve como orientación de estudio. Con el top 7 quedaron **9 de 20 c
 
 ## Cómo correrlo
 
-Para usar la interfaz local, ejecutá `.venv/bin/python tp3/ejercicio4/ui_local.py` y abrí [http://127.0.0.1:8765](http://127.0.0.1:8765). Escribí el objetivo, seleccioná un MP3 de hasta 25 MB y presioná «Evaluar video». Podés leer el informe en la página o descargarlo como Markdown. La interfaz usa el corpus completo y el mismo evaluador que el comando. Los archivos temporales se eliminan al terminar. Whisper, los embeddings y GPT‑4.1 siguen usando la API de OpenAI.
+Para usar la interfaz local, ejecutá `.venv/bin/python tp3/ejercicio4/ui_local.py` y abrí [http://127.0.0.1:8765](http://127.0.0.1:8765). Escribí el objetivo, seleccioná un MP3 de hasta 25 MB y presioná «Evaluar video». Podés leer el informe en la página o descargarlo como Markdown. La pestaña «Archivos del corpus» lista las transcripciones, los apuntes y las diapositivas. Cada cita de clase abre su archivo en otra pestaña. Los PDF abren en la página citada y los VTT conservan sus marcas de tiempo. La interfaz usa el corpus completo y el mismo evaluador que el comando. Los archivos temporales se eliminan al terminar. Whisper, los embeddings y GPT‑4.1 siguen usando la API de OpenAI.
 
 Desde la raíz del repo, con `.venv`, la clave `OPENAI_API_KEY` en `tp3/.env`, la colección de Chroma, el manifiesto local y el snapshot del reranker disponibles.
 

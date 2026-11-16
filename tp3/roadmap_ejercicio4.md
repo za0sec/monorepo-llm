@@ -71,9 +71,11 @@ Por objetivo se congela el audio transcripto, la consulta original y sus tres su
 | Nivel | Qué medir |
 | --- | --- |
 | Indexación | Documentos y páginas leídos, páginas con extracción deficiente, cantidad de chunks por fuente y trazabilidad de las citas. |
-| Recuperación | Context Recall en el conjunto de candidatos y en el top 7. Context Precision en el top 7. Registrar qué tipos de fuente entran y si aportan evidencia nueva o repetida. |
+| Recuperación | Context Recall y Context Precision sobre los chunks finales. Registrar qué tipos de fuente entran y si aportan evidencia nueva o repetida. |
 | Informe | Acierto de estados, citas localizables y con respaldo, Answer Faithfulness, relevancia manual y completitud. |
 
 Guardar por caso las fuentes y sus hashes, los rankings, los siete chunks enviados, el informe y la evaluación. Para cada criterio que cambia, mostrar el pasaje que se ganó o se perdió y si el informe lo usó. Priorizar que aumente el Context Recall y revisar si los criterios adicionales se traducen en estados y citas más sólidos. Registrar el costo adicional de indexar y la longitud real del contexto.
 
-**Primer piloto.** El [Caso 02 de Transformers](ejercicio4/evaluacion/caso_02_transformers.md) tiene un objetivo nuevo, el VTT de Whisper y una pauta de tres criterios anotada antes de la búsqueda. La propuesta inicial sumaba un PDF para medir su aporte individual. La comparación acordada usa todos los apuntes disponibles para medir cómo funciona el RAG con el corpus ampliado. Se comparará `openai_i4` con `openai_e4_apuntes_ampliado`, ambos con `k=7`, y se generará un informe por variante usando la misma transcripción. La búsqueda recorre toda la colección sin filtro por fuente. Después se compara `k=7` con `k=10` sobre un mismo ranking ampliado, si hay al menos diez candidatos distintos. Las diapositivas quedan para una comparación posterior.
+**Primer piloto completado.** El [Caso 02 de Transformers](ejercicio4/evaluacion/caso_02_transformers.md) comparó `openai_i4` con `openai_e4_apuntes_ampliado`, ambos con `k=7`, la misma transcripción y búsqueda sin filtro por fuente. La propuesta inicial sumaba un PDF para medir su aporte individual. La prueba sumó los tres apuntes para medir el efecto del corpus ampliado. Context Recall@7 pasó de 0/3 a 1/3 y Context Precision@7 quedó en 14,3 % en ambas variantes. [Resultados y auditoría](ejercicio4/evaluacion/resultado_caso_02_apuntes.md)
+
+**Siguiente contraste.** Comparar `k=7` con `k=10` sobre los mismos 11 candidatos reordenados de la colección mixta. La fórmula quedó octava. Después, verificar el resultado en otro objetivo y evaluar las diapositivas en una comparación separada.

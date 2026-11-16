@@ -152,6 +152,8 @@ def ubicar_citas(informe, entrada):
             return cita[0]
         fuente = fuentes[id_]
         nombre = f"{Path(fuente['fuente']).stem}, " if id_ in entrada["clase"] else ""
+        if "pagina" in fuente:
+            return f"[{id_}, {nombre}p. {fuente['pagina']}]"
         return f"[{id_}, {nombre}{fuente['inicio']}–{fuente['fin']}]"
 
     return CITAS.sub(ubicar, informe), sorted(set(CITAS.findall(informe)) - fuentes.keys())

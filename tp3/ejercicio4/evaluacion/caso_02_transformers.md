@@ -27,8 +27,8 @@ La clase fija lo que se espera aprender. Los estados de la tabla se refieren a l
 
 Comparar `openai_i4` (623 chunks de VTT) con `openai_e4_apuntes_ampliado` (los mismos VTT y 15 chunks de los tres PDFs). Buscar en cada colección completa, sin filtrar por archivo. Congelar la consulta original y sus tres subconsultas, cinco candidatos por consulta, el CrossEncoder de G4, `k=7`, el VTT del video y el prompt y modelo del generador. Las diapositivas se consultaron para preparar la referencia académica y quedan fuera de las dos colecciones de este piloto.
 
-- **Context Recall** antes del reranking y en el top 7. Contar cuántos de los tres criterios respalda por completo el contexto académico recuperado. Registrar si el PDF completa evidencia, la repite o desplaza pasajes útiles.
+- **Context Recall@7.** Contar cuántos de los tres criterios respaldan por completo los siete chunks finales. Registrar si el PDF completa evidencia, la repite o desplaza pasajes útiles.
 - **Context Precision@7.** Medir la posición de los chunks que aportan evidencia directa, incluida la evidencia parcial.
 - **Informe.** Comparar coincidencia de estados, citas localizables que respaldan lo escrito y Answer Faithfulness. Registrar por separado si faltó evidencia académica, si se omitió una fila o si el estado contradice la transcripción.
 
-Estado de la prueba. Audio y referencia preparados. Expansión, recuperación y generación pendientes.
+Se completaron las dos corridas. La [revisión de resultados](resultado_caso_02_apuntes.md) conserva esta pauta y describe qué evidencia llegó al top 7 y cómo se usó en los informes.

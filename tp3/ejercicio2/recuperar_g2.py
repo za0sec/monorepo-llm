@@ -44,10 +44,13 @@ def buscar(coleccion, i4, por_id, cliente, consultas, k):
     campos = ("modelo_respuesta", "dimensiones")
     if any(uso[campo] != i4["uso_openai"][campo] for campo in campos):
         raise ValueError("El embedding de consulta no coincide con I4.")
+    return consultar_vectores(coleccion, por_id, vectores, k), uso
 
+
+def consultar_vectores(coleccion, por_id, vectores, k):
     respuesta = coleccion.query(query_embeddings=vectores, n_results=k, include=["documents", "metadatas", "distances"])
     columnas = [respuesta[campo] for campo in ("ids", "documents", "metadatas", "distances")]
-    if any(len(columna) != len(consultas) for columna in columnas):
+    if any(len(columna) != len(vectores) for columna in columnas):
         raise ValueError("Faltan rankings de consulta.")
     rankings = []
     for hits in zip(*columnas):
@@ -56,16 +59,19 @@ def buscar(coleccion, i4, por_id, cliente, consultas, k):
         ranking = []
         for id_, texto, meta, distancia in zip(*hits):
             original = por_id[id_]
-            procedencia = {campo: original[campo] for campo in ("fuente", "inicio", "fin")}
-            procedencia["bloques"] = ",".join(original["bloques"])
+            if "metadata" in original:
+                procedencia = original["metadata"]
+            else:
+                procedencia = {campo: original[campo] for campo in ("fuente", "inicio", "fin")}
+                procedencia["bloques"] = ",".join(original["bloques"])
             if texto != original["texto"] or meta != procedencia:
-                raise ValueError(f"El contenido o los metadatos de {id_} difieren de I4.")
+                raise ValueError(f"El contenido o los metadatos de {id_} difieren del registro del índice.")
             ranking.append({
                 "id": id_, "texto": texto, "tokens_minilm": original["tokens"],
                 "distancia_coseno": distancia, **meta,
             })
         rankings.append(ranking)
-    return rankings, uso
+    return rankings
 
 
 def reemplazar_clase(control, chunks, recuperacion):

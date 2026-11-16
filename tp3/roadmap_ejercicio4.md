@@ -128,4 +128,6 @@ Guardar por caso las fuentes y sus hashes, los rankings, los chunks enviados, el
 
 **Piloto de imágenes completado.** Se probaron texto seleccionable, OCR y descripción sobre ocho páginas con dos recortes. El Context Recall@7 quedó en 0/2 en las tres variantes. La descripción recuperó la relación general entre encoder y decoder y transcribió la fórmula de coseno en un chunk que quedó octavo. [Configuración y resultados](ejercicio4/evaluacion/piloto_imagenes.md)
 
+**Contraste de formato visual.** Con la misma configuración para recorte y diapositiva completa, la fórmula subió del puesto 11 al 8. Ambas variantes obtuvieron Context Recall@7 de 0/2 y Context Precision@7 de 50 %. La descripción de página completa agregó el título y contexto visual, con la fórmula en un chunk separado. [Resultados del contraste](ejercicio4/evaluacion/piloto_imagenes.md#comparación-de-recorte-y-diapositiva-completa)
+
 **Siguiente paso.** Verificar si conservar la fórmula y el título en el mismo chunk mejora su recuperación. Revisar también la descripción de las flechas de los diagramas antes de decidir cómo incorporar esas fuentes al corpus final.

@@ -5,6 +5,7 @@ from base64 import b64encode
 from hashlib import sha256
 import json
 from pathlib import Path
+from shutil import copyfile
 from subprocess import run
 from tempfile import TemporaryDirectory
 
@@ -22,6 +23,7 @@ from rerankear_g4 import reordenar
 
 
 SLIDES = CARPETA / "slides"
+PILOTO = CARPETA / "data/experimentos/piloto_imagenes"
 PAGINAS = {"clase_01_transformers.pdf": [22, 25, 27, 30, 36], "clase_02_embeddings.pdf": [31, 32, 33]}
 # Recortes x, y, ancho y alto en píxeles al renderizar a 1800 × 1014.
 RECORTES = {"transformers-22": (130, 140, 1518, 658), "embeddings-32": (114, 408, 1576, 442)}
@@ -37,6 +39,18 @@ PROMPT_VISION = (
     "Conserva los nombres de las etiquetas. Usa hasta 140 palabras. "
     "Indica si alguna parte es ilegible y evita agregar información externa."
 )
+PROMPT_FORMATOS = PROMPT_VISION.replace("este recorte de una diapositiva académica", "esta imagen de material académico")
+
+
+def renderizar_pagina(archivo, fisica, prefijo, recorte=()):
+    opciones = []
+    if recorte:
+        x, y, ancho, alto = map(str, recorte)
+        opciones = ["-x", x, "-y", y, "-W", ancho, "-H", alto]
+    run([
+        "pdftoppm", "-png", "-singlefile", "-scale-to-x", "1800", "-scale-to-y", "1014",
+        "-f", str(fisica), "-l", str(fisica), *opciones, str(archivo), str(prefijo),
+    ], check=True)
 
 
 def preparar(salida):
@@ -60,12 +74,7 @@ def preparar(salida):
             texto = (lector.pages[fisica - 1].extract_text() or "").strip()
             paginas.append((id_, texto, {**meta, "metodo": "seleccionable"}))
             if id_ in RECORTES:
-                x, y, ancho, alto = map(str, RECORTES[id_])
-                run([
-                    "pdftoppm", "-png", "-singlefile", "-scale-to-x", "1800", "-scale-to-y", "1014",
-                    "-f", str(fisica), "-l", str(fisica), "-x", x, "-y", y, "-W", ancho, "-H", alto,
-                    str(archivo), str(salida / id_),
-                ], check=True)
+                renderizar_pagina(archivo, fisica, salida / id_, RECORTES[id_])
                 png = salida / f"{id_}.png"
                 recortes[id_] = {**meta, "archivo": png.name, "sha256": sha256(png.read_bytes()).hexdigest()}
 
@@ -87,14 +96,14 @@ def preparar(salida):
     guardar_json(salida / "preparacion.json", {"paginas": paginas, "recortes": recortes})
 
 
-def describir(cliente, ruta, recorte):
-    imagen = (ruta.parent / recorte["archivo"]).read_bytes()
-    if sha256(imagen).hexdigest() != recorte["sha256"]:
-        raise ValueError("El recorte cambió después del OCR.")
+def describir(cliente, ruta, figura, prompt=PROMPT_VISION):
+    imagen = (ruta.parent / figura["archivo"]).read_bytes()
+    if sha256(imagen).hexdigest() != figura["sha256"]:
+        raise ValueError("La imagen no coincide con la entrada preparada.")
     if ruta.exists():
         previo = json.loads(ruta.read_bytes())
         if (previo["sha256"], previo["prompt"], previo["modelo"]) != (
-            recorte["sha256"], PROMPT_VISION, MODELO_VISION,
+            figura["sha256"], prompt, MODELO_VISION,
         ):
             raise ValueError("La descripción guardada corresponde a otra entrada.")
         return previo["texto"]
@@ -102,7 +111,7 @@ def describir(cliente, ruta, recorte):
     respuesta = cliente.chat.completions.create(
         model=MODELO_VISION, temperature=0, max_completion_tokens=450, store=False,
         messages=[{"role": "user", "content": [
-            {"type": "text", "text": PROMPT_VISION},
+            {"type": "text", "text": prompt},
             {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{datos}", "detail": "high"}},
         ]}],
     )
@@ -110,7 +119,7 @@ def describir(cliente, ruta, recorte):
     if opcion.finish_reason != "stop" or not opcion.message.content:
         raise ValueError("La descripción de la imagen quedó incompleta.")
     guardar_json(ruta, {
-        "sha256": recorte["sha256"], "modelo": respuesta.model, "prompt": PROMPT_VISION,
+        "sha256": figura["sha256"], "modelo": respuesta.model, "prompt": prompt,
         "uso": respuesta.usage.model_dump(), "texto": opcion.message.content.strip(),
     })
     return opcion.message.content.strip()
@@ -137,11 +146,50 @@ def comparar(salida):
         ocr.append((id_, "\n".join(figura["ocr"]), {**meta, "metodo": "ocr"}))
         texto = describir(cliente, salida / f"{id_}-descripcion.json", figura)
         descripcion.append((id_, texto, {**meta, "metodo": "descripcion"}))
+    evaluar_variantes(salida, insumos["paginas"], {
+        "texto": [], "texto_ocr": ocr, "texto_descripcion": descripcion,
+    }, cliente)
+
+
+def comparar_pagina(salida, piloto):
+    insumos = json.loads((piloto / "preparacion.json").read_bytes())
+    if (salida / "chroma").exists():
+        raise ValueError("La comparación requiere una carpeta sin un índice previo.")
+    manifiesto = json.loads((SLIDES / "manifiesto.json").read_bytes())
+    documentos = {d["fuente"]: d for d in manifiesto["archivos"]}
+    salida.mkdir(parents=True, exist_ok=True)
+    variantes = {"texto_recorte": [], "texto_pagina": []}
+    imagenes = {}
+    for id_, recorte in insumos["recortes"].items():
+        registro = documentos[recorte["fuente"]]
+        archivo = SLIDES / registro["archivo"]
+        if sha256(archivo.read_bytes()).hexdigest() != registro["sha256_seleccion"]:
+            raise ValueError(f"Cambió la selección {archivo.name}.")
+        fisica = registro["paginas_originales"].index(recorte["pagina"]) + 1
+        imagen_recorte = salida / f"{id_}-recorte.png"
+        copyfile(piloto / recorte["archivo"], imagen_recorte)
+        renderizar_pagina(archivo, fisica, salida / f"{id_}-pagina")
+        imagen_pagina = salida / f"{id_}-pagina.png"
+        meta = {campo: recorte[campo] for campo in ("fuente", "pagina")}
+        imagenes[id_] = {
+            "recorte": {**meta, "archivo": imagen_recorte.name, "sha256": recorte["sha256"]},
+            "pagina": {**meta, "archivo": imagen_pagina.name, "sha256": sha256(imagen_pagina.read_bytes()).hexdigest()},
+        }
+    guardar_json(salida / "preparacion.json", {"paginas": insumos["paginas"], "imagenes": imagenes})
+    cliente = cliente_openai(timeout=120)
+    for id_, alternativas in imagenes.items():
+        for tipo, figura in alternativas.items():
+            texto = describir(cliente, salida / f"{id_}-{tipo}-descripcion.json", figura, PROMPT_FORMATOS)
+            meta = {campo: figura[campo] for campo in ("fuente", "pagina")}
+            variantes[f"texto_{tipo}"].append((id_, texto, {**meta, "metodo": f"descripcion_{tipo}"}))
+    evaluar_variantes(salida, insumos["paginas"], variantes, cliente)
+
+
+def evaluar_variantes(salida, paginas, variantes, cliente):
     splitter, contar = crear_splitter()
-    base, extra_ocr, extra_descripcion = [
-        fragmentar(documentos, splitter, contar) for documentos in (insumos["paginas"], ocr, descripcion)
-    ]
-    todos = base + extra_ocr + extra_descripcion
+    base = fragmentar(paginas, splitter, contar)
+    adicionales = {variante: fragmentar(docs, splitter, contar) for variante, docs in variantes.items()}
+    todos = base + [chunk for chunks in adicionales.values() for chunk in chunks]
     if len(base) < K or any(not 0 < c["tokens"] <= TAMANO for c in todos):
         raise ValueError("Los chunks deben respetar el tamaño y alcanzar el top k en las tres variantes.")
     vectores, uso = obtener_vectores(cliente, MODELO_OPENAI, [c["texto"] for c in todos] + CONSULTAS)
@@ -151,7 +199,7 @@ def comparar(salida):
     guardar_json(salida / "embeddings.json", {"uso": uso, "chunks": por_id, "consultas": vectores[len(todos):]})
     chroma = chromadb.PersistentClient(path=str(salida / "chroma"), settings=Settings(anonymized_telemetry=False))
     resultados = {}
-    for nombre, adicional in (("texto", []), ("texto_ocr", extra_ocr), ("texto_descripcion", extra_descripcion)):
+    for nombre, adicional in adicionales.items():
         chunks = base + adicional
         coleccion = chroma.create_collection(nombre, embedding_function=None, configuration={"hnsw": {"space": "cosine"}})
         coleccion.add(
@@ -173,10 +221,14 @@ def comparar(salida):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("accion", choices=("preparar", "comparar"))
+    parser.add_argument("accion", choices=("preparar", "comparar", "comparar-pagina"))
     parser.add_argument("--salida", type=Path, required=True)
+    parser.add_argument("--piloto", type=Path, default=PILOTO, help="Carpeta con el piloto de recortes.")
     args = parser.parse_args()
-    (preparar if args.accion == "preparar" else comparar)(args.salida.resolve())
+    if args.accion == "comparar-pagina":
+        comparar_pagina(args.salida.resolve(), args.piloto.resolve())
+    else:
+        (preparar if args.accion == "preparar" else comparar)(args.salida.resolve())
 
 
 if __name__ == "__main__":

@@ -22,6 +22,29 @@ from rerankear_g4 import reordenar
 CORTES = (7, 8, 10, 12)
 MANIFIESTO = CARPETA / "data/carga_completa.json"
 CONTROL_CASO_02 = CARPETA / "data/experimentos/caso_02_apuntes"
+CASOS_NUEVOS = {
+    "03": (
+        "transfer_learning",
+        "Quiero entender cuál es la diferencia entre usar un modelo preentrenado para extraer "
+        "características y hacerle fine-tuning, qué pesos se actualizan en cada caso y cuándo "
+        "conviene cada enfoque",
+    ),
+    "04": (
+        "tokenizacion",
+        "Quiero entender cómo pasa un texto de ser una cadena de caracteres a tokens, IDs y "
+        "embeddings, y qué representa cada paso",
+    ),
+    "05": (
+        "razonamiento",
+        "Quiero entender qué hacen los modelos de razonamiento, qué ganamos al dedicar más "
+        "cómputo a una respuesta y qué técnicas permiten hacerlo durante la inferencia",
+    ),
+    "06": (
+        "ai_safety",
+        "Quiero entender la diferencia entre prompt injection y data poisoning en modelos de "
+        "lenguaje y en qué parte del sistema actúa cada riesgo",
+    ),
+}
 
 
 def abrir_corpus():
@@ -106,6 +129,16 @@ def cargar_caso(numero, prompt):
     if numero == "01":
         config = leer(CARPETA_E2 / "g1/caso.json")
         return config, REPO / config["video_vtt"], config["segmentos_video_esperados"], None
+    if numero in CASOS_NUEVOS:
+        nombre, objetivo = CASOS_NUEVOS[numero]
+        carpeta = CARPETA / "data/casos" / nombre
+        vtt = carpeta / "transcripcion.vtt"
+        registro = leer(carpeta / "asr.json")
+        if sha256(vtt.read_bytes()).hexdigest() != registro["sha256_vtt"]:
+            raise ValueError(f"El VTT del Caso {numero} difiere del registrado por Whisper.")
+        config = leer(CARPETA_E2 / "g1/caso.json")
+        config["objetivo"] = objetivo
+        return config, vtt, registro["segmentos"], None
     carpeta = CONTROL_CASO_02
     entrada = leer(carpeta / "openai_e4_apuntes_ampliado/entrada.json")
     expansion = carpeta / "expansion.json"
@@ -137,7 +170,7 @@ def comparar(salida, vecinos_por_consulta, control, numero):
     salida.mkdir(parents=True, exist_ok=True)
     ranking = preparar_ranking(salida, caso, coleccion, por_id, m, vecinos_por_consulta, control, consultas_previas)
     orden = ranking["orden_final"]
-    cortes = CORTES if numero == "01" else (7, 8)
+    cortes = CORTES
     ks = [k for k in cortes if k <= len(orden)]
     if len(orden) < max(cortes) and len(orden) not in ks:
         ks.append(len(orden))
@@ -172,7 +205,7 @@ if __name__ == "__main__":
     parser.add_argument("--salida", type=Path, required=True)
     parser.add_argument("--vecinos", type=int, default=VECINOS, help="Resultados de Chroma por consulta.")
     parser.add_argument("--control", type=Path, help="ranking.json con la expansión y los resultados de referencia.")
-    parser.add_argument("--caso", choices=("01", "02"), default="01")
+    parser.add_argument("--caso", choices=("01", "02", *CASOS_NUEVOS), default="01")
     args = parser.parse_args()
     if args.vecinos < 1:
         parser.error("--vecinos debe ser positivo.")

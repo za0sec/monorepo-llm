@@ -93,7 +93,7 @@ En el contraste posterior, diez resultados por consulta llevaron la fórmula al 
 
 La validación con el Caso 02 de Transformers dio 2/3 estados correctos con `k=7` y 1/3 con `k=8`. La fórmula de atención quedó duodécima en ese ranking. [Resultados por criterio](ejercicio4/evaluacion/caso_02_k_completo.md)
 
-El próximo contraste del ejercicio 4 usa cuatro objetivos nuevos con VTT de Whisper y criterios manuales redactados antes de ejecutar el RAG. [Casos 03 a 06](ejercicio4/evaluacion/casos_03_06.md)
+El contraste del ejercicio 4 usó cuatro objetivos nuevos con VTT de Whisper y criterios manuales redactados antes de ejecutar el RAG. Se mantiene `k=7` como referencia del flujo. Una iteración posterior del informe puede revisar las citas y las etiquetas con el ranking fijo. [Resultados del ejercicio 4](ejercicio4/evaluacion/k_corpus_completo_seis_casos.md)
 
 [ej1]: ejercicio1/Grupo03-ej1-TP3.md
 [archivo]: recorrido_experimental.md

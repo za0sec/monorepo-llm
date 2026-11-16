@@ -28,3 +28,18 @@ PYTHONPATH=tp3/ejercicio2 .venv/bin/python tp3/ejercicio4/comparar_k_completo.py
 ```
 
 [Ranking común](../data/experimentos/caso_02_k_completo/ranking.json) · [Informe k=7](../data/experimentos/caso_02_k_completo/k7/gpt41/informe.md) · [Informe k=8](../data/experimentos/caso_02_k_completo/k8/gpt41/informe.md)
+
+## Cortes de k=10 y k=12
+
+Se mantuvo el ranking anterior. El puesto 10 completó A1 con las funciones de Q, K y V. El puesto 12 agregó la fórmula escalada y completó A2. A3 quedó sin evidencia académica completa en los dos cortes.
+
+| Indicador | k=10 | k=12 |
+| --- | ---: | ---: |
+| Context Recall | 1/3 | 2/3 |
+| Estados correctos del video | 2/3 | 2/3 |
+| Estados correctos con evidencia académica completa recuperada | 1/3 | 1/3 |
+| Tokens de entrada | 6.635 | 6.887 |
+
+Con `k=10`, el informe acierta A1 y A3. Con `k=12`, acierta A2 y A3, pero clasifica A1 como «Parcial» por exigir las matrices de proyección. La pauta de A1 pedía las funciones de cada vector. Para A3, ambos informes recomiendan C10 como si explicara multi-head. El título del fragmento lo menciona y el cuerpo desarrolla Q, K y V. Los dos informes terminaron con `stop`.
+
+[Informe k=10](../data/experimentos/caso_02_k_completo/k10/gpt41/informe.md) · [Informe k=12](../data/experimentos/caso_02_k_completo/k12/gpt41/informe.md) · [Comparación de los seis casos](k_corpus_completo_seis_casos.md)

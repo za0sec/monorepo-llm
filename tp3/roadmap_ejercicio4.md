@@ -152,4 +152,6 @@ Guardar por caso las fuentes y sus hashes, los rankings, los chunks enviados, el
 
 **Validación con el Caso 02.** Diez resultados por consulta dejaron 23 candidatos únicos. Los cortes de `k=7` y `k=8` respaldaron por completo 0/3 criterios y acertaron 2/3 y 1/3 estados del video, respectivamente. Q, K y V y la fórmula escalada quedaron en los puestos 10 y 12. [Ranking y auditoría](ejercicio4/evaluacion/caso_02_k_completo.md)
 
-**Siguiente paso.** Comparar `k=7`, `8`, `10` y `12` sobre un solo ranking por objetivo, con el corpus completo, diez candidatos por consulta y el reranker de G4. Usar los casos 01 y 02 para completar los diagnósticos y los casos 03 a 06 para comprobar si los resultados se sostienen en otros temas. Registrar los resultados por caso antes de elegir un valor de `k`.
+**Comparación en seis objetivos.** Se completaron `k=7`, `8`, `10` y `12` con el corpus completo y diez candidatos por consulta. En los cuatro casos nuevos, `k=7` logró 8/12 criterios con respaldo académico y 10/12 estados correctos. Con `k=12` fueron 9/12 y 8/12, respectivamente. Se mantiene `k=7` como referencia provisional. [Métricas y auditoría por caso](ejercicio4/evaluacion/k_corpus_completo_seis_casos.md)
+
+**Siguiente paso.** Si se sigue iterando sobre el informe, congelar los rankings y comprobar si una validación de citas y de coherencia entre etiqueta y explicación corrige los errores observados en Razonamiento y AI Safety.

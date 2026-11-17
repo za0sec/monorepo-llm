@@ -21,22 +21,18 @@ También validaríamos la estructura y los estados permitidos. El sistema ya mar
 
 ## 2. Estrategias para poner el sistema en producción
 
-El sistema se despliega en AWS y se divide en dos flujos: la indexación, que corre cuando cambia el material, y la consulta, que corre por cada video. Los dos usan la API de OpenAI.
+Proponemos desplegar en AWS la interfaz web cada modulo. La indexación se ejecutaría cuando cambie el material de clase y el Evaluador RAG se ejecutaría por cada video. Ambos flujos usan la API externa de OpenAI.
 
-![Figura 1. Arquitectura de despliegue en AWS.](arquitectura_nube.png)
+![Figura 1. Arquitectura propuesta para el evaluador de videos en AWS.](arquitectura-rag.png)
 
 ### 2.1 Indexación
 
-El material de la cátedra (transcripciones, apuntes y diapositivas) se guarda en Amazon S3. Cuando se agrega o cambia un archivo, un proceso de indexación lo carga, lo divide con el corte recursivo de 160 tokens y solapamiento 10, describe las diapositivas con GPT‑4.1 y calcula los embeddings con text-embedding-3-small. Los vectores se guardan en Chroma, la misma base de los experimentos, que corre como servidor en AWS con un disco persistente. Por el volumen del corpus no hace falta un servicio administrado, y si la base se pierde se reconstruye desde S3.
+Amazon S3 guardaría los VTT de clase y los PDF de apuntes y diapositivas. El Loader lee el texto y, para las diapositivas, añade una descripción visual generada con GPT‑4.1. El Splitter aplica el corte recursivo de hasta 160 tokens con 10 de solapamiento y el Embedder genera los vectores con `text-embedding-3-small`. Chroma guardaría en disco persistente los vectores y los chunks con su fuente, página o intervalo. El material y la configuración de indexación permitirían reconstruir el índice.
 
 ### 2.2 Servicio
 
-Una interfaz web, con las mismas funciones que la que probamos de forma local, se publica en un servidor en la nube con acceso solo para estudiantes autenticados. El servidor recibe el objetivo y el MP3, guarda el audio de forma temporal y ejecuta el flujo en segundo plano, porque transcribir un video lleva tiempo. Whisper, los embeddings y GPT‑4.1 se usan por la API de OpenAI, así que no hace falta una GPU propia; el reranker es liviano y corre en CPU en el mismo servidor. Si falla la expansión o el reranker, se usa el modo básico, que trae los 7 chunks más cercanos por coseno.
+La interfaz web estaría disponible para los estudiantes. El servidor recibiría el objetivo, guardaría el MP3 y procesaría la evaluación. El Evaluador RAG envía el audio a Whisper para obtener el VTT y usa GPT‑4.1 para generar tres subconsultas. El mismo Embedder que se usa para indexar convierte el objetivo y las subconsultas en vectores para buscar en Chroma. El reranker MiniLM, reordena los candidatos y devuelve los siete mejores chunks. GPT‑4.1 recibe esos chunks y el VTT del video para generar el informe con citas.
 
-### 2.3 Costo
+### 2.4 Monitoreo
 
-Con la configuración final, cada informe usa en promedio unos 2.700 tokens de entrada en GPT‑4.1, a lo que se suman la expansión, los embeddings y los minutos de Whisper. Para bajar el costo guardaríamos la transcripción de cada audio, ya que varios estudiantes pueden pedir el mismo video, y limitaríamos la duración. Un modelo más barato, como gpt-4.1-nano, solo reemplazaría al actual si obtiene las mismas métricas.
-
-### 2.4 Monitoreo y versiones
-
-En cada ejecución registraríamos las consultas, los chunks, los puntajes, los tokens y la latencia, por ejemplo con LangSmith. Habría alertas ante informes incompletos, puntajes de reranking muy bajos o muchos estados marcados como incorrectos. Fijaríamos la versión de cada modelo, y cualquier cambio de prompt, modelo o parámetros se evaluaría antes con los seis videos que usamos en los experimentos. Como son pocos casos, antes de abrir el sistema a usuarios tendríamos que ampliarlos con más objetivos y videos.
+En producción implementaríamos un servicio de monitoreo para registrar la latencia, los errores y el consumo de tokens.

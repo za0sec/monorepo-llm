@@ -30,7 +30,7 @@ El material de la cátedra (transcripciones, apuntes y diapositivas) se guarda e
 
 ### 2.2 Servicio
 
-La interfaz web que hoy usamos de forma local se publica en un servidor en la nube, con acceso solo para estudiantes autenticados. El servidor recibe el objetivo y el MP3, guarda el audio de forma temporal y ejecuta el flujo en segundo plano, porque transcribir un video lleva tiempo. Whisper, los embeddings y GPT‑4.1 se usan por la API de OpenAI, así que no hace falta una GPU propia; el reranker es liviano y corre en CPU en el mismo servidor. Si falla la expansión o el reranker, se usa el modo básico, que trae los 7 chunks más cercanos por coseno.
+Una interfaz web, con las mismas funciones que la que probamos de forma local, se publica en un servidor en la nube con acceso solo para estudiantes autenticados. El servidor recibe el objetivo y el MP3, guarda el audio de forma temporal y ejecuta el flujo en segundo plano, porque transcribir un video lleva tiempo. Whisper, los embeddings y GPT‑4.1 se usan por la API de OpenAI, así que no hace falta una GPU propia; el reranker es liviano y corre en CPU en el mismo servidor. Si falla la expansión o el reranker, se usa el modo básico, que trae los 7 chunks más cercanos por coseno.
 
 ### 2.3 Costo
 

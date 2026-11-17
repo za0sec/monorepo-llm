@@ -33,6 +33,6 @@ Amazon S3 guardaría los VTT de clase y los PDF de apuntes y diapositivas. El Lo
 
 La interfaz web estaría disponible para los estudiantes. El servidor recibiría el objetivo, guardaría el MP3 y procesaría la evaluación. El Evaluador RAG envía el audio a Whisper para obtener el VTT y usa GPT‑4.1 para generar tres subconsultas. El mismo Embedder que se usa para indexar convierte el objetivo y las subconsultas en vectores para buscar en Chroma. El reranker MiniLM, reordena los candidatos y devuelve los siete mejores chunks. GPT‑4.1 recibe esos chunks y el VTT del video para generar el informe con citas.
 
-### 2.4 Monitoreo
+### 2.3 Monitoreo
 
 En producción implementaríamos un servicio de monitoreo para registrar la latencia, los errores y el consumo de tokens.

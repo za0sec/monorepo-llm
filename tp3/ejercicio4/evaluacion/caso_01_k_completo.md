@@ -87,3 +87,20 @@ PYTHONPATH=tp3/ejercicio2 .venv/bin/python tp3/ejercicio4/comparar_k_completo.py
 ```
 
 [Ranking ampliado](../data/experimentos/caso_01_vecinos10/ranking.json) · [Informe k=7](../data/experimentos/caso_01_vecinos10/k7/gpt41/informe.md) · [Informe k=8](../data/experimentos/caso_01_vecinos10/k8/gpt41/informe.md) · [Informe k=10](../data/experimentos/caso_01_vecinos10/k10/gpt41/informe.md) · [Informe k=12](../data/experimentos/caso_01_vecinos10/k12/gpt41/informe.md)
+
+### Embeddings con la configuración final
+
+Esta ficha resume el corte `k=7` ya ejecutado con el corpus completo. Usa el mismo video y objetivo del Caso 01 de la integración del ejercicio 2 («entender qué son los embeddings y cómo se compara la similitud entre textos»). El ejercicio 4 reutilizó el VTT de referencia de 99 segmentos. Chroma devolvió diez vecinos por cada una de las cuatro consultas, quedaron 16 candidatos únicos y el reranker seleccionó los siete que recibió GPT-4.1.
+
+| Indicador | Resultado | Cómo se verificó |
+| --- | ---: | --- |
+| Context Recall@7 | **3/5 (60 %)** | El contexto respalda por completo E1 (definición), E3 (comparación vectorial) y E4 (cálculo del coseno). |
+| Context Precision@7 | **100 %** | Los cuatro chunks relevantes quedaron en los puestos 1–4. La precisión acumulada en cada uno de esos puestos es 1. |
+| Estados correctos | **3/5** | Coinciden con la pauta E1 («Cubierto»), E3 («Parcial») y E4 («Sin evidencia en el video»). |
+| IDs de cita inexistentes | **0** | La corrida registra `citas_invalidas: []`. |
+
+Con `k=7`, el informe menciona el contexto y deja E2 sin una evaluación propia del contraste entre embeddings fijos y contextuales. E5, el efecto de la magnitud, queda omitido. La corrida terminó con `stop`, 3.340 tokens de entrada y 548 de salida. El apunte sobre similitud coseno queda como `C1` y se recomienda para estudiar el cálculo que el video omite.
+
+En la integración del ejercicio 2, el mismo caso había dado 3/5 de recall, 78,6 % de precisión, 2/5 estados correctos y ningún ID inexistente. La comparación muestra un mejor orden y un estado correcto adicional. También cambiaron el corpus, el VTT y la cantidad de vecinos por consulta, de cinco a diez. La corrida desde MP3 de la diapositiva 37 corresponde a Tokenización y tiene una pauta de tres criterios.
+
+[Pauta E1–E5](../../ejercicio2/evaluacion/caso_01_embeddings.md#criterios-de-cobertura) · [Ranking de 16 candidatos](../data/experimentos/caso_01_vecinos10/ranking.json) · [Entrada del corte de siete](../data/experimentos/caso_01_vecinos10/k7/entrada.json) · [Informe](../data/experimentos/caso_01_vecinos10/k7/gpt41/informe.md) · [Registro de la corrida](../data/experimentos/caso_01_vecinos10/k7/gpt41/corrida.json) · [Entrada del ejercicio 2](../../ejercicio2/data/ejecuciones/caso01-integracion/entrada.json)
